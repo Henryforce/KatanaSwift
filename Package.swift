@@ -16,6 +16,10 @@ let package = Package(
       targets: ["KatanaGoSwift"]
     )
   ],
+  dependencies: [
+    .package(
+      url: "https://github.com/Henryforce/BLECombineKit.git", branch: "mocks_subpackage_latest")
+  ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
     // Targets can depend on other targets in this package and products from dependencies.
@@ -27,12 +31,23 @@ let package = Package(
       dependencies: ["KatanaGoData"]
     ),
     .target(
+      name: "KatanaGoBLE",
+      dependencies: [
+        "KatanaGoAPI",
+        "KatanaGoData",
+        .product(name: "BLECombineKit", package: "BLECombineKit"),
+      ]
+    ),
+    .target(
       name: "KatanaGoSwift",
-      dependencies: ["KatanaGoAPI", "KatanaGoData"]
+      dependencies: ["KatanaGoAPI", "KatanaGoData", "KatanaGoBLE"]
     ),
     .testTarget(
-      name: "KatanaGoSwiftTests",
-      dependencies: ["KatanaGoSwift"]
+      name: "KatanaGoBLETests",
+      dependencies: [
+        "KatanaGoBLE",
+        .product(name: "BLECombineKitMocks", package: "BLECombineKit"),
+      ]
     ),
   ]
 )
