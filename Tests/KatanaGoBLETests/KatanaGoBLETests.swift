@@ -42,6 +42,10 @@ final class KatanaGoBLETests: XCTestCase {
       .setFailureType(to: BLEError.self)
       .eraseToAnyPublisher()
 
+    // Mock write value for startup sequence
+    peripheral.writeValueReturnValue = Empty<Never, BLEError>()
+      .eraseToAnyPublisher()
+
     // When
     try await katanaGo.connect()
 
@@ -53,6 +57,12 @@ final class KatanaGoBLETests: XCTestCase {
     XCTAssertEqual(peripheral.discoverServicesUUIDs, [serviceUUID])
     XCTAssertEqual(peripheral.discoverCharacteristicsWasCalledCount, 1)
     XCTAssertEqual(peripheral.discoverCharacteristicsUUIDs, [characteristicUUID])
+
+    // Verify startup sequence was sent
+    XCTAssertEqual(peripheral.writeValueWasCalledCount, KatanaGoStartupData.data.count)
+    if let lastPacket = KatanaGoStartupData.data.last {
+      XCTAssertEqual(peripheral.writeValueData, Data(lastPacket))
+    }
   }
 
   func testConnectFailureServiceNotFound() async throws {
@@ -103,7 +113,7 @@ final class KatanaGoBLETests: XCTestCase {
     try await katanaGo.write(command)
 
     // Then
-    XCTAssertEqual(peripheral.writeValueWasCalledCount, 1)
+    XCTAssertEqual(peripheral.writeValueWasCalledCount, KatanaGoStartupData.data.count + 1)
     XCTAssertEqual(peripheral.writeValueType, .withoutResponse)
     // Verify data - currently returns Data() due to TODO in implementation
     XCTAssertNotNil(peripheral.writeValueData)
@@ -128,13 +138,12 @@ final class KatanaGoBLETests: XCTestCase {
       return received
     }
 
-    // At this point, peripheral.observeValue(for:) should have been called
-    XCTAssertEqual(peripheral.observeValueWasCalledCount, 1)
+    // Send the completion to complete the task.
+    subject.send(completion: .finished)
 
     // Then
-    // Clean up
-    subject.send(completion: .finished)
     let results = await task.value
+    XCTAssertEqual(peripheral.observeValueWasCalledCount, 1)
     XCTAssertEqual(results.count, 0)  // because decode returns nil
   }
 }
