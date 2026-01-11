@@ -14,7 +14,12 @@ public final class KatanaGoScannerBLE: KatanaGoScanner, @unchecked Sendable {
   }
 
   public func scan() -> AsyncStream<KatanaGo> {
-    let stream = central.scanForPeripherals(withServices: [serviceUUID], options: nil)
+    let stream = central.state
+      .filter { $0 == .poweredOn }
+      .first()
+      .flatMap { [central, serviceUUID] _ in
+        central.scanForPeripherals(withServices: [serviceUUID], options: nil)
+      }
       .map { KatanaGoBLE(peripheral: $0.peripheral) }
 
     return AsyncStream { continuation in

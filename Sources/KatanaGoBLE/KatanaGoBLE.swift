@@ -49,6 +49,12 @@ public actor KatanaGoBLE: KatanaGo {
       self.connectedCharacteristic = characteristic
       self.status = .connected
       print("KatanaGoBLE: Connected to \(characteristic.value.uuid)")
+
+      // Send the startup data to enable edit mode.
+      for bytes in KatanaGoStartupData.data {
+        let data = Data(bytes)
+        try await writeRawData(data, to: characteristic)
+      }
     } catch {
       self.status = .disconnected
       print("KatanaGoBLE: Connection failed with error \(error.localizedDescription)")
@@ -105,9 +111,22 @@ public actor KatanaGoBLE: KatanaGo {
 
   // MARK: - Private Helpers
 
+  private func writeRawData(_ data: Data, to characteristic: BLECharacteristic) async throws {
+    try await peripheral.writeValueAsync(
+      data,
+      for: characteristic.value,
+      type: .withoutResponse
+    )
+  }
+
   private func encode(_ command: KatanaGoWriteData) throws -> Data {
-    // TODO: Implement actual MIDI/SysEx encoding for Katana GO
-    return Data()
+    // TODO: Implement the rest of commands.
+    switch command {
+    case .changePreset(let preset):
+      return preset.data
+    default:
+      return Data()
+    }
   }
 
   private func decode(_ data: Data) -> KatanaGoReadData? {

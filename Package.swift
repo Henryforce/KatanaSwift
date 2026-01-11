@@ -18,7 +18,7 @@ let package = Package(
   ],
   dependencies: [
     .package(
-      url: "https://github.com/Henryforce/BLECombineKit.git", branch: "mocks_subpackage_latest")
+      url: "https://github.com/Henryforce/BLECombineKit.git", branch: "master")
   ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
