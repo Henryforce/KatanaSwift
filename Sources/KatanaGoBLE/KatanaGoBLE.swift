@@ -134,3 +134,24 @@ public actor KatanaGoBLE: KatanaGo {
     return nil
   }
 }
+
+extension UInt8 {
+  static let rolandID = 0x41
+  static let rolandDeviceID = 0x10
+  static let commandID = 0x12
+}
+
+extension Array where Element == UInt8 {
+  static let katanaModelID = [0x01, 0x05, 0x0D]
+}
+
+enum MainData {
+  func checksum(_ bytes: [UInt8]) -> UInt8 {
+    var checksum: UInt = 0
+    for byte in bytes {
+      checksum += UInt(byte)
+    }
+    checksum = checksum % 128
+    return UInt8((128 - checksum) % 128)
+  }
+}
