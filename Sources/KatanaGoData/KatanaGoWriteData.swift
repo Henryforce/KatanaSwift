@@ -1,7 +1,7 @@
 import Foundation
 
 /// Presets available on the Katana GO device.
-public enum KatanaGoPreset: Sendable {
+public enum KatanaGoPreset: Sendable, Hashable, CaseIterable {
   case preset1A
   case preset1B
   case preset1C
@@ -32,12 +32,6 @@ public enum KatanaGoPreset: Sendable {
   case preset10A
   case preset10B
   case preset10C
-  case preset11A
-  case preset11B
-  case preset11C
-  case preset12A
-  case preset12B
-  case preset12C
 }
 
 /// Commands sent to the Katana GO device.
