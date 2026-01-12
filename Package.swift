@@ -41,5 +41,10 @@ let package = Package(
       name: "KatanaGoSwift",
       dependencies: ["KatanaGoAPI", "KatanaGoData", "KatanaGoMIDIKit"]
     ),
+    .testTarget(
+      name: "KatanaGoMIDIKitTests",
+      dependencies: ["KatanaGoMIDIKit", "KatanaGoAPI"]
+    ),
   ]
 )
+

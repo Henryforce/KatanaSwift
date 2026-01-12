@@ -3,17 +3,61 @@ import KatanaGoAPI
 import KatanaGoData
 import MIDIKit
 
+/// Internal protocol for MIDI endpoints to allow mocking.
+protocol MIDIEndpointProxy: Sendable {
+  var name: String { get }
+  var displayName: String { get }
+}
+
+extension MIDIOutputEndpoint: MIDIEndpointProxy {}
+
+/// Internal protocol for MIDIManager to allow mocking in tests.
+protocol MIDIManagerProtocol: Sendable {
+  func start() throws
+  var outputEndpoints: [any MIDIEndpointProxy] { get }
+}
+
+extension MIDIManager: MIDIManagerProtocol {
+  var outputEndpoints: [any MIDIEndpointProxy] {
+    endpoints.outputs
+  }
+}
+
+
+
 /// MIDI implementation of the KatanaGoScanner protocol.
 public final class KatanaGoScannerMIDIKit: KatanaGoScanner {
-  private let midiManager: MIDIManager
+  private let midiManager: MIDIManagerProtocol
+  private let retryInterval: UInt64
+  private let katanaGoFactory: @Sendable (any MIDIEndpointProxy, MIDIManagerProtocol) -> KatanaGo?
 
   public init() {
-    self.midiManager = MIDIManager(
+    let manager = MIDIManager(
       clientName: "KatanaGoSwift",
       model: "KatanaGoScanner",
       manufacturer: "Henryforce"
     )
+    self.midiManager = manager
+    self.retryInterval = 1_500_000_000
+    self.katanaGoFactory = { endpoint, midiManager in
+      guard let manager = midiManager as? MIDIManager,
+        let realEndpoint = endpoint as? MIDIOutputEndpoint
+      else { return nil }
+      return KatanaGoMIDIKit(endpoint: realEndpoint, midiManager: manager)
+    }
   }
+
+  /// Internal initializer for testing.
+  init(
+    midiManager: MIDIManagerProtocol,
+    retryInterval: UInt64 = 1_500_000_000,
+    katanaGoFactory: @Sendable @escaping (any MIDIEndpointProxy, MIDIManagerProtocol) -> KatanaGo? = { _, _ in nil }
+  ) {
+    self.midiManager = midiManager
+    self.retryInterval = retryInterval
+    self.katanaGoFactory = katanaGoFactory
+  }
+
 
   public func scan() -> AsyncStream<KatanaGo> {
     AsyncStream { continuation in
@@ -23,11 +67,12 @@ public final class KatanaGoScannerMIDIKit: KatanaGoScanner {
 
           for _ in 0...5 {
             try Task.checkCancellation()
-            try await Task.sleep(nanoseconds: 1_500_000_000)
+            try await Task.sleep(nanoseconds: retryInterval)
             try Task.checkCancellation()
 
+
             var katanaFound = false
-            let endpoints = midiManager.endpoints.outputs
+            let endpoints = midiManager.outputEndpoints
 
             for endpoint in endpoints {
               guard
@@ -38,17 +83,19 @@ public final class KatanaGoScannerMIDIKit: KatanaGoScanner {
               }
 
               print("Found KATANA with name: \(endpoint.displayName), \(endpoint.name)")
-              continuation.yield(KatanaGoMIDIKit(endpoint: endpoint, midiManager: midiManager))
-              katanaFound = true
-              break
+              if let device = katanaGoFactory(endpoint, midiManager) {
+                continuation.yield(device)
+                katanaFound = true
+                break
+              }
             }
-
             if katanaFound {
               break
             }
           }
 
           // For now, we finish the stream after the initial scan.
+
           // In the future, we could observe MIDI changes.
           continuation.finish()
         } catch {
