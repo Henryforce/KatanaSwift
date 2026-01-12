@@ -13,13 +13,13 @@ import SwiftUI
 @MainActor
 final class ContentViewModel {
 
-  var scanner: KatanaGoScannerBLE?
+  var scanner: KatanaGoScannerMIDIKit?
   var device: KatanaGo?
 
   func connect() async {
     try? await Task.sleep(for: .seconds(2))
 
-    let scanner = KatanaGoScannerBLE()
+    let scanner = KatanaGoScannerMIDIKit()
     self.scanner = scanner
 
     print("Waiting for powered state")
