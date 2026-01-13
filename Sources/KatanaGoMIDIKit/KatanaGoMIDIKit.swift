@@ -5,22 +5,22 @@ import MIDIKit
 
 /// MIDI implementation of the KatanaGo protocol.
 public actor KatanaGoMIDIKit: KatanaGo {
-  private let endpoint: MIDIOutputEndpoint
-  private let midiManager: MIDIManager
+  private let endpoint: MIDIEndpointProtocol
+  private let midiManager: MIDIManagerProtocol
 
   private var inputTag: String { "KatanaGo_In_\(endpoint.uniqueID)" }
   private var outputTag: String { "KatanaGo_Out_\(endpoint.uniqueID)" }
 
   private var continuation: AsyncStream<KatanaGoReadData>.Continuation?
 
-  public init(endpoint: MIDIOutputEndpoint, midiManager: MIDIManager) {
+  public init(endpoint: MIDIEndpointProtocol, midiManager: MIDIManagerProtocol) {
     self.endpoint = endpoint
     self.midiManager = midiManager
   }
 
   public func connectionStatus() async -> ConnectionStatus {
-    let isInputConnected = midiManager.managedInputConnections[inputTag] != nil
-    let isOutputConnected = midiManager.managedOutputConnections[outputTag] != nil
+    let isInputConnected = midiManager.loadManagedInputConnections()[inputTag] != nil
+    let isOutputConnected = midiManager.loadManagedOutputConnections()[outputTag] != nil
     return (isInputConnected && isOutputConnected) ? .connected : .disconnected
   }
 
@@ -29,25 +29,26 @@ public actor KatanaGoMIDIKit: KatanaGo {
     // In MIDIKit, MIDIInputEndpoint represents a system destination (where we send TO).
     // MIDIOutputEndpoint represents a system source (where we receive FROM).
     guard
-      let destinationEndpoint = midiManager.endpoints.inputs.first(where: {
+      let destinationEndpoint = midiManager.inputEndpoints.first(where: {
         $0.displayName == endpoint.displayName || $0.name == endpoint.name
       })
     else {
+      let displayName = endpoint.displayName ?? endpoint.name
       throw KatanaGoError.connectionFailed(
-        "Could not find matching MIDI input endpoint (destination) for \(endpoint.displayName)")
+        "Could not find matching MIDI input endpoint (destination) for \(displayName)")
     }
 
     // 2. Setup output connection (to send TO the device)
     // We connect our output to the device's input endpoint.
     try midiManager.addOutputConnection(
-      to: .inputs([destinationEndpoint]),
+      to: [destinationEndpoint],
       tag: outputTag
     )
 
     // 3. Setup input connection (to receive FROM the device)
     // We connect our input to the device's output endpoint (which is the 'endpoint' property).
     try midiManager.addInputConnection(
-      to: .outputs([endpoint]),
+      to: [endpoint],
       tag: inputTag,
       receiver: .events { [weak self] events, timestamp, source in
         Task { [weak self] in
@@ -96,7 +97,7 @@ public actor KatanaGoMIDIKit: KatanaGo {
   }
 
   private func writeRawBytes(_ rawBytes: [UInt8]) throws {
-    guard let connection = midiManager.managedOutputConnections[outputTag] else {
+    guard let connection = midiManager.loadManagedOutputConnections()[outputTag] else {
       throw KatanaGoError.connectionFailed("Could not find output connection for \(outputTag)")
     }
     let event = try MIDIEvent.sysEx7(rawBytes: rawBytes)

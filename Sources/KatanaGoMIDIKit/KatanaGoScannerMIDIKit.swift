@@ -3,33 +3,12 @@ import KatanaGoAPI
 import KatanaGoData
 import MIDIKit
 
-/// Internal protocol for MIDI endpoints to allow mocking.
-protocol MIDIEndpointProxy: Sendable {
-  var name: String { get }
-  var displayName: String { get }
-}
-
-extension MIDIOutputEndpoint: MIDIEndpointProxy {}
-
-/// Internal protocol for MIDIManager to allow mocking in tests.
-protocol MIDIManagerProtocol: Sendable {
-  func start() throws
-  var outputEndpoints: [any MIDIEndpointProxy] { get }
-}
-
-extension MIDIManager: MIDIManagerProtocol {
-  var outputEndpoints: [any MIDIEndpointProxy] {
-    endpoints.outputs
-  }
-}
-
-
-
 /// MIDI implementation of the KatanaGoScanner protocol.
 public final class KatanaGoScannerMIDIKit: KatanaGoScanner {
   private let midiManager: MIDIManagerProtocol
   private let retryInterval: UInt64
-  private let katanaGoFactory: @Sendable (any MIDIEndpointProxy, MIDIManagerProtocol) -> KatanaGo?
+  private let katanaGoFactory:
+    @Sendable (any MIDIEndpointProtocol, MIDIManagerProtocol) -> KatanaGo?
 
   public init() {
     let manager = MIDIManager(
@@ -51,13 +30,15 @@ public final class KatanaGoScannerMIDIKit: KatanaGoScanner {
   init(
     midiManager: MIDIManagerProtocol,
     retryInterval: UInt64 = 1_500_000_000,
-    katanaGoFactory: @Sendable @escaping (any MIDIEndpointProxy, MIDIManagerProtocol) -> KatanaGo? = { _, _ in nil }
+    katanaGoFactory:
+      @Sendable @escaping (any MIDIEndpointProtocol, MIDIManagerProtocol) -> KatanaGo? = { _, _ in
+        nil
+      }
   ) {
     self.midiManager = midiManager
     self.retryInterval = retryInterval
     self.katanaGoFactory = katanaGoFactory
   }
-
 
   public func scan() -> AsyncStream<KatanaGo> {
     AsyncStream { continuation in
@@ -70,19 +51,20 @@ public final class KatanaGoScannerMIDIKit: KatanaGoScanner {
             try await Task.sleep(nanoseconds: retryInterval)
             try Task.checkCancellation()
 
-
             var katanaFound = false
             let endpoints = midiManager.outputEndpoints
 
             for endpoint in endpoints {
               guard
-                endpoint.displayName.localizedCaseInsensitiveContains("KATANA:GO MIDI")
+                (endpoint.displayName ?? "").localizedCaseInsensitiveContains("KATANA:GO MIDI")
                   || endpoint.name.localizedCaseInsensitiveContains("KATANA:GO MIDI")
               else {
                 continue
               }
 
-              print("Found KATANA with name: \(endpoint.displayName), \(endpoint.name)")
+              print(
+                "Found KATANA with name: \(endpoint.displayName ?? endpoint.name), \(endpoint.name)"
+              )
               if let device = katanaGoFactory(endpoint, midiManager) {
                 continuation.yield(device)
                 katanaFound = true
