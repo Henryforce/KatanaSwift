@@ -17,8 +17,7 @@ let package = Package(
     )
   ],
   dependencies: [
-    .package(
-      url: "https://github.com/Henryforce/BLECombineKit.git", branch: "master")
+    .package(url: "https://github.com/orchetect/MIDIKit", from: "0.10.7")
   ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -31,23 +30,20 @@ let package = Package(
       dependencies: ["KatanaGoData"]
     ),
     .target(
-      name: "KatanaGoBLE",
+      name: "KatanaGoMIDIKit",
       dependencies: [
         "KatanaGoAPI",
         "KatanaGoData",
-        .product(name: "BLECombineKit", package: "BLECombineKit"),
+        .product(name: "MIDIKit", package: "MIDIKit"),
       ]
     ),
     .target(
       name: "KatanaGoSwift",
-      dependencies: ["KatanaGoAPI", "KatanaGoData", "KatanaGoBLE"]
+      dependencies: ["KatanaGoAPI", "KatanaGoData", "KatanaGoMIDIKit"]
     ),
     .testTarget(
-      name: "KatanaGoBLETests",
-      dependencies: [
-        "KatanaGoBLE",
-        .product(name: "BLECombineKitMocks", package: "BLECombineKit"),
-      ]
+      name: "KatanaGoMIDIKitTests",
+      dependencies: ["KatanaGoMIDIKit", "KatanaGoAPI"]
     ),
   ]
 )

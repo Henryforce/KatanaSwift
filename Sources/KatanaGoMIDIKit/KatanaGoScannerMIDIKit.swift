@@ -1,0 +1,94 @@
+import Foundation
+import KatanaGoAPI
+import KatanaGoData
+import MIDIKit
+
+/// MIDI implementation of the KatanaGoScanner protocol.
+public final class KatanaGoScannerMIDIKit: KatanaGoScanner {
+  private let midiManager: MIDIManagerProtocol
+  private let retryInterval: UInt64
+  private let katanaGoFactory:
+    @Sendable (any MIDIEndpointProtocol, MIDIManagerProtocol) -> KatanaGo?
+
+  public init() {
+    let manager = MIDIManager(
+      clientName: "KatanaGoSwift",
+      model: "KatanaGoScanner",
+      manufacturer: "Henryforce"
+    )
+    self.midiManager = manager
+    self.retryInterval = 1_500_000_000
+    self.katanaGoFactory = { endpoint, midiManager in
+      guard let manager = midiManager as? MIDIManager,
+        let realEndpoint = endpoint as? MIDIOutputEndpoint
+      else { return nil }
+      return KatanaGoMIDIKit(endpoint: realEndpoint, midiManager: manager)
+    }
+  }
+
+  /// Internal initializer for testing.
+  init(
+    midiManager: MIDIManagerProtocol,
+    retryInterval: UInt64 = 1_500_000_000,
+    katanaGoFactory:
+      @Sendable @escaping (any MIDIEndpointProtocol, MIDIManagerProtocol) -> KatanaGo? = { _, _ in
+        nil
+      }
+  ) {
+    self.midiManager = midiManager
+    self.retryInterval = retryInterval
+    self.katanaGoFactory = katanaGoFactory
+  }
+
+  public func scan() -> AsyncStream<KatanaGo> {
+    AsyncStream { continuation in
+      let taskReference = Task {
+        do {
+          try midiManager.start()
+
+          for _ in 0...5 {
+            try Task.checkCancellation()
+            try await Task.sleep(nanoseconds: retryInterval)
+            try Task.checkCancellation()
+
+            var katanaFound = false
+            let endpoints = midiManager.outputEndpoints
+
+            for endpoint in endpoints {
+              guard
+                (endpoint.displayName ?? "").localizedCaseInsensitiveContains("KATANA:GO MIDI")
+                  || endpoint.name.localizedCaseInsensitiveContains("KATANA:GO MIDI")
+              else {
+                continue
+              }
+
+              print(
+                "Found KATANA with name: \(endpoint.displayName ?? endpoint.name), \(endpoint.name)"
+              )
+              if let device = katanaGoFactory(endpoint, midiManager) {
+                continuation.yield(device)
+                katanaFound = true
+                break
+              }
+            }
+            if katanaFound {
+              break
+            }
+          }
+
+          // For now, we finish the stream after the initial scan.
+
+          // In the future, we could observe MIDI changes.
+          continuation.finish()
+        } catch {
+          print("Failed to start MIDIManager: \(error)")
+          continuation.finish()
+        }
+      }
+
+      continuation.onTermination = { _ in
+        taskReference.cancel()
+      }
+    }
+  }
+}
