@@ -46,12 +46,42 @@ public enum KatanaGoWriteData: Sendable {
 
   // MARK: - SysEx Commands
 
+  /// Updates the global volume.
+  case volume(value: Int)
+
+  /// Updates a system parameter.
+  case system(SystemParameter, value: Int)
+
+  /// Updates an amplifier parameter.
+  case amp(AmpParameter, value: Int)
+
   /// Toggles an effect block on or off.
-  case setEffect(EffectID, on: Bool)
+  case setEffectOn(EffectID, on: Bool)
+
+  /// Updates a booster parameter.
+  case boost(BoostParameter, value: Int)
+
+  /// Updates a modulation parameter.
+  case mod(ModFXParameter, value: Int)
+
+  /// Updates an FX parameter.
+  case fx(ModFXParameter, value: Int)
+
+  /// Updates a delay parameter.
+  case delay(DelayParameter, value: Int)
+
+  /// Updates a reverb parameter.
+  case reverb(ReverbParameter, value: Int)
+
+  /// Updates a noise gate parameter.
+  case noiseGate(NoiseGateParameter, value: Int)
 
   /// Toggles the tuner on or off.
   case setTuner(on: Bool)
 
   /// Switches the device to a specific preset.
   case changePreset(_ preset: KatanaGoPreset)
+
+  /// Updates the signal chain.
+  case setChain(Int)
 }

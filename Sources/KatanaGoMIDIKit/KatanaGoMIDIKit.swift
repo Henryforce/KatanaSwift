@@ -81,13 +81,7 @@ public actor KatanaGoMIDIKit: KatanaGo {
   }
 
   public func write(_ command: KatanaGoWriteData) async throws {
-    switch command {
-    case .changePreset(let preset):
-      try writeRawBytes(preset.bytes)
-    default:
-      // TODO: Implement MIDI write logic
-      break
-    }
+    try writeRawBytes(command.bytes)
   }
 
   public func read() -> AsyncStream<KatanaGoReadData> {
