@@ -1,0 +1,165 @@
+<DATA value="01" abbr="BASS MODE" desc="MOD/FX:" customdesc="Type">
+  <PARAM value="00" name="CHORUS" desc="CE:" customdesc="Chorus"/>
+  <PARAM value="01" name="FLANGER" desc="FL:" customdesc="Flanger"/>
+  <PARAM value="02" name="PHASER" desc="PH:" customdesc="Phaser"/>
+  <PARAM value="03" name="UNI-V" desc="UV:" customdesc="Uni-V"/>
+  <PARAM value="04" name="TREMOLO" desc="TR:" customdesc="Tremolo"/>
+  <PARAM value="06" name="VIBRATO" desc="VB:" customdesc="Vibrato"/>
+  <PARAM value="07" name="ROTARY" desc="RT:" customdesc="Rotary"/>
+  <PARAM value="09" name="RING MOD." desc="RM:" customdesc="Ring Modulate"/>
+  <PARAM value="0A" name="SLOW GEAR " desc="SG:" customdesc="Slow Gear"/>
+  <PARAM value="0C" name="SLICER" desc="SL:" customdesc="Slicer"/>
+  <PARAM value="0E" name="AUTO WAH " desc="AW:" customdesc="Auto Wah"/>
+  <PARAM value="0F" name="GRAPHIC EQ " desc="LM:" customdesc="Graphic E.Q"/>
+  <PARAM value="10" name="PARA EQ " desc="GEQ:" customdesc="Parametric E.Q."/>
+  <PARAM value="12" name="HEAVY OCTAVE" desc="PEQ:" customdesc="Heavy Octave"/>
+  <PARAM value="13" name="PITCH SHIFTER " desc="PS:" customdesc="Pitch Shifter"/>
+  <PARAM value="14" name="HARMONIST " desc="HR:" customdesc="Harmonist"/>
+  <PARAM value="15" name="HUMANIZER" desc="HU:" customdesc="Humanizer"/>
+  <PARAM value="16" name="ENHANCER" desc="ENH:" customdesc="Enhancer"/>
+  <PARAM value="17" name="BASS SIMULATOR" desc="BS:" customdesc="Bass Simulator"/>
+  <PARAM value="19" name="DEFRETTER" desc="DF:" customdesc="Defretter"/>
+  <PARAM value="1A" name="OCTAVE " desc="OC:" customdesc="Octave"/>
+  <PARAM value="1B" name="BASS T.WAH " desc="BTW:" customdesc="Bass TWah"/>
+  <PARAM value="1C" name="BASS SYNTH " desc="BSY:" customdesc="Bass Synth"/>
+</DATA>
+<DATA value="02" name="Distortion/OD" abbr="0D" desc="BOOSTER:" customdesc="Type">
+  <PARAM value="00" name="Mid Boost" desc="00" customdesc="Mid Boost"/>
+  <PARAM value="01" name="Clean Boost" desc="01" customdesc="Clean Boost"/>
+  <PARAM value="02" name="Treble Boost" desc="02" customdesc="Treble Boost"/>
+  <PARAM value="03" name="Crunch" desc="03" customdesc="Crunch OD"/>
+  <PARAM value="04" name="Natural OD" desc="04" customdesc="Natural OD"/>
+  <PARAM value="05" name="Warm OD" desc="05" customdesc="Warm OD"/>
+  <PARAM value="06" name="Fat DS" desc="06" customdesc="Fat DS"/>
+  <PARAM value="08" name="Metal DS" desc="08" customdesc="Metal DS"/>
+  <PARAM value="09" name="OCT Fuzz" desc="09" customdesc="OCT Fuzz"/>
+  <PARAM value="0A" name="Blues OD" desc="0A" customdesc="Blues Drive"/>
+  <PARAM value="0B" name="OD-1" desc="0B" customdesc="Over drive"/>
+  <PARAM value="0C" name="Tubescreamer  " desc="0C" customdesc="Tubescreamer  "/>
+  <PARAM value="0D" name="Turbo OD" desc="0D" customdesc="Turbo OD"/>
+  <PARAM value="0E" name="Dist" desc="0E" customdesc="Distortion"/>
+  <PARAM value="0F" name="Rat" desc="0F" customdesc="Rat"/>
+  <PARAM value="10" name="GuV DS" desc="10" customdesc="GuV DS"/>
+  <PARAM value="11" name="DST+" desc="11" customdesc="DST+"/>
+  <PARAM value="12" name="Metal Zone" desc="12" customdesc="Metal Zone"/>
+  <PARAM value="13" name="'60s Fuzz" desc="13" customdesc="'60s Fuzz"/>
+  <PARAM value="14" name="Muff Fuzz" desc="14" customdesc="Muff Fuzz"/>
+  <PARAM value="07" name="Lead DS" desc="15" customdesc="HM-2"/>
+  <PARAM value="12" name="Metal Zone" desc="16" customdesc="Metal Core"/>
+  <PARAM value="15" name="Custom" desc="17" customdesc="Centa OD"/>
+</DATA>
+<DATA value="03" name="PreAmp" abbr="" desc="PREAMP:" customdesc="Type">
+  <PARAM value="00" name="Natural Clean" desc="00" customdesc="Natural Clean"/>
+  <PARAM value="01" name="[ACOUSTIC]" desc="01" customdesc="[ACOUSTIC]"/>
+  <PARAM value="02" name="Combo Crunch" desc="02" customdesc="Combo Crunch"/>
+  <PARAM value="03" name="Stack Crunch" desc="03" customdesc="Stack Crunch"/>
+  <PARAM value="04" name="HiGain Stack" desc="04" customdesc="HiGain Stack"/>
+  <PARAM value="05" name="Power Drive" desc="05" customdesc="Power Drive"/>
+  <PARAM value="06" name="Extreme Lead" desc="06" customdesc="Extreme Lead"/>
+  <PARAM value="07" name="Core Metal" desc="07" customdesc="Core Metal"/>
+  <PARAM value="08" name="[CLEAN]" desc="08" customdesc="[CLEAN]"/>
+  <PARAM value="09" name="Clean Twin" desc="09" customdesc="Clean Twin"/>
+  <PARAM value="0A" name="Pro Crunch" desc="0A" customdesc="Pro Crunch"/>
+  <PARAM value="0B" name="[CRUNCH]" desc="0B" customdesc="[CRUNCH]"/>
+  <PARAM value="0C" name="Deluxe Crunch" desc="0C" customdesc="Deluxe Crunch"/>
+  <PARAM value="0D" name="VO Drive" desc="0D" customdesc="VO Drive"/>
+  <PARAM value="0E" name="VO Lead" desc="0E" customdesc="VO Lead"/>
+  <PARAM value="0F" name="Match Drive" desc="0F" customdesc="Match Drive"/>
+  <PARAM value="10" name="BG Lead" desc="10" customdesc="BG Lead"/>
+  <PARAM value="11" name="BG Drive" desc="11" customdesc="BG Drive"/>
+  <PARAM value="12" name="MS-1959 I" desc="12" customdesc="MS-1959 I"/>
+  <PARAM value="13" name="MS-1959 I+II" desc="13" customdesc="MS-1959 I+II"/>
+  <PARAM value="14" name="R-Fier Vintage" desc="14" customdesc="R-Fier Vintage"/>
+  <PARAM value="15" name="R-Fier Modern" desc="15" customdesc="R-Fier Modern"/>
+  <PARAM value="16" name="T-Amp Lead" desc="16" customdesc="T-Amp Lead"/>
+  <PARAM value="17" name="[BROWN]" desc="17" customdesc="[BROWN]"/>
+  <PARAM value="18" name="[LEAD]" desc="18" customdesc="[LEAD]"/>
+  <PARAM value="19" name="Custom" desc="19" customdesc="Custom"/>
+</DATA>
+<DATA value="04" name="MOD/FX" abbr="" desc="MOD/FX:" customdesc="Type">
+  <PARAM value="00" name="T.WAH " desc="00" customdesc="T.WAH "/>
+  <PARAM value="01" name="AUTO WAH " desc="01" customdesc="AUTO WAH "/>
+  <PARAM value="02" name="WAH " desc="02" customdesc="PEDAL WAH "/>
+  <PARAM value="03" name="COMPRESSSOR" desc="03" customdesc="COMPRESSOR"/>
+  <PARAM value="04" name="LIMITER" desc="04" customdesc="LIMITER"/>
+  <PARAM value="06" name="GRAPHIC EQ " desc="06" customdesc="GRAPHIC EQ "/>
+  <PARAM value="07" name="PARA EQ " desc="07" customdesc="PARA EQ "/>
+  <PARAM value="09" name="GUITAR SIM. " desc="09" customdesc="GUITAR SIM. "/>
+  <PARAM value="0A" name="SLOW GEAR " desc="0A" customdesc="SLOW GEAR "/>
+  <PARAM value="0C" name="WAVE SYNTH " desc="0C" customdesc="WAVE SYNTH "/>
+  <PARAM value="0E" name="OCTAVE " desc="0E" customdesc="OCTAVE "/>
+  <PARAM value="0F" name="PITCH SHIFTER " desc="0F" customdesc="PITCH SHIFTER "/>
+  <PARAM value="10" name="HARMONIST " desc="10" customdesc="HARMONIST "/>
+  <PARAM value="12" name="AC.PROCESSOR " desc="12" customdesc="AC.PROCESSOR "/>
+  <PARAM value="13" name="PHASER" desc="13" customdesc="PHASER"/>
+  <PARAM value="14" name="FLANGER" desc="14" customdesc="FLANGER"/>
+  <PARAM value="15" name="TREMOLO" desc="15" customdesc="TREMOLO"/>
+  <PARAM value="16" name="ROTARY" desc="16" customdesc="ROTARY"/>
+  <PARAM value="17" name="UNI-V" desc="17" customdesc="UNI-V"/>
+  <PARAM value="19" name="SLICER" desc="19" customdesc="SLICER"/>
+  <PARAM value="1A" name="VIBRATO" desc="1A" customdesc="VIBRATO"/>
+  <PARAM value="1B" name="RING MOD." desc="1B" customdesc="RING MOD."/>
+  <PARAM value="1C" name="HUMANIZER" desc="1C" customdesc="HUMANIZER"/>
+  <PARAM value="1D" name="2X2 CHORUS" desc="1D" customdesc="2X2 CHORUS"/>
+  <PARAM value="1F" name="AC GUITAR SIM" desc="1F" customdesc="AC GUITAR SIM"/>
+  <PARAM value="23" name="PHASER 90E" desc="23" customdesc="PHASER 90E"/>
+  <PARAM value="24" name="FLANGER 117E" desc="24" customdesc="FLANGER 117E"/>
+  <PARAM value="25" name="WAH 95E" desc="25" customdesc="WAH 95E"/>
+  <PARAM value="26" name="DELAYCHORUS30" desc="26" customdesc="DELAYCHORUS30"/>
+  <PARAM value="27" name="HEAVY OCTAVE" desc="27" customdesc="HEAVY OCTAVE"/>
+</DATA>
+<DATA value="05" name="KATANA:" abbr="FX1A" desc="Select" customdesc="RGY">
+  <PARAM value="01" name="RED" desc="00" customdesc="RED"/>
+  <PARAM value="02" name="GREEN" desc="01" customdesc="GREEN"/>
+  <PARAM value="03" name="YELLOW" desc="02" customdesc="YELLOW"/>
+</DATA>
+<DATA value="06" name="Delay 1" abbr="" desc="DD1:" customdesc="Type">
+  <PARAM value="00" name="Digital" desc="00" customdesc="Digital"/>
+  <PARAM value="01" name="Pan" desc="01" customdesc="Pan"/>
+  <PARAM value="02" name="Stereo" desc="02" customdesc="Stereo"/>
+  <PARAM value="06" name="Reverse" desc="06" customdesc="Reverse"/>
+  <PARAM value="07" name="Analog" desc="07" customdesc="Analog"/>
+  <PARAM value="08" name="Tape Echo" desc="08" customdesc="Tape Echo"/>
+  <PARAM value="09" name="Modulate" desc="09" customdesc="Modulate"/>
+  <PARAM value="0A" name="SDE-3000" desc="0A" customdesc="SDE-3000"/>
+</DATA>
+<DATA value="07" name="BOOSTER" abbr="Bass Mode" desc="DRIVE:" customdesc="Type">
+  <PARAM value="00" name="Blues OD" desc="Blues OD" customdesc="Blues OD"/>
+  <PARAM value="01" name="Natural" desc="Natural" customdesc="Natural"/>
+  <PARAM value="02" name="GuV DS" desc="GuV DS" customdesc="GuV DS"/>
+  <PARAM value="03" name="Metal Zone" desc="Metal Zone" customdesc="Metal Zone"/>
+  <PARAM value="04" name="Muff Fuzz" desc="Muff Fuzz" customdesc="Muff Fuzz"/>
+  <PARAM value="05" name="Booster" desc="Booster" customdesc="Booster"/>
+  <PARAM value="06" name="Bass OD" desc="Bass OD" customdesc="Bass OD"/>
+  <PARAM value="08" name="Bass DS" desc="Bass DS" customdesc="Bass DS"/>
+  <PARAM value="09" name="Bass MT" desc="Bass MT" customdesc="Bass MT"/>
+  <PARAM value="0A" name="Bass FUZZ" desc="Bass FUZZ" customdesc="Bass FUZZ"/>
+  <PARAM value="0B" name="Bass DRV" desc="Bass DRV" customdesc="Bass DRV"/>
+  <PARAM value="0C" name="HiBand DRV" desc="HiBand DRV" customdesc="HiBand DRV"/>
+  <PARAM value="0D" name="Bass DI" desc="Bass DI" customdesc="Bass DI"/>
+</DATA>
+<DATA value="08" name="MOD/FX" abbr="Bass Mode" desc="MOD/FX:" customdesc="Type">
+  <PARAM value="00" name="CHORUS" desc="CE:" customdesc="Chorus"/>
+  <PARAM value="01" name="FLANGER" desc="FL:" customdesc="Flanger"/>
+  <PARAM value="02" name="PHASER" desc="PH:" customdesc="Phaser"/>
+  <PARAM value="03" name="UNI-V" desc="UV:" customdesc="Uni-V"/>
+  <PARAM value="04" name="TREMOLO" desc="TR:" customdesc="Tremolo"/>
+  <PARAM value="06" name="VIBRATO" desc="VB:" customdesc="Vibrato"/>
+  <PARAM value="07" name="ROTARY" desc="RT:" customdesc="Rotary"/>
+  <PARAM value="09" name="RING MOD." desc="RM:" customdesc="Ring Modulate"/>
+  <PARAM value="0A" name="SLOW GEAR " desc="SG:" customdesc="Slow Gear"/>
+  <PARAM value="0C" name="SLICER" desc="SL:" customdesc="Slicer"/>
+  <PARAM value="0E" name="AUTO WAH " desc="AW:" customdesc="Auto Wah"/>
+  <PARAM value="0F" name="GRAPHIC EQ " desc="GEQ:" customdesc="Graphic E.Q."/>
+  <PARAM value="10" name="PARA EQ " desc="EQ:" customdesc="Parametric E.Q."/>
+  <PARAM value="12" name="HEAVY OCTAVE" desc="HOC:" customdesc="Heavy Octave"/>
+  <PARAM value="13" name="PITCH SHIFTER " desc="PS:" customdesc="Pitch Shifter"/>
+  <PARAM value="14" name="HARMONIST " desc="HR:" customdesc="Harmonist"/>
+  <PARAM value="15" name="HUMANIZER" desc="HU:" customdesc="Humanizer"/>
+  <PARAM value="16" name="ENHANCER" desc="EN:" customdesc="Enhancer"/>
+  <PARAM value="17" name="BASS SIMULATOR" desc="BS:" customdesc="Bass Simulator"/>
+  <PARAM value="19" name="DEFRETTER" desc="DF:" customdesc="Defretter"/>
+  <PARAM value="1A" name="OCTAVE " desc="OC:" customdesc="Octave"/>
+  <PARAM value="1B" name="T-WAH" desc="TW:" customdesc="T-Wah"/>
+  <PARAM value="1C" name="BASS SYNTH" desc="BSY:" customdesc="Bass Synth"/>
+</DATA>

@@ -13,14 +13,16 @@ extension KatanaGoWriteData {
       // Expression pedal is usually CC 11 or similar, but here we use CC 11
       return [0xB0, 11, UInt8(value)]
 
-    case .volume(let value):
-      return finalizeSysex(address: [0x20, 0x00, 0x20, 0x01], data: [UInt8(value & 0x7F)])
-
     case .system(let param, let value):
       return finalizeSysex(address: param.address, data: [UInt8(value & 0x7F)])
 
-    case .amp(let param, let value):
-      return finalizeSysex(address: param.address, data: [UInt8(value & 0x7F)])
+    case .amp(let param):
+      // TODO: implement
+      let value = param.value & 0x7F
+      return finalizeSysex(address: param.address, data: [value])
+
+    // case .setAmpType(let type):
+    //   return finalizeSysex(address: [0x20, 0x00, 0x20, 0x0C], data: [UInt8(type.rawValue)])
 
     case .setEffectOn(let effect, let on):
       let val: UInt8 = on ? 1 : 0
@@ -29,11 +31,43 @@ extension KatanaGoWriteData {
     case .boost(let param, let value):
       return finalizeSysex(address: param.address, data: [UInt8(value & 0x7F)])
 
+    case .setBoostType(let type):
+      return finalizeSysex(address: [0x20, 0x00, 0x40, 0x00], data: [UInt8(type.rawValue)])
+
+    case .setBassBoostType(let type):
+      return finalizeSysex(address: [0x20, 0x00, 0x40, 0x00], data: [UInt8(type.rawValue)])
+
     case .mod(let param, let value):
-      return encodeModFX(base: [0x60, 0x00, 0x01, 0x40], param: param, value: value)
+      switch param {
+      case .type:
+        return finalizeSysex(address: [0x20, 0x00, 0x60, 0x00], data: [UInt8(value & 0x7F)])
+      case .parameter(let offset):
+        return finalizeSysex(
+          address: addOffset(to: [0x20, 0x01, 0x00, 0x00], offset: offset),
+          data: [UInt8(value & 0x7F)])
+      }
+
+    case .setModType(let type):
+      return finalizeSysex(address: [0x20, 0x00, 0x60, 0x00], data: [UInt8(type.rawValue)])
+
+    case .setBassModType(let type):
+      return finalizeSysex(address: [0x20, 0x00, 0x60, 0x00], data: [UInt8(type.rawValue)])
 
     case .fx(let param, let value):
-      return encodeModFX(base: [0x60, 0x00, 0x03, 0x4C], param: param, value: value)
+      switch param {
+      case .type:
+        return finalizeSysex(address: [0x20, 0x00, 0x70, 0x00], data: [UInt8(value & 0x7F)])
+      case .parameter(let offset):
+        return finalizeSysex(
+          address: addOffset(to: [0x20, 0x01, 0x10, 0x00], offset: offset),
+          data: [UInt8(value & 0x7F)])
+      }
+
+    case .setFXType(let type):
+      return finalizeSysex(address: [0x20, 0x00, 0x70, 0x00], data: [UInt8(type.rawValue)])
+
+    case .setBassFXType(let type):
+      return finalizeSysex(address: [0x20, 0x00, 0x70, 0x00], data: [UInt8(type.rawValue)])
 
     case .delay(let param, let value):
       if param == .time {
@@ -41,6 +75,9 @@ extension KatanaGoWriteData {
       } else {
         return finalizeSysex(address: param.address, data: [UInt8(value & 0x7F)])
       }
+
+    case .setDelayType(let type):
+      return finalizeSysex(address: [0x20, 0x01, 0x20, 0x00], data: [UInt8(type.rawValue)])
 
     case .reverb(let param, let value):
       if param == .preDelay {
@@ -54,13 +91,13 @@ extension KatanaGoWriteData {
 
     case .setTuner(let on):
       let val: UInt8 = on ? 1 : 0
-      return finalizeSysex(address: [0x7F, 0x00, 0x00, 0x02], data: [val])
+      return finalizeSysex(address: [0x10, 0x00, 0x00, 0x00], data: [val])
 
     case .changePreset(let preset):
       return preset.bytes
 
     case .setChain(let value):
-      return finalizeSysex(address: [0x60, 0x00, 0x12, 0x00], data: [UInt8(value & 0x7F)])
+      return finalizeSysex(address: [0x20, 0x00, 0x10, 0x00], data: [UInt8(value & 0x7F)])
     }
   }
 
@@ -130,24 +167,36 @@ extension SystemParameter {
 extension AmpParameter {
   var address: [UInt8] {
     switch self {
-    case .loopActive: return [0x00, 0x00, 0x04, 0x00]
-    case .routingScheme: return [0x00, 0x00, 0x04, 0x01]
-    case .sendLevel: return [0x00, 0x00, 0x04, 0x02]
-    case .returnLevel: return [0x00, 0x00, 0x04, 0x03]
-    case .ampType: return [0x00, 0x00, 0x04, 0x20]
-    case .gain: return [0x00, 0x00, 0x04, 0x21]
-    case .volume: return [0x00, 0x00, 0x04, 0x22]
-    case .bass: return [0x00, 0x00, 0x04, 0x23]
-    case .middle: return [0x00, 0x00, 0x04, 0x24]
-    case .treble: return [0x00, 0x00, 0x04, 0x25]
-    case .presence: return [0x00, 0x00, 0x04, 0x26]
+    // case .loopActive: return [0x00, 0x00, 0x04, 0x00]
+    // case .routingScheme: return [0x00, 0x00, 0x04, 0x01]
+    // case .sendLevel: return [0x00, 0x00, 0x04, 0x02]
+    // case .returnLevel: return [0x00, 0x00, 0x04, 0x03]
+    case .ampType: return [0x20, 0x00, 0x20, 0x0C]
+    case .gain: return [0x20, 0x00, 0x20, 0x00]
+    case .volume: return [0x20, 0x00, 0x20, 0x01]
+    case .bass: return [0x20, 0x00, 0x20, 0x03]
+    case .middle: return [0x20, 0x00, 0x20, 0x04]
+    case .treble: return [0x20, 0x00, 0x20, 0x05]
+    case .presence: return [0x20, 0x00, 0x20, 0x0a]
+    }
+  }
+
+  var value: UInt8 {
+    switch self {
+    case .ampType(let type): return type.rawValue
+    case .gain(let value): return value
+    case .volume(let value): return value
+    case .bass(let value): return value
+    case .middle(let value): return value
+    case .treble(let value): return value
+    case .presence(let value): return value
     }
   }
 }
 
 extension BoostParameter {
   var address: [UInt8] {
-    let base: [UInt8] = [0x60, 0x00, 0x00, 0x31]  // Type address
+    let base: [UInt8] = [0x20, 0x00, 0x40, 0x00]  // Type address
     switch self {
     case .type: return base
     case .drive: return [base[0], base[1], base[2], base[3] + 1]
@@ -164,11 +213,12 @@ extension BoostParameter {
 extension DelayParameter {
   var address: [UInt8] {
     switch self {
-    case .time: return [0x60, 0x00, 0x05, 0x62]
-    case .feedback: return [0x60, 0x00, 0x05, 0x64]
-    case .highCut: return [0x60, 0x00, 0x05, 0x65]
-    case .effectLevel: return [0x60, 0x00, 0x05, 0x66]
-    case .directMix: return [0x60, 0x00, 0x05, 0x67]
+    case .type: return [0x20, 0x01, 0x20, 0x00]
+    case .time: return [0x20, 0x01, 0x20, 0x01]
+    case .feedback: return [0x20, 0x01, 0x20, 0x05]
+    case .highCut: return [0x20, 0x01, 0x20, 0x06]
+    case .effectLevel: return [0x20, 0x01, 0x20, 0x07]
+    case .directMix: return [0x20, 0x01, 0x20, 0x08]
     }
   }
 }
@@ -176,15 +226,15 @@ extension DelayParameter {
 extension ReverbParameter {
   var address: [UInt8] {
     switch self {
-    case .type: return [0x60, 0x00, 0x06, 0x11]
-    case .time: return [0x60, 0x00, 0x06, 0x12]
-    case .preDelay: return [0x60, 0x00, 0x06, 0x13]
-    case .lowCut: return [0x60, 0x00, 0x06, 0x15]
-    case .highCut: return [0x60, 0x00, 0x06, 0x16]
-    case .density: return [0x60, 0x00, 0x06, 0x17]
-    case .effectLevel: return [0x60, 0x00, 0x06, 0x18]
-    case .directMix: return [0x60, 0x00, 0x06, 0x19]
-    case .springSensitivity: return [0x60, 0x00, 0x06, 0x1A]
+    case .type: return [0x20, 0x01, 0x40, 0x00]
+    case .time: return [0x20, 0x01, 0x40, 0x02]
+    case .preDelay: return [0x20, 0x01, 0x40, 0x03]
+    case .lowCut: return [0x20, 0x01, 0x40, 0x07]
+    case .highCut: return [0x20, 0x01, 0x40, 0x08]
+    case .density: return [0x20, 0x01, 0x40, 0x09]
+    case .effectLevel: return [0x20, 0x01, 0x40, 0x0a]
+    case .directMix: return [0x20, 0x01, 0x40, 0x0b]
+    case .springSensitivity: return [0x20, 0x01, 0x40, 0x0c]
     }
   }
 }
@@ -192,9 +242,9 @@ extension ReverbParameter {
 extension NoiseGateParameter {
   var address: [UInt8] {
     switch self {
-    case .on: return [0x60, 0x00, 0x06, 0x63]
-    case .threshold: return [0x60, 0x00, 0x06, 0x64]
-    case .release: return [0x60, 0x00, 0x06, 0x65]
+    case .on: return [0x20, 0x03, 0x30, 0x00]
+    case .threshold: return [0x20, 0x03, 0x30, 0x01]
+    case .release: return [0x20, 0x03, 0x30, 0x02]
     }
   }
 }
@@ -202,15 +252,15 @@ extension NoiseGateParameter {
 extension EffectID {
   var toggleAddress: [UInt8] {
     switch self {
-    case .boost: return [0x60, 0x00, 0x00, 0x30]
-    case .mod: return [0x60, 0x00, 0x01, 0x40]
-    case .fx: return [0x60, 0x00, 0x03, 0x4C]
-    case .delay: return [0x60, 0x00, 0x05, 0x60]
-    case .reverb: return [0x60, 0x00, 0x06, 0x10]
-    case .pedalFX: return [0x60, 0x00, 0x01, 0x5C]  // Pedal Wah start
-    case .solo: return [0x60, 0x00, 0x00, 0x35]  // Boost Solo
-    case .eq: return [0x60, 0x00, 0x01, 0x70]  // Graphic EQ Mod start
-    case .noiseGate: return [0x60, 0x00, 0x06, 0x63]
+    case .boost: return [0x20, 0x00, 0x30, 0x00]
+    case .mod: return [0x20, 0x00, 0x30, 0x01]
+    case .fx: return [0x20, 0x00, 0x30, 0x02]
+    case .delay: return [0x20, 0x00, 0x30, 0x03]
+    case .reverb: return [0x20, 0x00, 0x30, 0x05]
+    case .pedalFX: return [0x20, 0x02, 0x40, 0x01]
+    case .solo: return [0x20, 0x01, 0x50, 0x00]
+    case .eq: return [0x20, 0x02, 0x60, 0x00]
+    case .noiseGate: return [0x20, 0x03, 0x30, 0x00]
     }
   }
 }

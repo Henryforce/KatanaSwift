@@ -46,14 +46,14 @@ public enum KatanaGoWriteData: Sendable {
 
   // MARK: - SysEx Commands
 
-  /// Updates the global volume.
-  case volume(value: Int)
-
   /// Updates a system parameter.
   case system(SystemParameter, value: Int)
 
   /// Updates an amplifier parameter.
-  case amp(AmpParameter, value: Int)
+  case amp(AmpParameter)
+
+  /// Sets the amplifier type.
+  // case setAmpType(AmpType)
 
   /// Toggles an effect block on or off.
   case setEffectOn(EffectID, on: Bool)
@@ -61,14 +61,35 @@ public enum KatanaGoWriteData: Sendable {
   /// Updates a booster parameter.
   case boost(BoostParameter, value: Int)
 
+  /// Sets the booster type.
+  case setBoostType(BoostType)
+
+  /// Sets the booster type for Bass Mode.
+  case setBassBoostType(BassBoostType)
+
   /// Updates a modulation parameter.
   case mod(ModFXParameter, value: Int)
+
+  /// Sets the modulation type.
+  case setModType(ModFXType)
+
+  /// Sets the modulation type for Bass Mode.
+  case setBassModType(BassModFXType)
 
   /// Updates an FX parameter.
   case fx(ModFXParameter, value: Int)
 
+  /// Sets the FX type.
+  case setFXType(ModFXType)
+
+  /// Sets the FX type for Bass Mode.
+  case setBassFXType(BassModFXType)
+
   /// Updates a delay parameter.
   case delay(DelayParameter, value: Int)
+
+  /// Sets the delay type.
+  case setDelayType(DelayType)
 
   /// Updates a reverb parameter.
   case reverb(ReverbParameter, value: Int)

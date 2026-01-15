@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
   @State var viewModel = ContentViewModel()
   @State private var volume: Double = 50
+  @State private var gain: Double = 50
 
   var body: some View {
     VStack(spacing: 20) {
@@ -49,6 +50,21 @@ struct ContentView: View {
         viewModel.updateDeviceVolume(Int(volume))
       } label: {
         Text("Update Volume")
+      }
+
+      VStack {
+        Text("Gain: \(Int(gain))")
+        Slider(value: $gain, in: 0...100)
+        // .onChange(of: volume) { oldValue, newValue in
+        //   viewModel.updateVolume(Int(newValue))
+        // }
+      }
+      .padding()
+
+      Button {
+        viewModel.updateDeviceGain(Int(gain))
+      } label: {
+        Text("Update Gain")
       }
 
     }
