@@ -74,7 +74,7 @@ final class ContentViewModel {
     Task {
       do {
         print("🔊 Updating Volume to \(value)...")
-        try await device.write(.amp(.volume, value: value))
+        try await device.write(.amp(.volume(UInt8(value))))
       } catch {
         print("❌ Error: \(error)")
       }
@@ -86,7 +86,19 @@ final class ContentViewModel {
     Task {
       do {
         print("🔊 Updating Volume to \(value)...")
-        try await device.write(.volume(value: value))
+        try await device.write(.amp(.volume(UInt8(value))))
+      } catch {
+        print("❌ Error: \(error)")
+      }
+    }
+  }
+
+  func updateDeviceGain(_ value: Int) {
+    guard let device else { return }
+    Task {
+      do {
+        print("🔊 Updating Gain to \(value)...")
+        try await device.write(.amp(.gain(UInt8(value))))
       } catch {
         print("❌ Error: \(error)")
       }

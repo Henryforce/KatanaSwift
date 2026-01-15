@@ -1,0 +1,608 @@
+
+  <PARAM value="00" name="BOOSTER: On/Off" desc="20003000" customdesc=""/>
+  <PARAM value="01" name="BOOSTER: Type" desc="20004000" customdesc=""/>
+  <PARAM value="02" name="BOOSTER: Drive" desc="20004001" customdesc=""/>
+  <PARAM value="03" name="BOOSTER: Bottom Level" desc="20004002" customdesc=""/>
+  <PARAM value="04" name="BOOSTER: Tone" desc="20004003" customdesc=""/>
+  <PARAM value="05" name="BOOSTER: SOLO SW" desc="20004004" customdesc=""/>
+  <PARAM value="06" name="BOOSTER: SOLO Level" desc="20004005" customdesc=""/>
+  <PARAM value="07" name="BOOSTER: Effect Level" desc="20004006" customdesc=""/>
+  <PARAM value="08" name="BOOSTER: Direct Mix" desc="20004007" customdesc=""/>
+  <PARAM value="09" name="PREAMP: Type" desc="2000200C" customdesc=""/>
+  <PARAM value="0A" name="PREAMP: Gain" desc="20002000" customdesc=""/>
+  <PARAM value="0B" name="PREAMP: Bass" desc="20002003" customdesc=""/>
+  <PARAM value="0C" name="PREAMP: Middle" desc="20002004" customdesc=""/>
+  <PARAM value="0D" name="PREAMP: Treble" desc="20002005" customdesc=""/>
+  <PARAM value="0E" name="PREAMP: Presence" desc="2000200A" customdesc=""/>
+  <PARAM value="0F" name="PREAMP: Volume" desc="20002001" customdesc=""/>
+  <PARAM value="10" name="PREAMP BASS: Tone Shape" desc="20002002" customdesc=""/>
+  <PARAM value="11" name="PREAMP Guitar: Variation" desc="2000200D" customdesc=""/>
+  <PARAM value="12" name="PREAMP BASS: Low Mid Gain" desc="20002006" customdesc=""/>
+  <PARAM value="13" name="PREAMP BAS: Low Mid Freq" desc="20002007" customdesc=""/>
+  <PARAM value="14" name="PREAMP BASS: Hi Mid Gain" desc="20002008" customdesc=""/>
+  <PARAM value="15" name="PREAMP BASS: Hi Mid Freq" desc="20002009" customdesc=""/>
+  <PARAM value="16" name="POWERAMP: Variation" desc="2000200B" customdesc=""/>
+  <PARAM value="17" name="SOLO: Solo Sw" desc="20015000" customdesc=""/>
+  <PARAM value="18" name="SOLO: Solo Level" desc="20015001" customdesc=""/>
+  <PARAM value="19" name="SOLO EQ: Position" desc="20016000" customdesc=""/>
+  <PARAM value="1A" name="SOLO EQ: Off/On" desc="20016001" customdesc=""/>
+  <PARAM value="1B" name="SOLO EQ: Low Cut" desc="20016002" customdesc=""/>
+  <PARAM value="1C" name="SOLO EQ: Low Gain" desc="20016003" customdesc=""/>
+  <PARAM value="1D" name="SOLO EQ: Mid Freq" desc="20016004" customdesc=""/>
+  <PARAM value="1E" name="SOLO EQ: Mid Q" desc="20016005" customdesc=""/>
+  <PARAM value="1F" name="SOLO EQ: Mid Gain" desc="20016006" customdesc=""/>
+  <PARAM value="20" name="SOLO EQ: Hi Gain" desc="20016007" customdesc=""/>
+  <PARAM value="21" name="SOLO EQ: Hi Cut" desc="20016008" customdesc=""/>
+  <PARAM value="22" name="SOLO EQ: Level" desc="20016009" customdesc=""/>
+  <PARAM value="23" name="EQ1: On/Off" desc="20026000" customdesc=""/>
+  <PARAM value="24" name="EQ1: Selection" desc="20026002" customdesc=""/>
+  <PARAM value="25" name="PEQ1: Low Cut" desc="20030000" customdesc=""/>
+  <PARAM value="26" name="PEQ1: Low Gain" desc="20030001" customdesc=""/>
+  <PARAM value="27" name="PEQ1: Lo Mid Freq" desc="20030002" customdesc=""/>
+  <PARAM value="28" name="PEQ1: Lo Mid Q " desc="20030003" customdesc=""/>
+  <PARAM value="29" name="PEQ1: Lo Mid Gain" desc="20030004" customdesc=""/>
+  <PARAM value="2A" name="PEQ1: Hi Mid Freq" desc="20030005" customdesc=""/>
+  <PARAM value="2B" name="PEQ1: Hi Mid Q" desc="20030006" customdesc=""/>
+  <PARAM value="2C" name="PEQ1: Hi Mid Gain" desc="20030007" customdesc=""/>
+  <PARAM value="2D" name="PEQ1: Hi Gain" desc="20030008" customdesc=""/>
+  <PARAM value="2E" name="PEQ1: Hi Cut" desc="20030009" customdesc=""/>
+  <PARAM value="2F" name="PEQ1: Level" desc="2003000A" customdesc=""/>
+  <PARAM value="30" name="GEQ1: 31Hz" desc="20032000" customdesc=""/>
+  <PARAM value="31" name="GEQ1: 62Hz" desc="20032001" customdesc=""/>
+  <PARAM value="32" name="GEQ1: 125Hz" desc="20032002" customdesc=""/>
+  <PARAM value="33" name="GEQ1: 250Hz" desc="20032003" customdesc=""/>
+  <PARAM value="34" name="GEQ1: 500Hz" desc="20032004" customdesc=""/>
+  <PARAM value="35" name="GEQ1: 1KHz" desc="20032005" customdesc=""/>
+  <PARAM value="36" name="GEQ1: 2KHz" desc="20032006" customdesc=""/>
+  <PARAM value="37" name="GEQ1: 4KHz" desc="20032007" customdesc=""/>
+  <PARAM value="38" name="GEQ1: 8KHz" desc="20032008" customdesc=""/>
+  <PARAM value="39" name="GEQ1: 16KHz" desc="20032009" customdesc=""/>
+  <PARAM value="3A" name="GEQ1: Level" desc="2003200A" customdesc=""/>
+  <PARAM value="3B" name="EQ2: On/Off" desc="20027000" customdesc=""/>
+  <PARAM value="3C" name="EQ2: Selection" desc="20027002" customdesc=""/>
+  <PARAM value="3D" name="PEQ2: Low Cut" desc="20031000" customdesc=""/>
+  <PARAM value="3E" name="PEQ2: Low Gain" desc="20031001" customdesc=""/>
+  <PARAM value="3F" name="PEQ2: Lo Mid Freq" desc="20031002" customdesc=""/>
+  <PARAM value="40" name="PEQ2: Lo Mid Q " desc="20031003" customdesc=""/>
+  <PARAM value="41" name="PEQ2: Lo Mid Gain" desc="20031004" customdesc=""/>
+  <PARAM value="42" name="PEQ2: Hi Mid Freq" desc="20031005" customdesc=""/>
+  <PARAM value="43" name="PEQ2: Hi Mid Q" desc="20031006" customdesc=""/>
+  <PARAM value="44" name="PEQ2: Hi Mid Gain" desc="20031007" customdesc=""/>
+  <PARAM value="45" name="PEQ2: Hi Gain" desc="20031008" customdesc=""/>
+  <PARAM value="46" name="PEQ2: Hi Cut" desc="20031009" customdesc=""/>
+  <PARAM value="47" name="PEQ2: Level" desc="2003100A" customdesc=""/>
+  <PARAM value="48" name="GEQ2: 31Hz" desc="20033000" customdesc=""/>
+  <PARAM value="49" name="GEQ2: 62Hz" desc="20033001" customdesc=""/>
+  <PARAM value="4A" name="GEQ2: 125Hz" desc="20033002" customdesc=""/>
+  <PARAM value="4B" name="GEQ2: 250Hz" desc="20033003" customdesc=""/>
+  <PARAM value="4C" name="GEQ2: 500Hz" desc="20033004" customdesc=""/>
+  <PARAM value="4D" name="GEQ2: 1KHz" desc="20033005" customdesc=""/>
+  <PARAM value="4E" name="GEQ2: 2KHz" desc="20033006" customdesc=""/>
+  <PARAM value="4F" name="GEQ2: 4KHz" desc="20033007" customdesc=""/>
+  <PARAM value="50" name="GEQ2: 8KHz" desc="20033008" customdesc=""/>
+  <PARAM value="51" name="GEQ2: 16KHz" desc="20033009" customdesc=""/>
+  <PARAM value="52" name="GEQ2: Level" desc="2003300A" customdesc=""/>
+  <PARAM value="53" name="MOD: Off/On" desc="20003001" customdesc=""/>
+  <PARAM value="54" name="MOD: Type" desc="20006000" customdesc=""/>
+  <PARAM value="55" name="MOD: 2X2-Chorus Crossover f" desc="20010000"/>
+  <PARAM value="56" name="MOD: 2X2-Chorus Low Rate" desc="20010001"/>
+  <PARAM value="57" name="MOD: 2X2-Chorus Low Depth" desc="20010002"/>
+  <PARAM value="58" name="MOD: 2X2-Chorus Low Pre Dly" desc="20010003"/>
+  <PARAM value="59" name="MOD: 2X2-Chorus Low Level" desc="20010004"/>
+  <PARAM value="5A" name="MOD: 2X2-Chorus High Rate" desc="20010005"/>
+  <PARAM value="5B" name="MOD: 2X2-Chorus High Depth" desc="20010006"/>
+  <PARAM value="5C" name="MOD: 2X2-Chorus High Pre Dly" desc="20010007"/>
+  <PARAM value="5D" name="MOD: 2X2-Chorus High Level" desc="20010008"/>
+  <PARAM value="5E" name="MOD: 2X2-Chorus Direct Mix" desc="20010009"/>
+  <PARAM value="5F" name="MOD: Flanger Rate" desc="2001000A"/>
+  <PARAM value="60" name="MOD: Flanger Depth" desc="2001000B"/>
+  <PARAM value="61" name="MOD: Flanger Manual" desc="2001000C"/>
+  <PARAM value="62" name="MOD: Flanger Resonance" desc="2001000D"/>
+  <PARAM value="63" name="MOD: Flanger Low Cut" desc="2001000E"/>
+  <PARAM value="64" name="MOD: Flanger Effect Level" desc="2001000F"/>
+  <PARAM value="65" name="MOD: Flanger Direct Level" desc="20010010"/>
+  <PARAM value="66" name="MOD: Phaser Type" desc="20010011"/>
+  <PARAM value="67" name="MOD: Phaser Rate" desc="20010012"/>
+  <PARAM value="68" name="MOD: Phaser Depth" desc="20010013"/>
+  <PARAM value="69" name="MOD: Phaser Manual" desc="20010014"/>
+  <PARAM value="6A" name="MOD: Phaser Resonance" desc="20010015"/>
+  <PARAM value="6B" name="MOD: Phaser Step Rate" desc="20010016"/>
+  <PARAM value="6C" name="MOD: Phaser Effect Level" desc="20010017"/>
+  <PARAM value="6D" name="MOD: Phaser Direct Level" desc="20010018"/>
+  <PARAM value="6E" name="MOD: Uni-Vibe Rate" desc="20010019"/>
+  <PARAM value="6F" name="MOD: Uni-Vibe Depth" desc="2001001A"/>
+  <PARAM value="70" name="MOD: Uni-Vibe Level" desc="2001001B"/>
+  <PARAM value="71" name="MOD: Tremolo Wave Shape" desc="2001001C"/>
+  <PARAM value="72" name="MOD: Tremolo Rate" desc="2001001D"/>
+  <PARAM value="73" name="MOD: Tremolo Depth" desc="2001001E"/>
+  <PARAM value="74" name="MOD: Tremolo Level" desc="2001001F"/>
+  <PARAM value="75" name="MOD: Vibrato Rate" desc="20010020"/>
+  <PARAM value="76" name="MOD: Vibrato Depth" desc="20010021"/>
+  <PARAM value="77" name="MOD: Vibrato Level" desc="20010022"/>
+  <PARAM value="78" name="MOD: Rotary Rate" desc="20010023"/>
+  <PARAM value="79" name="MOD: Rotary Depth" desc="20010024"/>
+  <PARAM value="7A" name="MOD: Rotary Level" desc="20010025"/>
+  <PARAM value="7B" name="MOD: Ring-Mod Mode" desc="20010026"/>
+  <PARAM value="7C" name="MOD: Ring-Mod Frequency" desc="20010027"/>
+  <PARAM value="7D" name="MOD: Ring-Mod Effect Level" desc="20010028"/>
+  <PARAM value="7E" name="MOD: Ring-Mod Direct Mix" desc="20010029"/>
+  <PARAM value="7F" name="MOD: Slow-Gear Sens" desc="2001002A"/>
+  <PARAM value="00" name="MOD: Slow-Gear RiseTime" desc="2001002B" customdesc=""/>
+  <PARAM value="01" name="MOD: Slow-Gear Level" desc="2001002C" customdesc=""/>
+  <PARAM value="02" name="MOD: Slicer Pattern" desc="2001002D" customdesc=""/>
+  <PARAM value="03" name="MOD: Slicer Rate" desc="2001002E" customdesc=""/>
+  <PARAM value="04" name="MOD: Slicer Trigger Sens" desc="2001002F" customdesc=""/>
+  <PARAM value="05" name="MOD: Slicer Effect Level" desc="20010030" customdesc=""/>
+  <PARAM value="06" name="MOD: Slicer Direct Mix" desc="20010031" customdesc=""/>
+  <PARAM value="07" name="MOD: Adv-Comp Type" desc="20010032" customdesc=""/>
+  <PARAM value="08" name="MOD: Adv-Comp Sustain" desc="20010033" customdesc=""/>
+  <PARAM value="09" name="MOD: Adv-Comp Attack" desc="20010034" customdesc=""/>
+  <PARAM value="0A" name="MOD: Adv-Comp Tone" desc="20010035" customdesc=""/>
+  <PARAM value="0B" name="MOD: Adv-Comp Level" desc="20010036" customdesc=""/>
+  <PARAM value="0C" name="MOD: Limiter Type" desc="20010037" customdesc=""/>
+  <PARAM value="0D" name="MOD: Limiter Attack" desc="20010038" customdesc=""/>
+  <PARAM value="0E" name="MOD: Limiter Threshold" desc="20010039" customdesc=""/>
+  <PARAM value="0F" name="MOD: Limiter Ratio" desc="2001003A" customdesc=""/>
+  <PARAM value="10" name="MOD: Limiter Release" desc="2001003B" customdesc=""/>
+  <PARAM value="11" name="MOD: Limiter Level" desc="2001003C" customdesc=""/>
+  <PARAM value="12" name="MOD: T-Wah Mode" desc="2001003D" customdesc=""/>
+  <PARAM value="13" name="MOD: T-Wah Polarity" desc="2001003E" customdesc=""/>
+  <PARAM value="14" name="MOD: T-Wah Sens" desc="2001003F" customdesc=""/>
+  <PARAM value="15" name="MOD: T-Wah Frequency" desc="20010040" customdesc=""/>
+  <PARAM value="16" name="MOD: T-Wah Peak" desc="20010041" customdesc=""/>
+  <PARAM value="17" name="MOD: T-Wah Effect Level" desc="20010042" customdesc=""/>
+  <PARAM value="18" name="MOD: T-Wah Direct Level" desc="20010043" customdesc=""/>
+  <PARAM value="19" name="MOD: A-Wah Mode" desc="20010044" customdesc=""/>
+  <PARAM value="1A" name="MOD: A-Wah Frequency" desc="20010045" customdesc=""/>
+  <PARAM value="1B" name="MOD: A-Wah Peak" desc="20010046" customdesc=""/>
+  <PARAM value="1C" name="MOD: A-Wah Rate" desc="20010047" customdesc=""/>
+  <PARAM value="1D" name="MOD: A-Wah Depth" desc="20010048" customdesc=""/>
+  <PARAM value="1E" name="MOD: A-Wah Effect Level" desc="20010049" customdesc=""/>
+  <PARAM value="1F" name="MOD: A-Wah Direct Level" desc="2001004A" customdesc=""/>
+  <PARAM value="20" name="MOD: Graphic-EQ 31Hz" desc="2001004B" customdesc=""/>
+  <PARAM value="21" name="MOD: Graphic-EQ 62Hz" desc="2001004C" customdesc=""/>
+  <PARAM value="22" name="MOD: Graphic-EQ 125Hz" desc="2001004D" customdesc=""/>
+  <PARAM value="23" name="MOD: Graphic-EQ 250Hz" desc="2001004E" customdesc=""/>
+  <PARAM value="24" name="MOD: Graphic-EQ 500Hz" desc="2001004F" customdesc=""/>
+  <PARAM value="25" name="MOD: Graphic-EQ 1kHz" desc="20010050" customdesc=""/>
+  <PARAM value="26" name="MOD: Graphic-EQ 2kHz" desc="20010051" customdesc=""/>
+  <PARAM value="27" name="MOD: Graphic-EQ 4kHz" desc="20010052" customdesc=""/>
+  <PARAM value="28" name="MOD: Graphic-EQ 8kHz" desc="20010053" customdesc=""/>
+  <PARAM value="29" name="MOD: Graphic-EQ 16kHz" desc="20010054" customdesc=""/>
+  <PARAM value="2A" name="MOD: Graphic-EQ Level" desc="20010055" customdesc=""/>
+  <PARAM value="2B" name="MOD: Para-EQ Low Cut" desc="20010056" customdesc=""/>
+  <PARAM value="2C" name="MOD: Para-EQ Low Gain" desc="20010057" customdesc=""/>
+  <PARAM value="2D" name="MOD: Para-EQ Low-Mid Freq" desc="20010058" customdesc=""/>
+  <PARAM value="2E" name="MOD: Para-EQ Low-Mid Q" desc="20010059" customdesc=""/>
+  <PARAM value="2F" name="MOD: Para-EQ Low-Mid Gain" desc="2001005A" customdesc=""/>
+  <PARAM value="30" name="MOD: Para-EQ Hi-Mid Freq" desc="2001005B" customdesc=""/>
+  <PARAM value="31" name="MOD: Para-EQ Hi-Mid Q" desc="2001005C" customdesc=""/>
+  <PARAM value="32" name="MOD: Para-EQ High-Mid Gain" desc="2001005D" customdesc=""/>
+  <PARAM value="33" name="MOD: Para-EQ High Gain" desc="2001005E" customdesc=""/>
+  <PARAM value="34" name="MOD: Para-EQ High Cut" desc="2001005F" customdesc=""/>
+  <PARAM value="35" name="MOD: Para-EQ Level" desc="20010060" customdesc=""/>
+  <PARAM value="36" name="MOD: Guitar-Sim Type" desc="20010061" customdesc=""/>
+  <PARAM value="37" name="MOD: Guitar-Sim Low" desc="20010062" customdesc=""/>
+  <PARAM value="38" name="MOD: Guitar-Sim High" desc="20010063" customdesc=""/>
+  <PARAM value="39" name="MOD: Guitar-Sim Body" desc="20010064" customdesc=""/>
+  <PARAM value="3A" name="MOD: Guitar-Sim Level" desc="20010065" customdesc=""/>
+  <PARAM value="3B" name="MOD: AC-Sim High" desc="20010066" customdesc=""/>
+  <PARAM value="3C" name="MOD: AC-Sim Body" desc="20010067" customdesc=""/>
+  <PARAM value="3D" name="MOD: AC-Sim Low" desc="20010068" customdesc=""/>
+  <PARAM value="3E" name="MOD: AC-Sim Level" desc="20010069" customdesc=""/>
+  <PARAM value="3F" name="MOD: Acoustic-Pro Type" desc="2001006A" customdesc=""/>
+  <PARAM value="40" name="MOD: Acoustic-Pro Bass" desc="2001006B" customdesc=""/>
+  <PARAM value="41" name="MOD: Acoustic-Pro Middle" desc="2001006C" customdesc=""/>
+  <PARAM value="42" name="MOD: Acoustic-Pro Mid Freq" desc="2001006D" customdesc=""/>
+  <PARAM value="43" name="MOD: Acoustic-Pro Treble" desc="2001006E" customdesc=""/>
+  <PARAM value="44" name="MOD: Acoustic-Pro Presence" desc="2001006F" customdesc=""/>
+  <PARAM value="45" name="MOD: Acoustic-Pro Level" desc="20010070" customdesc=""/>
+  <PARAM value="46" name="MOD: Wave-Synth Wave" desc="20010071" customdesc=""/>
+  <PARAM value="47" name="MOD: Wave-Synth Cutoff" desc="20010072" customdesc=""/>
+  <PARAM value="48" name="MOD: Wave-Synth Resonance" desc="20010073" customdesc=""/>
+  <PARAM value="49" name="MOD: Wave-Synth Filter Sens" desc="20010074" customdesc=""/>
+  <PARAM value="4A" name="MOD: Wave-Synth Filter Decay" desc="20010075" customdesc=""/>
+  <PARAM value="4B" name="MOD: Wave-Synth Filter Depth" desc="20010076" customdesc=""/>
+  <PARAM value="4C" name="MOD: Wave-Synth Synth Level" desc="20010077" customdesc=""/>
+  <PARAM value="4D" name="MOD: Wave-Synth Direct Mix" desc="20010078" customdesc=""/>
+  <PARAM value="4E" name="MOD: Octaver Range" desc="20010079" customdesc=""/>
+  <PARAM value="4F" name="MOD: Octaver Octaverave Level" desc="2001007A" customdesc=""/>
+  <PARAM value="50" name="MOD: Octaver Direct Level" desc="2001007B" customdesc=""/>
+  <PARAM value="51" name="MOD HOC: Octave -1" desc="2001007C" customdesc=""/>
+  <PARAM value="52" name="MOD HOC: Octave -2" desc="2001007D" customdesc=""/>
+  <PARAM value="53" name="MOD HOC: Direct Mix" desc="2001007E" customdesc=""/>
+  <PARAM value="54" name="MOD: Pitch-S Voice" desc="2001007F" customdesc=""/>
+  <PARAM value="55" name="MOD: Pitch-S Pitch-S1 Mode" desc="20010100" customdesc=""/>
+  <PARAM value="56" name="MOD: Pitch-S Pitch-S1 Pitch" desc="20010101" customdesc=""/>
+  <PARAM value="57" name="MOD: Pitch-S Pitch-S1 Fine" desc="20010102" customdesc=""/>
+  <PARAM value="58" name="MOD: Pitch-S Pitch-S1 Pre Delay" desc="20010103" customdesc=""/>
+  <PARAM value="59" name="MOD: Pitch-S Pitch-S1 Level" desc="20010107" customdesc=""/>
+  <PARAM value="5A" name="MOD: Pitch-S Pitch-S2 Mode" desc="20010108" customdesc=""/>
+  <PARAM value="5B" name="MOD: Pitch-S Pitch-S2 Pitch" desc="20010109" customdesc=""/>
+  <PARAM value="5C" name="MOD: Pitch-S Pitch-S2 Fine" desc="2001010A" customdesc=""/>
+  <PARAM value="5D" name="MOD: Pitch-S Pitch-S2 Pre Delay" desc="2001010B" customdesc=""/>
+  <PARAM value="5E" name="MOD: Pitch-S Pitch-S2 Level" desc="2001010F" customdesc=""/>
+  <PARAM value="5F" name="MOD: Pitch-S Pitch-S1 Feedback" desc="20010110" customdesc=""/>
+  <PARAM value="60" name="MOD: Pitch-S Direct Level" desc="20010111" customdesc=""/>
+  <PARAM value="61" name="MOD: Harmonist Voice" desc="20010112" customdesc=""/>
+  <PARAM value="62" name="MOD: Harmonist Harmonist1 Harmony" desc="20010113" customdesc=""/>
+  <PARAM value="63" name="MOD: Harmonist Harmonist1 Pre Delay" desc="20010114" customdesc=""/>
+  <PARAM value="64" name="MOD: Harmonist Harmonist1 Level" desc="20010118" customdesc=""/>
+  <PARAM value="65" name="MOD: Harmonist Harmonist2 Harmony" desc="20010119" customdesc=""/>
+  <PARAM value="66" name="MOD: Harmonist Harmonist2 Pre Delay" desc="2001011A" customdesc=""/>
+  <PARAM value="67" name="MOD: Harmonist Harmonist2 Level" desc="2001011E" customdesc=""/>
+  <PARAM value="68" name="MOD: Harmonist Harmonist1 Feedback" desc="2001011F" customdesc=""/>
+  <PARAM value="69" name="MOD: Harmonist Direct Level" desc="20010120" customdesc=""/>
+  <PARAM value="6A" name="MOD: Humanizer Mode" desc="20010139" customdesc=""/>
+  <PARAM value="6B" name="MOD: Humanizer Vowel 1" desc="2001013A" customdesc=""/>
+  <PARAM value="6C" name="MOD: Humanizer Vowel 2" desc="2001013B" customdesc=""/>
+  <PARAM value="6D" name="MOD: Humanizer Sens" desc="2001013C" customdesc=""/>
+  <PARAM value="6E" name="MOD: Humanizer Rate" desc="2001013D" customdesc=""/>
+  <PARAM value="6F" name="MOD: Humanizer Depth" desc="2001013E" customdesc=""/>
+  <PARAM value="70" name="MOD: Humanizer Manual" desc="2001013F" customdesc=""/>
+  <PARAM value="71" name="MOD: Humanizer Level" desc="20010140" customdesc=""/>
+  <PARAM value="72" name="MOD: Phaser 90E Script" desc="20010141" customdesc=""/>
+  <PARAM value="73" name="MOD: Phaser 90E Speed" desc="20010142" customdesc=""/>
+  <PARAM value="74" name="MOD: Flanger 117E Manual" desc="20010143" customdesc=""/>
+  <PARAM value="75" name="MOD: Fanger 117E Width" desc="20010144" customdesc=""/>
+  <PARAM value="76" name="MOD: Flanger 117E Speed" desc="20010145" customdesc=""/>
+  <PARAM value="77" name="MOD: Flanger 117E Regen" desc="20010146" customdesc=""/>
+  <PARAM value="78" name="MOD DC30: Selector" desc="20010147" customdesc=""/>
+  <PARAM value="79" name="MOD DC30: Input" desc="20010148" customdesc=""/>
+  <PARAM value="7A" name="MOD DC30: Intensity" desc="20010149" customdesc=""/>
+  <PARAM value="7B" name="MOD DC30: Repeat Rate" desc="2001014A" customdesc=""/>
+  <PARAM value="7C" name="MOD DC30: Intensity" desc="2001014E" customdesc=""/>
+  <PARAM value="7D" name="MOD DC30: Volume" desc="2001014F" customdesc=""/>
+  <PARAM value="7E" name="MOD DC30: Tone" desc="20010150" customdesc=""/>
+  <PARAM value="7F" name="MOD DC30: Output Select" desc="20010151" customdesc=""/>
+  <PARAM value="00" name="MOD BASS ENH: Sense" desc="20010152" customdesc=""/>
+  <PARAM value="01" name="MOD BASS ENH: Low Level" desc="20010153" customdesc=""/>
+  <PARAM value="02" name="MOD BASS ENH: Low Freq" desc="20010154" customdesc=""/>
+  <PARAM value="03" name="MOD BASS ENH: High Level" desc="20010155" customdesc=""/>
+  <PARAM value="04" name="MOD BASS ENH: High Freq" desc="20010156" customdesc=""/>
+  <PARAM value="05" name="MOD BASS SIM: Type" desc="20010157" customdesc=""/>
+  <PARAM value="06" name="MOD BASS SIM: Low" desc="20010158" customdesc=""/>
+  <PARAM value="07" name="MOD BASS SIM: High" desc="20010159" customdesc=""/>
+  <PARAM value="08" name="MOD BASS SIM: Level" desc="2001015A" customdesc=""/>
+  <PARAM value="09" name="MOD BASS SIM: Body" desc="2001015B" customdesc=""/>
+  <PARAM value="0A" name="MOD BASS DEFR: Sense" desc="2001015C" customdesc=""/>
+  <PARAM value="0B" name="MOD BASS DEFR: Attack" desc="2001015D" customdesc=""/>
+  <PARAM value="0C" name="MOD BASS DEFR: Depth" desc="2001015E" customdesc=""/>
+  <PARAM value="0D" name="MOD BASS DEFR: Resonance" desc="2001015F" customdesc=""/>
+  <PARAM value="0E" name="MOD BASS DEFR: Tone" desc="20010160" customdesc=""/>
+  <PARAM value="0F" name="MOD BASS DEFR: Effect" desc="20010161" customdesc=""/>
+  <PARAM value="10" name="MOD BASS DEFR: Direct Mix" desc="20010162" customdesc=""/>
+  <PARAM value="11" name="MOD BASS OCT: Octave -1" desc="20010163" customdesc=""/>
+  <PARAM value="12" name="MOD BASS OCT: Octave -2" desc="20010164" customdesc=""/>
+  <PARAM value="13" name="MOD BASS OCT: Direct Mix" desc="20010165" customdesc=""/>
+  <PARAM value="14" name="MOD BASS: T-Wah Mode" desc="20010166" customdesc=""/>
+  <PARAM value="15" name="MOD BASS: T-Wah Polarity" desc="20010167" customdesc=""/>
+  <PARAM value="16" name="MOD BASS: T-Wah Sens" desc="20010168" customdesc=""/>
+  <PARAM value="17" name="MOD BASS: T-Wah Frequency" desc="20010169" customdesc=""/>
+  <PARAM value="18" name="MOD BASS: T-Wah Peak" desc="2001016A" customdesc=""/>
+  <PARAM value="19" name="MOD BASS: T-Wah Effect Level" desc="2001016B" customdesc=""/>
+  <PARAM value="1A" name="MOD BASS: T-Wah Direct Level" desc="2001016C" customdesc=""/>
+  <PARAM value="1B" name="MOD BASS: Wave-Synth Wave" desc="2001016D" customdesc=""/>
+  <PARAM value="1C" name="MOD BASS: Wave-Synth Cutoff" desc="2001016E" customdesc=""/>
+  <PARAM value="1D" name="MOD BASS: Wave-Synth Resonance" desc="2001016F" customdesc=""/>
+  <PARAM value="1E" name="MOD BASS: Wave-Synth Filter Sens" desc="20010170" customdesc=""/>
+  <PARAM value="1F" name="MOD BASS: Wave-Synth Filter Decay" desc="20010171" customdesc=""/>
+  <PARAM value="20" name="MOD BASS: Wave-Synth Filter Depth" desc="20010172" customdesc=""/>
+  <PARAM value="21" name="MOD BASS: Wave-Synth Synth Level" desc="20010173" customdesc=""/>
+  <PARAM value="22" name="MOD BASS: Wave-Synth Direct Mix" desc="20010174" customdesc=""/>
+  <PARAM value="23" name="FX: Off/On" desc="20003002" customdesc=""/>
+  <PARAM value="24" name="FX: Type" desc="20007000" customdesc=""/>
+  <PARAM value="25" name="FX: 2X2-Chorus Crossover f" desc="20011000" customdesc=""/>
+  <PARAM value="26" name="FX: 2X2-Chorus Low Rate" desc="20011001" customdesc=""/>
+  <PARAM value="27" name="FX: 2X2-Chorus Low Depth" desc="20011002" customdesc=""/>
+  <PARAM value="28" name="FX: 2X2-Chorus Low Pre Dly" desc="20011003" customdesc=""/>
+  <PARAM value="29" name="FX: 2X2-Chorus Low Level" desc="20011004" customdesc=""/>
+  <PARAM value="2A" name="FX: 2X2-Chorus High Rate" desc="20011005" customdesc=""/>
+  <PARAM value="2B" name="FX: 2X2-Chorus High Depth" desc="20011006" customdesc=""/>
+  <PARAM value="2C" name="FX: 2X2-Chorus High Pre Dly" desc="20011007" customdesc=""/>
+  <PARAM value="2D" name="FX: 2X2-Chorus High Level" desc="20011008" customdesc=""/>
+  <PARAM value="2E" name="FX: 2X2-Chorus Direct Mix" desc="20011009" customdesc=""/>
+  <PARAM value="2F" name="FX: Flanger Rate" desc="2001100A" customdesc=""/>
+  <PARAM value="30" name="FX: Flanger Depth" desc="2001100B" customdesc=""/>
+  <PARAM value="31" name="FX: Flanger Manual" desc="2001100C" customdesc=""/>
+  <PARAM value="32" name="FX: Flanger Resonance" desc="2001100D" customdesc=""/>
+  <PARAM value="33" name="FX: Flanger Low Cut" desc="2001100E" customdesc=""/>
+  <PARAM value="34" name="FX: Flanger Effect Level" desc="2001100F" customdesc=""/>
+  <PARAM value="35" name="FX: Flanger Direct Level" desc="20011010" customdesc=""/>
+  <PARAM value="36" name="FX: Phaser Type" desc="20011011" customdesc=""/>
+  <PARAM value="37" name="FX: Phaser Rate" desc="20011012" customdesc=""/>
+  <PARAM value="38" name="FX: Phaser Depth" desc="20011013" customdesc=""/>
+  <PARAM value="39" name="FX: Phaser Manual" desc="20011014" customdesc=""/>
+  <PARAM value="3A" name="FX: Phaser Resonance" desc="20011015" customdesc=""/>
+  <PARAM value="3B" name="FX: Phaser Step Rate" desc="20011016" customdesc=""/>
+  <PARAM value="3C" name="FX: Phaser Effect Level" desc="20011017" customdesc=""/>
+  <PARAM value="3D" name="FX: Phaser Direct Level" desc="20011018" customdesc=""/>
+  <PARAM value="3E" name="FX: Uni-Vibe Rate" desc="20011019" customdesc=""/>
+  <PARAM value="3F" name="FX: Uni-Vibe Depth" desc="2001101A" customdesc=""/>
+  <PARAM value="40" name="FX: Uni-Vibe Level" desc="2001101B" customdesc=""/>
+  <PARAM value="41" name="FX: Tremolo Wave Shape" desc="2001101C" customdesc=""/>
+  <PARAM value="42" name="FX: Tremolo Rate" desc="2001101D" customdesc=""/>
+  <PARAM value="43" name="FX: Tremolo Depth" desc="2001101E" customdesc=""/>
+  <PARAM value="44" name="FX: Tremolo Level" desc="2001101F" customdesc=""/>
+  <PARAM value="45" name="FX: Vibrato Rate" desc="20011020" customdesc=""/>
+  <PARAM value="46" name="FX: Vibrato Depth" desc="20011021" customdesc=""/>
+  <PARAM value="47" name="FX: Vibrato Level" desc="20011022" customdesc=""/>
+  <PARAM value="48" name="FX: Rotary Rate" desc="20011023" customdesc=""/>
+  <PARAM value="49" name="FX: Rotary Depth" desc="20011024" customdesc=""/>
+  <PARAM value="4A" name="FX: Rotary Level" desc="20011025" customdesc=""/>
+  <PARAM value="4B" name="FX: Ring-FX Mode" desc="20011026" customdesc=""/>
+  <PARAM value="4C" name="FX: Ring-FX Frequency" desc="20011027" customdesc=""/>
+  <PARAM value="4D" name="FX: Ring-FX Effect Level" desc="20011028" customdesc=""/>
+  <PARAM value="4E" name="FX: Ring-FX Direct Mix" desc="20011029" customdesc=""/>
+  <PARAM value="4F" name="FX: Slow-Gear Sens" desc="2001102A" customdesc=""/>
+  <PARAM value="50" name="FX: Slow-Gear RiseTime" desc="2001102B" customdesc=""/>
+  <PARAM value="51" name="FX: Slow-Gear Level" desc="2001102C" customdesc=""/>
+  <PARAM value="52" name="FX: Slicer Pattern" desc="2001102D" customdesc=""/>
+  <PARAM value="53" name="FX: Slicer Rate" desc="2001102E" customdesc=""/>
+  <PARAM value="54" name="FX: Slicer Trigger Sens" desc="2001102F" customdesc=""/>
+  <PARAM value="55" name="FX: Slicer Effect Level" desc="20011030" customdesc=""/>
+  <PARAM value="56" name="FX: Slicer Direct Mix" desc="20011031" customdesc=""/>
+  <PARAM value="57" name="FX: Adv-Comp Type" desc="20011032" customdesc=""/>
+  <PARAM value="58" name="FX: Adv-Comp Sustain" desc="20011033" customdesc=""/>
+  <PARAM value="59" name="FX: Adv-Comp Attack" desc="20011034" customdesc=""/>
+  <PARAM value="5A" name="FX: Adv-Comp Tone" desc="20011035" customdesc=""/>
+  <PARAM value="5B" name="FX: Adv-Comp Level" desc="20011036" customdesc=""/>
+  <PARAM value="5C" name="FX: Limiter Type" desc="20011037" customdesc=""/>
+  <PARAM value="5D" name="FX: Limiter Attack" desc="20011038" customdesc=""/>
+  <PARAM value="5E" name="FX: Limiter Threshold" desc="20011039" customdesc=""/>
+  <PARAM value="5F" name="FX: Limiter Ratio" desc="2001103A" customdesc=""/>
+  <PARAM value="60" name="FX: Limiter Release" desc="2001103B" customdesc=""/>
+  <PARAM value="61" name="FX: Limiter Level" desc="2001103C" customdesc=""/>
+  <PARAM value="62" name="FX: T-Wah FXe" desc="2001103D" customdesc=""/>
+  <PARAM value="63" name="FX: T-Wah Polarity" desc="2001103E" customdesc=""/>
+  <PARAM value="64" name="FX: T-Wah Sens" desc="2001103F" customdesc=""/>
+  <PARAM value="65" name="FX: T-Wah Frequency" desc="20011040" customdesc=""/>
+  <PARAM value="66" name="FX: T-Wah Peak" desc="20011041" customdesc=""/>
+  <PARAM value="67" name="FX: T-Wah Effect Level" desc="20011042" customdesc=""/>
+  <PARAM value="68" name="FX: T-Wah Direct Level" desc="20011043" customdesc=""/>
+  <PARAM value="69" name="FX: A-Wah FXe" desc="20011044" customdesc=""/>
+  <PARAM value="6A" name="FX: A-Wah Frequency" desc="20011045" customdesc=""/>
+  <PARAM value="6B" name="FX: A-Wah Peak" desc="20011046" customdesc=""/>
+  <PARAM value="6C" name="FX: A-Wah Rate" desc="20011047" customdesc=""/>
+  <PARAM value="6D" name="FX: A-Wah Depth" desc="20011048" customdesc=""/>
+  <PARAM value="6E" name="FX: A-Wah Effect Level" desc="20011049" customdesc=""/>
+  <PARAM value="6F" name="FX: A-Wah Direct Level" desc="2001104A" customdesc=""/>
+  <PARAM value="70" name="FX: Graphic-EQ 31Hz" desc="2001104B" customdesc=""/>
+  <PARAM value="71" name="FX: Graphic-EQ 62Hz" desc="2001104C" customdesc=""/>
+  <PARAM value="72" name="FX: Graphic-EQ 125Hz" desc="2001104D" customdesc=""/>
+  <PARAM value="73" name="FX: Graphic-EQ 250Hz" desc="2001104E" customdesc=""/>
+  <PARAM value="74" name="FX: Graphic-EQ 500Hz" desc="2001104F" customdesc=""/>
+  <PARAM value="75" name="FX: Graphic-EQ 1kHz" desc="20011050" customdesc=""/>
+  <PARAM value="76" name="FX: Graphic-EQ 2kHz" desc="20011051" customdesc=""/>
+  <PARAM value="77" name="FX: Graphic-EQ 4kHz" desc="20011052" customdesc=""/>
+  <PARAM value="78" name="FX: Graphic-EQ 8kHz" desc="20011053" customdesc=""/>
+  <PARAM value="79" name="FX: Graphic-EQ 16kHz" desc="20011054" customdesc=""/>
+  <PARAM value="7A" name="FX: Graphic-EQ Level" desc="20011055" customdesc=""/>
+  <PARAM value="7B" name="FX: Para-EQ Low Cut" desc="20011056" customdesc=""/>
+  <PARAM value="7C" name="FX: Para-EQ Low Gain" desc="20011057" customdesc=""/>
+  <PARAM value="7D" name="FX: Para-EQ Low-Mid Freq" desc="20011058" customdesc=""/>
+  <PARAM value="7E" name="FX: Para-EQ Low-Mid Q" desc="20011059" customdesc=""/>
+  <PARAM value="7F" name="FX: Para-EQ Low-Mid Gain" desc="2001105A" customdesc=""/>
+  <PARAM value="00" name="FX: Para-EQ Hi-Mid Freq" desc="2001105B" customdesc=""/>
+  <PARAM value="01" name="FX: Para-EQ Hi-Mid Q" desc="2001105C" customdesc=""/>
+  <PARAM value="02" name="FX: Para-EQ High-Mid Gain" desc="2001105D" customdesc=""/>
+  <PARAM value="03" name="FX: Para-EQ High Gain" desc="2001105E" customdesc=""/>
+  <PARAM value="04" name="FX: Para-EQ High Cut" desc="2001105F" customdesc=""/>
+  <PARAM value="05" name="FX: Para-EQ Level" desc="20011060" customdesc=""/>
+  <PARAM value="06" name="FX: Guitar-Sim Type" desc="20011061" customdesc=""/>
+  <PARAM value="07" name="FX: Guitar-Sim Low" desc="20011062" customdesc=""/>
+  <PARAM value="08" name="FX: Guitar-Sim High" desc="20011063" customdesc=""/>
+  <PARAM value="09" name="FX: Guitar-Sim Body" desc="20011064" customdesc=""/>
+  <PARAM value="0A" name="FX: Guitar-Sim Level" desc="20011065" customdesc=""/>
+  <PARAM value="0B" name="FX: AC-Sim High" desc="20011066" customdesc=""/>
+  <PARAM value="0C" name="FX: AC-Sim Body" desc="20011067" customdesc=""/>
+  <PARAM value="0D" name="FX: AC-Sim Low" desc="20011068" customdesc=""/>
+  <PARAM value="0E" name="FX: AC-Sim Level" desc="20011069" customdesc=""/>
+  <PARAM value="0F" name="FX: Acoustic-Pro Type" desc="2001106A" customdesc=""/>
+  <PARAM value="10" name="FX: Acoustic-Pro Bass" desc="2001106B" customdesc=""/>
+  <PARAM value="11" name="FX: Acoustic-Pro Middle" desc="2001106C" customdesc=""/>
+  <PARAM value="12" name="FX: Acoustic-Pro Mid Freq" desc="2001106D" customdesc=""/>
+  <PARAM value="13" name="FX: Acoustic-Pro Treble" desc="2001106E" customdesc=""/>
+  <PARAM value="14" name="FX: Acoustic-Pro Presence" desc="2001106F" customdesc=""/>
+  <PARAM value="15" name="FX: Acoustic-Pro Level" desc="20011070" customdesc=""/>
+  <PARAM value="16" name="FX: Wave-Synth Wave" desc="20011071" customdesc=""/>
+  <PARAM value="17" name="FX: Wave-Synth Cutoff" desc="20011072" customdesc=""/>
+  <PARAM value="18" name="FX: Wave-Synth Resonance" desc="20011073" customdesc=""/>
+  <PARAM value="19" name="FX: Wave-Synth Filter Sens" desc="20011074" customdesc=""/>
+  <PARAM value="1A" name="FX: Wave-Synth Filter Decay" desc="20011075" customdesc=""/>
+  <PARAM value="1B" name="FX: Wave-Synth Filter Depth" desc="20011076" customdesc=""/>
+  <PARAM value="1C" name="FX: Wave-Synth Synth Level" desc="20011077" customdesc=""/>
+  <PARAM value="1D" name="FX: Wave-Synth Direct Mix" desc="20011078" customdesc=""/>
+  <PARAM value="1E" name="FX: Octaver Range" desc="20011079" customdesc=""/>
+  <PARAM value="1F" name="FX: Octaver Octaverave Level" desc="2001107A" customdesc=""/>
+  <PARAM value="20" name="FX: Octaver Direct Level" desc="2001107B" customdesc=""/>
+  <PARAM value="21" name="FX HOC: Octave -1" desc="2001107C" customdesc=""/>
+  <PARAM value="22" name="FX HOC: Octave -2" desc="2001107D" customdesc=""/>
+  <PARAM value="23" name="FX HOC: Direct Mix" desc="2001107E" customdesc=""/>
+  <PARAM value="24" name="FX: Pitch-S Voice" desc="2001107F" customdesc=""/>
+  <PARAM value="25" name="FX: Pitch-S Pitch-S1 Mode" desc="20011100" customdesc=""/>
+  <PARAM value="26" name="FX: Pitch-S Pitch-S1 Pitch" desc="20011101" customdesc=""/>
+  <PARAM value="27" name="FX: Pitch-S Pitch-S1 Fine" desc="20011102" customdesc=""/>
+  <PARAM value="28" name="FX: Pitch-S Pitch-S1 Pre Delay" desc="20011103" customdesc=""/>
+  <PARAM value="29" name="FX: Pitch-S Pitch-S1 Level" desc="20011107" customdesc=""/>
+  <PARAM value="2A" name="FX: Pitch-S Pitch-S2 Mode" desc="20011108" customdesc=""/>
+  <PARAM value="2B" name="FX: Pitch-S Pitch-S2 Pitch" desc="20011109" customdesc=""/>
+  <PARAM value="2C" name="FX: Pitch-S Pitch-S2 Fine" desc="2001110A" customdesc=""/>
+  <PARAM value="2D" name="FX: Pitch-S Pitch-S2 Pre Delay" desc="2001110B" customdesc=""/>
+  <PARAM value="2E" name="FX: Pitch-S Pitch-S2 Level" desc="2001110F" customdesc=""/>
+  <PARAM value="2F" name="FX: Pitch-S Pitch-S1 Feedback" desc="20011110" customdesc=""/>
+  <PARAM value="30" name="FX: Pitch-S Direct Level" desc="20011111" customdesc=""/>
+  <PARAM value="31" name="FX: Harmonist Voice" desc="20011112" customdesc=""/>
+  <PARAM value="32" name="FX: Harmonist Harmonist1 Harmony" desc="20011113" customdesc=""/>
+  <PARAM value="33" name="FX: Harmonist Harmonist1 Pre Delay" desc="20011114" customdesc=""/>
+  <PARAM value="34" name="FX: Harmonist Harmonist1 Level" desc="20011118" customdesc=""/>
+  <PARAM value="35" name="FX: Harmonist Harmonist2 Harmony" desc="20011119" customdesc=""/>
+  <PARAM value="36" name="FX: Harmonist Harmonist2 Pre Delay" desc="2001111A" customdesc=""/>
+  <PARAM value="37" name="FX: Harmonist Harmonist2 Level" desc="2001111E" customdesc=""/>
+  <PARAM value="38" name="FX: Harmonist Harmonist1 Feedback" desc="2001111F" customdesc=""/>
+  <PARAM value="39" name="FX: Harmonist Direct Level" desc="20011120" customdesc=""/>
+  <PARAM value="3A" name="FX: Humanizer Mode" desc="20011139" customdesc=""/>
+  <PARAM value="3B" name="FX: Humanizer Vowel 1" desc="2001113A" customdesc=""/>
+  <PARAM value="3C" name="FX: Humanizer Vowel 2" desc="2001113B" customdesc=""/>
+  <PARAM value="3D" name="FX: Humanizer Sens" desc="2001113C" customdesc=""/>
+  <PARAM value="3E" name="FX: Humanizer Rate" desc="2001113D" customdesc=""/>
+  <PARAM value="3F" name="FX: Humanizer Depth" desc="2001113E" customdesc=""/>
+  <PARAM value="40" name="FX: Humanizer Manual" desc="2001113F" customdesc=""/>
+  <PARAM value="41" name="FX: Humanizer Level" desc="20011140" customdesc=""/>
+  <PARAM value="42" name="FX: Phaser 90E Script" desc="20011141" customdesc=""/>
+  <PARAM value="43" name="FX: Phaser 90E Speed" desc="20011142" customdesc=""/>
+  <PARAM value="44" name="FX: Flanger 117E Manual" desc="20011143" customdesc=""/>
+  <PARAM value="45" name="FX: Fanger 117E Width" desc="20011144" customdesc=""/>
+  <PARAM value="46" name="FX: Flanger 117E Speed" desc="20011145" customdesc=""/>
+  <PARAM value="47" name="FX: Flanger 117E Regen" desc="20011146" customdesc=""/>
+  <PARAM value="48" name="FX DC30: Selector" desc="20011147" customdesc=""/>
+  <PARAM value="49" name="FX DC30: Input" desc="20011148" customdesc=""/>
+  <PARAM value="4A" name="FX DC30: Intensity" desc="20011149" customdesc=""/>
+  <PARAM value="4B" name="FX DC30: Repeat Rate" desc="2001114A" customdesc=""/>
+  <PARAM value="4C" name="FX DC30: Intensity" desc="2001114E" customdesc=""/>
+  <PARAM value="4D" name="FX DC30: Volume" desc="2001114F" customdesc=""/>
+  <PARAM value="4E" name="FX DC30: Tone" desc="20011150" customdesc=""/>
+  <PARAM value="4F" name="FX DC30: Output Select" desc="20011151" customdesc=""/>
+  <PARAM value="50" name="FX BASS ENH: Sense" desc="20011152" customdesc=""/>
+  <PARAM value="51" name="FX BASS ENH: Low Level" desc="20011153" customdesc=""/>
+  <PARAM value="52" name="FX BASS ENH: Low Freq" desc="20011154" customdesc=""/>
+  <PARAM value="53" name="FX BASS ENH: High Level" desc="20011155" customdesc=""/>
+  <PARAM value="54" name="FX BASS ENH: High Freq" desc="20011156" customdesc=""/>
+  <PARAM value="55" name="FX BASS SIM: Type" desc="20011157" customdesc=""/>
+  <PARAM value="56" name="FX BASS SIM: Low" desc="20011158" customdesc=""/>
+  <PARAM value="57" name="FX BASS SIM: High" desc="20011159" customdesc=""/>
+  <PARAM value="58" name="FX BASS SIM: Level" desc="2001115A" customdesc=""/>
+  <PARAM value="59" name="FX BASS SIM: Body" desc="2001115B" customdesc=""/>
+  <PARAM value="5A" name="FX BASS DEFR: Sense" desc="2001115C" customdesc=""/>
+  <PARAM value="5B" name="FX BASS DEFR: Attack" desc="2001115D" customdesc=""/>
+  <PARAM value="5C" name="FX BASS DEFR: Depth" desc="2001115E" customdesc=""/>
+  <PARAM value="5D" name="FX BASS DEFR: Resonance" desc="2001115F" customdesc=""/>
+  <PARAM value="5E" name="FX BASS DEFR: Tone" desc="20011160" customdesc=""/>
+  <PARAM value="5F" name="FX BASS DEFR: Effect" desc="20011161" customdesc=""/>
+  <PARAM value="60" name="FX BASS DEFR: Direct Mix" desc="20011162" customdesc=""/>
+  <PARAM value="61" name="FX BASS OCT: Octave -1" desc="20011163" customdesc=""/>
+  <PARAM value="62" name="FX BASS OCT: Octave -2" desc="20011164" customdesc=""/>
+  <PARAM value="63" name="FX BASS OCT: Direct Mix" desc="20011165" customdesc=""/>
+  <PARAM value="64" name="FX BASS: T-Wah Mode" desc="20011166" customdesc=""/>
+  <PARAM value="65" name="FX BASS: T-Wah Polarity" desc="20011167" customdesc=""/>
+  <PARAM value="66" name="FX BASS: T-Wah Sens" desc="20011168" customdesc=""/>
+  <PARAM value="67" name="FX BASS: T-Wah Frequency" desc="20011169" customdesc=""/>
+  <PARAM value="68" name="FX BASS: T-Wah Peak" desc="2001116A" customdesc=""/>
+  <PARAM value="69" name="FX BASS: T-Wah Effect Level" desc="2001116B" customdesc=""/>
+  <PARAM value="6A" name="FX BASS: T-Wah Direct Level" desc="2001116C" customdesc=""/>
+  <PARAM value="6B" name="FX BASS: Wave-Synth Wave" desc="2001116D" customdesc=""/>
+  <PARAM value="6C" name="FX BASS: Wave-Synth Cutoff" desc="2001116E" customdesc=""/>
+  <PARAM value="6D" name="FX BASS: Wave-Synth Resonance" desc="2001116F" customdesc=""/>
+  <PARAM value="6E" name="FX BASS: Wave-Synth Filter Sens" desc="20011170" customdesc=""/>
+  <PARAM value="6F" name="FX BASS: Wave-Synth Filter Decay" desc="20011171" customdesc=""/>
+  <PARAM value="70" name="FX BASS: Wave-Synth Filter Depth" desc="20011172" customdesc=""/>
+  <PARAM value="71" name="FX BASS: Wave-Synth Synth Level" desc="20011173" customdesc=""/>
+  <PARAM value="72" name="FX BASS: Wave-Synth Direct Mix" desc="20011174" customdesc=""/>
+  <PARAM value="73" name="DELAY 1: D1 On/Off" desc="20003003" customdesc=""/>
+  <PARAM value="74" name="DELAY 1: D1 Type" desc="20012000" customdesc=""/>
+  <PARAM value="75" name="DELAY 1: D1 Time" desc="20012001" customdesc=""/>
+  <PARAM value="76" name="DELAY 1: D1 Feedback" desc="20012005" customdesc=""/>
+  <PARAM value="77" name="DELAY 1: D1 High Cut" desc="20012006" customdesc=""/>
+  <PARAM value="78" name="DELAY 1: Effect Level" desc="20012007" customdesc=""/>
+  <PARAM value="79" name="DELAY 1: Direct Mix" desc="20012008" customdesc=""/>
+  <PARAM value="7A" name="DELAY 1: Pan Tap Time" desc="20012009" customdesc=""/>
+  <PARAM value="7B" name="DELAY 1: Modulate Rate" desc="2001200A" customdesc=""/>
+  <PARAM value="7C" name="DELAY 1: Modulate Depth" desc="2001200B" customdesc=""/>
+  <PARAM value="7D" name="DELAY 1: Vint LPF Sw" desc="2001200C" customdesc=""/>
+  <PARAM value="7E" name="DELAY 1: Vint Filter" desc="2001200D" customdesc=""/>
+  <PARAM value="7F" name="DELAY 1: Vint F.B. Phase" desc="2001200E" customdesc=""/>
+  <PARAM value="00" name="DELAY 1: Vint Effect Phase" desc="2001200F" customdesc=""/>
+  <PARAM value="01" name="DELAY 1: Modulate Sw" desc="20012010" customdesc=""/>
+  <PARAM value="02" name="DELAY 2: D1 On/Off" desc="20003004" customdesc=""/>
+  <PARAM value="03" name="DELAY 2: D1 Type" desc="20013000" customdesc=""/>
+  <PARAM value="04" name="DELAY 2: D1 Time" desc="20013001" customdesc=""/>
+  <PARAM value="05" name="DELAY 2: D1 Feedback" desc="20013005" customdesc=""/>
+  <PARAM value="06" name="DELAY 2: D1 High Cut" desc="20013006" customdesc=""/>
+  <PARAM value="07" name="DELAY 2: Effect Level" desc="20013007" customdesc=""/>
+  <PARAM value="08" name="DELAY 2: Direct Mix" desc="20013008" customdesc=""/>
+  <PARAM value="09" name="DELAY 2: Pan Tap Time" desc="20013009" customdesc=""/>
+  <PARAM value="0A" name="DELAY 2: Modulate Rate" desc="2001300A" customdesc=""/>
+  <PARAM value="0B" name="DELAY 2: Modulate Depth" desc="2001300B" customdesc=""/>
+  <PARAM value="0C" name="DELAY 2: Vint LPF Sw" desc="2001300C" customdesc=""/>
+  <PARAM value="0D" name="DELAY 2: Vint Filter" desc="2001300D" customdesc=""/>
+  <PARAM value="0E" name="DELAY 2: Vint F.B. Phase" desc="2001300E" customdesc=""/>
+  <PARAM value="0F" name="DELAY 2: Vint Effect Phase" desc="2001300F" customdesc=""/>
+  <PARAM value="10" name="DELAY 2: Modulate Sw" desc="20013010" customdesc=""/>
+  <PARAM value="11" name="REVERB: On/Off" desc="20003005" customdesc=""/>
+  <PARAM value="12" name="REVERB: Type" desc="20014000" customdesc=""/>
+  <PARAM value="13" name="REVERB: REVERB Time" desc="20014002" customdesc=""/>
+  <PARAM value="14" name="REVERB: Pre Delay" desc="20014003" customdesc=""/>
+  <PARAM value="15" name="REVERB: Low Cut" desc="20014007" customdesc=""/>
+  <PARAM value="16" name="REVERB: High Cut" desc="20014008" customdesc=""/>
+  <PARAM value="17" name="REVERB: Density" desc="20014009" customdesc=""/>
+  <PARAM value="18" name="REVERB: Effect Level" desc="2001400A" customdesc=""/>
+  <PARAM value="19" name="REVERB: Direct Mix" desc="2001400B" customdesc=""/>
+  <PARAM value="1A" name="REVERB: Spring Sens" desc="2001400C" customdesc=""/>
+  <PARAM value="1B" name="Pedal FX Off/On" desc="20024001" customdesc=""/>
+  <PARAM value="1C" name="Pedal FX Type" desc="20024002" customdesc=""/>
+  <PARAM value="1D" name="PFX WAH: Type" desc="20025000" customdesc=""/>
+  <PARAM value="1E" name="PFX WAH: PDL Pos" desc="20025001" customdesc=""/>
+  <PARAM value="1F" name="PFX WAH: PDL Min" desc="20025002" customdesc=""/>
+  <PARAM value="20" name="PFX WAH: PDL Max" desc="20025003" customdesc=""/>
+  <PARAM value="21" name="PFX WAH: Effect Level" desc="20025004" customdesc=""/>
+  <PARAM value="22" name="PFX WAH: Direct Mix" desc="20025005" customdesc=""/>
+  <PARAM value="23" name="PFX PBEND: Pitch Max" desc="20025006" customdesc=""/>
+  <PARAM value="24" name="PFX PBEND: Pedal Position" desc="20025007" customdesc=""/>
+  <PARAM value="25" name="PFX PBEND: Effect" desc="20025008" customdesc=""/>
+  <PARAM value="26" name="PFX PBEND: Direct Mix" desc="20025009" customdesc=""/>
+  <PARAM value="27" name="PFX WAH95: Pedal Pos" desc="2002500A" customdesc=""/>
+  <PARAM value="28" name="PFX WAH95: Pedal Min" desc="2002500B" customdesc=""/>
+  <PARAM value="29" name="PFX WAH95: Pedal Max" desc="2002500C" customdesc=""/>
+  <PARAM value="2A" name="PFX WAH95: Effect Level" desc="2002500D" customdesc=""/>
+  <PARAM value="2B" name="PFX WAH95: Direct Mix" desc="2002500E" customdesc=""/>
+  <PARAM value="2C" name="FV: Foot Volume Level" desc="20024003" customdesc=""/>
+  <PARAM value="2D" name="BASS COMP/LIM: Off/on" desc="20003006" customdesc=""/>
+  <PARAM value="2E" name="BASS COMP/LIM: Mode" desc="20005000" customdesc=""/>
+  <PARAM value="2F" name="BASS COMP: Type" desc="20005001" customdesc=""/>
+  <PARAM value="30" name="BASS COMP: Sustain" desc="20005002" customdesc=""/>
+  <PARAM value="31" name="BASS COMP: Attack" desc="20005003" customdesc=""/>
+  <PARAM value="32" name="BASS COMP: Tone" desc="20005004" customdesc=""/>
+  <PARAM value="33" name="BASS COMP: Effect" desc="20005005" customdesc=""/>
+  <PARAM value="34" name="BASS LIM: Type" desc="20005006" customdesc=""/>
+  <PARAM value="35" name="BASS LIM: Attack" desc="20005007" customdesc=""/>
+  <PARAM value="36" name="BASS LIM: Threshold" desc="20005008" customdesc=""/>
+  <PARAM value="37" name="BASS LIM: Ratio" desc="20005009" customdesc=""/>
+  <PARAM value="38" name="BASS LIM: Release" desc="2000500A" customdesc=""/>
+  <PARAM value="39" name="BASS LIM: Effect" desc="2000500B" customdesc=""/>
+  <PARAM value="3A" name="NS: On/Off" desc="20033000" customdesc=""/>
+  <PARAM value="3B" name="NS: Threshold" desc="20033001" customdesc=""/>
+  <PARAM value="3C" name="NS: Release" desc="20033002" customdesc=""/>
+  <PARAM value="3D" name="MASTER: Patch Key" desc="20001003" customdesc=""/>
+  <PARAM value="3E" name="Contour: Off/On" desc="20020000" customdesc=""/>
+  <PARAM value="3F" name="Contour: Contour Select" desc="20020000" customdesc=""/>
+  <PARAM value="40" name="Contour 1: Contour Shape" desc="20021000" customdesc=""/>
+  <PARAM value="41" name="Contour 1: Freq Shift" desc="20021001" customdesc=""/>
+  <PARAM value="42" name="Contour 2: Contour Shape" desc="20022000" customdesc=""/>
+  <PARAM value="43" name="Contour 2: Freq Shift" desc="20022001" customdesc=""/>
+  <PARAM value="44" name="Contour 3: Contour Shape" desc="20023000" customdesc=""/>
+  <PARAM value="45" name="Contour 3: Freq Shift" desc="20023001" customdesc=""/>
+  <PARAM value="46" name="Cabinet Resonance" desc="20001001" customdesc=""/>
+  <PARAM value="47" name="Signal chain position: EQ1" desc="20026001" customdesc=""/>
+  <PARAM value="48" name="Signal chain position: EQ2" desc="20027001" customdesc=""/>
+  <PARAM value="49" name="Signal chain : Pedal FX" desc="20024000" customdesc=""/>
+  <PARAM value="4A" name="Signal Chain order: Type 1~7" desc="20001000" customdesc=""/>
+  <PARAM value="4B" name="Tuner: On/Off" desc="10000000" customdesc=""/>
+  <PARAM value="4C" name=" GLOBAL EQ: Off/On" desc="10001000" customdesc=""/>
+  <PARAM value="4D" name="GLOBAL EQ: Low Cut" desc="10002000" customdesc=""/>
+  <PARAM value="4E" name="GLOBAL EQ: Low Gain" desc="10002001" customdesc=""/>
+  <PARAM value="4F" name="GLOBAL EQ: Lo Mid Freq" desc="10002002" customdesc=""/>
+  <PARAM value="50" name="GLOBAL EQ: Lo Mid Q " desc="10002003" customdesc=""/>
+  <PARAM value="51" name="GLOBAL EQ: Lo Mid Gain" desc="10002004" customdesc=""/>
+  <PARAM value="52" name="GLOBAL EQ: Hi Mid Freq" desc="10002005" customdesc=""/>
+  <PARAM value="53" name="GLOBAL EQ: Hi Mid Q" desc="10002006" customdesc=""/>
+  <PARAM value="54" name="GLOBAL EQ: Hi Mid Gain" desc="10002007" customdesc=""/>
+  <PARAM value="55" name="GLOBAL EQ: Hi Gain" desc="10002008" customdesc=""/>
+  <PARAM value="56" name="GLOBAL EQ: Hi Cut" desc="10002009" customdesc=""/>
+  <PARAM value="57" name="GLOBAL EQ: Level" desc="1000200A" customdesc=""/>
+  <PARAM value="58" name="STAGE FEEL: Select" desc="10003000" customdesc=""/>
+  <PARAM value="59" name="STAGE FEEL: Custom  Guitar Position" desc="10006000" customdesc=""/>
+  <PARAM value="5A" name="STAGE FEEL: Audio Position" desc="10006001" customdesc=""/>
+  <PARAM value="5B" name="STAGE FEEL: Ambience type" desc="10006002" customdesc=""/>
+  <PARAM value="5C" name="STAGE FEEL: Ambience Level" desc="10006003" customdesc=""/>
+  <PARAM value="5D" name="USB: Input Level" desc="10007000" customdesc=""/>
+  <PARAM value="5E" name="USB: Output Level" desc="10007001" customdesc=""/>
