@@ -52,17 +52,11 @@ public enum KatanaGoWriteData: Sendable {
   /// Updates an amplifier parameter.
   case amp(AmpParameter)
 
-  /// Sets the amplifier type.
-  // case setAmpType(AmpType)
-
   /// Toggles an effect block on or off.
   case setEffectOn(EffectID, on: Bool)
 
   /// Updates a booster parameter.
-  case boost(BoostParameter, value: Int)
-
-  /// Sets the booster type.
-  case setBoostType(BoostType)
+  case boost(BoostParameter)
 
   /// Sets the booster type for Bass Mode.
   case setBassBoostType(BassBoostType)
@@ -86,10 +80,7 @@ public enum KatanaGoWriteData: Sendable {
   case setBassFXType(BassModFXType)
 
   /// Updates a delay parameter.
-  case delay(DelayParameter, value: Int)
-
-  /// Sets the delay type.
-  case setDelayType(DelayType)
+  case delay(DelayParameter)
 
   /// Updates a reverb parameter.
   case reverb(ReverbParameter, value: Int)

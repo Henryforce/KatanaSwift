@@ -21,18 +21,12 @@ extension KatanaGoWriteData {
       let value = param.value & 0x7F
       return finalizeSysex(address: param.address, data: [value])
 
-    // case .setAmpType(let type):
-    //   return finalizeSysex(address: [0x20, 0x00, 0x20, 0x0C], data: [UInt8(type.rawValue)])
-
     case .setEffectOn(let effect, let on):
       let val: UInt8 = on ? 1 : 0
       return finalizeSysex(address: effect.toggleAddress, data: [val])
 
-    case .boost(let param, let value):
-      return finalizeSysex(address: param.address, data: [UInt8(value & 0x7F)])
-
-    case .setBoostType(let type):
-      return finalizeSysex(address: [0x20, 0x00, 0x40, 0x00], data: [UInt8(type.rawValue)])
+    case .boost(let param):
+      return finalizeSysex(address: param.address, data: [param.value])
 
     case .setBassBoostType(let type):
       return finalizeSysex(address: [0x20, 0x00, 0x40, 0x00], data: [UInt8(type.rawValue)])
@@ -69,15 +63,8 @@ extension KatanaGoWriteData {
     case .setBassFXType(let type):
       return finalizeSysex(address: [0x20, 0x00, 0x70, 0x00], data: [UInt8(type.rawValue)])
 
-    case .delay(let param, let value):
-      if param == .time {
-        return finalizeSysex(address: param.address, data: encode11Bit(value))
-      } else {
-        return finalizeSysex(address: param.address, data: [UInt8(value & 0x7F)])
-      }
-
-    case .setDelayType(let type):
-      return finalizeSysex(address: [0x20, 0x01, 0x20, 0x00], data: [UInt8(type.rawValue)])
+    case .delay(let param):
+      return finalizeSysex(address: param.address, data: param.values)
 
     case .reverb(let param, let value):
       if param == .preDelay {
@@ -167,10 +154,6 @@ extension SystemParameter {
 extension AmpParameter {
   var address: [UInt8] {
     switch self {
-    // case .loopActive: return [0x00, 0x00, 0x04, 0x00]
-    // case .routingScheme: return [0x00, 0x00, 0x04, 0x01]
-    // case .sendLevel: return [0x00, 0x00, 0x04, 0x02]
-    // case .returnLevel: return [0x00, 0x00, 0x04, 0x03]
     case .ampType: return [0x20, 0x00, 0x20, 0x0C]
     case .gain: return [0x20, 0x00, 0x20, 0x00]
     case .volume: return [0x20, 0x00, 0x20, 0x01]
@@ -184,28 +167,42 @@ extension AmpParameter {
   var value: UInt8 {
     switch self {
     case .ampType(let type): return type.rawValue
-    case .gain(let value): return value
-    case .volume(let value): return value
-    case .bass(let value): return value
-    case .middle(let value): return value
-    case .treble(let value): return value
-    case .presence(let value): return value
+    case .gain(let value): return value & 0x7F
+    case .volume(let value): return value & 0x7F
+    case .bass(let value): return value & 0x7F
+    case .middle(let value): return value & 0x7F
+    case .treble(let value): return value & 0x7F
+    case .presence(let value): return value & 0x7F
     }
   }
 }
 
 extension BoostParameter {
   var address: [UInt8] {
-    let base: [UInt8] = [0x20, 0x00, 0x40, 0x00]  // Type address
     switch self {
-    case .type: return base
-    case .drive: return [base[0], base[1], base[2], base[3] + 1]
-    case .bottom: return [base[0], base[1], base[2], base[3] + 2]
-    case .tone: return [base[0], base[1], base[2], base[3] + 3]
-    case .soloSwitch: return [base[0], base[1], base[2], base[3] + 4]
-    case .soloLevel: return [base[0], base[1], base[2], base[3] + 5]
-    case .effectLevel: return [base[0], base[1], base[2], base[3] + 6]
-    case .directMix: return [base[0], base[1], base[2], base[3] + 7]
+    case .enable: return [0x20, 0x00, 0x30, 0x00]
+    case .type: return [0x20, 0x00, 0x40, 0x00]
+    case .drive: return [0x20, 0x00, 0x40, 0x01]
+    case .bottom: return [0x20, 0x00, 0x40, 0x02]
+    case .tone: return [0x20, 0x00, 0x40, 0x03]
+    case .soloSwitchEnable: return [0x20, 0x00, 0x40, 0x04]
+    case .soloLevel: return [0x20, 0x00, 0x40, 0x05]
+    case .effectLevel: return [0x20, 0x00, 0x40, 0x06]
+    case .directMix: return [0x20, 0x00, 0x40, 0x07]
+    }
+  }
+
+  var value: UInt8 {
+    switch self {
+    case .enable(let value): return value ? 1 : 0
+    case .type(let type): return type.rawValue
+    case .drive(let value): return value & 0x7F
+    case .bottom(let value): return value & 0x7F
+    case .tone(let value): return value & 0x7F
+    case .soloSwitchEnable(let value): return value ? 1 : 0
+    case .soloLevel(let value): return value & 0x7F
+    case .effectLevel(let value): return value & 0x7F
+    case .directMix(let value): return value & 0x7F
     }
   }
 }
@@ -213,12 +210,41 @@ extension BoostParameter {
 extension DelayParameter {
   var address: [UInt8] {
     switch self {
+    case .enable: return [0x20, 0x00, 0x30, 0x03]
     case .type: return [0x20, 0x01, 0x20, 0x00]
     case .time: return [0x20, 0x01, 0x20, 0x01]
     case .feedback: return [0x20, 0x01, 0x20, 0x05]
     case .highCut: return [0x20, 0x01, 0x20, 0x06]
     case .effectLevel: return [0x20, 0x01, 0x20, 0x07]
     case .directMix: return [0x20, 0x01, 0x20, 0x08]
+    case .modulationRate: return [0x20, 0x01, 0x20, 0x0A]
+    case .modulationDepth: return [0x20, 0x01, 0x20, 0x0B]
+    case .modulationSwitch: return [0x20, 0x01, 0x20, 0x10]
+    case .tapTimePercentage: return [0x20, 0x01, 0x20, 0x09]
+    case .filterEnable: return [0x20, 0x01, 0x20, 0x0C]
+    case .filter: return [0x20, 0x01, 0x20, 0x0D]
+    case .delayPhase: return [0x20, 0x01, 0x20, 0x0F]
+    case .feedbackPhase: return [0x20, 0x01, 0x20, 0x0E]
+    }
+  }
+
+  var values: [UInt8] {
+    switch self {
+    case .enable(let value): return [value ? 1 : 0]
+    case .type(let type): return [type.rawValue]
+    case .time(let time): return time.encode11Bit()
+    case .feedback(let value): return [value & 0x7F]
+    case .highCut(let value): return [value.rawValue]
+    case .effectLevel(let value): return [value & 0x7F]
+    case .directMix(let value): return [value & 0x7F]
+    case .modulationRate(let value): return [value & 0x7F]
+    case .modulationDepth(let value): return [value & 0x7F]
+    case .modulationSwitch(let value): return [value ? 1 : 0]
+    case .tapTimePercentage(let value): return [value & 0x7F]
+    case .filterEnable(let value): return [value ? 1 : 0]
+    case .filter(let value): return [value.rawValue]
+    case .delayPhase(let value): return [value.rawValue]
+    case .feedbackPhase(let value): return [value.rawValue]
     }
   }
 }
@@ -262,5 +288,13 @@ extension EffectID {
     case .eq: return [0x20, 0x02, 0x60, 0x00]
     case .noiseGate: return [0x20, 0x03, 0x30, 0x00]
     }
+  }
+}
+
+extension UInt16 {
+  func encode11Bit() -> [UInt8] {
+    let hh = UInt8((self >> 7) & 0x7F)
+    let ll = UInt8(self & 0x7F)
+    return [hh, ll]
   }
 }
