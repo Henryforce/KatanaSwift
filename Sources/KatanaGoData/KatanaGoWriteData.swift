@@ -36,15 +36,6 @@ public enum KatanaGoPreset: Sendable, Hashable, CaseIterable {
 
 /// Commands sent to the Katana GO device.
 public enum KatanaGoWriteData: Sendable {
-  // MARK: - Control Change (CC)
-
-  /// Updates the state of a pedal switch.
-  case pedalSwitch(PedalSwitch, value: Int)
-
-  /// Updates the expression pedal position (0-127).
-  case expressionPedal(value: Int)
-
-  // MARK: - SysEx Commands
 
   /// Updates a system parameter.
   case system(SystemParameter, value: Int)
@@ -52,32 +43,8 @@ public enum KatanaGoWriteData: Sendable {
   /// Updates an amplifier parameter.
   case amp(AmpParameter)
 
-  /// Toggles an effect block on or off.
-  case setEffectOn(EffectID, on: Bool)
-
   /// Updates a booster parameter.
   case boost(BoostParameter)
-
-  /// Sets the booster type for Bass Mode.
-  case setBassBoostType(BassBoostType)
-
-  /// Updates a modulation parameter.
-  case mod(ModFXParameter, value: Int)
-
-  /// Sets the modulation type.
-  case setModType(ModFXType)
-
-  /// Sets the modulation type for Bass Mode.
-  case setBassModType(BassModFXType)
-
-  /// Updates an FX parameter.
-  case fx(ModFXParameter, value: Int)
-
-  /// Sets the FX type.
-  case setFXType(ModFXType)
-
-  /// Sets the FX type for Bass Mode.
-  case setBassFXType(BassModFXType)
 
   /// Updates a delay parameter.
   case delay(DelayParameter)
@@ -88,12 +55,6 @@ public enum KatanaGoWriteData: Sendable {
   /// Updates a noise gate parameter.
   case noiseGate(NoiseGateParameter, value: Int)
 
-  /// Toggles the tuner on or off.
-  case setTuner(on: Bool)
-
   /// Switches the device to a specific preset.
   case changePreset(_ preset: KatanaGoPreset)
-
-  /// Updates the signal chain.
-  case setChain(Int)
 }

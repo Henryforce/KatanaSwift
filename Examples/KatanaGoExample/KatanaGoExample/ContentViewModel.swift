@@ -104,5 +104,27 @@ final class ContentViewModel {
       }
     }
   }
+  func updateBoost(_ parameter: BoostParameter) {
+    guard let device else { return }
+    Task {
+      do {
+        print("🎸 Updating Boost \(parameter)...")
+        try await device.write(.boost(parameter))
+      } catch {
+        print("❌ Error: \(error)")
+      }
+    }
+  }
+  func updateAmp(_ parameter: AmpParameter) {
+    guard let device else { return }
+    Task {
+      do {
+        print("🎸 Updating Amp \(parameter)...")
+        try await device.write(.amp(parameter))
+      } catch {
+        print("❌ Error: \(error)")
+      }
+    }
+  }
 
 }
