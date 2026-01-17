@@ -5,12 +5,12 @@
 //  Created by Henry Javier Serrano Echeverria on 2026/01/17.
 //
 
-import SwiftUI
 import KatanaGoData
+import SwiftUI
 
 struct AmpView: View {
   var viewModel: ContentViewModel
-  
+
   @State private var ampType = AmpType.clean
   @State private var gain: Double = 50
   @State private var volume: Double = 50
@@ -19,7 +19,7 @@ struct AmpView: View {
   @State private var treble: Double = 50
   @State private var presence: Double = 50
   @State private var variationEnable = false
-  
+
   // Define ranges separately
   private let gainRange: ClosedRange<Double> = 0...100
   private let volumeRange: ClosedRange<Double> = 0...100
@@ -27,7 +27,7 @@ struct AmpView: View {
   private let middleRange: ClosedRange<Double> = 0...100
   private let trebleRange: ClosedRange<Double> = 0...100
   private let presenceRange: ClosedRange<Double> = 0...100
-  
+
   var body: some View {
     NavigationView {
       Form {
@@ -40,34 +40,34 @@ struct AmpView: View {
           .onChange(of: ampType) { _, newValue in
             viewModel.updateAmp(.ampType(newValue))
           }
-          
+
           Toggle("Variation", isOn: $variationEnable)
             .onChange(of: variationEnable) { _, newValue in
               viewModel.updateAmp(.variation(newValue))
             }
         }
-        
+
         Section("Tone Controls") {
           parameterSlider(title: "Gain", value: $gain, range: gainRange) {
             viewModel.updateAmp(.gain(UInt8($0)))
           }
-          
+
           parameterSlider(title: "Volume", value: $volume, range: volumeRange) {
             viewModel.updateAmp(.volume(UInt8($0)))
           }
-          
+
           parameterSlider(title: "Bass", value: $bass, range: bassRange) {
             viewModel.updateAmp(.bass(UInt8($0)))
           }
-          
+
           parameterSlider(title: "Middle", value: $middle, range: middleRange) {
             viewModel.updateAmp(.middle(UInt8($0)))
           }
-          
+
           parameterSlider(title: "Treble", value: $treble, range: trebleRange) {
             viewModel.updateAmp(.treble(UInt8($0)))
           }
-          
+
           parameterSlider(title: "Presence", value: $presence, range: presenceRange) {
             viewModel.updateAmp(.presence(UInt8($0)))
           }
@@ -83,9 +83,9 @@ struct AmpView: View {
       }
     }
   }
-  
+
   @Environment(\.dismiss) private var dismissAction
-  
+
   private func parameterSlider(
     title: String,
     value: Binding<Double>,

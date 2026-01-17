@@ -1,4 +1,3 @@
-
 /// Parameters for the Booster effect.
 public enum BoostParameter: Sendable {
   case enable(Bool)

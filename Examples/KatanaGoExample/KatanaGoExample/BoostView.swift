@@ -5,12 +5,12 @@
 //  Created by Henry Javier Serrano Echeverria on 2026/01/16.
 //
 
-import SwiftUI
 import KatanaGoData
+import SwiftUI
 
 struct BoostView: View {
   var viewModel: ContentViewModel
-  
+
   @State private var isEnabled = false
   @State private var type = BoostType.midBoost
   @State private var drive: Double = 50
@@ -20,15 +20,15 @@ struct BoostView: View {
   @State private var soloLevel: Double = 50
   @State private var effectLevel: Double = 50
   @State private var directMix: Double = 50
-  
+
   // Define ranges separately as requested
   private let driveRange: ClosedRange<Double> = 0...120
-  private let bottomRange: ClosedRange<Double> = 0...100 // Actually it is -50 to 50
-  private let toneRange: ClosedRange<Double> = 0...100 // Actually it is -50 to 50
+  private let bottomRange: ClosedRange<Double> = 0...100  // Actually it is -50 to 50
+  private let toneRange: ClosedRange<Double> = 0...100  // Actually it is -50 to 50
   private let soloLevelRange: ClosedRange<Double> = 0...100
   private let effectLevelRange: ClosedRange<Double> = 0...100
   private let directMixRange: ClosedRange<Double> = 0...100
-  
+
   var body: some View {
     NavigationView {
       Form {
@@ -37,7 +37,7 @@ struct BoostView: View {
             .onChange(of: isEnabled) { _, newValue in
               viewModel.updateBoost(.enable(newValue))
             }
-          
+
           Picker("Type", selection: $type) {
             ForEach(BoostType.allCases, id: \.self) { type in
               Text("\(type.title)").tag(type)
@@ -47,35 +47,35 @@ struct BoostView: View {
             viewModel.updateBoost(.type(newValue))
           }
         }
-        
+
         Section("Parameters") {
           parameterSlider(title: "Drive", value: $drive, range: driveRange) {
             viewModel.updateBoost(.drive(UInt8($0)))
           }
-          
+
           parameterSlider(title: "Bottom", value: $bottom, range: bottomRange) {
             viewModel.updateBoost(.bottom(UInt8($0)))
           }
-          
+
           parameterSlider(title: "Tone", value: $tone, range: toneRange) {
             viewModel.updateBoost(.tone(UInt8($0)))
           }
-          
+
           parameterSlider(title: "Effect Level", value: $effectLevel, range: effectLevelRange) {
             viewModel.updateBoost(.effectLevel(UInt8($0)))
           }
-          
+
           parameterSlider(title: "Direct Mix", value: $directMix, range: directMixRange) {
             viewModel.updateBoost(.directMix(UInt8($0)))
           }
         }
-        
+
         Section("Solo") {
           Toggle("Solo Switch", isOn: $soloSwitchEnable)
             .onChange(of: soloSwitchEnable) { _, newValue in
               viewModel.updateBoost(.soloSwitchEnable(newValue))
             }
-          
+
           parameterSlider(title: "Solo Level", value: $soloLevel, range: soloLevelRange) {
             viewModel.updateBoost(.soloLevel(UInt8($0)))
           }
@@ -92,9 +92,9 @@ struct BoostView: View {
       }
     }
   }
-  
+
   @Environment(\.dismiss) private var dismissAction
-  
+
   private func parameterSlider(
     title: String,
     value: Binding<Double>,

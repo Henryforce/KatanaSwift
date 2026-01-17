@@ -17,15 +17,17 @@ extension KatanaGoWriteData {
     case .boost(let param):
       return finalizeSysex(address: param.address, data: [param.value])
 
-    case .delay(let param):
+    case .mod(let param):
       return finalizeSysex(address: param.address, data: param.values)
 
-    case .reverb(let param, let value):
-      if param == .preDelay {
-        return finalizeSysex(address: param.address, data: encode11Bit(value))  // Pre-delay is 9-bit, encode11Bit works
-      } else {
-        return finalizeSysex(address: param.address, data: [UInt8(value & 0x7F)])
-      }
+    case .delay(let param):
+      return finalizeSysex(address: param.address(isDelay2: false), data: param.values)
+
+    case .delay2(let param):
+      return finalizeSysex(address: param.address(isDelay2: true), data: param.values)
+
+    case .reverb(let param):
+      return finalizeSysex(address: param.address, data: param.values)
 
     case .noiseGate(let param, let value):
       return finalizeSysex(address: param.address, data: [UInt8(value & 0x7F)])
@@ -56,17 +58,6 @@ extension KatanaGoWriteData {
     let hh = UInt8((value >> 7) & 0x7F)
     let ll = UInt8(value & 0x7F)
     return [hh, ll]
-  }
-
-  private func encodeModFX(base: [UInt8], param: ModFXParameter, value: Int) -> [UInt8] {
-    switch param {
-    case .type:
-      let addr = addOffset(to: base, offset: 1)
-      return finalizeSysex(address: addr, data: [UInt8(value & 0x7F)])
-    case .parameter(let offset):
-      let addr = addOffset(to: base, offset: offset)
-      return finalizeSysex(address: addr, data: [UInt8(value & 0x7F)])
-    }
   }
 
   private func addOffset(to address: [UInt8], offset: Int) -> [UInt8] {

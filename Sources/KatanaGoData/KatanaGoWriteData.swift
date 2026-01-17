@@ -46,11 +46,16 @@ public enum KatanaGoWriteData: Sendable {
   /// Updates a booster parameter.
   case boost(BoostParameter)
 
-  /// Updates a delay parameter.
+  case mod(ModParameter)
+
+  /// Updates the first delay parameter.
   case delay(DelayParameter)
 
+  /// Updates the second delay parameter.
+  case delay2(DelayParameter)
+
   /// Updates a reverb parameter.
-  case reverb(ReverbParameter, value: Int)
+  case reverb(ReverbParameter)
 
   /// Updates a noise gate parameter.
   case noiseGate(NoiseGateParameter, value: Int)
