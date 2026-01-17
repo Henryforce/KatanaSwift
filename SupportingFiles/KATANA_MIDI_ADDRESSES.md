@@ -590,7 +590,7 @@
 | Signal chain : Pedal FX | 20024000 |
 | Signal Chain order: Type 1~7 | 20001000 |
 | Tuner: On/Off | 10000000 |
-|  GLOBAL EQ: Off/On | 10001000 |
+| GLOBAL EQ: Off/On | 10001000 |
 | GLOBAL EQ: Low Cut | 10002000 |
 | GLOBAL EQ: Low Gain | 10002001 |
 | GLOBAL EQ: Lo Mid Freq | 10002002 |

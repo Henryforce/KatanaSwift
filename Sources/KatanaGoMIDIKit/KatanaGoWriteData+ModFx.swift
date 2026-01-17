@@ -77,59 +77,33 @@ extension ModFxParameter {
 }
 
 extension ChorusParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
-    case .crossoverFrequency:
-      return [0x20, 0x01, 0x00, 0x00]
-    case .lowRate:
-      return [0x20, 0x01, 0x00, 0x01]
-    case .lowDepth:
-      return [0x20, 0x01, 0x00, 0x02]
-    case .lowPreDelay:
-      return [0x20, 0x01, 0x00, 0x03]
-    case .lowLevel:
-      return [0x20, 0x01, 0x00, 0x04]
-    case .highRate:
-      return [0x20, 0x01, 0x00, 0x05]
-    case .highDepth:
-      return [0x20, 0x01, 0x00, 0x06]
-    case .highPreDelay:
-      return [0x20, 0x01, 0x00, 0x07]
-    case .highLevel:
-      return [0x20, 0x01, 0x00, 0x08]
-    case .directMix:
-      return [0x20, 0x01, 0x00, 0x09]
+    case .crossoverFrequency: return [0x20, 0x01, 0x00, 0x00]
+    case .lowRate: return [0x20, 0x01, 0x00, 0x01]
+    case .lowDepth: return [0x20, 0x01, 0x00, 0x02]
+    case .lowPreDelay: return [0x20, 0x01, 0x00, 0x03]
+    case .lowLevel: return [0x20, 0x01, 0x00, 0x04]
+    case .highRate: return [0x20, 0x01, 0x00, 0x05]
+    case .highDepth: return [0x20, 0x01, 0x00, 0x06]
+    case .highPreDelay: return [0x20, 0x01, 0x00, 0x07]
+    case .highLevel: return [0x20, 0x01, 0x00, 0x08]
+    case .directMix: return [0x20, 0x01, 0x00, 0x09]
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
-    case .crossoverFrequency(let value):
-      return [value]
-    case .lowRate(let value):
-      return [value]
-    case .lowDepth(let value):
-      return [value]
-    case .lowPreDelay(let value):
-      return [value]
-    case .lowLevel(let value):
-      return [value]
-    case .highRate(let value):
-      return [value]
-    case .highDepth(let value):
-      return [value]
-    case .highPreDelay(let value):
-      return [value]
-    case .highLevel(let value):
-      return [value]
-    case .directMix(let value):
+    case .crossoverFrequency(let value), .lowRate(let value), .lowDepth(let value),
+      .lowPreDelay(let value), .lowLevel(let value), .highRate(let value), .highDepth(let value),
+      .highPreDelay(let value), .highLevel(let value), .directMix(let value):
       return [value]
     }
   }
 }
 
 extension FlangerParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .rate: return [0x20, 0x01, 0x00, 0x0A]
     case .depth: return [0x20, 0x01, 0x00, 0x0B]
@@ -141,7 +115,7 @@ extension FlangerParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
     case .rate(let value): return [value]
     case .depth(let value): return [value]
@@ -155,7 +129,7 @@ extension FlangerParameter {
 }
 
 extension PhaserParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .type: return [0x20, 0x01, 0x00, 0x11]
     case .rate: return [0x20, 0x01, 0x00, 0x12]
@@ -168,7 +142,7 @@ extension PhaserParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
     case .type(let value): return [value.rawValue]
     case .rate(let value), .depth(let value), .manual(let value),
@@ -179,7 +153,7 @@ extension PhaserParameter {
 }
 
 extension UniVibeParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .rate: return [0x20, 0x01, 0x00, 0x19]
     case .depth: return [0x20, 0x01, 0x00, 0x1A]
@@ -187,7 +161,7 @@ extension UniVibeParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
     case .rate(let value), .depth(let value), .level(let value):
       return [value]
@@ -196,7 +170,7 @@ extension UniVibeParameter {
 }
 
 extension TremoloParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .waveShape: return [0x20, 0x01, 0x00, 0x1C]
     case .rate: return [0x20, 0x01, 0x00, 0x1D]
@@ -205,7 +179,7 @@ extension TremoloParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
     case .waveShape(let value), .rate(let value), .depth(let value), .level(let value):
       return [value]
@@ -214,7 +188,7 @@ extension TremoloParameter {
 }
 
 extension VibratoParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .rate: return [0x20, 0x01, 0x00, 0x20]
     case .depth: return [0x20, 0x01, 0x00, 0x21]
@@ -222,7 +196,7 @@ extension VibratoParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
     case .rate(let value), .depth(let value), .level(let value):
       return [value]
@@ -231,7 +205,7 @@ extension VibratoParameter {
 }
 
 extension RotaryParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .rate: return [0x20, 0x01, 0x00, 0x23]
     case .depth: return [0x20, 0x01, 0x00, 0x24]
@@ -239,7 +213,7 @@ extension RotaryParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
     case .rate(let value), .depth(let value), .level(let value):
       return [value]
@@ -248,7 +222,7 @@ extension RotaryParameter {
 }
 
 extension RingModParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .mode: return [0x20, 0x01, 0x00, 0x26]
     case .frequency: return [0x20, 0x01, 0x00, 0x27]
@@ -257,7 +231,7 @@ extension RingModParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
     case .mode(let value): return [value.rawValue]
     case .frequency(let value), .effectLevel(let value), .directMix(let value):
@@ -267,7 +241,7 @@ extension RingModParameter {
 }
 
 extension SlowGearParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .sens: return [0x20, 0x01, 0x00, 0x2A]
     case .riseTime: return [0x20, 0x01, 0x00, 0x2B]
@@ -275,7 +249,7 @@ extension SlowGearParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
     case .sens(let value), .riseTime(let value), .level(let value):
       return [value]
@@ -284,7 +258,7 @@ extension SlowGearParameter {
 }
 
 extension SlicerParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .pattern: return [0x20, 0x01, 0x00, 0x2D]
     case .rate: return [0x20, 0x01, 0x00, 0x2E]
@@ -294,7 +268,7 @@ extension SlicerParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
     case .pattern(let value), .rate(let value), .triggerSens(let value),
       .effectLevel(let value), .directMix(let value):
@@ -304,7 +278,7 @@ extension SlicerParameter {
 }
 
 extension CompParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .type: return [0x20, 0x01, 0x00, 0x32]
     case .sustain: return [0x20, 0x01, 0x00, 0x33]
@@ -314,7 +288,7 @@ extension CompParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
     case .type(let value): return [value.rawValue]
     case .sustain(let value), .attack(let value), .tone(let value), .level(let value):
@@ -324,7 +298,7 @@ extension CompParameter {
 }
 
 extension LimiterParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .type: return [0x20, 0x01, 0x00, 0x37]
     case .attack: return [0x20, 0x01, 0x00, 0x38]
@@ -335,7 +309,7 @@ extension LimiterParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
     case .type(let value): return [value.rawValue]
     case .ratio(let value): return [value.rawValue]
@@ -346,7 +320,7 @@ extension LimiterParameter {
 }
 
 extension TWahParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .mode: return [0x20, 0x01, 0x00, 0x3D]
     case .polarity: return [0x20, 0x01, 0x00, 0x3E]
@@ -358,7 +332,7 @@ extension TWahParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
     case .mode(let value): return [value.rawValue]
     case .polarity(let value): return [value.rawValue]
@@ -382,7 +356,7 @@ extension AutoWahParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
     case .mode(let value): return [value.rawValue]
     case .frequency(let value), .peak(let value), .rate(let value),
@@ -393,7 +367,7 @@ extension AutoWahParameter {
 }
 
 extension ModFxGraphicEQParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .band31Hz: return [0x20, 0x01, 0x00, 0x4B]
     case .band62Hz: return [0x20, 0x01, 0x00, 0x4C]
@@ -409,7 +383,7 @@ extension ModFxGraphicEQParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
     case .band31Hz(let value), .band62Hz(let value), .band125Hz(let value), .band250Hz(let value),
       .band500Hz(let value), .band1kHz(let value), .band2kHz(let value), .band4kHz(let value),
@@ -420,7 +394,7 @@ extension ModFxGraphicEQParameter {
 }
 
 extension ModFxParametricEQParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .lowCut: return [0x20, 0x01, 0x00, 0x56]
     case .lowGain: return [0x20, 0x01, 0x00, 0x57]
@@ -436,36 +410,25 @@ extension ModFxParametricEQParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
-    case .lowCut(let value):
-      return [value.rawValue]
-    case .lowGain(let value):
-      return [value]
-    case .lowMidFreq(let value):
-      return [value.rawValue]
-    case .lowMidQ(let value):
-      return [value.rawValue]
-    case .lowMidGain(let value):
-      return [value]
-    case .highMidFreq(let value):
-      return [value.rawValue]
-    case .highMidQ(let value):
-      return [value.rawValue]
-    case .highMidGain(let value):
-      return [value]
-    case .highGain(let value):
-      return [value]
-    case .highCut(let value):
-      return [value.rawValue]
-    case .level(let value):
-      return [value]
+    case .lowCut(let value): return [value.rawValue]
+    case .lowGain(let value): return [value]
+    case .lowMidFreq(let value): return [value.rawValue]
+    case .lowMidQ(let value): return [value.rawValue]
+    case .lowMidGain(let value): return [value]
+    case .highMidFreq(let value): return [value.rawValue]
+    case .highMidQ(let value): return [value.rawValue]
+    case .highMidGain(let value): return [value]
+    case .highGain(let value): return [value]
+    case .highCut(let value): return [value.rawValue]
+    case .level(let value): return [value]
     }
   }
 }
 
 extension GuitarSimParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .type: return [0x20, 0x01, 0x00, 0x61]
     case .low: return [0x20, 0x01, 0x00, 0x62]
@@ -475,10 +438,9 @@ extension GuitarSimParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
-    case .type(let value):
-      return [value.rawValue]
+    case .type(let value): return [value.rawValue]
     case .low(let value), .high(let value), .body(let value), .level(let value):
       return [value]
     }
@@ -486,7 +448,7 @@ extension GuitarSimParameter {
 }
 
 extension ACSimParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .high: return [0x20, 0x01, 0x00, 0x66]
     case .body: return [0x20, 0x01, 0x00, 0x67]
@@ -495,7 +457,7 @@ extension ACSimParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
     case .high(let value), .body(let value), .low(let value), .level(let value):
       return [value]
@@ -504,7 +466,7 @@ extension ACSimParameter {
 }
 
 extension AcousticProParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .type: return [0x20, 0x01, 0x00, 0x6A]
     case .bass: return [0x20, 0x01, 0x00, 0x6B]
@@ -516,12 +478,10 @@ extension AcousticProParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
-    case .type(let value):
-      return [value.rawValue]
-    case .midFrequency(let value):
-      return [value.rawValue]
+    case .type(let value): return [value.rawValue]
+    case .midFrequency(let value): return [value.rawValue]
     case .bass(let value), .middle(let value),
       .treble(let value), .presence(let value), .level(let value):
       return [value]
@@ -530,7 +490,7 @@ extension AcousticProParameter {
 }
 
 extension WaveSynthParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .type: return [0x20, 0x01, 0x00, 0x71]
     case .cutoff: return [0x20, 0x01, 0x00, 0x72]
@@ -543,10 +503,9 @@ extension WaveSynthParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
-    case .type(let value):
-      return [value.rawValue]
+    case .type(let value): return [value.rawValue]
     case .cutoff(let value), .resonance(let value), .filterSens(let value),
       .filterDecay(let value), .filterDepth(let value), .synthLevel(let value),
       .directMix(let value):
@@ -556,7 +515,7 @@ extension WaveSynthParameter {
 }
 
 extension OctaverParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .range: return [0x20, 0x01, 0x00, 0x79]
     case .level: return [0x20, 0x01, 0x00, 0x7A]
@@ -564,10 +523,9 @@ extension OctaverParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
-    case .range(let value):
-      return [value.rawValue]
+    case .range(let value): return [value.rawValue]
     case .level(let value), .directLevel(let value):
       return [value]
     }
@@ -575,7 +533,7 @@ extension OctaverParameter {
 }
 
 extension HeavyOctaveParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .octaveMinus1: return [0x20, 0x01, 0x00, 0x7C]
     case .octaveMinus2: return [0x20, 0x01, 0x00, 0x7D]
@@ -583,7 +541,7 @@ extension HeavyOctaveParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
     case .octaveMinus1(let value), .octaveMinus2(let value), .directMix(let value):
       return [value]
@@ -592,7 +550,7 @@ extension HeavyOctaveParameter {
 }
 
 extension PitchShifterParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .voice: return [0x20, 0x01, 0x00, 0x7F]
     case .ps1Mode: return [0x20, 0x01, 0x01, 0x00]
@@ -610,10 +568,9 @@ extension PitchShifterParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
-    case .voice(let value):
-      return [value.rawValue]
+    case .voice(let value): return [value.rawValue]
     case .ps1Mode(let value), .ps2Mode(let value):
       return [value.rawValue]
     case .ps1Pitch(let value), .ps1Fine(let value),
@@ -627,7 +584,7 @@ extension PitchShifterParameter {
 }
 
 extension HarmonistParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .voice: return [0x20, 0x01, 0x01, 0x12]
     case .h1Harmony: return [0x20, 0x01, 0x01, 0x13]
@@ -641,10 +598,9 @@ extension HarmonistParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
-    case .voice(let value):
-      return [value.rawValue]
+    case .voice(let value): return [value.rawValue]
     case .h1Harmony(let value), .h1Level(let value), .h2Harmony(let value),
       .h2Level(let value), .h1Feedback(let value), .directLevel(let value):
       return [value]
@@ -655,7 +611,7 @@ extension HarmonistParameter {
 }
 
 extension HumanizerParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .mode: return [0x20, 0x01, 0x01, 0x39]
     case .vowel1: return [0x20, 0x01, 0x01, 0x3A]
@@ -668,12 +624,10 @@ extension HumanizerParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
-    case .mode(let value):
-      return [value.rawValue]
-    case .vowel1(let value), .vowel2(let value):
-      return [value.rawValue]
+    case .mode(let value): return [value.rawValue]
+    case .vowel1(let value), .vowel2(let value): return [value.rawValue]
     case .sens(let value), .rate(let value), .depth(let value), .manual(let value),
       .level(let value):
       return [value]
@@ -682,25 +636,23 @@ extension HumanizerParameter {
 }
 
 extension Phaser90EParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .scriptEnable: return [0x20, 0x01, 0x01, 0x41]
     case .speed: return [0x20, 0x01, 0x01, 0x42]
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
-    case .scriptEnable(let value):
-      return [value ? 0x01 : 0x00]
-    case .speed(let value):
-      return [value]
+    case .scriptEnable(let value): return [value ? 0x01 : 0x00]
+    case .speed(let value): return [value]
     }
   }
 }
 
 extension Flanger117EParameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .manual: return [0x20, 0x01, 0x01, 0x43]
     case .width: return [0x20, 0x01, 0x01, 0x44]
@@ -709,7 +661,7 @@ extension Flanger117EParameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
     case .manual(let value), .width(let value), .speed(let value), .regen(let value):
       return [value]
@@ -718,7 +670,7 @@ extension Flanger117EParameter {
 }
 
 extension DC30Parameter {
-  var address: [UInt8] {
+  fileprivate var address: [UInt8] {
     switch self {
     case .type: return [0x20, 0x01, 0x01, 0x47]
     case .inputVolume: return [0x20, 0x01, 0x01, 0x48]
@@ -730,14 +682,11 @@ extension DC30Parameter {
     }
   }
 
-  var values: [UInt8] {
+  fileprivate var values: [UInt8] {
     switch self {
-    case .type(let value):
-      return [value.rawValue]
-    case .outputType(let value):
-      return [value.rawValue]
-    case .repeatTime(let value):
-      return value.encode11Bit()
+    case .type(let value): return [value.rawValue]
+    case .outputType(let value): return [value.rawValue]
+    case .repeatTime(let value): return value.encode11Bit()
     case .inputVolume(let value), .intensity(let value),
       .volume(let value), .tone(let value):
       return [value]

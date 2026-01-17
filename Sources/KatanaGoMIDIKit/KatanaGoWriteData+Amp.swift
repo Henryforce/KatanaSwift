@@ -17,13 +17,10 @@ extension AmpParameter {
   var value: UInt8 {
     switch self {
     case .ampType(let type): return type.rawValue
-    case .gain(let value): return value & 0x7F
-    case .volume(let value): return value & 0x7F
-    case .bass(let value): return value & 0x7F
-    case .middle(let value): return value & 0x7F
-    case .treble(let value): return value & 0x7F
-    case .presence(let value): return value & 0x7F
-    case .variation(let value): return value ? 1 : 0
+    case .gain(let value), .volume(let value), .bass(let value), .middle(let value),
+      .treble(let value), .presence(let value):
+      return value
+    case .variation(let value): return value ? 0x01 : 0x00
     }
   }
 }
