@@ -1,15 +1,5 @@
 import Foundation
 
-/// Parameters for System settings.
-public enum SystemParameter: Sendable {
-  case midiChannel
-  case toEffectLevel
-  case effectOutLevel
-  case mixLevel
-  case loopBack
-  case dryOutLevel
-}
-
 /// Available MOD/FX types for the Katana GO in Bass Mode.
 public enum BassModFXType: UInt8, Sendable, CaseIterable {
   case chorus = 0x00
@@ -35,11 +25,4 @@ public enum BassModFXType: UInt8, Sendable, CaseIterable {
   case octave = 0x1A
   case tWah = 0x1B
   case bassSynth = 0x1C
-}
-
-/// Parameters for the Noise Gate.
-public enum NoiseGateParameter: Sendable {
-  case on
-  case threshold
-  case release
 }

@@ -1,6 +1,6 @@
 import KatanaGoData
 
-extension ModParameter {
+extension ModFxParameter {
   var address: [UInt8] {
     switch self {
     case .enable:
@@ -392,7 +392,7 @@ extension AutoWahParameter {
   }
 }
 
-extension GraphicEQParameter {
+extension ModFxGraphicEQParameter {
   var address: [UInt8] {
     switch self {
     case .band31Hz: return [0x20, 0x01, 0x00, 0x4B]
@@ -419,7 +419,7 @@ extension GraphicEQParameter {
   }
 }
 
-extension ParametricEQParameter {
+extension ModFxParametricEQParameter {
   var address: [UInt8] {
     switch self {
     case .lowCut: return [0x20, 0x01, 0x00, 0x56]

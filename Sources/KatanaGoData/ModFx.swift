@@ -1,6 +1,6 @@
-public enum ModParameter: Sendable {
+public enum ModFxParameter: Sendable {
   case enable(Bool)
-  case type(ModType)
+  case type(ModFxType)
   case chorus(ChorusParameter)
   case flanger(FlangerParameter)
   case phaser(PhaserParameter)
@@ -15,8 +15,8 @@ public enum ModParameter: Sendable {
   case limiter(LimiterParameter)
   case tWah(TWahParameter)
   case autoWah(AutoWahParameter)
-  case graphicEQ(GraphicEQParameter)
-  case parametricEQ(ParametricEQParameter)
+  case graphicEQ(ModFxGraphicEQParameter)
+  case parametricEQ(ModFxParametricEQParameter)
   case guitarSim(GuitarSimParameter)
   case acSim(ACSimParameter)
   case acousticPro(AcousticProParameter)
@@ -29,6 +29,41 @@ public enum ModParameter: Sendable {
   case phaser90E(Phaser90EParameter)
   case flanger117E(Flanger117EParameter)
   case dc30(DC30Parameter)
+}
+
+// TODO: manual QA these types.
+/// Available MOD types for the Katana GO.
+public enum ModFxType: UInt8, Sendable, CaseIterable {
+  case tWah = 0x00
+  case autoWah = 0x01
+  case wah = 0x02
+  case compressor = 0x03
+  case limiter = 0x04
+  case graphicEQ = 0x06
+  case paraEQ = 0x07
+  case guitarSim = 0x09
+  case slowGear = 0x0A
+  case waveSynth = 0x0C
+  case octave = 0x0E
+  case pitchShifter = 0x0F
+  case harmonist = 0x10
+  case acProcessor = 0x12
+  case phaser = 0x13
+  case flanger = 0x14
+  case tremolo = 0x15
+  case rotary = 0x16
+  case uniV = 0x17
+  case slicer = 0x19
+  case vibrato = 0x1A
+  case ringMod = 0x1B
+  case humanizer = 0x1C
+  case twoByTwoChorus = 0x1D
+  case acGuitarSim = 0x1F
+  case phaser90E = 0x23
+  case flanger117E = 0x24
+  case wah95E = 0x25
+  case delayChorus30 = 0x26
+  case heavyOctave = 0x27
 }
 
 public enum ChorusParameter: Sendable {
@@ -158,7 +193,7 @@ public enum CompType: UInt8, Sendable, CaseIterable {
   case mild = 0x06
 }
 
-public enum LimiterParameter: Sendable, CaseIterable {
+public enum LimiterParameter: Sendable {
   case type(LimiterType)
   case attack(UInt8)
   case threshold(UInt8)
@@ -224,7 +259,7 @@ public enum AutoWahParameter: Sendable {
   case directLevel(UInt8)
 }
 
-public enum GraphicEQParameter: Sendable {
+public enum ModFxGraphicEQParameter: Sendable {
   /// Range is from -20 to 20 mapped to 0..40.
   case band31Hz(UInt8)
   case band62Hz(UInt8)
@@ -239,102 +274,23 @@ public enum GraphicEQParameter: Sendable {
   case level(UInt8)
 }
 
-public enum ParametricEQParameter: Sendable {
-  case lowCut(ParametricEQLowCut)
+public enum ModFxParametricEQParameter: Sendable {
+  case lowCut(EQLowCut)
   /// Range is from -20 to 20 mapped to 0..40.
   case lowGain(UInt8)
-  case lowMidFreq(ParametricEQFrequency)
-  case lowMidQ(ParametricEQQ)
+  case lowMidFreq(EQFrequency)
+  case lowMidQ(EQQ)
   /// Range is from -20 to 20 mapped to 0..40.
   case lowMidGain(UInt8)
-  case highMidFreq(ParametricEQFrequency)
-  case highMidQ(ParametricEQQ)
+  case highMidFreq(EQFrequency)
+  case highMidQ(EQQ)
   /// Range is from -20 to 20 mapped to 0..40.
   case highMidGain(UInt8)
   /// Range is from -20 to 20 mapped to 0..40.
   case highGain(UInt8)
-  case highCut(ParametricEQHighCut)
+  case highCut(EQHighCut)
   /// Range is from -20 to 20 mapped to 0..40.
   case level(UInt8)
-}
-
-public enum ParametricEQLowCut: UInt8, Sendable, CaseIterable {
-  case flat = 0x00
-  case freq20Hz = 0x01
-  case freq25Hz = 0x02
-  case freq31Hz5 = 0x03
-  case freq40Hz = 0x04
-  case freq50Hz = 0x05
-  case freq63Hz = 0x06
-  case freq80Hz = 0x07
-  case freq100Hz = 0x08
-  case freq125Hz = 0x09
-  case freq160Hz = 0x0A
-  case freq200Hz = 0x0B
-  case freq250Hz = 0x0C
-  case freq315Hz = 0x0D
-  case freq400Hz = 0x0E
-  case freq500Hz = 0x0F
-  case freq630Hz = 0x10
-  case freq800Hz = 0x11
-}
-
-public enum ParametricEQHighCut: UInt8, Sendable, CaseIterable {
-  case freq630Hz = 0x00
-  case freq800Hz = 0x01
-  case freq1kHz = 0x02
-  case freq1k25Hz = 0x03
-  case freq1k6Hz = 0x04
-  case freq2kHz = 0x05
-  case freq2k5Hz = 0x06
-  case freq3k15Hz = 0x07
-  case freq4kHz = 0x08
-  case freq5kHz = 0x09
-  case freq6k3Hz = 0x0A
-  case freq8kHz = 0x0B
-  case freq10kHz = 0x0C
-  case freq12k5Hz = 0x0D
-  case flat = 0x0E
-}
-
-public enum ParametricEQFrequency: UInt8, Sendable, CaseIterable {
-  case freq20Hz = 0x00
-  case freq25Hz = 0x01
-  case freq31Hz5 = 0x02
-  case freq40Hz = 0x03
-  case freq50Hz = 0x04
-  case freq63Hz = 0x05
-  case freq80Hz = 0x06
-  case freq100Hz = 0x07
-  case freq125Hz = 0x08
-  case freq160Hz = 0x09
-  case freq200Hz = 0x0A
-  case freq250Hz = 0x0B
-  case freq315Hz = 0x0C
-  case freq400Hz = 0x0D
-  case freq500Hz = 0x0E
-  case freq630Hz = 0x0F
-  case freq800Hz = 0x10
-  case freq1kHz = 0x11
-  case freq1k25Hz = 0x12
-  case freq1k6Hz = 0x13
-  case freq2kHz = 0x14
-  case freq2k5Hz = 0x15
-  case freq3k15Hz = 0x16
-  case freq4kHz = 0x17
-  case freq5kHz = 0x18
-  case freq6k3Hz = 0x19
-  case freq8kHz = 0x1A
-  case freq10kHz = 0x1B
-}
-
-public enum ParametricEQQ: UInt8, Sendable, CaseIterable {
-  case q05 = 0x00
-  case q1 = 0x01
-  case q2 = 0x02
-  case q4 = 0x03
-  case q8 = 0x04
-  case q16 = 0x05
 }
 
 public enum GuitarSimParameter: Sendable {
@@ -448,7 +404,7 @@ public enum OctaverRange: UInt8, Sendable, CaseIterable {
   case range4 = 0x03
 }
 
-public enum HeavyOctaveParameter: Sendable, CaseIterable {
+public enum HeavyOctaveParameter: Sendable {
   case octaveMinus1(UInt8)
   case octaveMinus2(UInt8)
   case directMix(UInt8)
@@ -560,39 +516,4 @@ public enum DC30Type: UInt8, Sendable, CaseIterable {
 public enum DC30OutputType: UInt8, Sendable, CaseIterable {
   case dPlusE = 0x00
   case dOverE = 0x01
-}
-
-// TODO: manual QA these types.
-/// Available MOD types for the Katana GO.
-public enum ModType: UInt8, Sendable, CaseIterable {
-  case tWah = 0x00
-  case autoWah = 0x01
-  case wah = 0x02
-  case compressor = 0x03
-  case limiter = 0x04
-  case graphicEQ = 0x06
-  case paraEQ = 0x07
-  case guitarSim = 0x09
-  case slowGear = 0x0A
-  case waveSynth = 0x0C
-  case octave = 0x0E
-  case pitchShifter = 0x0F
-  case harmonist = 0x10
-  case acProcessor = 0x12
-  case phaser = 0x13
-  case flanger = 0x14
-  case tremolo = 0x15
-  case rotary = 0x16
-  case uniV = 0x17
-  case slicer = 0x19
-  case vibrato = 0x1A
-  case ringMod = 0x1B
-  case humanizer = 0x1C
-  case twoByTwoChorus = 0x1D
-  case acGuitarSim = 0x1F
-  case phaser90E = 0x23
-  case flanger117E = 0x24
-  case wah95E = 0x25
-  case delayChorus30 = 0x26
-  case heavyOctave = 0x27
 }
