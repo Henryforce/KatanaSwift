@@ -11,6 +11,8 @@ struct ContentView: View {
   @State var viewModel = ContentViewModel()
   @State private var volume: Double = 50
   @State private var gain: Double = 50
+  @State private var showBoostSettings = false
+  @State private var showAmpSettings = false
 
   var body: some View {
     VStack(spacing: 20) {
@@ -66,9 +68,35 @@ struct ContentView: View {
       } label: {
         Text("Update Gain")
       }
+      Button {
+        showBoostSettings = true
+      } label: {
+        Text("Boost Settings")
+          .frame(maxWidth: .infinity)
+          .padding()
+          .background(Color.orange)
+          .foregroundColor(.white)
+          .cornerRadius(10)
+      }
+      Button {
+        showAmpSettings = true
+      } label: {
+        Text("Amp Settings")
+          .frame(maxWidth: .infinity)
+          .padding()
+          .background(Color.blue)
+          .foregroundColor(.white)
+          .cornerRadius(10)
+      }
 
     }
     .padding()
+    .sheet(isPresented: $showBoostSettings) {
+      BoostView(viewModel: viewModel)
+    }
+    .sheet(isPresented: $showAmpSettings) {
+      AmpView(viewModel: viewModel)
+    }
   }
 }
 
