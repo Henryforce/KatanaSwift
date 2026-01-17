@@ -3,6 +3,7 @@ import KatanaGoData
 extension ReverbParameter {
   var address: [UInt8] {
     switch self {
+    case .enable: return [0x20, 0x00, 0x30, 0x05]
     case .type: return [0x20, 0x01, 0x40, 0x00]
     case .time: return [0x20, 0x01, 0x40, 0x02]
     case .preDelay: return [0x20, 0x01, 0x40, 0x03]
@@ -12,6 +13,21 @@ extension ReverbParameter {
     case .effectLevel: return [0x20, 0x01, 0x40, 0x0a]
     case .directMix: return [0x20, 0x01, 0x40, 0x0b]
     case .springSensitivity: return [0x20, 0x01, 0x40, 0x0c]
+    }
+  }
+
+  var values: [UInt8] {
+    switch self {
+    case .enable(let value): return [value ? 0x01 : 0x00]
+    case .type(let value): return [value.rawValue]
+    case .time(let value): return [value]
+    case .preDelay(let value): return value.encode11Bit()
+    case .lowCut(let value): return [value.rawValue]
+    case .highCut(let value): return [value.rawValue]
+    case .density(let value): return [value]
+    case .effectLevel(let value): return [value]
+    case .directMix(let value): return [value]
+    case .springSensitivity(let value): return [value]
     }
   }
 }

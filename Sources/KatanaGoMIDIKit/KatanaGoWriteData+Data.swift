@@ -6,9 +6,6 @@ extension KatanaGoWriteData {
   public var bytes: [UInt8] {
     switch self {
 
-    case .system(let param, let value):
-      return finalizeSysex(address: param.address, data: [UInt8(value & 0x7F)])
-
     case .amp(let param):
       // TODO: implement
       let value = param.value & 0x7F
@@ -17,18 +14,43 @@ extension KatanaGoWriteData {
     case .boost(let param):
       return finalizeSysex(address: param.address, data: [param.value])
 
-    case .delay(let param):
+    case .mod(let param):
       return finalizeSysex(address: param.address, data: param.values)
 
-    case .reverb(let param, let value):
-      if param == .preDelay {
-        return finalizeSysex(address: param.address, data: encode11Bit(value))  // Pre-delay is 9-bit, encode11Bit works
+    case .fx(let param):
+      // Offset the address as it has a different register space as Mod but the same structure.
+      var address = param.address
+      if case .enable = param {
+        // Offset the address by 0x01 as it has a different register space as Mod but the same
+        // structure.
+        address[3] += 0x01
       } else {
-        return finalizeSysex(address: param.address, data: [UInt8(value & 0x7F)])
+        // Offset the address by 0x10 as it has a different register space as Mod but the same
+        // structure.
+        address[2] += 0x10
       }
+      return finalizeSysex(address: address, data: param.values)
 
-    case .noiseGate(let param, let value):
-      return finalizeSysex(address: param.address, data: [UInt8(value & 0x7F)])
+    case .delay1(let param):
+      return finalizeSysex(address: param.address(isDelay2: false), data: param.values)
+
+    case .delay2(let param):
+      return finalizeSysex(address: param.address(isDelay2: true), data: param.values)
+
+    case .reverb(let param):
+      return finalizeSysex(address: param.address, data: param.values)
+
+    case .solo(let param):
+      return finalizeSysex(address: param.address, data: param.values)
+
+    case .eq1(let param):
+      return finalizeSysex(address: param.address(isEQ2: false), data: param.values)
+
+    case .eq2(let param):
+      return finalizeSysex(address: param.address(isEQ2: true), data: param.values)
+
+    case .noiseGate(let param):
+      return finalizeSysex(address: param.address, data: param.values)
 
     case .changePreset(let preset):
       return preset.bytes
@@ -56,55 +78,6 @@ extension KatanaGoWriteData {
     let hh = UInt8((value >> 7) & 0x7F)
     let ll = UInt8(value & 0x7F)
     return [hh, ll]
-  }
-
-  private func encodeModFX(base: [UInt8], param: ModFXParameter, value: Int) -> [UInt8] {
-    switch param {
-    case .type:
-      let addr = addOffset(to: base, offset: 1)
-      return finalizeSysex(address: addr, data: [UInt8(value & 0x7F)])
-    case .parameter(let offset):
-      let addr = addOffset(to: base, offset: offset)
-      return finalizeSysex(address: addr, data: [UInt8(value & 0x7F)])
-    }
-  }
-
-  private func addOffset(to address: [UInt8], offset: Int) -> [UInt8] {
-    // Boss addresses are 4 bytes, each 7-bit.
-    var val =
-      (Int(address[0]) << 21) | (Int(address[1]) << 14) | (Int(address[2]) << 7) | Int(address[3])
-    val += offset
-    return [
-      UInt8((val >> 21) & 0x7F),
-      UInt8((val >> 14) & 0x7F),
-      UInt8((val >> 7) & 0x7F),
-      UInt8(val & 0x7F),
-    ]
-  }
-}
-
-// MARK: - Address Mappings
-
-extension SystemParameter {
-  var address: [UInt8] {
-    switch self {
-    case .midiChannel: return [0x00, 0x02, 0x00, 0x00]
-    case .toEffectLevel: return [0x00, 0x00, 0x00, 0x51]
-    case .effectOutLevel: return [0x00, 0x00, 0x00, 0x52]
-    case .mixLevel: return [0x00, 0x00, 0x00, 0x53]
-    case .loopBack: return [0x00, 0x00, 0x00, 0x56]
-    case .dryOutLevel: return [0x00, 0x00, 0x00, 0x57]
-    }
-  }
-}
-
-extension NoiseGateParameter {
-  var address: [UInt8] {
-    switch self {
-    case .on: return [0x20, 0x03, 0x30, 0x00]
-    case .threshold: return [0x20, 0x03, 0x30, 0x01]
-    case .release: return [0x20, 0x03, 0x30, 0x02]
-    }
   }
 }
 
