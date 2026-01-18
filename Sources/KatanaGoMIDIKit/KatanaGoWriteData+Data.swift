@@ -52,8 +52,12 @@ extension KatanaGoWriteData {
     case .noiseGate(let param):
       return finalizeSysex(address: param.address, data: param.values)
 
-    case .changePreset(let preset):
-      return preset.bytes
+    case .selectPreset(let preset):
+      return finalizeSysex(address: [0x7f, 0x00, 0x01, 0x00], data: [0x00, preset.rawValue])
+
+    case .writePreset(let preset):
+      // NOTE: If the write preset does not work, remove the last byte from the data.
+      return finalizeSysex(address: [0x7f, 0x00, 0x01, 0x04], data: [0x00, preset.rawValue, 0x00])
     }
   }
 

@@ -1,5 +1,5 @@
 /// Represents the Solo parameters.
-public enum SoloParameter: Sendable {
+public enum SoloParameter: Sendable, Hashable {
   case enable(Bool)
   /// The solo level ranging from 0 to 100.
   case level(UInt8)

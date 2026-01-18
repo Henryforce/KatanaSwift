@@ -1,11 +1,11 @@
-public enum EQParameter: Sendable {
+public enum EQParameter: Sendable, Hashable {
   case enable(Bool)
   case type(EQType)
   case parametric(ParametricEQParameter)
   case graphic(GraphicEQParameter)
 }
 
-public enum ParametricEQParameter: Sendable {
+public enum ParametricEQParameter: Sendable, Hashable {
   case lowCut(EQLowCut)
   /// Range is from -20 to 20 mapped to 0..40.
   case lowGain(UInt8)
@@ -25,7 +25,7 @@ public enum ParametricEQParameter: Sendable {
   case position(EQPosition)
 }
 
-public enum GraphicEQParameter: Sendable {
+public enum GraphicEQParameter: Sendable, Hashable {
   /// Range is from -12dB to 12dB mapped to 0..12..24 with steps of 0.5dB.
   case band31Hz(UInt8)
   case band62Hz(UInt8)
@@ -41,12 +41,12 @@ public enum GraphicEQParameter: Sendable {
   case position(EQPosition)
 }
 
-public enum EQType: UInt8, Sendable, CaseIterable {
+public enum EQType: UInt8, Sendable, Hashable, CaseIterable {
   case parametric = 0x00
   case graphic = 0x01
 }
 
-public enum EQLowCut: UInt8, Sendable, CaseIterable {
+public enum EQLowCut: UInt8, Sendable, Hashable, CaseIterable {
   case flat = 0x00
   case freq20Hz = 0x01
   case freq25Hz = 0x02
@@ -67,7 +67,7 @@ public enum EQLowCut: UInt8, Sendable, CaseIterable {
   case freq800Hz = 0x11
 }
 
-public enum EQHighCut: UInt8, Sendable, CaseIterable {
+public enum EQHighCut: UInt8, Sendable, Hashable, CaseIterable {
   case freq630Hz = 0x00
   case freq800Hz = 0x01
   case freq1kHz = 0x02
@@ -85,7 +85,7 @@ public enum EQHighCut: UInt8, Sendable, CaseIterable {
   case flat = 0x0E
 }
 
-public enum EQFrequency: UInt8, Sendable, CaseIterable {
+public enum EQFrequency: UInt8, Sendable, Hashable, CaseIterable {
   case freq20Hz = 0x00
   case freq25Hz = 0x01
   case freq31Hz5 = 0x02
@@ -116,7 +116,7 @@ public enum EQFrequency: UInt8, Sendable, CaseIterable {
   case freq10kHz = 0x1B
 }
 
-public enum EQQ: UInt8, Sendable, CaseIterable {
+public enum EQQ: UInt8, Sendable, Hashable, CaseIterable {
   case q05 = 0x00
   case q1 = 0x01
   case q2 = 0x02
@@ -125,7 +125,7 @@ public enum EQQ: UInt8, Sendable, CaseIterable {
   case q16 = 0x05
 }
 
-public enum EQPosition: UInt8, Sendable, CaseIterable {
+public enum EQPosition: UInt8, Sendable, Hashable, CaseIterable {
   case ampIn = 0x00
   case ampOut = 0x01
 }

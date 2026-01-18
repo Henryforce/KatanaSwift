@@ -1,7 +1,7 @@
 import Foundation
 
 /// Available MOD/FX types for the Katana GO in Bass Mode.
-public enum BassModFXType: UInt8, Sendable, CaseIterable {
+public enum BassModFXType: UInt8, Sendable, Hashable, CaseIterable {
   case chorus = 0x00
   case flanger = 0x01
   case phaser = 0x02

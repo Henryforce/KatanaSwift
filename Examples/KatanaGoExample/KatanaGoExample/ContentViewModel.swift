@@ -50,7 +50,7 @@ final class ContentViewModel {
     Task {
       do {
         print("🎸 Switching to Preset 1A...")
-        try await device.write(.changePreset(.preset1A))
+        try await device.write(.selectPreset(.preset1A))
       } catch {
         print("❌ Error: \(error)")
       }
@@ -62,7 +62,7 @@ final class ContentViewModel {
     Task {
       do {
         print("🎸 Switching to Preset 3A...")
-        try await device.write(.changePreset(.preset3A))
+        try await device.write(.selectPreset(.preset3A))
       } catch {
         print("❌ Error: \(error)")
       }
