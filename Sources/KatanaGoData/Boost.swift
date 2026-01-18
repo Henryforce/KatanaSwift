@@ -1,5 +1,5 @@
 /// Parameters for the Booster effect.
-public enum BoostParameter: Sendable {
+public enum BoostParameter: Sendable, Hashable {
   case enable(Bool)
   case type(BoostType)
   case drive(UInt8)
@@ -12,7 +12,7 @@ public enum BoostParameter: Sendable {
 }
 
 /// Available booster types for the Katana GO.
-public enum BoostType: UInt8, Sendable, CaseIterable {
+public enum BoostType: UInt8, Sendable, Hashable, CaseIterable {
   case midBoost = 0x00
   case cleanBoost = 0x01
   case trebleBoost = 0x02
@@ -38,7 +38,7 @@ public enum BoostType: UInt8, Sendable, CaseIterable {
 }
 
 /// Available booster types for the Katana GO in Bass Mode.
-public enum BassBoostType: UInt8, Sendable, CaseIterable {
+public enum BassBoostType: UInt8, Sendable, Hashable, CaseIterable {
   case bluesOD = 0x00
   case natural = 0x01
   case guVDS = 0x02

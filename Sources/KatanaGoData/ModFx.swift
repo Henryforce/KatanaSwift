@@ -1,4 +1,4 @@
-public enum ModFxParameter: Sendable {
+public enum ModFxParameter: Sendable, Hashable {
   case enable(Bool)
   case type(ModFxType)
   case chorus(ChorusParameter)
@@ -31,42 +31,42 @@ public enum ModFxParameter: Sendable {
   case dc30(DC30Parameter)
 }
 
-// TODO: manual QA these types.
-/// Available MOD types for the Katana GO.
-public enum ModFxType: UInt8, Sendable, CaseIterable {
-  case tWah = 0x00
-  case autoWah = 0x01
-  case wah = 0x02
-  case compressor = 0x03
-  case limiter = 0x04
-  case graphicEQ = 0x06
-  case paraEQ = 0x07
-  case guitarSim = 0x09
+// TODO: re-audit these values.
+/// Available MOD/FX types for the Katana GO.
+public enum ModFxType: UInt8, Sendable, Hashable, CaseIterable {
+  case twoByTwoChorus = 0x00
+  case flanger = 0x01
+  case phaser = 0x02
+  case uniV = 0x03
+  case tremolo = 0x04
+  case vibrato = 0x06
+  case rotary = 0x07
+  case ringMod = 0x09
   case slowGear = 0x0A
-  case waveSynth = 0x0C
-  case octave = 0x0E
-  case pitchShifter = 0x0F
-  case harmonist = 0x10
-  case acProcessor = 0x12
-  case phaser = 0x13
-  case flanger = 0x14
-  case tremolo = 0x15
-  case rotary = 0x16
-  case uniV = 0x17
-  case slicer = 0x19
-  case vibrato = 0x1A
-  case ringMod = 0x1B
-  case humanizer = 0x1C
-  case twoByTwoChorus = 0x1D
-  case acGuitarSim = 0x1F
-  case phaser90E = 0x23
-  case flanger117E = 0x24
-  case wah95E = 0x25
-  case delayChorus30 = 0x26
-  case heavyOctave = 0x27
+  case slicer = 0x0C
+  case comp = 0x0D
+  case limiter = 0x0E
+  case tWah = 0x0F
+  case autoWah = 0x10
+  case graphicEQ = 0x11
+  case parametricEQ = 0x12
+  case guitarSim = 0x13
+  case acSim = 0x14
+  case acousticPro = 0x15
+  case waveSynth = 0x16
+  case octave = 0x17
+  case heavyOctave = 0x18
+  case pitchShifter = 0x19
+  case harmonist = 0x1A
+  case humanizer = 0x1B
+  case phaser90E = 0x1C
+  case flanger117E = 0x1D
+  case dc30 = 0x1E
 }
 
-public enum ChorusParameter: Sendable {
+// MARK: - Chorus
+
+public enum ChorusParameter: Sendable, Hashable {
   case crossoverFrequency(UInt8)
   case lowRate(UInt8)
   case lowDepth(UInt8)
@@ -81,7 +81,9 @@ public enum ChorusParameter: Sendable {
   case directMix(UInt8)
 }
 
-public enum FlangerParameter: Sendable {
+// MARK: - Flanger
+
+public enum FlangerParameter: Sendable, Hashable {
   case rate(UInt8)
   case depth(UInt8)
   case manual(UInt8)
@@ -91,7 +93,7 @@ public enum FlangerParameter: Sendable {
   case directLevel(UInt8)
 }
 
-public enum FlangerLowCut: UInt8, Sendable, CaseIterable {
+public enum FlangerLowCut: UInt8, Sendable, Hashable, CaseIterable {
   case flat = 0x00
   case freq55Hz = 0x01
   case freq110Hz = 0x02
@@ -105,7 +107,9 @@ public enum FlangerLowCut: UInt8, Sendable, CaseIterable {
   case freq800Hz = 0x0A
 }
 
-public enum PhaserParameter: Sendable {
+// MARK: - Phaser
+
+public enum PhaserParameter: Sendable, Hashable {
   case type(PhaserType)
   case rate(UInt8)
   case depth(UInt8)
@@ -116,57 +120,71 @@ public enum PhaserParameter: Sendable {
   case directLevel(UInt8)
 }
 
-public enum PhaserType: UInt8, Sendable, CaseIterable {
+public enum PhaserType: UInt8, Sendable, Hashable, CaseIterable {
   case fourStage = 0x00
   case eightStage = 0x01
   case twelveStage = 0x02
   case biStage = 0x03
 }
 
-public enum UniVibeParameter: Sendable {
+// MARK: - UniVibe
+
+public enum UniVibeParameter: Sendable, Hashable {
   case rate(UInt8)
   case depth(UInt8)
   case level(UInt8)
 }
 
-public enum TremoloParameter: Sendable {
+// MARK: - Tremolo
+
+public enum TremoloParameter: Sendable, Hashable {
   case waveShape(UInt8)
   case rate(UInt8)
   case depth(UInt8)
   case level(UInt8)
 }
 
-public enum VibratoParameter: Sendable {
+// MARK: - Vibrato
+
+public enum VibratoParameter: Sendable, Hashable {
   case rate(UInt8)
   case depth(UInt8)
   case level(UInt8)
 }
 
-public enum RotaryParameter: Sendable {
+// MARK: - Rotary
+
+public enum RotaryParameter: Sendable, Hashable {
   case rate(UInt8)
   case depth(UInt8)
   case level(UInt8)
 }
 
-public enum RingModParameter: Sendable {
+// MARK: - RingMod
+
+public enum RingModParameter: Sendable, Hashable {
   case mode(RingModMode)
   case frequency(UInt8)
   case effectLevel(UInt8)
   case directMix(UInt8)
 }
 
-public enum RingModMode: UInt8, Sendable, CaseIterable {
+public enum RingModMode: UInt8, Sendable, Hashable, CaseIterable {
   case normal = 0x00
   case intelligent = 0x01
 }
 
-public enum SlowGearParameter: Sendable {
+// MARK: - SlowGear
+
+public enum SlowGearParameter: Sendable, Hashable {
   case sens(UInt8)
   case riseTime(UInt8)
   case level(UInt8)
 }
 
-public enum SlicerParameter: Sendable {
+// MARK: - Slicer
+
+public enum SlicerParameter: Sendable, Hashable {
   /// Starts from 0 to 19 where 0 is Pattern 1 and 19 is Pattern 20.
   case pattern(UInt8)
   case rate(UInt8)
@@ -175,7 +193,9 @@ public enum SlicerParameter: Sendable {
   case directMix(UInt8)
 }
 
-public enum CompParameter: Sendable {
+// MARK: - Comp
+
+public enum CompParameter: Sendable, Hashable {
   case type(CompType)
   case sustain(UInt8)
   case attack(UInt8)
@@ -183,7 +203,7 @@ public enum CompParameter: Sendable {
   case level(UInt8)
 }
 
-public enum CompType: UInt8, Sendable, CaseIterable {
+public enum CompType: UInt8, Sendable, Hashable, CaseIterable {
   case boss = 0x00
   case hiBand = 0x01
   case light = 0x02
@@ -193,7 +213,9 @@ public enum CompType: UInt8, Sendable, CaseIterable {
   case mild = 0x06
 }
 
-public enum LimiterParameter: Sendable {
+// MARK: - Limiter
+
+public enum LimiterParameter: Sendable, Hashable {
   case type(LimiterType)
   case attack(UInt8)
   case threshold(UInt8)
@@ -202,13 +224,13 @@ public enum LimiterParameter: Sendable {
   case level(UInt8)
 }
 
-public enum LimiterType: UInt8, Sendable, CaseIterable {
+public enum LimiterType: UInt8, Sendable, Hashable, CaseIterable {
   case boss = 0x00
   case rack160D = 0x01
   case vtgRackU = 0x02
 }
 
-public enum LimiterRatio: UInt8, Sendable, CaseIterable {
+public enum LimiterRatio: UInt8, Sendable, Hashable, CaseIterable {
   case oneToOne = 0x00
   case oneDotTwoToOne = 0x01
   case oneDotFourToOne = 0x02
@@ -229,7 +251,16 @@ public enum LimiterRatio: UInt8, Sendable, CaseIterable {
   case infiniteToOne = 0x11
 }
 
-public enum TWahParameter: Sendable {
+// MARK: - Wah
+
+public enum WahMode: UInt8, Sendable, Hashable, CaseIterable {
+  case lowPassFilter = 0x00
+  case highPassFilter = 0x01
+}
+
+// MARK: - TWah
+
+public enum TWahParameter: Sendable, Hashable {
   case mode(WahMode)
   case polarity(TWahPolarity)
   case sens(UInt8)
@@ -239,17 +270,14 @@ public enum TWahParameter: Sendable {
   case directLevel(UInt8)
 }
 
-public enum WahMode: UInt8, Sendable, CaseIterable {
-  case lowPassFilter = 0x00
-  case highPassFilter = 0x01
-}
-
-public enum TWahPolarity: UInt8, Sendable, CaseIterable {
+public enum TWahPolarity: UInt8, Sendable, Hashable, CaseIterable {
   case down = 0x00
   case up = 0x01
 }
 
-public enum AutoWahParameter: Sendable {
+// MARK: - AutoWah
+
+public enum AutoWahParameter: Sendable, Hashable {
   case mode(WahMode)
   case frequency(UInt8)
   case peak(UInt8)
@@ -259,7 +287,9 @@ public enum AutoWahParameter: Sendable {
   case directLevel(UInt8)
 }
 
-public enum ModFxGraphicEQParameter: Sendable {
+// MARK: - ModFxGraphicEQ
+
+public enum ModFxGraphicEQParameter: Sendable, Hashable {
   /// Range is from -20 to 20 mapped to 0..40.
   case band31Hz(UInt8)
   case band62Hz(UInt8)
@@ -274,7 +304,9 @@ public enum ModFxGraphicEQParameter: Sendable {
   case level(UInt8)
 }
 
-public enum ModFxParametricEQParameter: Sendable {
+// MARK: - ModFxParametricEQ
+
+public enum ModFxParametricEQParameter: Sendable, Hashable {
   case lowCut(EQLowCut)
   /// Range is from -20 to 20 mapped to 0..40.
   case lowGain(UInt8)
@@ -293,7 +325,9 @@ public enum ModFxParametricEQParameter: Sendable {
   case level(UInt8)
 }
 
-public enum GuitarSimParameter: Sendable {
+// MARK: - GuitarSim
+
+public enum GuitarSimParameter: Sendable, Hashable {
   case type(GuitarSimType)
   /// Range is from -50 to 50 mapped to 0..100.
   case low(UInt8)
@@ -303,7 +337,7 @@ public enum GuitarSimParameter: Sendable {
   case level(UInt8)
 }
 
-public enum GuitarSimType: UInt8, Sendable, CaseIterable {
+public enum GuitarSimType: UInt8, Sendable, Hashable, CaseIterable {
   case sToH = 0x00
   case hToS = 0x01
   case hToHF = 0x02
@@ -314,7 +348,9 @@ public enum GuitarSimType: UInt8, Sendable, CaseIterable {
   case pToAc = 0x07
 }
 
-public enum ACSimParameter: Sendable {
+// MARK: - ACSim
+
+public enum ACSimParameter: Sendable, Hashable {
   /// Range is from -50 to 50 mapped to 0..100.
   case high(UInt8)
   case body(UInt8)
@@ -323,13 +359,15 @@ public enum ACSimParameter: Sendable {
   case level(UInt8)
 }
 
-public enum AcousticProParameter: Sendable {
+// MARK: - AcousticPro
+
+public enum AcousticProParameter: Sendable, Hashable {
   case type(AcousticProType)
   /// Range is from -50 to 50 mapped to 0..100.
   case bass(UInt8)
   /// Range is from -50 to 50 mapped to 0..100.
   case middle(UInt8)
-  case midFrequency(AcousticProMidFrequency)
+  case midFrequency(EQFrequency)
   /// Range is from -50 to 50 mapped to 0..100.
   case treble(UInt8)
   /// Range is from -50 to 50 mapped to 0..100.
@@ -337,45 +375,16 @@ public enum AcousticProParameter: Sendable {
   case level(UInt8)
 }
 
-public enum AcousticProType: UInt8, Sendable, CaseIterable {
+public enum AcousticProType: UInt8, Sendable, Hashable, CaseIterable {
   case small = 0x00
   case medium = 0x01
   case bright = 0x02
   case power = 0x03
 }
 
-public enum AcousticProMidFrequency: UInt8, Sendable, CaseIterable {
-  case freq20Hz = 0x00
-  case freq25Hz = 0x01
-  case freq31Hz5 = 0x02
-  case freq40Hz = 0x03
-  case freq50Hz = 0x04
-  case freq63Hz = 0x05
-  case freq80Hz = 0x06
-  case freq100Hz = 0x07
-  case freq125Hz = 0x08
-  case freq160Hz = 0x09
-  case freq200Hz = 0x0A
-  case freq250Hz = 0x0B
-  case freq315Hz = 0x0C
-  case freq400Hz = 0x0D
-  case freq500Hz = 0x0E
-  case freq630Hz = 0x0F
-  case freq800Hz = 0x10
-  case freq1kHz = 0x11
-  case freq1k25Hz = 0x12
-  case freq1k6Hz = 0x13
-  case freq2kHz = 0x14
-  case freq2k5Hz = 0x15
-  case freq3k15Hz = 0x16
-  case freq4kHz = 0x17
-  case freq5kHz = 0x18
-  case freq6k3Hz = 0x19
-  case freq8kHz = 0x1A
-  case freq10kHz = 0x1B
-}
+// MARK: - WaveSynth
 
-public enum WaveSynthParameter: Sendable {
+public enum WaveSynthParameter: Sendable, Hashable {
   case type(WaveSynthType)
   case cutoff(UInt8)
   case resonance(UInt8)
@@ -386,31 +395,37 @@ public enum WaveSynthParameter: Sendable {
   case directMix(UInt8)
 }
 
-public enum WaveSynthType: UInt8, Sendable, CaseIterable {
+public enum WaveSynthType: UInt8, Sendable, Hashable, CaseIterable {
   case saw = 0x00
   case square = 0x01
 }
 
-public enum OctaverParameter: Sendable {
+// MARK: - Octaver
+
+public enum OctaverParameter: Sendable, Hashable {
   case range(OctaverRange)
   case level(UInt8)
   case directLevel(UInt8)
 }
 
-public enum OctaverRange: UInt8, Sendable, CaseIterable {
+public enum OctaverRange: UInt8, Sendable, Hashable, CaseIterable {
   case range1 = 0x00
   case range2 = 0x01
   case range3 = 0x02
   case range4 = 0x03
 }
 
-public enum HeavyOctaveParameter: Sendable {
+// MARK: - HeavyOctave
+
+public enum HeavyOctaveParameter: Sendable, Hashable {
   case octaveMinus1(UInt8)
   case octaveMinus2(UInt8)
   case directMix(UInt8)
 }
 
-public enum PitchShifterParameter: Sendable {
+// MARK: - PitchShifter
+
+public enum PitchShifterParameter: Sendable, Hashable {
   case voice(PitchShifterVoice)
   case ps1Mode(PitchShifterMode)
   /// Range is from -50 to 50 mapped to 0..100.
@@ -432,20 +447,21 @@ public enum PitchShifterParameter: Sendable {
   case directLevel(UInt8)
 }
 
-public enum PitchShifterVoice: UInt8, Sendable, CaseIterable {
+public enum PitchShifterVoice: UInt8, Sendable, Hashable, CaseIterable {
   case oneVoice = 0x00
   case twoVoice = 0x01
 }
 
-public enum PitchShifterMode: UInt8, Sendable, CaseIterable {
+public enum PitchShifterMode: UInt8, Sendable, Hashable, CaseIterable {
   case fast = 0x00
   case medium = 0x01
   case slow = 0x02
   case mono = 0x03
 }
 
-// TODO: Finish updating this enum.
-public enum HarmonistParameter: Sendable {
+// MARK: - Harmonist
+
+public enum HarmonistParameter: Sendable, Hashable {
   case voice(HarmonistVoice)
   case h1Harmony(UInt8)
   case h1PreDelay(UInt16)
@@ -457,12 +473,14 @@ public enum HarmonistParameter: Sendable {
   case directLevel(UInt8)
 }
 
-public enum HarmonistVoice: UInt8, Sendable, CaseIterable {
+public enum HarmonistVoice: UInt8, Sendable, Hashable, CaseIterable {
   case oneVoice = 0x00
   case twoVoice = 0x01
 }
 
-public enum HumanizerParameter: Sendable {
+// MARK: - Humanizer
+
+public enum HumanizerParameter: Sendable, Hashable {
   case mode(HumanizerMode)
   case vowel1(HumanizerWovel)
   case vowel2(HumanizerWovel)
@@ -473,12 +491,12 @@ public enum HumanizerParameter: Sendable {
   case level(UInt8)
 }
 
-public enum HumanizerMode: UInt8, Sendable, CaseIterable {
+public enum HumanizerMode: UInt8, Sendable, Hashable, CaseIterable {
   case picking = 0x00
   case auto = 0x01
 }
 
-public enum HumanizerWovel: UInt8, Sendable, CaseIterable {
+public enum HumanizerWovel: UInt8, Sendable, Hashable, CaseIterable {
   case a = 0x00
   case e = 0x01
   case i = 0x02
@@ -486,19 +504,25 @@ public enum HumanizerWovel: UInt8, Sendable, CaseIterable {
   case u = 0x04
 }
 
-public enum Phaser90EParameter: Sendable {
+// MARK: - Phaser90E
+
+public enum Phaser90EParameter: Sendable, Hashable {
   case scriptEnable(Bool)
   case speed(UInt8)
 }
 
-public enum Flanger117EParameter: Sendable {
+// MARK: - Flanger117E
+
+public enum Flanger117EParameter: Sendable, Hashable {
   case manual(UInt8)
   case width(UInt8)
   case speed(UInt8)
   case regen(UInt8)
 }
 
-public enum DC30Parameter: Sendable {
+// MARK: - DC30
+
+public enum DC30Parameter: Sendable, Hashable {
   case type(DC30Type)
   case inputVolume(UInt8)
   case intensity(UInt8)
@@ -508,12 +532,12 @@ public enum DC30Parameter: Sendable {
   case outputType(DC30OutputType)
 }
 
-public enum DC30Type: UInt8, Sendable, CaseIterable {
+public enum DC30Type: UInt8, Sendable, Hashable, CaseIterable {
   case chorus = 0x00
   case echo = 0x01
 }
 
-public enum DC30OutputType: UInt8, Sendable, CaseIterable {
+public enum DC30OutputType: UInt8, Sendable, Hashable, CaseIterable {
   case dPlusE = 0x00
   case dOverE = 0x01
 }

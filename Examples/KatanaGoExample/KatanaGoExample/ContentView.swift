@@ -13,6 +13,8 @@ struct ContentView: View {
   @State private var gain: Double = 50
   @State private var showBoostSettings = false
   @State private var showAmpSettings = false
+  @State private var showModSettings = false
+  @State private var showFxSettings = false
 
   var body: some View {
     VStack(spacing: 20) {
@@ -88,6 +90,26 @@ struct ContentView: View {
           .foregroundColor(.white)
           .cornerRadius(10)
       }
+      Button {
+        showModSettings = true
+      } label: {
+        Text("MOD Settings")
+          .frame(maxWidth: .infinity)
+          .padding()
+          .background(Color.purple)
+          .foregroundColor(.white)
+          .cornerRadius(10)
+      }
+      Button {
+        showFxSettings = true
+      } label: {
+        Text("FX Settings")
+          .frame(maxWidth: .infinity)
+          .padding()
+          .background(Color.green)
+          .foregroundColor(.white)
+          .cornerRadius(10)
+      }
 
     }
     .padding()
@@ -96,6 +118,12 @@ struct ContentView: View {
     }
     .sheet(isPresented: $showAmpSettings) {
       AmpView(viewModel: viewModel)
+    }
+    .sheet(isPresented: $showModSettings) {
+      ModFxView(viewModel: viewModel, mode: .mod)
+    }
+    .sheet(isPresented: $showFxSettings) {
+      ModFxView(viewModel: viewModel, mode: .fx)
     }
   }
 }

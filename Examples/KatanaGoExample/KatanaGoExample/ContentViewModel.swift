@@ -50,7 +50,7 @@ final class ContentViewModel {
     Task {
       do {
         print("🎸 Switching to Preset 1A...")
-        try await device.write(.changePreset(.preset1A))
+        try await device.write(.selectPreset(.preset1A))
       } catch {
         print("❌ Error: \(error)")
       }
@@ -62,7 +62,7 @@ final class ContentViewModel {
     Task {
       do {
         print("🎸 Switching to Preset 3A...")
-        try await device.write(.changePreset(.preset3A))
+        try await device.write(.selectPreset(.preset3A))
       } catch {
         print("❌ Error: \(error)")
       }
@@ -121,6 +121,30 @@ final class ContentViewModel {
       do {
         print("🎸 Updating Amp \(parameter)...")
         try await device.write(.amp(parameter))
+      } catch {
+        print("❌ Error: \(error)")
+      }
+    }
+  }
+
+  func updateMod(_ parameter: ModFxParameter) {
+    guard let device else { return }
+    Task {
+      do {
+        print("🎸 Updating MOD \(parameter)...")
+        try await device.write(.mod(parameter))
+      } catch {
+        print("❌ Error: \(error)")
+      }
+    }
+  }
+
+  func updateFx(_ parameter: ModFxParameter) {
+    guard let device else { return }
+    Task {
+      do {
+        print("🎸 Updating FX \(parameter)...")
+        try await device.write(.fx(parameter))
       } catch {
         print("❌ Error: \(error)")
       }

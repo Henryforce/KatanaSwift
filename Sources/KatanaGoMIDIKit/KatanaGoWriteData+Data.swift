@@ -7,12 +7,10 @@ extension KatanaGoWriteData {
     switch self {
 
     case .amp(let param):
-      // TODO: implement
-      let value = param.value & 0x7F
-      return finalizeSysex(address: param.address, data: [value])
+      return finalizeSysex(address: param.address, data: param.values)
 
     case .boost(let param):
-      return finalizeSysex(address: param.address, data: [param.value])
+      return finalizeSysex(address: param.address, data: param.values)
 
     case .mod(let param):
       return finalizeSysex(address: param.address, data: param.values)
@@ -52,8 +50,12 @@ extension KatanaGoWriteData {
     case .noiseGate(let param):
       return finalizeSysex(address: param.address, data: param.values)
 
-    case .changePreset(let preset):
-      return preset.bytes
+    case .selectPreset(let preset):
+      return finalizeSysex(address: [0x7f, 0x00, 0x01, 0x00], data: [0x00, preset.rawValue])
+
+    case .writePreset(let preset):
+      // NOTE: If the write preset does not work, remove the last byte from the data.
+      return finalizeSysex(address: [0x7f, 0x00, 0x01, 0x04], data: [0x00, preset.rawValue, 0x00])
     }
   }
 
@@ -72,19 +74,5 @@ extension KatanaGoWriteData {
       sum += Int(byte)
     }
     return UInt8((128 - (sum % 128)) % 128)
-  }
-
-  private func encode11Bit(_ value: Int) -> [UInt8] {
-    let hh = UInt8((value >> 7) & 0x7F)
-    let ll = UInt8(value & 0x7F)
-    return [hh, ll]
-  }
-}
-
-extension UInt16 {
-  func encode11Bit() -> [UInt8] {
-    let hh = UInt8((self >> 7) & 0x7F)
-    let ll = UInt8(self & 0x7F)
-    return [hh, ll]
   }
 }

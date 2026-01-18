@@ -1,5 +1,5 @@
 /// Parameters for the Amplifier block and front panel.
-public enum AmpParameter: Sendable {
+public enum AmpParameter: Sendable, Hashable {
   case ampType(AmpType)
   case gain(UInt8)
   case volume(UInt8)
@@ -11,7 +11,7 @@ public enum AmpParameter: Sendable {
 }
 
 /// Available amplifier types for the Katana GO.
-public enum AmpType: UInt8, Sendable, CaseIterable {
+public enum AmpType: UInt8, Sendable, Hashable, CaseIterable {
   case acoustic = 0x00
   case clean = 0x01
   case crunch = 0x02
