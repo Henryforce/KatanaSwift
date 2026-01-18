@@ -127,4 +127,28 @@ final class ContentViewModel {
     }
   }
 
+  func updateMod(_ parameter: ModFxParameter) {
+    guard let device else { return }
+    Task {
+      do {
+        print("🎸 Updating MOD \(parameter)...")
+        try await device.write(.mod(parameter))
+      } catch {
+        print("❌ Error: \(error)")
+      }
+    }
+  }
+
+  func updateFx(_ parameter: ModFxParameter) {
+    guard let device else { return }
+    Task {
+      do {
+        print("🎸 Updating FX \(parameter)...")
+        try await device.write(.fx(parameter))
+      } catch {
+        print("❌ Error: \(error)")
+      }
+    }
+  }
+
 }

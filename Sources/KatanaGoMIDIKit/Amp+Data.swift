@@ -14,13 +14,13 @@ extension AmpParameter {
     }
   }
 
-  var value: UInt8 {
+  var values: [UInt8] {
     switch self {
-    case .ampType(let type): return type.rawValue
+    case .ampType(let type): return [type.rawValue]
     case .gain(let value), .volume(let value), .bass(let value), .middle(let value),
       .treble(let value), .presence(let value):
-      return value
-    case .variation(let value): return value ? 0x01 : 0x00
+      return [value]
+    case .variation(let value): return [value ? 0x01 : 0x00]
     }
   }
 }

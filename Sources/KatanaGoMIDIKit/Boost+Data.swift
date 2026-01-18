@@ -15,17 +15,17 @@ extension BoostParameter {
     }
   }
 
-  var value: UInt8 {
+  var values: [UInt8] {
     switch self {
-    case .enable(let value): return value ? 1 : 0
-    case .type(let type): return type.rawValue
-    case .drive(let value): return value & 0x7F
-    case .bottom(let value): return value & 0x7F
-    case .tone(let value): return value & 0x7F
-    case .soloSwitchEnable(let value): return value ? 1 : 0
-    case .soloLevel(let value): return value & 0x7F
-    case .effectLevel(let value): return value & 0x7F
-    case .directMix(let value): return value & 0x7F
+    case .enable(let value): return [value ? 1 : 0]
+    case .type(let type): return [type.rawValue]
+    case .drive(let value): return [value & 0x7F]
+    case .bottom(let value): return [value & 0x7F]
+    case .tone(let value): return [value & 0x7F]
+    case .soloSwitchEnable(let value): return [value ? 1 : 0]
+    case .soloLevel(let value): return [value & 0x7F]
+    case .effectLevel(let value): return [value & 0x7F]
+    case .directMix(let value): return [value & 0x7F]
     }
   }
 }
