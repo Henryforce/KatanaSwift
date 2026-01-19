@@ -68,7 +68,8 @@ public actor KatanaGoMIDIKit: KatanaGo {
         // Yield common MIDI command data.
         // For Boss devices, we often look for sysex.
         // For now, we wrap the whole sysex payload.
-        continuation?.yield(.midiCommand(command: 0xF0, data: sysEx.data))
+        // continuation?.yield(.midiCommand(command: 0xF0, data: sysEx.data))
+        print("MIDIKit: \(sysEx.data)")
       }
     }
   }

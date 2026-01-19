@@ -26,7 +26,7 @@ public enum ParametricEQParameter: Sendable, Hashable {
 }
 
 public enum GraphicEQParameter: Sendable, Hashable {
-  /// Range is from -12dB to 12dB mapped to 0..12..24 with steps of 0.5dB.
+  /// Range is from -12dB to 12dB mapped to 0..24..48 with steps of 0.5dB.
   case band31Hz(UInt8)
   case band62Hz(UInt8)
   case band125Hz(UInt8)

@@ -92,4 +92,3 @@ struct ModFxView: View {
     }
   }
 }
-
