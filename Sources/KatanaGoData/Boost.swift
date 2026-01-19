@@ -11,6 +11,36 @@ public enum BoostParameter: Sendable, Hashable {
   case directMix(UInt8)
 }
 
+/// The data bank representing the booster parameters.
+public struct BoostBank: Sendable, Hashable {
+  public let status: Bool
+  public let type: BoostType
+  public let drive: UInt8
+  public let bottom: UInt8
+  public let tone: UInt8
+  public let soloSwitchStatus: Bool
+  public let soloLevel: UInt8
+  public let effectLevel: UInt8
+  public let directMix: UInt8
+
+  public init(
+    status: Bool, type: BoostType, drive: UInt8, bottom: UInt8, tone: UInt8, soloSwitchStatus: Bool,
+    soloLevel: UInt8, effectLevel: UInt8, directMix: UInt8
+  ) {
+    self.status = status
+    self.type = type
+    self.drive = drive
+    self.bottom = bottom
+    self.tone = tone
+    self.soloSwitchStatus = soloSwitchStatus
+    self.soloLevel = soloLevel
+    self.effectLevel = effectLevel
+    self.directMix = directMix
+  }
+}
+
+// MARK - Types
+
 /// Available booster types for the Katana GO.
 public enum BoostType: UInt8, Sendable, Hashable, CaseIterable {
   case midBoost = 0x00
