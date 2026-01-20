@@ -40,5 +40,3 @@ Sent after manually changing preset to 2A:
 [16, 1, 5, 13, 18, 32, 3, 64, 0, 1, 30, 50, 76] : NS
 [16, 1, 5, 13, 18, 32, 3, 80, 0, 0, 0, 0, 50, 50, 41] : UNKNOWN
 [16, 1, 5, 13, 18, 0, 0, 0, 0, 3, 125] : Preset message finished?
-
-Observations: PRESET NAME seems to be maximum of 16 bytes
