@@ -13,6 +13,8 @@ public actor KatanaGoMIDIKit: KatanaGo {
 
   private var continuation: AsyncStream<KatanaGoReadData>.Continuation?
 
+  private var dataBank = DataBank()
+
   public init(endpoint: MIDIEndpointProtocol, midiManager: MIDIManagerProtocol) {
     self.endpoint = endpoint
     self.midiManager = midiManager
@@ -63,6 +65,7 @@ public actor KatanaGoMIDIKit: KatanaGo {
   }
 
   private func handleMIDIEvents(_ events: [MIDIEvent]) {
+    print("-----------------")
     for event in events {
       if case .sysEx7(let sysEx) = event {
         // Yield common MIDI command data.
@@ -71,7 +74,21 @@ public actor KatanaGoMIDIKit: KatanaGo {
         continuation?.yield(.midiCommand(command: 0xF0, data: sysEx.data))
 
         // Uncomment to print messages.
-        // print("MIDIKit: \(sysEx.data)")
+        print("SysEx: \(sysEx.data)")
+
+        let status = KatanaGoMIDIParser.parse(sysEx.data, into: &dataBank)
+        switch status {
+          case .invalidMessageLength:
+            print("Invalid message length")
+          case .invalidMessageCommand:
+            print("Invalid message command")
+          case .start:
+            print("Start")
+          case .processed:
+            print("Processed")
+          case .end:
+            print("End")
+        }
       }
     }
   }
