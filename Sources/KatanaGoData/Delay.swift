@@ -17,6 +17,48 @@ public enum DelayParameter: Sendable, Hashable {
   case feedbackPhase(DelayPhase)
 }
 
+/// The data bank representing the delay parameters.
+public struct DelayBank: Sendable, Hashable {
+  public let status: Bool
+  public let type: DelayType
+  public let time: UInt16
+  public let feedback: UInt8
+  public let highCut: DelayHighCutFrequency
+  public let effectLevel: UInt8
+  public let directMix: UInt8
+  public let modulationRate: UInt8
+  public let modulationDepth: UInt8
+  public let modulationSwitchStatus: Bool
+  public let tapTimePercentage: UInt8
+  public let filterStatus: Bool
+  public let filter: DelayFilterRange
+  public let delayPhase: DelayPhase
+  public let feedbackPhase: DelayPhase
+
+  public init(
+    status: Bool, type: DelayType, time: UInt16, feedback: UInt8, highCut: DelayHighCutFrequency,
+    effectLevel: UInt8, directMix: UInt8, modulationRate: UInt8, modulationDepth: UInt8,
+    modulationSwitchStatus: Bool, tapTimePercentage: UInt8, filterStatus: Bool,
+    filter: DelayFilterRange, delayPhase: DelayPhase, feedbackPhase: DelayPhase
+  ) {
+    self.status = status
+    self.type = type
+    self.time = time
+    self.feedback = feedback
+    self.highCut = highCut
+    self.effectLevel = effectLevel
+    self.directMix = directMix
+    self.modulationRate = modulationRate
+    self.modulationDepth = modulationDepth
+    self.modulationSwitchStatus = modulationSwitchStatus
+    self.tapTimePercentage = tapTimePercentage
+    self.filterStatus = filterStatus
+    self.filter = filter
+    self.delayPhase = delayPhase
+    self.feedbackPhase = feedbackPhase
+  }
+}
+
 /// Available delay types for the Katana GO.
 public enum DelayType: UInt8, Sendable, Hashable, CaseIterable {
   case digital = 0x00

@@ -4,6 +4,8 @@ struct DataBank: Sendable, Hashable {
   var presetNameBank = [UInt8](repeating: 0x00, count: 23)
   var signalChainBank = [UInt8](repeating: 0x00, count: 3)
   var preampBank = [UInt8](repeating: 0x00, count: 14)
+  /// The bank of data for the effects on/off switch.
+  /// The order is: BOOSTER, MOD, FX, DELAY1, DELAY2, REVERB, BASS
   var effectsOnOffBank = [UInt8](repeating: 0x00, count: 7)
   var boosterBank = [UInt8](repeating: 0x00, count: 8)
   var bassBank = [UInt8](repeating: 0x00, count: 12)
