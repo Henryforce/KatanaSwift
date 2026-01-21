@@ -103,7 +103,7 @@ struct KatanaGoMIDIKitTests {
       midiManager.managedOutputConnections[outputTag] as? MockMIDIOutputConnection
     outputConnection?.sentEvents.removeAll()  // Clear startup data
 
-    try await katana.write(.changePreset(.preset1A))
+    try await katana.write(.selectPreset(.preset1A))
 
     #expect(outputConnection?.sentEvents.count == 1)
     if case .sysEx7(let sysEx) = outputConnection?.sentEvents.first {
