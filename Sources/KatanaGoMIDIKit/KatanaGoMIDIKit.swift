@@ -78,16 +78,16 @@ public actor KatanaGoMIDIKit: KatanaGo {
 
         let status = KatanaGoMIDIParser.parse(sysEx.data, into: &dataBank)
         switch status {
-          case .invalidMessageLength:
-            print("Invalid message length")
-          case .invalidMessageCommand:
-            print("Invalid message command")
-          case .start:
-            print("Start")
-          case .processed:
-            print("Processed")
-          case .end:
-            print("End")
+        case .invalidMessageLength:
+          print("Invalid message length")
+        case .invalidMessageCommand:
+          print("Invalid message command")
+        case .start:
+          print("Start")
+        case .processed:
+          print("Processed")
+        case .end:
+          print("End")
         }
       }
     }

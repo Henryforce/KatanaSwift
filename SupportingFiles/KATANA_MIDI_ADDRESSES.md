@@ -1,6 +1,6 @@
 # KATANA MIDI ADDRESSES
 
-## TODO: revisit BASS and EQ parameters ##
+The following addresses are for the Katana GO and the address column is in hexadecimal string representation (20003000 is equivalent to a byte array of [0x20, 0x00, 0x30, 0x00]).
 
 | Name | Address (Desc) | Max value | Value type |
 | :--- | :--- | :--- | :--- |
@@ -40,6 +40,7 @@
 | SOLO EQ: Hi Cut | 20016008 | 14 | EQ_HI_CUT (UInt8) |
 | SOLO EQ: Level | 20016009 | 24 | UInt8 |
 | EQ1: On/Off | 20026000 | 1 | Boolean |
+| Signal chain position: EQ1 | 20026001 | 1 | EQPosition |
 | EQ1: Selection | 20026002 | 1 | EQ_TYPE (UInt8) |
 | PEQ1: Low Cut | 20030000 | 17 | EQ_LOW_CUT (UInt8) |
 | PEQ1: Low Gain | 20030001 | 40 | UInt8 |
@@ -64,6 +65,7 @@
 | GEQ1: 16KHz | 20032009 | 48 | UInt8 |
 | GEQ1: Level | 2003200A | 48 | UInt8 |
 | EQ2: On/Off | 20027000 | 1 | Boolean |
+| Signal chain position: EQ2 | 20027001 | 1 | EQPosition |
 | EQ2: Selection | 20027002 | 1 | EQ_TYPE (UInt8) |
 | PEQ2: Low Cut | 20031000 | 17 | EQ_LOW_CUT (UInt8) |
 | PEQ2: Low Gain | 20031001 | 40 | UInt8 |
@@ -587,8 +589,6 @@
 | Contour 3: Contour Shape | 20023000 | 2 | CONTOUR_SHAPE (UInt8) |
 | Contour 3: Freq Shift | 20023001 | 100 | UInt8 |
 | Cabinet Resonance | 20001001 | 3 | CABINET_RESONANCE (UInt8) |
-| Signal chain position: EQ1 | 20026001 | 30 | UInt8 |
-| Signal chain position: EQ2 | 20027001 | 30 | UInt8 |
 | Signal chain : Pedal FX | 20024000 | 30 | UInt8 |
 | Signal Chain order: Type 1~7 | 20001000 | 6 | UInt8 |
 | Tuner: On/Off | 10000000 | 1 | Boolean |

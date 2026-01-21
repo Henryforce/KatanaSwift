@@ -1,12 +1,12 @@
 import Foundation
 
 enum DataBankParseStatus {
-    case invalidMessageLength
-    case invalidMessageCommand
-    case start
-    case processed
-    case end
-  }
+  case invalidMessageLength
+  case invalidMessageCommand
+  case start
+  case processed
+  case end
+}
 
 /// A parser for Katana Go MIDI messages.
 enum KatanaGoMIDIParser {

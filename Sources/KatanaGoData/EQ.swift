@@ -1,5 +1,6 @@
 public enum EQParameter: Sendable, Hashable {
   case enable(Bool)
+  case position(EQPosition)
   case type(EQType)
   case parametric(ParametricEQParameter)
   case graphic(GraphicEQParameter)
@@ -22,7 +23,6 @@ public enum ParametricEQParameter: Sendable, Hashable {
   case highCut(EQHighCut)
   /// Range is from -20 to 20 mapped to 0..40.
   case level(UInt8)
-  case position(EQPosition)
 }
 
 public enum GraphicEQParameter: Sendable, Hashable {
@@ -38,20 +38,22 @@ public enum GraphicEQParameter: Sendable, Hashable {
   case band8kHz(UInt8)
   case band16kHz(UInt8)
   case level(UInt8)
-  case position(EQPosition)
 }
 
 /// The data bank representing the equalizer parameters.
 public struct EQBank: Sendable, Hashable {
   public let status: Bool
+  public let position: EQPosition
   public let type: EQType
   public let parametric: ParametricEQBank
   public let graphic: GraphicEQBank
 
   public init(
-    status: Bool, type: EQType, parametric: ParametricEQBank, graphic: GraphicEQBank
+    status: Bool, position: EQPosition, type: EQType, parametric: ParametricEQBank,
+    graphic: GraphicEQBank
   ) {
     self.status = status
+    self.position = position
     self.type = type
     self.parametric = parametric
     self.graphic = graphic
@@ -76,12 +78,11 @@ public struct ParametricEQBank: Sendable, Hashable {
   public let highCut: EQHighCut
   /// Range is from -20 to 20 mapped to 0..40.
   public let level: UInt8
-  public let position: EQPosition
 
   public init(
     lowCut: EQLowCut, lowGain: UInt8, lowMidFreq: EQFrequency, lowMidQ: EQQ, lowMidGain: UInt8,
     highMidFreq: EQFrequency, highMidQ: EQQ, highMidGain: UInt8, highGain: UInt8,
-    highCut: EQHighCut, level: UInt8, position: EQPosition
+    highCut: EQHighCut, level: UInt8
   ) {
     self.lowCut = lowCut
     self.lowGain = lowGain
@@ -94,7 +95,6 @@ public struct ParametricEQBank: Sendable, Hashable {
     self.highGain = highGain
     self.highCut = highCut
     self.level = level
-    self.position = position
   }
 }
 
@@ -112,12 +112,11 @@ public struct GraphicEQBank: Sendable, Hashable {
   public let band8kHz: UInt8
   public let band16kHz: UInt8
   public let level: UInt8
-  public let position: EQPosition
 
   public init(
     band31Hz: UInt8, band62Hz: UInt8, band125Hz: UInt8, band250Hz: UInt8, band500Hz: UInt8,
     band1kHz: UInt8, band2kHz: UInt8, band4kHz: UInt8, band8kHz: UInt8, band16kHz: UInt8,
-    level: UInt8, position: EQPosition
+    level: UInt8
   ) {
     self.band31Hz = band31Hz
     self.band62Hz = band62Hz
@@ -130,7 +129,6 @@ public struct GraphicEQBank: Sendable, Hashable {
     self.band8kHz = band8kHz
     self.band16kHz = band16kHz
     self.level = level
-    self.position = position
   }
 }
 

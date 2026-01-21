@@ -57,7 +57,7 @@ struct DataBank: Sendable, Hashable {
     } else if incomingStart == DataBank.staticAddressToInt([0, 0, 0, 0]) {
       return .end
     }
-    
+
     // Bank base address: 20000000
     DataBank.applyUpdate(
       &presetNameBank, bankBase: [32, 0, 0, 0], incomingData: data, incomingStart: incomingStart)
