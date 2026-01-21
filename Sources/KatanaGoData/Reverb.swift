@@ -15,6 +15,37 @@ public enum ReverbParameter: Sendable, Hashable {
   case springSensitivity(UInt8)
 }
 
+/// The data bank representing the reverb parameters.
+public struct ReverbBank: Sendable, Hashable {
+  public let status: Bool
+  public let type: ReverbType
+  public let time: UInt8
+  public let preDelay: UInt16
+  public let lowCut: EQLowCut
+  public let highCut: EQHighCut
+  public let density: UInt8
+  public let effectLevel: UInt8
+  public let directMix: UInt8
+  public let springSensitivity: UInt8
+
+  public init(
+    status: Bool, type: ReverbType, time: UInt8, preDelay: UInt16, lowCut: EQLowCut,
+    highCut: EQHighCut, density: UInt8, effectLevel: UInt8, directMix: UInt8,
+    springSensitivity: UInt8
+  ) {
+    self.status = status
+    self.type = type
+    self.time = time
+    self.preDelay = preDelay
+    self.lowCut = lowCut
+    self.highCut = highCut
+    self.density = density
+    self.effectLevel = effectLevel
+    self.directMix = directMix
+    self.springSensitivity = springSensitivity
+  }
+}
+
 public enum ReverbType: UInt8, Sendable, Hashable, CaseIterable {
   case room = 0x01
   case hall = 0x03

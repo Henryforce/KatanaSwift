@@ -4,6 +4,8 @@ struct DataBank: Sendable, Hashable {
   var presetNameBank = [UInt8](repeating: 0x00, count: 23)
   var signalChainBank = [UInt8](repeating: 0x00, count: 3)
   var preampBank = [UInt8](repeating: 0x00, count: 14)
+  /// The bank of data for the effects on/off switch.
+  /// The order is: BOOSTER, MOD, FX, DELAY1, DELAY2, REVERB, BASS
   var effectsOnOffBank = [UInt8](repeating: 0x00, count: 7)
   var boosterBank = [UInt8](repeating: 0x00, count: 8)
   var bassBank = [UInt8](repeating: 0x00, count: 12)
@@ -34,7 +36,7 @@ struct DataBank: Sendable, Hashable {
   /// - Parameters:
   ///   - data: The data to update the bank with.
   ///   - address: The address to start the update at.
-  mutating func update(using data: [UInt8], startingAt address: [UInt8]) {
+  mutating func update(using data: [UInt8], startingAt address: [UInt8]) -> DataBankParseStatus {
     let incomingStart = DataBank.staticAddressToInt(address)
 
     // The following parsing is simple but it basically goes through all available banks and
@@ -48,8 +50,14 @@ struct DataBank: Sendable, Hashable {
     // remaining banks.
 
     // Bank base address: 7F000100
-    DataBank.applyUpdate(
-      &presetBank, bankBase: [127, 0, 1, 0], incomingData: data, incomingStart: incomingStart)
+    if incomingStart == DataBank.staticAddressToInt([127, 0, 1, 0]) {
+      DataBank.applyUpdate(
+        &presetBank, bankBase: [127, 0, 1, 0], incomingData: data, incomingStart: incomingStart)
+      return .start
+    } else if incomingStart == DataBank.staticAddressToInt([0, 0, 0, 0]) {
+      return .end
+    }
+
     // Bank base address: 20000000
     DataBank.applyUpdate(
       &presetNameBank, bankBase: [32, 0, 0, 0], incomingData: data, incomingStart: incomingStart)
@@ -136,6 +144,8 @@ struct DataBank: Sendable, Hashable {
     // Bank base address: 20034000
     DataBank.applyUpdate(
       &nsBank, bankBase: [32, 3, 64, 0], incomingData: data, incomingStart: incomingStart)
+
+    return .processed
   }
 
   /// Applies an update to a data bank.

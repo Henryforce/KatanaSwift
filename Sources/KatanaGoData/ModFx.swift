@@ -31,6 +31,82 @@ public enum ModFxParameter: Sendable, Hashable {
   case dc30(DC30Parameter)
 }
 
+/// The data bank representing the MOD/FX parameters.
+public struct ModFxBank: Sendable, Hashable {
+  public let status: Bool
+  public let type: ModFxType
+  public let chorus: ChorusBank
+  public let flanger: FlangerBank
+  public let phaser: PhaserBank
+  public let uniVibe: UniVibeBank
+  public let tremolo: TremoloBank
+  public let vibrato: VibratoBank
+  public let rotary: RotaryBank
+  public let ringMod: RingModBank
+  public let slowGear: SlowGearBank
+  public let slicer: SlicerBank
+  public let comp: CompBank
+  public let limiter: LimiterBank
+  public let tWah: TWahBank
+  public let autoWah: AutoWahBank
+  public let graphicEQ: ModFxGraphicEQBank
+  public let parametricEQ: ModFxParametricEQBank
+  public let guitarSim: GuitarSimBank
+  public let acSim: ACSimBank
+  public let acousticPro: AcousticProBank
+  public let waveSynth: WaveSynthBank
+  public let octaver: OctaverBank
+  public let heavyOctave: HeavyOctaveBank
+  public let pitchShifter: PitchShifterBank
+  public let harmonist: HarmonistBank
+  public let humanizer: HumanizerBank
+  public let phaser90E: Phaser90EBank
+  public let flanger117E: Flanger117EBank
+  public let dc30: DC30Bank
+
+  public init(
+    status: Bool, type: ModFxType, chorus: ChorusBank, flanger: FlangerBank, phaser: PhaserBank,
+    uniVibe: UniVibeBank, tremolo: TremoloBank, vibrato: VibratoBank, rotary: RotaryBank,
+    ringMod: RingModBank, slowGear: SlowGearBank, slicer: SlicerBank, comp: CompBank,
+    limiter: LimiterBank, tWah: TWahBank, autoWah: AutoWahBank, graphicEQ: ModFxGraphicEQBank,
+    parametricEQ: ModFxParametricEQBank, guitarSim: GuitarSimBank, acSim: ACSimBank,
+    acousticPro: AcousticProBank, waveSynth: WaveSynthBank, octaver: OctaverBank,
+    heavyOctave: HeavyOctaveBank, pitchShifter: PitchShifterBank, harmonist: HarmonistBank,
+    humanizer: HumanizerBank, phaser90E: Phaser90EBank, flanger117E: Flanger117EBank, dc30: DC30Bank
+  ) {
+    self.status = status
+    self.type = type
+    self.chorus = chorus
+    self.flanger = flanger
+    self.phaser = phaser
+    self.uniVibe = uniVibe
+    self.tremolo = tremolo
+    self.vibrato = vibrato
+    self.rotary = rotary
+    self.ringMod = ringMod
+    self.slowGear = slowGear
+    self.slicer = slicer
+    self.comp = comp
+    self.limiter = limiter
+    self.tWah = tWah
+    self.autoWah = autoWah
+    self.graphicEQ = graphicEQ
+    self.parametricEQ = parametricEQ
+    self.guitarSim = guitarSim
+    self.acSim = acSim
+    self.acousticPro = acousticPro
+    self.waveSynth = waveSynth
+    self.octaver = octaver
+    self.heavyOctave = heavyOctave
+    self.pitchShifter = pitchShifter
+    self.harmonist = harmonist
+    self.humanizer = humanizer
+    self.phaser90E = phaser90E
+    self.flanger117E = flanger117E
+    self.dc30 = dc30
+  }
+}
+
 // TODO: re-audit these values.
 /// Available MOD/FX types for the Katana GO.
 public enum ModFxType: UInt8, Sendable, Hashable, CaseIterable {
@@ -81,6 +157,36 @@ public enum ChorusParameter: Sendable, Hashable {
   case directMix(UInt8)
 }
 
+/// The data bank representing the chorus parameters.
+public struct ChorusBank: Sendable, Hashable {
+  public let crossoverFrequency: UInt8
+  public let lowRate: UInt8
+  public let lowDepth: UInt8
+  public let lowPreDelay: UInt8
+  public let lowLevel: UInt8
+  public let highRate: UInt8
+  public let highDepth: UInt8
+  public let highPreDelay: UInt8
+  public let highLevel: UInt8
+  public let directMix: UInt8
+
+  public init(
+    crossoverFrequency: UInt8, lowRate: UInt8, lowDepth: UInt8, lowPreDelay: UInt8, lowLevel: UInt8,
+    highRate: UInt8, highDepth: UInt8, highPreDelay: UInt8, highLevel: UInt8, directMix: UInt8
+  ) {
+    self.crossoverFrequency = crossoverFrequency
+    self.lowRate = lowRate
+    self.lowDepth = lowDepth
+    self.lowPreDelay = lowPreDelay
+    self.lowLevel = lowLevel
+    self.highRate = highRate
+    self.highDepth = highDepth
+    self.highPreDelay = highPreDelay
+    self.highLevel = highLevel
+    self.directMix = directMix
+  }
+}
+
 // MARK: - Flanger
 
 public enum FlangerParameter: Sendable, Hashable {
@@ -91,6 +197,30 @@ public enum FlangerParameter: Sendable, Hashable {
   case lowCut(FlangerLowCut)
   case effectLevel(UInt8)
   case directLevel(UInt8)
+}
+
+/// The data bank representing the flanger parameters.
+public struct FlangerBank: Sendable, Hashable {
+  public let rate: UInt8
+  public let depth: UInt8
+  public let manual: UInt8
+  public let resonance: UInt8
+  public let lowCut: FlangerLowCut
+  public let effectLevel: UInt8
+  public let directLevel: UInt8
+
+  public init(
+    rate: UInt8, depth: UInt8, manual: UInt8, resonance: UInt8, lowCut: FlangerLowCut,
+    effectLevel: UInt8, directLevel: UInt8
+  ) {
+    self.rate = rate
+    self.depth = depth
+    self.manual = manual
+    self.resonance = resonance
+    self.lowCut = lowCut
+    self.effectLevel = effectLevel
+    self.directLevel = directLevel
+  }
 }
 
 public enum FlangerLowCut: UInt8, Sendable, Hashable, CaseIterable {
@@ -120,6 +250,32 @@ public enum PhaserParameter: Sendable, Hashable {
   case directLevel(UInt8)
 }
 
+/// The data bank representing the phaser parameters.
+public struct PhaserBank: Sendable, Hashable {
+  public let type: PhaserType
+  public let rate: UInt8
+  public let depth: UInt8
+  public let manual: UInt8
+  public let resonance: UInt8
+  public let stepRate: UInt8
+  public let effectLevel: UInt8
+  public let directLevel: UInt8
+
+  public init(
+    type: PhaserType, rate: UInt8, depth: UInt8, manual: UInt8, resonance: UInt8, stepRate: UInt8,
+    effectLevel: UInt8, directLevel: UInt8
+  ) {
+    self.type = type
+    self.rate = rate
+    self.depth = depth
+    self.manual = manual
+    self.resonance = resonance
+    self.stepRate = stepRate
+    self.effectLevel = effectLevel
+    self.directLevel = directLevel
+  }
+}
+
 public enum PhaserType: UInt8, Sendable, Hashable, CaseIterable {
   case fourStage = 0x00
   case eightStage = 0x01
@@ -135,6 +291,19 @@ public enum UniVibeParameter: Sendable, Hashable {
   case level(UInt8)
 }
 
+/// The data bank representing the univibe parameters.
+public struct UniVibeBank: Sendable, Hashable {
+  public let rate: UInt8
+  public let depth: UInt8
+  public let level: UInt8
+
+  public init(rate: UInt8, depth: UInt8, level: UInt8) {
+    self.rate = rate
+    self.depth = depth
+    self.level = level
+  }
+}
+
 // MARK: - Tremolo
 
 public enum TremoloParameter: Sendable, Hashable {
@@ -142,6 +311,21 @@ public enum TremoloParameter: Sendable, Hashable {
   case rate(UInt8)
   case depth(UInt8)
   case level(UInt8)
+}
+
+/// The data bank representing the tremolo parameters.
+public struct TremoloBank: Sendable, Hashable {
+  public let waveShape: UInt8
+  public let rate: UInt8
+  public let depth: UInt8
+  public let level: UInt8
+
+  public init(waveShape: UInt8, rate: UInt8, depth: UInt8, level: UInt8) {
+    self.waveShape = waveShape
+    self.rate = rate
+    self.depth = depth
+    self.level = level
+  }
 }
 
 // MARK: - Vibrato
@@ -152,12 +336,38 @@ public enum VibratoParameter: Sendable, Hashable {
   case level(UInt8)
 }
 
+/// The data bank representing the vibrato parameters.
+public struct VibratoBank: Sendable, Hashable {
+  public let rate: UInt8
+  public let depth: UInt8
+  public let level: UInt8
+
+  public init(rate: UInt8, depth: UInt8, level: UInt8) {
+    self.rate = rate
+    self.depth = depth
+    self.level = level
+  }
+}
+
 // MARK: - Rotary
 
 public enum RotaryParameter: Sendable, Hashable {
   case rate(UInt8)
   case depth(UInt8)
   case level(UInt8)
+}
+
+/// The data bank representing the rotary parameters.
+public struct RotaryBank: Sendable, Hashable {
+  public let rate: UInt8
+  public let depth: UInt8
+  public let level: UInt8
+
+  public init(rate: UInt8, depth: UInt8, level: UInt8) {
+    self.rate = rate
+    self.depth = depth
+    self.level = level
+  }
 }
 
 // MARK: - RingMod
@@ -167,6 +377,21 @@ public enum RingModParameter: Sendable, Hashable {
   case frequency(UInt8)
   case effectLevel(UInt8)
   case directMix(UInt8)
+}
+
+/// The data bank representing the ring modulator parameters.
+public struct RingModBank: Sendable, Hashable {
+  public let mode: RingModMode
+  public let frequency: UInt8
+  public let effectLevel: UInt8
+  public let directMix: UInt8
+
+  public init(mode: RingModMode, frequency: UInt8, effectLevel: UInt8, directMix: UInt8) {
+    self.mode = mode
+    self.frequency = frequency
+    self.effectLevel = effectLevel
+    self.directMix = directMix
+  }
 }
 
 public enum RingModMode: UInt8, Sendable, Hashable, CaseIterable {
@@ -182,6 +407,19 @@ public enum SlowGearParameter: Sendable, Hashable {
   case level(UInt8)
 }
 
+/// The data bank representing the slow gear parameters.
+public struct SlowGearBank: Sendable, Hashable {
+  public let sens: UInt8
+  public let riseTime: UInt8
+  public let level: UInt8
+
+  public init(sens: UInt8, riseTime: UInt8, level: UInt8) {
+    self.sens = sens
+    self.riseTime = riseTime
+    self.level = level
+  }
+}
+
 // MARK: - Slicer
 
 public enum SlicerParameter: Sendable, Hashable {
@@ -193,6 +431,25 @@ public enum SlicerParameter: Sendable, Hashable {
   case directMix(UInt8)
 }
 
+/// The data bank representing the slicer parameters.
+public struct SlicerBank: Sendable, Hashable {
+  public let pattern: UInt8
+  public let rate: UInt8
+  public let triggerSens: UInt8
+  public let effectLevel: UInt8
+  public let directMix: UInt8
+
+  public init(
+    pattern: UInt8, rate: UInt8, triggerSens: UInt8, effectLevel: UInt8, directMix: UInt8
+  ) {
+    self.pattern = pattern
+    self.rate = rate
+    self.triggerSens = triggerSens
+    self.effectLevel = effectLevel
+    self.directMix = directMix
+  }
+}
+
 // MARK: - Comp
 
 public enum CompParameter: Sendable, Hashable {
@@ -201,6 +458,23 @@ public enum CompParameter: Sendable, Hashable {
   case attack(UInt8)
   case tone(UInt8)
   case level(UInt8)
+}
+
+/// The data bank representing the compressor parameters.
+public struct CompBank: Sendable, Hashable {
+  public let type: CompType
+  public let sustain: UInt8
+  public let attack: UInt8
+  public let tone: UInt8
+  public let level: UInt8
+
+  public init(type: CompType, sustain: UInt8, attack: UInt8, tone: UInt8, level: UInt8) {
+    self.type = type
+    self.sustain = sustain
+    self.attack = attack
+    self.tone = tone
+    self.level = level
+  }
 }
 
 public enum CompType: UInt8, Sendable, Hashable, CaseIterable {
@@ -222,6 +496,28 @@ public enum LimiterParameter: Sendable, Hashable {
   case ratio(LimiterRatio)
   case release(UInt8)
   case level(UInt8)
+}
+
+/// The data bank representing the limiter parameters.
+public struct LimiterBank: Sendable, Hashable {
+  public let type: LimiterType
+  public let attack: UInt8
+  public let threshold: UInt8
+  public let ratio: LimiterRatio
+  public let release: UInt8
+  public let level: UInt8
+
+  public init(
+    type: LimiterType, attack: UInt8, threshold: UInt8, ratio: LimiterRatio, release: UInt8,
+    level: UInt8
+  ) {
+    self.type = type
+    self.attack = attack
+    self.threshold = threshold
+    self.ratio = ratio
+    self.release = release
+    self.level = level
+  }
 }
 
 public enum LimiterType: UInt8, Sendable, Hashable, CaseIterable {
@@ -270,6 +566,30 @@ public enum TWahParameter: Sendable, Hashable {
   case directLevel(UInt8)
 }
 
+/// The data bank representing the T-Wah parameters.
+public struct TWahBank: Sendable, Hashable {
+  public let mode: WahMode
+  public let polarity: TWahPolarity
+  public let sens: UInt8
+  public let frequency: UInt8
+  public let peak: UInt8
+  public let effectLevel: UInt8
+  public let directLevel: UInt8
+
+  public init(
+    mode: WahMode, polarity: TWahPolarity, sens: UInt8, frequency: UInt8, peak: UInt8,
+    effectLevel: UInt8, directLevel: UInt8
+  ) {
+    self.mode = mode
+    self.polarity = polarity
+    self.sens = sens
+    self.frequency = frequency
+    self.peak = peak
+    self.effectLevel = effectLevel
+    self.directLevel = directLevel
+  }
+}
+
 public enum TWahPolarity: UInt8, Sendable, Hashable, CaseIterable {
   case down = 0x00
   case up = 0x01
@@ -287,6 +607,30 @@ public enum AutoWahParameter: Sendable, Hashable {
   case directLevel(UInt8)
 }
 
+/// The data bank representing the auto wah parameters.
+public struct AutoWahBank: Sendable, Hashable {
+  public let mode: WahMode
+  public let frequency: UInt8
+  public let peak: UInt8
+  public let rate: UInt8
+  public let depth: UInt8
+  public let effectLevel: UInt8
+  public let directLevel: UInt8
+
+  public init(
+    mode: WahMode, frequency: UInt8, peak: UInt8, rate: UInt8, depth: UInt8, effectLevel: UInt8,
+    directLevel: UInt8
+  ) {
+    self.mode = mode
+    self.frequency = frequency
+    self.peak = peak
+    self.rate = rate
+    self.depth = depth
+    self.effectLevel = effectLevel
+    self.directLevel = directLevel
+  }
+}
+
 // MARK: - ModFxGraphicEQ
 
 public enum ModFxGraphicEQParameter: Sendable, Hashable {
@@ -302,6 +646,39 @@ public enum ModFxGraphicEQParameter: Sendable, Hashable {
   case band8kHz(UInt8)
   case band16kHz(UInt8)
   case level(UInt8)
+}
+
+/// The data bank representing the MOD/FX graphic equalizer parameters.
+public struct ModFxGraphicEQBank: Sendable, Hashable {
+  public let band31Hz: UInt8
+  public let band62Hz: UInt8
+  public let band125Hz: UInt8
+  public let band250Hz: UInt8
+  public let band500Hz: UInt8
+  public let band1kHz: UInt8
+  public let band2kHz: UInt8
+  public let band4kHz: UInt8
+  public let band8kHz: UInt8
+  public let band16kHz: UInt8
+  public let level: UInt8
+
+  public init(
+    band31Hz: UInt8, band62Hz: UInt8, band125Hz: UInt8, band250Hz: UInt8, band500Hz: UInt8,
+    band1kHz: UInt8, band2kHz: UInt8, band4kHz: UInt8, band8kHz: UInt8, band16kHz: UInt8,
+    level: UInt8
+  ) {
+    self.band31Hz = band31Hz
+    self.band62Hz = band62Hz
+    self.band125Hz = band125Hz
+    self.band250Hz = band250Hz
+    self.band500Hz = band500Hz
+    self.band1kHz = band1kHz
+    self.band2kHz = band2kHz
+    self.band4kHz = band4kHz
+    self.band8kHz = band8kHz
+    self.band16kHz = band16kHz
+    self.level = level
+  }
 }
 
 // MARK: - ModFxParametricEQ
@@ -325,6 +702,39 @@ public enum ModFxParametricEQParameter: Sendable, Hashable {
   case level(UInt8)
 }
 
+/// The data bank representing the MOD/FX parametric equalizer parameters.
+public struct ModFxParametricEQBank: Sendable, Hashable {
+  public let lowCut: EQLowCut
+  public let lowGain: UInt8
+  public let lowMidFreq: EQFrequency
+  public let lowMidQ: EQQ
+  public let lowMidGain: UInt8
+  public let highMidFreq: EQFrequency
+  public let highMidQ: EQQ
+  public let highMidGain: UInt8
+  public let highGain: UInt8
+  public let highCut: EQHighCut
+  public let level: UInt8
+
+  public init(
+    lowCut: EQLowCut, lowGain: UInt8, lowMidFreq: EQFrequency, lowMidQ: EQQ, lowMidGain: UInt8,
+    highMidFreq: EQFrequency, highMidQ: EQQ, highMidGain: UInt8, highGain: UInt8,
+    highCut: EQHighCut, level: UInt8
+  ) {
+    self.lowCut = lowCut
+    self.lowGain = lowGain
+    self.lowMidFreq = lowMidFreq
+    self.lowMidQ = lowMidQ
+    self.lowMidGain = lowMidGain
+    self.highMidFreq = highMidFreq
+    self.highMidQ = highMidQ
+    self.highMidGain = highMidGain
+    self.highGain = highGain
+    self.highCut = highCut
+    self.level = level
+  }
+}
+
 // MARK: - GuitarSim
 
 public enum GuitarSimParameter: Sendable, Hashable {
@@ -335,6 +745,23 @@ public enum GuitarSimParameter: Sendable, Hashable {
   case high(UInt8)
   case body(UInt8)
   case level(UInt8)
+}
+
+/// The data bank representing the guitar simulation parameters.
+public struct GuitarSimBank: Sendable, Hashable {
+  public let type: GuitarSimType
+  public let low: UInt8
+  public let high: UInt8
+  public let body: UInt8
+  public let level: UInt8
+
+  public init(type: GuitarSimType, low: UInt8, high: UInt8, body: UInt8, level: UInt8) {
+    self.type = type
+    self.low = low
+    self.high = high
+    self.body = body
+    self.level = level
+  }
 }
 
 public enum GuitarSimType: UInt8, Sendable, Hashable, CaseIterable {
@@ -359,6 +786,21 @@ public enum ACSimParameter: Sendable, Hashable {
   case level(UInt8)
 }
 
+/// The data bank representing the acoustic simulation parameters.
+public struct ACSimBank: Sendable, Hashable {
+  public let high: UInt8
+  public let body: UInt8
+  public let low: UInt8
+  public let level: UInt8
+
+  public init(high: UInt8, body: UInt8, low: UInt8, level: UInt8) {
+    self.high = high
+    self.body = body
+    self.low = low
+    self.level = level
+  }
+}
+
 // MARK: - AcousticPro
 
 public enum AcousticProParameter: Sendable, Hashable {
@@ -373,6 +815,30 @@ public enum AcousticProParameter: Sendable, Hashable {
   /// Range is from -50 to 50 mapped to 0..100.
   case presence(UInt8)
   case level(UInt8)
+}
+
+/// The data bank representing the acoustic pro parameters.
+public struct AcousticProBank: Sendable, Hashable {
+  public let type: AcousticProType
+  public let bass: UInt8
+  public let middle: UInt8
+  public let midFrequency: EQFrequency
+  public let treble: UInt8
+  public let presence: UInt8
+  public let level: UInt8
+
+  public init(
+    type: AcousticProType, bass: UInt8, middle: UInt8, midFrequency: EQFrequency, treble: UInt8,
+    presence: UInt8, level: UInt8
+  ) {
+    self.type = type
+    self.bass = bass
+    self.middle = middle
+    self.midFrequency = midFrequency
+    self.treble = treble
+    self.presence = presence
+    self.level = level
+  }
 }
 
 public enum AcousticProType: UInt8, Sendable, Hashable, CaseIterable {
@@ -395,6 +861,32 @@ public enum WaveSynthParameter: Sendable, Hashable {
   case directMix(UInt8)
 }
 
+/// The data bank representing the wave synth parameters.
+public struct WaveSynthBank: Sendable, Hashable {
+  public let type: WaveSynthType
+  public let cutoff: UInt8
+  public let resonance: UInt8
+  public let filterSens: UInt8
+  public let filterDecay: UInt8
+  public let filterDepth: UInt8
+  public let synthLevel: UInt8
+  public let directMix: UInt8
+
+  public init(
+    type: WaveSynthType, cutoff: UInt8, resonance: UInt8, filterSens: UInt8, filterDecay: UInt8,
+    filterDepth: UInt8, synthLevel: UInt8, directMix: UInt8
+  ) {
+    self.type = type
+    self.cutoff = cutoff
+    self.resonance = resonance
+    self.filterSens = filterSens
+    self.filterDecay = filterDecay
+    self.filterDepth = filterDepth
+    self.synthLevel = synthLevel
+    self.directMix = directMix
+  }
+}
+
 public enum WaveSynthType: UInt8, Sendable, Hashable, CaseIterable {
   case saw = 0x00
   case square = 0x01
@@ -406,6 +898,19 @@ public enum OctaverParameter: Sendable, Hashable {
   case range(OctaverRange)
   case level(UInt8)
   case directLevel(UInt8)
+}
+
+/// The data bank representing the octaver parameters.
+public struct OctaverBank: Sendable, Hashable {
+  public let range: OctaverRange
+  public let level: UInt8
+  public let directLevel: UInt8
+
+  public init(range: OctaverRange, level: UInt8, directLevel: UInt8) {
+    self.range = range
+    self.level = level
+    self.directLevel = directLevel
+  }
 }
 
 public enum OctaverRange: UInt8, Sendable, Hashable, CaseIterable {
@@ -421,6 +926,19 @@ public enum HeavyOctaveParameter: Sendable, Hashable {
   case octaveMinus1(UInt8)
   case octaveMinus2(UInt8)
   case directMix(UInt8)
+}
+
+/// The data bank representing the heavy octave parameters.
+public struct HeavyOctaveBank: Sendable, Hashable {
+  public let octaveMinus1: UInt8
+  public let octaveMinus2: UInt8
+  public let directMix: UInt8
+
+  public init(octaveMinus1: UInt8, octaveMinus2: UInt8, directMix: UInt8) {
+    self.octaveMinus1 = octaveMinus1
+    self.octaveMinus2 = octaveMinus2
+    self.directMix = directMix
+  }
 }
 
 // MARK: - PitchShifter
@@ -445,6 +963,43 @@ public enum PitchShifterParameter: Sendable, Hashable {
   case ps2Level(UInt8)
   case ps1Feedback(UInt8)
   case directLevel(UInt8)
+}
+
+/// The data bank representing the pitch shifter parameters.
+public struct PitchShifterBank: Sendable, Hashable {
+  public let voice: PitchShifterVoice
+  public let ps1Mode: PitchShifterMode
+  public let ps1Pitch: UInt8
+  public let ps1Fine: UInt8
+  public let ps1PreDelay: UInt16
+  public let ps1Level: UInt8
+  public let ps2Mode: PitchShifterMode
+  public let ps2Pitch: UInt8
+  public let ps2Fine: UInt8
+  public let ps2PreDelay: UInt16
+  public let ps2Level: UInt8
+  public let ps1Feedback: UInt8
+  public let directLevel: UInt8
+
+  public init(
+    voice: PitchShifterVoice, ps1Mode: PitchShifterMode, ps1Pitch: UInt8, ps1Fine: UInt8,
+    ps1PreDelay: UInt16, ps1Level: UInt8, ps2Mode: PitchShifterMode, ps2Pitch: UInt8,
+    ps2Fine: UInt8, ps2PreDelay: UInt16, ps2Level: UInt8, ps1Feedback: UInt8, directLevel: UInt8
+  ) {
+    self.voice = voice
+    self.ps1Mode = ps1Mode
+    self.ps1Pitch = ps1Pitch
+    self.ps1Fine = ps1Fine
+    self.ps1PreDelay = ps1PreDelay
+    self.ps1Level = ps1Level
+    self.ps2Mode = ps2Mode
+    self.ps2Pitch = ps2Pitch
+    self.ps2Fine = ps2Fine
+    self.ps2PreDelay = ps2PreDelay
+    self.ps2Level = ps2Level
+    self.ps1Feedback = ps1Feedback
+    self.directLevel = directLevel
+  }
 }
 
 public enum PitchShifterVoice: UInt8, Sendable, Hashable, CaseIterable {
@@ -473,6 +1028,34 @@ public enum HarmonistParameter: Sendable, Hashable {
   case directLevel(UInt8)
 }
 
+/// The data bank representing the harmonist parameters.
+public struct HarmonistBank: Sendable, Hashable {
+  public let voice: HarmonistVoice
+  public let h1Harmony: UInt8
+  public let h1PreDelay: UInt16
+  public let h1Level: UInt8
+  public let h2Harmony: UInt8
+  public let h2PreDelay: UInt16
+  public let h2Level: UInt8
+  public let h1Feedback: UInt8
+  public let directLevel: UInt8
+
+  public init(
+    voice: HarmonistVoice, h1Harmony: UInt8, h1PreDelay: UInt16, h1Level: UInt8, h2Harmony: UInt8,
+    h2PreDelay: UInt16, h2Level: UInt8, h1Feedback: UInt8, directLevel: UInt8
+  ) {
+    self.voice = voice
+    self.h1Harmony = h1Harmony
+    self.h1PreDelay = h1PreDelay
+    self.h1Level = h1Level
+    self.h2Harmony = h2Harmony
+    self.h2PreDelay = h2PreDelay
+    self.h2Level = h2Level
+    self.h1Feedback = h1Feedback
+    self.directLevel = directLevel
+  }
+}
+
 public enum HarmonistVoice: UInt8, Sendable, Hashable, CaseIterable {
   case oneVoice = 0x00
   case twoVoice = 0x01
@@ -489,6 +1072,32 @@ public enum HumanizerParameter: Sendable, Hashable {
   case depth(UInt8)
   case manual(UInt8)
   case level(UInt8)
+}
+
+/// The data bank representing the humanizer parameters.
+public struct HumanizerBank: Sendable, Hashable {
+  public let mode: HumanizerMode
+  public let vowel1: HumanizerWovel
+  public let vowel2: HumanizerWovel
+  public let sens: UInt8
+  public let rate: UInt8
+  public let depth: UInt8
+  public let manual: UInt8
+  public let level: UInt8
+
+  public init(
+    mode: HumanizerMode, vowel1: HumanizerWovel, vowel2: HumanizerWovel, sens: UInt8, rate: UInt8,
+    depth: UInt8, manual: UInt8, level: UInt8
+  ) {
+    self.mode = mode
+    self.vowel1 = vowel1
+    self.vowel2 = vowel2
+    self.sens = sens
+    self.rate = rate
+    self.depth = depth
+    self.manual = manual
+    self.level = level
+  }
 }
 
 public enum HumanizerMode: UInt8, Sendable, Hashable, CaseIterable {
@@ -511,6 +1120,17 @@ public enum Phaser90EParameter: Sendable, Hashable {
   case speed(UInt8)
 }
 
+/// The data bank representing the phaser 90E parameters.
+public struct Phaser90EBank: Sendable, Hashable {
+  public let scriptStatus: Bool
+  public let speed: UInt8
+
+  public init(scriptStatus: Bool, speed: UInt8) {
+    self.scriptStatus = scriptStatus
+    self.speed = speed
+  }
+}
+
 // MARK: - Flanger117E
 
 public enum Flanger117EParameter: Sendable, Hashable {
@@ -518,6 +1138,21 @@ public enum Flanger117EParameter: Sendable, Hashable {
   case width(UInt8)
   case speed(UInt8)
   case regen(UInt8)
+}
+
+/// The data bank representing the flanger 117E parameters.
+public struct Flanger117EBank: Sendable, Hashable {
+  public let manual: UInt8
+  public let width: UInt8
+  public let speed: UInt8
+  public let regen: UInt8
+
+  public init(manual: UInt8, width: UInt8, speed: UInt8, regen: UInt8) {
+    self.manual = manual
+    self.width = width
+    self.speed = speed
+    self.regen = regen
+  }
 }
 
 // MARK: - DC30
@@ -530,6 +1165,30 @@ public enum DC30Parameter: Sendable, Hashable {
   case volume(UInt8)
   case tone(UInt8)
   case outputType(DC30OutputType)
+}
+
+/// The data bank representing the DC-30 parameters.
+public struct DC30Bank: Sendable, Hashable {
+  public let type: DC30Type
+  public let inputVolume: UInt8
+  public let intensity: UInt8
+  public let repeatTime: UInt16
+  public let volume: UInt8
+  public let tone: UInt8
+  public let outputType: DC30OutputType
+
+  public init(
+    type: DC30Type, inputVolume: UInt8, intensity: UInt8, repeatTime: UInt16, volume: UInt8,
+    tone: UInt8, outputType: DC30OutputType
+  ) {
+    self.type = type
+    self.inputVolume = inputVolume
+    self.intensity = intensity
+    self.repeatTime = repeatTime
+    self.volume = volume
+    self.tone = tone
+    self.outputType = outputType
+  }
 }
 
 public enum DC30Type: UInt8, Sendable, Hashable, CaseIterable {

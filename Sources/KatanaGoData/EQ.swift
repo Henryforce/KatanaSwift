@@ -1,5 +1,6 @@
 public enum EQParameter: Sendable, Hashable {
   case enable(Bool)
+  case position(EQPosition)
   case type(EQType)
   case parametric(ParametricEQParameter)
   case graphic(GraphicEQParameter)
@@ -22,7 +23,6 @@ public enum ParametricEQParameter: Sendable, Hashable {
   case highCut(EQHighCut)
   /// Range is from -20 to 20 mapped to 0..40.
   case level(UInt8)
-  case position(EQPosition)
 }
 
 public enum GraphicEQParameter: Sendable, Hashable {
@@ -38,7 +38,98 @@ public enum GraphicEQParameter: Sendable, Hashable {
   case band8kHz(UInt8)
   case band16kHz(UInt8)
   case level(UInt8)
-  case position(EQPosition)
+}
+
+/// The data bank representing the equalizer parameters.
+public struct EQBank: Sendable, Hashable {
+  public let status: Bool
+  public let position: EQPosition
+  public let type: EQType
+  public let parametric: ParametricEQBank
+  public let graphic: GraphicEQBank
+
+  public init(
+    status: Bool, position: EQPosition, type: EQType, parametric: ParametricEQBank,
+    graphic: GraphicEQBank
+  ) {
+    self.status = status
+    self.position = position
+    self.type = type
+    self.parametric = parametric
+    self.graphic = graphic
+  }
+}
+
+/// The data bank representing the parametric equalizer parameters.
+public struct ParametricEQBank: Sendable, Hashable {
+  public let lowCut: EQLowCut
+  /// Range is from -20 to 20 mapped to 0..40.
+  public let lowGain: UInt8
+  public let lowMidFreq: EQFrequency
+  public let lowMidQ: EQQ
+  /// Range is from -20 to 20 mapped to 0..40.
+  public let lowMidGain: UInt8
+  public let highMidFreq: EQFrequency
+  public let highMidQ: EQQ
+  /// Range is from -20 to 20 mapped to 0..40.
+  public let highMidGain: UInt8
+  /// Range is from -20 to 20 mapped to 0..40.
+  public let highGain: UInt8
+  public let highCut: EQHighCut
+  /// Range is from -20 to 20 mapped to 0..40.
+  public let level: UInt8
+
+  public init(
+    lowCut: EQLowCut, lowGain: UInt8, lowMidFreq: EQFrequency, lowMidQ: EQQ, lowMidGain: UInt8,
+    highMidFreq: EQFrequency, highMidQ: EQQ, highMidGain: UInt8, highGain: UInt8,
+    highCut: EQHighCut, level: UInt8
+  ) {
+    self.lowCut = lowCut
+    self.lowGain = lowGain
+    self.lowMidFreq = lowMidFreq
+    self.lowMidQ = lowMidQ
+    self.lowMidGain = lowMidGain
+    self.highMidFreq = highMidFreq
+    self.highMidQ = highMidQ
+    self.highMidGain = highMidGain
+    self.highGain = highGain
+    self.highCut = highCut
+    self.level = level
+  }
+}
+
+/// The data bank representing the graphic equalizer parameters.
+public struct GraphicEQBank: Sendable, Hashable {
+  /// Range is from -12dB to 12dB mapped to 0..24..48 with steps of 0.5dB.
+  public let band31Hz: UInt8
+  public let band62Hz: UInt8
+  public let band125Hz: UInt8
+  public let band250Hz: UInt8
+  public let band500Hz: UInt8
+  public let band1kHz: UInt8
+  public let band2kHz: UInt8
+  public let band4kHz: UInt8
+  public let band8kHz: UInt8
+  public let band16kHz: UInt8
+  public let level: UInt8
+
+  public init(
+    band31Hz: UInt8, band62Hz: UInt8, band125Hz: UInt8, band250Hz: UInt8, band500Hz: UInt8,
+    band1kHz: UInt8, band2kHz: UInt8, band4kHz: UInt8, band8kHz: UInt8, band16kHz: UInt8,
+    level: UInt8
+  ) {
+    self.band31Hz = band31Hz
+    self.band62Hz = band62Hz
+    self.band125Hz = band125Hz
+    self.band250Hz = band250Hz
+    self.band500Hz = band500Hz
+    self.band1kHz = band1kHz
+    self.band2kHz = band2kHz
+    self.band4kHz = band4kHz
+    self.band8kHz = band8kHz
+    self.band16kHz = band16kHz
+    self.level = level
+  }
 }
 
 public enum EQType: UInt8, Sendable, Hashable, CaseIterable {
