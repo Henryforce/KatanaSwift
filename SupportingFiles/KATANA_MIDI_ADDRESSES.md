@@ -222,21 +222,21 @@ The following addresses are for the Katana GO and the address column is in hexad
 | MOD: Pitch-S Pitch-S1 Mode | 20010100 | 3 | PITCH_SHIFTER_MODE (UInt8) |
 | MOD: Pitch-S Pitch-S1 Pitch | 20010101 | 100 | UInt8 |
 | MOD: Pitch-S Pitch-S1 Fine | 20010102 | 100 | UInt8 |
-| MOD: Pitch-S Pitch-S1 Pre Delay | 20010103 | 300 | UInt16 |
+| MOD: Pitch-S Pitch-S1 Pre Delay | 20010103 | 300 | UInt16 (4Byte encoding) |
 | MOD: Pitch-S Pitch-S1 Level | 20010107 | 100 | UInt8 |
 | MOD: Pitch-S Pitch-S2 Mode | 20010108 | 3 | PITCH_SHIFTER_MODE (UInt8) |
 | MOD: Pitch-S Pitch-S2 Pitch | 20010109 | 100 | UInt8 |
 | MOD: Pitch-S Pitch-S2 Fine | 2001010A | 100 | UInt8 |
-| MOD: Pitch-S Pitch-S2 Pre Delay | 2001010B | 300 | UInt16 |
+| MOD: Pitch-S Pitch-S2 Pre Delay | 2001010B | 300 | UInt16 (4Byte encoding) |
 | MOD: Pitch-S Pitch-S2 Level | 2001010F | 100 | UInt8 |
 | MOD: Pitch-S Pitch-S1 Feedback | 20010110 | 100 | UInt8 |
 | MOD: Pitch-S Direct Level | 20010111 | 100 | UInt8 |
 | MOD: Harmonist Voice | 20010112 | 1 | HARMONIST_VOICE (UInt8) |
 | MOD: Harmonist Harmonist1 Harmony | 20010113 | 100 | UInt8 |
-| MOD: Harmonist Harmonist1 Pre Delay | 20010114 | 300 | UInt16 |
+| MOD: Harmonist Harmonist1 Pre Delay | 20010114 | 300 | UInt16 (4Byte encoding) |
 | MOD: Harmonist Harmonist1 Level | 20010118 | 100 | UInt8 |
 | MOD: Harmonist Harmonist2 Harmony | 20010119 | 100 | UInt8 |
-| MOD: Harmonist Harmonist2 Pre Delay | 2001011A | 300 | UInt16 |
+| MOD: Harmonist Harmonist2 Pre Delay | 2001011A | 300 | UInt16 (4Byte encoding) |
 | MOD: Harmonist Harmonist2 Level | 2001011E | 100 | UInt8 |
 | MOD: Harmonist Harmonist1 Feedback | 2001011F | 100 | UInt8 |
 | MOD: Harmonist Direct Level | 20010120 | 100 | UInt8 |
@@ -257,7 +257,7 @@ The following addresses are for the Katana GO and the address column is in hexad
 | MOD DC30: Selector | 20010147 | 1 | DC30_TYPE (UInt8) |
 | MOD DC30: Input | 20010148 | 100 | UInt8 |
 | MOD DC30: Intensity | 20010149 | 100 | UInt8 |
-| MOD DC30: Repeat Rate | 2001014A | 600 | UInt16 |
+| MOD DC30: Repeat Rate | 2001014A | 600 | UInt16 (4Byte encoding) |
 | MOD DC30: Intensity | 2001014E | 100 | UInt8 |
 | MOD DC30: Volume | 2001014F | 100 | UInt8 |
 | MOD DC30: Tone | 20010150 | 100 | UInt8 |
@@ -430,21 +430,21 @@ The following addresses are for the Katana GO and the address column is in hexad
 | FX: Pitch-S Pitch-S1 Mode | 20011100 | 3 | PITCH_SHIFTER_MODE (UInt8) |
 | FX: Pitch-S Pitch-S1 Pitch | 20011101 | 100 | UInt8 |
 | FX: Pitch-S Pitch-S1 Fine | 20011102 | 100 | UInt8 |
-| FX: Pitch-S Pitch-S1 Pre Delay | 20011103 | 300 | UInt16 |
+| FX: Pitch-S Pitch-S1 Pre Delay | 20011103 | 300 | UInt16 (4Byte encoding) |
 | FX: Pitch-S Pitch-S1 Level | 20011107 | 100 | UInt8 |
 | FX: Pitch-S Pitch-S2 Mode | 20011108 | 3 | PITCH_SHIFTER_MODE (UInt8) |
 | FX: Pitch-S Pitch-S2 Pitch | 20011109 | 100 | UInt8 |
 | FX: Pitch-S Pitch-S2 Fine | 2001110A | 100 | UInt8 |
-| FX: Pitch-S Pitch-S2 Pre Delay | 2001110B | 300 | UInt16 |
+| FX: Pitch-S Pitch-S2 Pre Delay | 2001110B | 300 | UInt16 (4Byte encoding) |
 | FX: Pitch-S Pitch-S2 Level | 2001110F | 100 | UInt8 |
 | FX: Pitch-S Pitch-S1 Feedback | 20011110 | 100 | UInt8 |
 | FX: Pitch-S Direct Level | 20011111 | 100 | UInt8 |
 | FX: Harmonist Voice | 20011112 | 1 | HARMONIST_VOICE (UInt8) |
 | FX: Harmonist Harmonist1 Harmony | 20011113 | 100 | UInt8 |
-| FX: Harmonist Harmonist1 Pre Delay | 20011114 | 300 | UInt16 |
+| FX: Harmonist Harmonist1 Pre Delay | 20011114 | 300 | UInt16 (4Byte encoding) |
 | FX: Harmonist Harmonist1 Level | 20011118 | 100 | UInt8 |
 | FX: Harmonist Harmonist2 Harmony | 20011119 | 100 | UInt8 |
-| FX: Harmonist Harmonist2 Pre Delay | 2001111A | 300 | UInt16 |
+| FX: Harmonist Harmonist2 Pre Delay | 2001111A | 300 | UInt16 (4Byte encoding) |
 | FX: Harmonist Harmonist2 Level | 2001111E | 100 | UInt8 |
 | FX: Harmonist Harmonist1 Feedback | 2001111F | 100 | UInt8 |
 | FX: Harmonist Direct Level | 20011120 | 100 | UInt8 |
@@ -465,7 +465,7 @@ The following addresses are for the Katana GO and the address column is in hexad
 | FX DC30: Selector | 20011147 | 1 | DC30_TYPE (UInt8) |
 | FX DC30: Input | 20011148 | 100 | UInt8 |
 | FX DC30: Intensity | 20011149 | 100 | UInt8 |
-| FX DC30: Repeat Rate | 2001114A | 600 | UInt16 |
+| FX DC30: Repeat Rate | 2001114A | 600 | UInt16 (4Byte encoding) |
 | FX DC30: Intensity | 2001114E | 100 | UInt8 |
 | FX DC30: Volume | 2001114F | 100 | UInt8 |
 | FX DC30: Tone | 20011150 | 100 | UInt8 |
@@ -507,7 +507,7 @@ The following addresses are for the Katana GO and the address column is in hexad
 | FX BASS: Wave-Synth Direct Mix | 20011174 | 100 | UInt8 |
 | DELAY 1: D1 On/Off | 20003003 | 1 | Boolean |
 | DELAY 1: D1 Type | 20012000 | 10 | DELAY_TYPE (UInt8) |
-| DELAY 1: D1 Time | 20012001 | 2000 | UInt16 |
+| DELAY 1: D1 Time | 20012001 | 2000 | UInt16 (4Byte encoding) |
 | DELAY 1: D1 Feedback | 20012005 | 100 | UInt8 |
 | DELAY 1: D1 High Cut | 20012006 | 14 | DELAY_HIGH_CUT (UInt8) |
 | DELAY 1: Effect Level | 20012007 | 100 | UInt8 |
@@ -522,7 +522,7 @@ The following addresses are for the Katana GO and the address column is in hexad
 | DELAY 1: Modulate Sw | 20012010 | 1 | Boolean |
 | DELAY 2: D1 On/Off | 20003004 | 1 | Boolean |
 | DELAY 2: D1 Type | 20013000 | 10 | DELAY_TYPE (UInt8) |
-| DELAY 2: D1 Time | 20013001 | 2000 | UInt16 |
+| DELAY 2: D1 Time | 20013001 | 2000 | UInt16 (4Byte encoding) |
 | DELAY 2: D1 Feedback | 20013005 | 100 | UInt8 |
 | DELAY 2: D1 High Cut | 20013006 | 14 | DELAY_HIGH_CUT (UInt8) |
 | DELAY 2: Effect Level | 20013007 | 100 | UInt8 |
@@ -538,7 +538,7 @@ The following addresses are for the Katana GO and the address column is in hexad
 | REVERB: On/Off | 20003005 | 1 | Boolean |
 | REVERB: Type | 20014000 | 6 | REVERB_TYPE (UInt8) |
 | REVERB: REVERB Time | 20014002 | 100 | UInt8 |
-| REVERB: Pre Delay | 20014003 | 500 | UInt16 |
+| REVERB: Pre Delay | 20014003 | 500 | UInt16 (4Byte encoding) |
 | REVERB: Low Cut | 20014007 | 17 | EQ_LOW_CUT (UInt8) |
 | REVERB: High Cut | 20014008 | 14 | EQ_HI_CUT (UInt8) |
 | REVERB: Density | 20014009 | 100 | UInt8 |
@@ -609,5 +609,5 @@ The following addresses are for the Katana GO and the address column is in hexad
 | STAGE FEEL: Audio Position | 10006001 | 100 | UInt8 |
 | STAGE FEEL: Ambience type | 10006002 | 2 | AMBIENCE_TYPE (UInt8) |
 | STAGE FEEL: Ambience Level | 10006003 | 100 | UInt8 |
-| USB: Input Level | 10007000 | 200 | UInt16 |
-| USB: Output Level | 10007001 | 200 | UInt16 |
+| USB: Input Level | 10007000 | 100 | UInt8 |
+| USB: Output Level | 10007001 | 100 | UInt8 |

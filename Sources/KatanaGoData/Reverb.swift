@@ -47,9 +47,9 @@ public struct ReverbBank: Sendable, Hashable {
 }
 
 public enum ReverbType: UInt8, Sendable, Hashable, CaseIterable {
+  case plate = 0x00
   case room = 0x01
-  case hall = 0x03
-  case plate = 0x04
-  case spring = 0x05
-  case modulate = 0x06
+  case hall = 0x02
+  case spring = 0x03
+  case modulate = 0x04
 }

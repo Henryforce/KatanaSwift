@@ -578,11 +578,12 @@ extension PitchShifterParameter {
       .ps2Level(let value), .ps1Feedback(let value), .directLevel(let value):
       return [value]
     case .ps1PreDelay(let value), .ps2PreDelay(let value):
-      return value.encode11Bit()
+      return value.encodeToByteArray()
     }
   }
 }
 
+// TODO: audit these values as there is something wrong.
 extension HarmonistParameter {
   fileprivate var address: [UInt8] {
     switch self {
@@ -601,11 +602,12 @@ extension HarmonistParameter {
   fileprivate var values: [UInt8] {
     switch self {
     case .voice(let value): return [value.rawValue]
-    case .h1Harmony(let value), .h1Level(let value), .h2Harmony(let value),
-      .h2Level(let value), .h1Feedback(let value), .directLevel(let value):
+    case .h1Harmony(let value), .h2Harmony(let value):
+      return [value.rawValue]
+    case .h1Level(let value), .h2Level(let value), .h1Feedback(let value), .directLevel(let value):
       return [value]
     case .h1PreDelay(let value), .h2PreDelay(let value):
-      return value.encode11Bit()
+      return value.encodeToByteArray()
     }
   }
 }
@@ -686,7 +688,7 @@ extension DC30Parameter {
     switch self {
     case .type(let value): return [value.rawValue]
     case .outputType(let value): return [value.rawValue]
-    case .repeatTime(let value): return value.encode11Bit()
+    case .repeatTime(let value): return value.encodeToByteArray()
     case .inputVolume(let value), .intensity(let value),
       .volume(let value), .tone(let value):
       return [value]
@@ -891,23 +893,23 @@ extension DataBank {
         ps1Mode: PitchShifterMode(rawValue: bank[128]) ?? .fast,
         ps1Pitch: bank[129],
         ps1Fine: bank[130],
-        ps1PreDelay: (UInt16(bank[131]) << 7) | UInt16(bank[132]),
+        ps1PreDelay: UInt16.decodeFromByteArray([bank[131], bank[132], bank[133], bank[134]]),
         ps1Level: bank[135],
         ps2Mode: PitchShifterMode(rawValue: bank[136]) ?? .fast,
         ps2Pitch: bank[137],
         ps2Fine: bank[138],
-        ps2PreDelay: (UInt16(bank[139]) << 7) | UInt16(bank[140]),
+        ps2PreDelay: UInt16.decodeFromByteArray([bank[139], bank[140], bank[141], bank[142]]),
         ps2Level: bank[143],
         ps1Feedback: bank[144],
         directLevel: bank[145]
       ),
       harmonist: HarmonistBank(
         voice: HarmonistVoice(rawValue: bank[146]) ?? .oneVoice,
-        h1Harmony: bank[147],
-        h1PreDelay: (UInt16(bank[148]) << 7) | UInt16(bank[149]),
+        h1Harmony: HarmonistHarmony(rawValue: bank[147]) ?? .unison,
+        h1PreDelay: UInt16.decodeFromByteArray([bank[148], bank[149], bank[150], bank[151]]),
         h1Level: bank[152],
-        h2Harmony: bank[153],
-        h2PreDelay: (UInt16(bank[154]) << 7) | UInt16(bank[155]),
+        h2Harmony: HarmonistHarmony(rawValue: bank[153]) ?? .unison,
+        h2PreDelay: UInt16.decodeFromByteArray([bank[154], bank[155], bank[156], bank[157]]),
         h2Level: bank[158],
         h1Feedback: bank[159],
         directLevel: bank[160]
@@ -932,11 +934,12 @@ extension DataBank {
         speed: bank[197],
         regen: bank[198]
       ),
+      // TODO: audit these parameters as there seem to be a repeated intensity parameter.
       dc30: DC30Bank(
         type: DC30Type(rawValue: bank[199]) ?? .chorus,
         inputVolume: bank[200],
         intensity: bank[201],
-        repeatTime: (UInt16(bank[202]) << 7) | UInt16(bank[203]),
+        repeatTime: UInt16.decodeFromByteArray([bank[202], bank[203], bank[204], bank[205]]),
         volume: bank[207],
         tone: bank[208],
         outputType: DC30OutputType(rawValue: bank[209]) ?? .dPlusE

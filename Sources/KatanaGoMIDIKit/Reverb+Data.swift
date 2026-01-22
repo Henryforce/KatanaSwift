@@ -21,7 +21,7 @@ extension ReverbParameter {
     case .enable(let value): return [value ? 0x01 : 0x00]
     case .type(let value): return [value.rawValue]
     case .time(let value): return [value]
-    case .preDelay(let value): return value.encode11Bit()
+    case .preDelay(let value): return value.encodeToByteArray()
     case .lowCut(let value): return [value.rawValue]
     case .highCut(let value): return [value.rawValue]
     case .density(let value): return [value]
@@ -38,7 +38,9 @@ extension DataBank {
       status: self.effectsOnOffBank[5] == 1,
       type: ReverbType(rawValue: reverbBank[0x00]) ?? .room,
       time: reverbBank[0x02],
-      preDelay: (UInt16(reverbBank[0x03]) << 7) | UInt16(reverbBank[0x04]),
+      preDelay: UInt16.decodeFromByteArray([
+        reverbBank[0x03], reverbBank[0x04], reverbBank[0x05], reverbBank[0x06],
+      ]),
       lowCut: EQLowCut(rawValue: reverbBank[0x07]) ?? .flat,
       highCut: EQHighCut(rawValue: reverbBank[0x08]) ?? .freq630Hz,
       density: reverbBank[0x09],
