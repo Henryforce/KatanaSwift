@@ -18,7 +18,7 @@ struct ModFxView: View {
   let mode: ModFxMode
 
   @State private var isEnabled = false
-  @State private var type = ModFxType.twoByTwoChorus
+  @State private var type = ModFxType.chorus
 
   var body: some View {
     NavigationView {
@@ -40,7 +40,7 @@ struct ModFxView: View {
         }
 
         switch type {
-        case .twoByTwoChorus: ChorusView(onUpdate: updateParameter)
+        case .chorus: ChorusView(onUpdate: updateParameter)
         case .flanger: FlangerView(onUpdate: updateParameter)
         case .phaser: PhaserView(onUpdate: updateParameter)
         case .uniV: UniVibeView(onUpdate: updateParameter)

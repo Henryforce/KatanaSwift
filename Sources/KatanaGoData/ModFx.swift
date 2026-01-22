@@ -110,34 +110,34 @@ public struct ModFxBank: Sendable, Hashable {
 // TODO: re-audit these values.
 /// Available MOD/FX types for the Katana GO.
 public enum ModFxType: UInt8, Sendable, Hashable, CaseIterable {
-  case twoByTwoChorus = 0x00
+  case chorus = 0x00
   case flanger = 0x01
   case phaser = 0x02
   case uniV = 0x03
   case tremolo = 0x04
-  case vibrato = 0x06
-  case rotary = 0x07
-  case ringMod = 0x09
-  case slowGear = 0x0A
-  case slicer = 0x0C
-  case comp = 0x0D
-  case limiter = 0x0E
-  case tWah = 0x0F
-  case autoWah = 0x10
-  case graphicEQ = 0x11
-  case parametricEQ = 0x12
-  case guitarSim = 0x13
-  case acSim = 0x14
-  case acousticPro = 0x15
-  case waveSynth = 0x16
-  case octave = 0x17
-  case heavyOctave = 0x18
-  case pitchShifter = 0x19
-  case harmonist = 0x1A
-  case humanizer = 0x1B
-  case phaser90E = 0x1C
-  case flanger117E = 0x1D
-  case dc30 = 0x1E
+  case vibrato = 0x05
+  case rotary = 0x06
+  case ringMod = 0x07
+  case slowGear = 0x08
+  case slicer = 0x09
+  case comp = 0x0A
+  case limiter = 0x0B
+  case tWah = 0x0C
+  case autoWah = 0x0D
+  case graphicEQ = 0x0E
+  case parametricEQ = 0x0F
+  case guitarSim = 0x10
+  case acSim = 0x11
+  case acousticPro = 0x12
+  case waveSynth = 0x13
+  case octave = 0x14
+  case heavyOctave = 0x15
+  case pitchShifter = 0x16
+  case harmonist = 0x17
+  case humanizer = 0x18
+  case phaser90E = 0x19
+  case flanger117E = 0x1A
+  case dc30 = 0x1B
 }
 
 // MARK: - Chorus
@@ -1018,10 +1018,10 @@ public enum PitchShifterMode: UInt8, Sendable, Hashable, CaseIterable {
 
 public enum HarmonistParameter: Sendable, Hashable {
   case voice(HarmonistVoice)
-  case h1Harmony(UInt8)
+  case h1Harmony(HarmonistHarmony)
   case h1PreDelay(UInt16)
   case h1Level(UInt8)
-  case h2Harmony(UInt8)
+  case h2Harmony(HarmonistHarmony)
   case h2PreDelay(UInt16)
   case h2Level(UInt8)
   case h1Feedback(UInt8)
@@ -1031,17 +1031,18 @@ public enum HarmonistParameter: Sendable, Hashable {
 /// The data bank representing the harmonist parameters.
 public struct HarmonistBank: Sendable, Hashable {
   public let voice: HarmonistVoice
-  public let h1Harmony: UInt8
+  public let h1Harmony: HarmonistHarmony
   public let h1PreDelay: UInt16
   public let h1Level: UInt8
-  public let h2Harmony: UInt8
+  public let h2Harmony: HarmonistHarmony
   public let h2PreDelay: UInt16
   public let h2Level: UInt8
   public let h1Feedback: UInt8
   public let directLevel: UInt8
 
   public init(
-    voice: HarmonistVoice, h1Harmony: UInt8, h1PreDelay: UInt16, h1Level: UInt8, h2Harmony: UInt8,
+    voice: HarmonistVoice, h1Harmony: HarmonistHarmony, h1PreDelay: UInt16, h1Level: UInt8,
+    h2Harmony: HarmonistHarmony,
     h2PreDelay: UInt16, h2Level: UInt8, h1Feedback: UInt8, directLevel: UInt8
   ) {
     self.voice = voice
@@ -1059,6 +1060,39 @@ public struct HarmonistBank: Sendable, Hashable {
 public enum HarmonistVoice: UInt8, Sendable, Hashable, CaseIterable {
   case oneVoice = 0x00
   case twoVoice = 0x01
+}
+
+public enum HarmonistHarmony: UInt8, Sendable, Hashable, CaseIterable {
+  case minus2oct = 0x00
+  case minus14th = 0x01
+  case minus13th = 0x02
+  case minus12th = 0x03
+  case minus11th = 0x04
+  case minus10th = 0x05
+  case minus9th = 0x06
+  case minus8th = 0x07
+  case minus7th = 0x08
+  case minus6th = 0x09
+  case minus5th = 0x0A
+  case minus4th = 0x0B
+  case minus3rd = 0x0C
+  case minus2nd = 0x0D
+  case unison = 0x0E
+  case plus2nd = 0x0F
+  case plus3rd = 0x10
+  case plus4th = 0x11
+  case plus5th = 0x12
+  case plus6th = 0x13
+  case plus7th = 0x14
+  case plus8th = 0x15
+  case plus9th = 0x16
+  case plus10th = 0x17
+  case plus11th = 0x18
+  case plus12th = 0x19
+  case plus13th = 0x1A
+  case plus14th = 0x1B
+  case plus2oct = 0x1C
+  case user = 0x1D
 }
 
 // MARK: - Humanizer

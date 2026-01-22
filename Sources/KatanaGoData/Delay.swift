@@ -64,11 +64,11 @@ public enum DelayType: UInt8, Sendable, Hashable, CaseIterable {
   case digital = 0x00
   case pan = 0x01
   case stereo = 0x02
-  case reverse = 0x06
-  case analog = 0x07
-  case tapeEcho = 0x08
-  case modulate = 0x09
-  case sde3000 = 0x0A
+  case analog = 0x03
+  case tapeEcho = 0x04
+  case reverse = 0x05
+  case modulate = 0x06
+  case sde3000 = 0x07
 }
 
 public enum DelayHighCutFrequency: UInt8, Sendable, Hashable, CaseIterable {

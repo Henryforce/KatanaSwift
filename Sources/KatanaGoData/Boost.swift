@@ -43,28 +43,29 @@ public struct BoostBank: Sendable, Hashable {
 
 /// Available booster types for the Katana GO.
 public enum BoostType: UInt8, Sendable, Hashable, CaseIterable {
-  case midBoost = 0x00
-  case cleanBoost = 0x01
-  case trebleBoost = 0x02
+  case cleanBoost = 0x00
+  case trebleBoost = 0x01
+  case midBoost = 0x02
   case crunch = 0x03
-  case naturalOD = 0x04
-  case warmOD = 0x05
-  case fatDS = 0x06
-  case leadDS = 0x07
-  case metalDS = 0x08
-  case octFuzz = 0x09
-  case bluesOD = 0x0A
-  case od1 = 0x0B
-  case tubescreamer = 0x0C
-  case turboOD = 0x0D
-  case dist = 0x0E
-  case rat = 0x0F
-  case guVDS = 0x10
-  case dstPlus = 0x11
-  case metalZone = 0x12
-  case sixtiesFuzz = 0x13
-  case muffFuzz = 0x14
-  case custom = 0x15
+  case bluesOD = 0x04
+  case overdrive = 0x05
+  case naturalOD = 0x06
+  case warmOD = 0x07
+  case turboOD = 0x08
+  case tubescreamer = 0x09
+  case dist = 0x0A
+  case fatDS = 0x0B
+  case dstPlus = 0x0C
+  case guVDS = 0x0D
+  case rat = 0x0E
+  case metalZone = 0x0F
+  case metalDS = 0x10
+  case sixtiesFuzz = 0x11
+  case muffFuzz = 0x12
+  case octFuzz = 0x13
+  case hm2 = 0x14
+  case metalCore = 0x15
+  case centaOD = 0x16
 }
 
 /// Available booster types for the Katana GO in Bass Mode.

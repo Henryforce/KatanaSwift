@@ -578,11 +578,12 @@ extension PitchShifterParameter {
       .ps2Level(let value), .ps1Feedback(let value), .directLevel(let value):
       return [value]
     case .ps1PreDelay(let value), .ps2PreDelay(let value):
-      return value.encode11Bit()
+      return value.encodeToByteArray()
     }
   }
 }
 
+// TODO: audit these values as there is something wrong.
 extension HarmonistParameter {
   fileprivate var address: [UInt8] {
     switch self {
@@ -601,11 +602,12 @@ extension HarmonistParameter {
   fileprivate var values: [UInt8] {
     switch self {
     case .voice(let value): return [value.rawValue]
-    case .h1Harmony(let value), .h1Level(let value), .h2Harmony(let value),
-      .h2Level(let value), .h1Feedback(let value), .directLevel(let value):
+    case .h1Harmony(let value), .h2Harmony(let value):
+      return [value.rawValue]
+    case .h1Level(let value), .h2Level(let value), .h1Feedback(let value), .directLevel(let value):
       return [value]
     case .h1PreDelay(let value), .h2PreDelay(let value):
-      return value.encode11Bit()
+      return value.encodeToByteArray()
     }
   }
 }
@@ -686,10 +688,262 @@ extension DC30Parameter {
     switch self {
     case .type(let value): return [value.rawValue]
     case .outputType(let value): return [value.rawValue]
-    case .repeatTime(let value): return value.encode11Bit()
+    case .repeatTime(let value): return value.encodeToByteArray()
     case .inputVolume(let value), .intensity(let value),
       .volume(let value), .tone(let value):
       return [value]
     }
+  }
+}
+
+extension DataBank {
+  func buildModBank() -> ModFxBank {
+    return buildModFxBank(
+      status: self.effectsOnOffBank[1] == 1,
+      type: ModFxType(rawValue: self.modTypeBank[0]) ?? .chorus,
+      bank: self.modBank
+    )
+  }
+
+  func buildFxBank() -> ModFxBank {
+    return buildModFxBank(
+      status: self.effectsOnOffBank[2] == 1,
+      type: ModFxType(rawValue: self.fxTypeBank[0]) ?? .chorus,
+      bank: self.fxBank
+    )
+  }
+
+  private func buildModFxBank(status: Bool, type: ModFxType, bank: [UInt8]) -> ModFxBank {
+    return ModFxBank(
+      status: status,
+      type: type,
+      chorus: ChorusBank(
+        crossoverFrequency: bank[0x00],
+        lowRate: bank[0x01],
+        lowDepth: bank[0x02],
+        lowPreDelay: bank[0x03],
+        lowLevel: bank[0x04],
+        highRate: bank[0x05],
+        highDepth: bank[0x06],
+        highPreDelay: bank[0x07],
+        highLevel: bank[0x08],
+        directMix: bank[0x09]
+      ),
+      flanger: FlangerBank(
+        rate: bank[0x0A],
+        depth: bank[0x0B],
+        manual: bank[0x0C],
+        resonance: bank[0x0D],
+        lowCut: FlangerLowCut(rawValue: bank[0x0E]) ?? .flat,
+        effectLevel: bank[0x0F],
+        directLevel: bank[0x10]
+      ),
+      phaser: PhaserBank(
+        type: PhaserType(rawValue: bank[0x11]) ?? .fourStage,
+        rate: bank[0x12],
+        depth: bank[0x13],
+        manual: bank[0x14],
+        resonance: bank[0x15],
+        stepRate: bank[0x16],
+        effectLevel: bank[0x17],
+        directLevel: bank[0x18]
+      ),
+      uniVibe: UniVibeBank(
+        rate: bank[0x19],
+        depth: bank[0x1A],
+        level: bank[0x1B]
+      ),
+      tremolo: TremoloBank(
+        waveShape: bank[0x1C],
+        rate: bank[0x1D],
+        depth: bank[0x1E],
+        level: bank[0x1F]
+      ),
+      vibrato: VibratoBank(
+        rate: bank[0x20],
+        depth: bank[0x21],
+        level: bank[0x22]
+      ),
+      rotary: RotaryBank(
+        rate: bank[0x23],
+        depth: bank[0x24],
+        level: bank[0x25]
+      ),
+      ringMod: RingModBank(
+        mode: RingModMode(rawValue: bank[0x26]) ?? .normal,
+        frequency: bank[0x27],
+        effectLevel: bank[0x28],
+        directMix: bank[0x29]
+      ),
+      slowGear: SlowGearBank(
+        sens: bank[0x2A],
+        riseTime: bank[0x2B],
+        level: bank[0x2C]
+      ),
+      slicer: SlicerBank(
+        pattern: bank[0x2D],
+        rate: bank[0x2E],
+        triggerSens: bank[0x2F],
+        effectLevel: bank[0x30],
+        directMix: bank[0x31]
+      ),
+      comp: CompBank(
+        type: CompType(rawValue: bank[0x32]) ?? .boss,
+        sustain: bank[0x33],
+        attack: bank[0x34],
+        tone: bank[0x35],
+        level: bank[0x36]
+      ),
+      limiter: LimiterBank(
+        type: LimiterType(rawValue: bank[0x37]) ?? .boss,
+        attack: bank[0x38],
+        threshold: bank[0x39],
+        ratio: LimiterRatio(rawValue: bank[0x3A]) ?? .oneToOne,
+        release: bank[0x3B],
+        level: bank[0x3C]
+      ),
+      tWah: TWahBank(
+        mode: WahMode(rawValue: bank[0x3D]) ?? .lowPassFilter,
+        polarity: TWahPolarity(rawValue: bank[0x3E]) ?? .down,
+        sens: bank[0x3F],
+        frequency: bank[0x40],
+        peak: bank[0x41],
+        effectLevel: bank[0x42],
+        directLevel: bank[0x43]
+      ),
+      autoWah: AutoWahBank(
+        mode: WahMode(rawValue: bank[0x44]) ?? .lowPassFilter,
+        frequency: bank[0x45],
+        peak: bank[0x46],
+        rate: bank[0x47],
+        depth: bank[0x48],
+        effectLevel: bank[0x49],
+        directLevel: bank[0x4A]
+      ),
+      graphicEQ: ModFxGraphicEQBank(
+        band31Hz: bank[0x4B],
+        band62Hz: bank[0x4C],
+        band125Hz: bank[0x4D],
+        band250Hz: bank[0x4E],
+        band500Hz: bank[0x4F],
+        band1kHz: bank[0x50],
+        band2kHz: bank[0x51],
+        band4kHz: bank[0x52],
+        band8kHz: bank[0x53],
+        band16kHz: bank[0x54],
+        level: bank[0x55]
+      ),
+      parametricEQ: ModFxParametricEQBank(
+        lowCut: EQLowCut(rawValue: bank[0x56]) ?? .flat,
+        lowGain: bank[0x57],
+        lowMidFreq: EQFrequency(rawValue: bank[0x58]) ?? .freq20Hz,
+        lowMidQ: EQQ(rawValue: bank[0x59]) ?? .q05,
+        lowMidGain: bank[0x5A],
+        highMidFreq: EQFrequency(rawValue: bank[0x5B]) ?? .freq20Hz,
+        highMidQ: EQQ(rawValue: bank[0x5C]) ?? .q05,
+        highMidGain: bank[0x5D],
+        highGain: bank[0x5E],
+        highCut: EQHighCut(rawValue: bank[0x5F]) ?? .freq630Hz,
+        level: bank[0x60]
+      ),
+      guitarSim: GuitarSimBank(
+        type: GuitarSimType(rawValue: bank[0x61]) ?? .sToH,
+        low: bank[0x62],
+        high: bank[0x63],
+        body: bank[0x64],
+        level: bank[0x65]
+      ),
+      acSim: ACSimBank(
+        high: bank[0x66],
+        body: bank[0x67],
+        low: bank[0x68],
+        level: bank[0x69]
+      ),
+      acousticPro: AcousticProBank(
+        type: AcousticProType(rawValue: bank[0x6A]) ?? .small,
+        bass: bank[0x6B],
+        middle: bank[0x6C],
+        midFrequency: EQFrequency(rawValue: bank[0x6D]) ?? .freq20Hz,
+        treble: bank[0x6E],
+        presence: bank[0x6F],
+        level: bank[0x70]
+      ),
+      waveSynth: WaveSynthBank(
+        type: WaveSynthType(rawValue: bank[0x71]) ?? .saw,
+        cutoff: bank[0x72],
+        resonance: bank[0x73],
+        filterSens: bank[0x74],
+        filterDecay: bank[0x75],
+        filterDepth: bank[0x76],
+        synthLevel: bank[0x77],
+        directMix: bank[0x78]
+      ),
+      octaver: OctaverBank(
+        range: OctaverRange(rawValue: bank[0x79]) ?? .range1,
+        level: bank[0x7A],
+        directLevel: bank[0x7B]
+      ),
+      heavyOctave: HeavyOctaveBank(
+        octaveMinus1: bank[0x7C],
+        octaveMinus2: bank[0x7D],
+        directMix: bank[0x7E]
+      ),
+      pitchShifter: PitchShifterBank(
+        voice: PitchShifterVoice(rawValue: bank[127]) ?? .oneVoice,
+        ps1Mode: PitchShifterMode(rawValue: bank[128]) ?? .fast,
+        ps1Pitch: bank[129],
+        ps1Fine: bank[130],
+        ps1PreDelay: UInt16.decodeFromByteArray([bank[131], bank[132], bank[133], bank[134]]),
+        ps1Level: bank[135],
+        ps2Mode: PitchShifterMode(rawValue: bank[136]) ?? .fast,
+        ps2Pitch: bank[137],
+        ps2Fine: bank[138],
+        ps2PreDelay: UInt16.decodeFromByteArray([bank[139], bank[140], bank[141], bank[142]]),
+        ps2Level: bank[143],
+        ps1Feedback: bank[144],
+        directLevel: bank[145]
+      ),
+      harmonist: HarmonistBank(
+        voice: HarmonistVoice(rawValue: bank[146]) ?? .oneVoice,
+        h1Harmony: HarmonistHarmony(rawValue: bank[147]) ?? .unison,
+        h1PreDelay: UInt16.decodeFromByteArray([bank[148], bank[149], bank[150], bank[151]]),
+        h1Level: bank[152],
+        h2Harmony: HarmonistHarmony(rawValue: bank[153]) ?? .unison,
+        h2PreDelay: UInt16.decodeFromByteArray([bank[154], bank[155], bank[156], bank[157]]),
+        h2Level: bank[158],
+        h1Feedback: bank[159],
+        directLevel: bank[160]
+      ),
+      humanizer: HumanizerBank(
+        mode: HumanizerMode(rawValue: bank[185]) ?? .picking,
+        vowel1: HumanizerWovel(rawValue: bank[186]) ?? .a,
+        vowel2: HumanizerWovel(rawValue: bank[187]) ?? .a,
+        sens: bank[188],
+        rate: bank[189],
+        depth: bank[190],
+        manual: bank[191],
+        level: bank[192]
+      ),
+      phaser90E: Phaser90EBank(
+        scriptStatus: bank[193] == 1,
+        speed: bank[194]
+      ),
+      flanger117E: Flanger117EBank(
+        manual: bank[195],
+        width: bank[196],
+        speed: bank[197],
+        regen: bank[198]
+      ),
+      // TODO: audit these parameters as there seem to be a repeated intensity parameter.
+      dc30: DC30Bank(
+        type: DC30Type(rawValue: bank[199]) ?? .chorus,
+        inputVolume: bank[200],
+        intensity: bank[201],
+        repeatTime: UInt16.decodeFromByteArray([bank[202], bank[203], bank[204], bank[205]]),
+        volume: bank[207],
+        tone: bank[208],
+        outputType: DC30OutputType(rawValue: bank[209]) ?? .dPlusE
+      )
+    )
   }
 }

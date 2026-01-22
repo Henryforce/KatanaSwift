@@ -164,9 +164,10 @@ struct HarmonistView: View {
 
       Group {
         Text("H1")
-        ParameterSlider(title: "Harmony", value: $h1Harmony, range: 0...100) {
-          onUpdate(.harmonist(.h1Harmony(UInt8($0))))
-        }
+        // TODO: fix and uncomment slider.
+        //        ParameterSlider(title: "Harmony", value: $h1Harmony, range: 0...100) {
+        //          onUpdate(.harmonist(.h1Harmony(UInt8($0))))
+        //        }
         ParameterSlider(title: "Pre-Delay", value: $h1PreDelay, range: 0...300) {
           onUpdate(.harmonist(.h1PreDelay(UInt16($0))))
         }
@@ -181,9 +182,10 @@ struct HarmonistView: View {
       if voice == .twoVoice {
         Group {
           Text("H2")
-          ParameterSlider(title: "Harmony", value: $h2Harmony, range: 0...100) {
-            onUpdate(.harmonist(.h2Harmony(UInt8($0))))
-          }
+          // TODO: fix and uncomment slider.
+          //          ParameterSlider(title: "Harmony", value: $h2Harmony, range: 0...100) {
+          //            onUpdate(.harmonist(.h2Harmony(UInt8($0))))
+          //          }
           ParameterSlider(title: "Pre-Delay", value: $h2PreDelay, range: 0...300) {
             onUpdate(.harmonist(.h2PreDelay(UInt16($0))))
           }

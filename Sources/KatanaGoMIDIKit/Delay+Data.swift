@@ -27,7 +27,7 @@ extension DelayParameter {
     switch self {
     case .enable(let value): return [value ? 1 : 0]
     case .type(let type): return [type.rawValue]
-    case .time(let time): return time.encode11Bit()
+    case .time(let time): return time.encodeToByteArray()
     case .feedback(let value): return [value & 0x7F]
     case .highCut(let value): return [value.rawValue]
     case .effectLevel(let value): return [value & 0x7F]
@@ -62,7 +62,9 @@ extension DataBank {
     return DelayBank(
       status: status,
       type: DelayType(rawValue: rawDataBank[0x00]) ?? .digital,
-      time: (UInt16(rawDataBank[0x01]) << 7) | UInt16(rawDataBank[0x02]),
+      time: UInt16.decodeFromByteArray([
+        rawDataBank[0x01], rawDataBank[0x02], rawDataBank[0x03], rawDataBank[0x04],
+      ]),
       feedback: rawDataBank[0x05],
       highCut: DelayHighCutFrequency(rawValue: rawDataBank[0x06]) ?? .flat,
       effectLevel: rawDataBank[0x07],
