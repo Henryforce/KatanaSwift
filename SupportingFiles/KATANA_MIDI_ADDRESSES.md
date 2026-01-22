@@ -39,8 +39,8 @@ The following addresses are for the Katana GO and the address column is in hexad
 | SOLO EQ: Hi Gain | 20016007 | 24 | UInt8 |
 | SOLO EQ: Hi Cut | 20016008 | 14 | EQ_HI_CUT (UInt8) |
 | SOLO EQ: Level | 20016009 | 24 | UInt8 |
-| EQ1: On/Off | 20026000 | 1 | Boolean |
-| Signal chain position: EQ1 | 20026001 | 1 | EQPosition |
+| EQ1: Signal chain position | 20026000 | 1 | EQPosition |
+| EQ1: On/Off | 20026001 | 1 | Boolean |
 | EQ1: Selection | 20026002 | 1 | EQ_TYPE (UInt8) |
 | PEQ1: Low Cut | 20030000 | 17 | EQ_LOW_CUT (UInt8) |
 | PEQ1: Low Gain | 20030001 | 40 | UInt8 |
@@ -64,8 +64,8 @@ The following addresses are for the Katana GO and the address column is in hexad
 | GEQ1: 8KHz | 20032008 | 48 | UInt8 |
 | GEQ1: 16KHz | 20032009 | 48 | UInt8 |
 | GEQ1: Level | 2003200A | 48 | UInt8 |
-| EQ2: On/Off | 20027000 | 1 | Boolean |
-| Signal chain position: EQ2 | 20027001 | 1 | EQPosition |
+| EQ2: Signal chain position | 20027000 | 1 | EQPosition |
+| EQ2: On/Off | 20027001 | 1 | Boolean |
 | EQ2: Selection | 20027002 | 1 | EQ_TYPE (UInt8) |
 | PEQ2: Low Cut | 20031000 | 17 | EQ_LOW_CUT (UInt8) |
 | PEQ2: Low Gain | 20031001 | 40 | UInt8 |

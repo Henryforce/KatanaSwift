@@ -3,7 +3,7 @@ import KatanaGoData
 extension ModFxType {
   var name: String {
     switch self {
-    case .twoByTwoChorus: return "2x2 Chorus"
+    case .chorus: return "2x2 Chorus"
     case .flanger: return "Flanger"
     case .phaser: return "Phaser"
     case .uniV: return "Uni-Vibe"

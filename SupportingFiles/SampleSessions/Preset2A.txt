@@ -31,8 +31,8 @@ Sent after manually changing preset to 2A:
 [16, 1, 5, 13, 18, 32, 2, 48, 0, 0, 50, 124] : CONTOUR3
 [16, 1, 5, 13, 18, 32, 2, 64, 0, 0, 0, 0, 0, 3, 15, 15, 125] : Signal Chain Pedal FX (Pedal FX Off/On, Pedal FX Type, FV: Foot Volume Level, unknown extra parameters)
 [16, 1, 5, 13, 18, 32, 2, 80, 0, 0, 100, 0, 100, 100, 0, 36, 50, 100, 0, 100, 0, 100, 100, 0, 124] : PFX WAH: Type
-[16, 1, 5, 13, 18, 32, 2, 96, 0, 0, 1, 0, 125] : EQ1 (on/off, signal chain position, selection)
-[16, 1, 5, 13, 18, 32, 2, 112, 0, 1, 1, 1, 107] : EQ2 (on/off, signal chain position, selection)
+[16, 1, 5, 13, 18, 32, 2, 96, 0, 0, 1, 0, 125] : EQ1 (signal chain position, on/off, selection)
+[16, 1, 5, 13, 18, 32, 2, 112, 0, 1, 1, 1, 107] : EQ2 (signal chain position, on/off, selection)
 [16, 1, 5, 13, 18, 32, 3, 0, 0, 7, 14, 13, 1, 20, 23, 1, 20, 10, 12, 19, 81] : PEQ1
 [16, 1, 5, 13, 18, 32, 3, 16, 0, 0, 20, 13, 1, 20, 23, 1, 20, 20, 14, 20, 53] : PEQ2
 [16, 1, 5, 13, 18, 32, 3, 32, 0, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 53] : GEQ1

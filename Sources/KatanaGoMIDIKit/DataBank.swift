@@ -1,3 +1,5 @@
+import KatanaGoData
+
 /// The bank of data received from the Katana GO device.
 struct DataBank: Sendable, Hashable {
   var presetBank = [UInt8](repeating: 0x00, count: 1)
@@ -187,5 +189,22 @@ struct DataBank: Sendable, Hashable {
     // Roland addresses are base-128 (7-bit bytes)
     return (Int(address[0]) << 21) | (Int(address[1]) << 14) | (Int(address[2]) << 7)
       | Int(address[3])
+  }
+}
+
+extension DataBank {
+  var state: KatanaGoState {
+    return KatanaGoState(
+      amp: buildAmpBank(),
+      boost: buildBoostBank(),
+      mod: buildModBank(),
+      fx: buildFxBank(),
+      delay1: buildDelay1Bank(),
+      delay2: buildDelay2Bank(),
+      reverb: buildReverbBank(),
+      solo: buildSoloBank(),
+      eq1: buildEQ1Bank(),
+      eq2: buildEQ2Bank(),
+      noiseGate: buildNoiseGateBank())
   }
 }

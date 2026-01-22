@@ -110,34 +110,34 @@ public struct ModFxBank: Sendable, Hashable {
 // TODO: re-audit these values.
 /// Available MOD/FX types for the Katana GO.
 public enum ModFxType: UInt8, Sendable, Hashable, CaseIterable {
-  case twoByTwoChorus = 0x00
+  case chorus = 0x00
   case flanger = 0x01
   case phaser = 0x02
   case uniV = 0x03
   case tremolo = 0x04
-  case vibrato = 0x06
-  case rotary = 0x07
-  case ringMod = 0x09
-  case slowGear = 0x0A
-  case slicer = 0x0C
-  case comp = 0x0D
-  case limiter = 0x0E
-  case tWah = 0x0F
-  case autoWah = 0x10
-  case graphicEQ = 0x11
-  case parametricEQ = 0x12
-  case guitarSim = 0x13
-  case acSim = 0x14
-  case acousticPro = 0x15
-  case waveSynth = 0x16
-  case octave = 0x17
-  case heavyOctave = 0x18
-  case pitchShifter = 0x19
-  case harmonist = 0x1A
-  case humanizer = 0x1B
-  case phaser90E = 0x1C
-  case flanger117E = 0x1D
-  case dc30 = 0x1E
+  case vibrato = 0x05
+  case rotary = 0x06
+  case ringMod = 0x07
+  case slowGear = 0x08
+  case slicer = 0x09
+  case comp = 0x0A
+  case limiter = 0x0B
+  case tWah = 0x0C
+  case autoWah = 0x0D
+  case graphicEQ = 0x0F
+  case parametricEQ = 0x10
+  case guitarSim = 0x11
+  case acSim = 0x12
+  case acousticPro = 0x13
+  case waveSynth = 0x14
+  case octave = 0x15
+  case heavyOctave = 0x16
+  case pitchShifter = 0x17
+  case harmonist = 0x18
+  case humanizer = 0x19
+  case phaser90E = 0x1A
+  case flanger117E = 0x1B
+  case dc30 = 0x1C
 }
 
 // MARK: - Chorus

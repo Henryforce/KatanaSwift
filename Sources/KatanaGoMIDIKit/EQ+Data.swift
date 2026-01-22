@@ -3,8 +3,8 @@ import KatanaGoData
 extension EQParameter {
   func address(isEQ2: Bool) -> [UInt8] {
     switch self {
-    case .enable: return [0x20, 0x02, isEQ2 ? 0x70 : 0x60, 0x00]
-    case .position: return [0x20, 0x02, isEQ2 ? 0x70 : 0x60, 0x01]
+    case .enable: return [0x20, 0x02, isEQ2 ? 0x70 : 0x60, 0x01]
+    case .position: return [0x20, 0x02, isEQ2 ? 0x70 : 0x60, 0x00]
     case .type: return [0x20, 0x02, isEQ2 ? 0x70 : 0x60, 0x02]
     case .parametric(let parameter): return parameter.address(isEQ2: isEQ2)
     case .graphic(let parameter): return parameter.address(isEQ2: isEQ2)
@@ -99,8 +99,8 @@ extension GraphicEQParameter {
 extension DataBank {
   func buildEQ1Bank() -> EQBank {
     return buildEQBank(
-      status: self.eq1Bank[0x00] == 1,
-      position: EQPosition(rawValue: self.eq1Bank[0x01]) ?? .ampIn,
+      status: self.eq1Bank[0x01] == 1,
+      position: EQPosition(rawValue: self.eq1Bank[0x00]) ?? .ampIn,
       type: EQType(rawValue: self.eq1Bank[0x02]) ?? .parametric,
       peqBank: self.peq1Bank,
       geqBank: self.geq1Bank
@@ -109,8 +109,8 @@ extension DataBank {
 
   func buildEQ2Bank() -> EQBank {
     return buildEQBank(
-      status: self.eq2Bank[0x00] == 1,
-      position: EQPosition(rawValue: self.eq2Bank[0x01]) ?? .ampIn,
+      status: self.eq2Bank[0x01] == 1,
+      position: EQPosition(rawValue: self.eq2Bank[0x00]) ?? .ampIn,
       type: EQType(rawValue: self.eq2Bank[0x02]) ?? .parametric,
       peqBank: self.peq2Bank,
       geqBank: self.geq2Bank

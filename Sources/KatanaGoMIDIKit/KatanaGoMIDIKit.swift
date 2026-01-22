@@ -88,6 +88,9 @@ public actor KatanaGoMIDIKit: KatanaGo {
           print("Processed")
         case .end:
           print("End")
+
+          let katanaState = dataBank.state
+          print("Katana State: \(katanaState)")
         }
       }
     }

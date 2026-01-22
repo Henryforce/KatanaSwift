@@ -125,11 +125,9 @@ extension BoostType {
     case .naturalOD: "Natural OD"
     case .warmOD: "Warm OD"
     case .fatDS: "Fat DS"
-    case .leadDS: "Lead DS"
     case .metalDS: "Metal DS"
     case .octFuzz: "Oct Fuzz"
     case .bluesOD: "Blues OD"
-    case .od1: "OD-1"
     case .tubescreamer: "Tube Screamer"
     case .turboOD: "Turbo OD"
     case .dist: "Dist"
@@ -139,7 +137,10 @@ extension BoostType {
     case .metalZone: "Metal Zone"
     case .sixtiesFuzz: "Sixties Fuzz"
     case .muffFuzz: "Muff Fuzz"
-    case .custom: "Custom"
+    case .overdrive: "Overdrive"
+    case .hm2: "HM-2"
+    case .metalCore: "Metal Core"
+    case .centaOD: "Centa OD"
     }
   }
 }
