@@ -12,14 +12,29 @@ public enum AmpParameter: Sendable, Hashable {
 
 /// The data bank representing the amplifier parameters.
 public struct AmpBank: Sendable, Hashable {
-  public let type: AmpType
-  public let gain: UInt8
-  public let volume: UInt8
-  public let bass: UInt8
-  public let middle: UInt8
-  public let treble: UInt8
-  public let presence: UInt8
-  public let variation: Bool
+  @Parameter(at: 0x20_00_00_0C)
+  public var type: AmpType = .clean
+
+  @IntegerParameter(at: 0x20_00_00_00, range: 0...100)
+  public var gain: UInt8 = 50
+
+  @IntegerParameter(at: 0x20_00_00_01, range: 0...100)
+  public var volume: UInt8 = 50
+
+  @IntegerParameter(at: 0x20_00_00_02, range: 0...100)
+  public var bass: UInt8 = 50
+
+  @IntegerParameter(at: 0x20_00_00_03, range: 0...100)
+  public var middle: UInt8 = 50
+
+  @IntegerParameter(at: 0x20_00_00_04, range: 0...100)
+  public var treble: UInt8 = 50
+
+  @IntegerParameter(at: 0x20_00_00_0A, range: 0...100)
+  public var presence: UInt8 = 50
+
+  @Parameter(at: 0x20_00_00_0B)
+  public var variation: Bool = false
 
   public init(
     type: AmpType, gain: UInt8, volume: UInt8, bass: UInt8, middle: UInt8, treble: UInt8,
