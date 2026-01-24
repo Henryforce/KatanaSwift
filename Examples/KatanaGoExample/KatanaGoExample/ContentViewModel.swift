@@ -115,12 +115,25 @@ final class ContentViewModel {
       }
     }
   }
+
   func updateAmp(_ parameter: AmpParameter) {
     guard let device else { return }
     Task {
       do {
         print("🎸 Updating Amp \(parameter)...")
         try await device.write(.amp(parameter))
+      } catch {
+        print("❌ Error: \(error)")
+      }
+    }
+  }
+
+  func updateAmpBank(_ bank: AmpBank) {
+    guard let device else { return }
+    Task {
+      do {
+        print("🎸 Updating AmpBank \(bank)...")
+        try await device.writeBank(bank)
       } catch {
         print("❌ Error: \(error)")
       }

@@ -1,3 +1,6 @@
+import KatanaBank
+import KatanaMacros
+
 /// Parameters for the Booster effect.
 public enum BoostParameter: Sendable, Hashable {
   case enable(Bool)
@@ -12,6 +15,7 @@ public enum BoostParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the booster parameters.
+@KatanaBank
 public struct BoostBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_30_00)
   public var status: Bool = false
@@ -39,26 +43,12 @@ public struct BoostBank: Sendable, Hashable {
 
   @IntegerParameter(at: 0x00_00_40_07, range: 0...100)
   public var directMix: UInt8 = 0
-
-  public init(
-    status: Bool, type: BoostType, drive: UInt8, bottom: UInt8, tone: UInt8,
-    soloSwitchStatus: Bool, soloLevel: UInt8, effectLevel: UInt8, directMix: UInt8
-  ) {
-    self.status = status
-    self.type = type
-    self.drive = drive
-    self.bottom = bottom
-    self.tone = tone
-    self.soloSwitchStatus = soloSwitchStatus
-    self.soloLevel = soloLevel
-    self.effectLevel = effectLevel
-    self.directMix = directMix
-  }
 }
 
 // MARK - Types
 
 /// Available booster types for the Katana GO.
+@KatanaUInt8RawBytes
 public enum BoostType: UInt8, Sendable, Hashable, CaseIterable {
   case cleanBoost = 0x00
   case trebleBoost = 0x01

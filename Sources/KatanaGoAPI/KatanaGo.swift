@@ -1,4 +1,5 @@
 import Foundation
+import KatanaBank
 import KatanaGoData
 
 /// Represents a connected Katana GO device.
@@ -16,6 +17,10 @@ public protocol KatanaGo: Actor {
   /// Write a command to the device.
   /// - Parameter command: The command data to send to the device.
   func write(_ command: KatanaGoWriteData) async throws
+
+  /// Write a bank of parameters to the device.
+  /// - Parameter bank: The bank of parameters to send to the device.
+  func writeBank(_ bank: WritableBank) async throws
 
   /// Provides a stream of data received from the device.
   /// - Returns: An AsyncStream of KatanaGoReadData.

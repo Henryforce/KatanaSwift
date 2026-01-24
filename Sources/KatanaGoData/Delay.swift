@@ -1,3 +1,6 @@
+import KatanaBank
+import KatanaMacros
+
 /// Parameters for the Delay effect.
 public enum DelayParameter: Sendable, Hashable {
   case enable(Bool)
@@ -18,6 +21,7 @@ public enum DelayParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the delay parameters.
+@KatanaBank
 public struct DelayBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_30_03)
   public var status: Bool = false
@@ -63,32 +67,10 @@ public struct DelayBank: Sendable, Hashable {
 
   @Parameter(at: 0x00_01_20_0E)
   public var feedbackPhase: DelayPhase = .normal
-
-  public init(
-    status: Bool, type: DelayType, time: UInt16, feedback: UInt8, highCut: DelayHighCutFrequency,
-    effectLevel: UInt8, directMix: UInt8, modulationRate: UInt8, modulationDepth: UInt8,
-    modulationSwitchStatus: Bool, tapTimePercentage: UInt8, filterStatus: Bool,
-    filter: DelayFilterRange, delayPhase: DelayPhase, feedbackPhase: DelayPhase
-  ) {
-    self.status = status
-    self.type = type
-    self.time = time
-    self.feedback = feedback
-    self.highCut = highCut
-    self.effectLevel = effectLevel
-    self.directMix = directMix
-    self.modulationRate = modulationRate
-    self.modulationDepth = modulationDepth
-    self.modulationSwitchStatus = modulationSwitchStatus
-    self.tapTimePercentage = tapTimePercentage
-    self.filterStatus = filterStatus
-    self.filter = filter
-    self.delayPhase = delayPhase
-    self.feedbackPhase = feedbackPhase
-  }
 }
 
 /// Available delay types for the Katana GO.
+@KatanaUInt8RawBytes
 public enum DelayType: UInt8, Sendable, Hashable, CaseIterable {
   case digital = 0x00
   case pan = 0x01
@@ -100,6 +82,7 @@ public enum DelayType: UInt8, Sendable, Hashable, CaseIterable {
   case sde3000 = 0x07
 }
 
+@KatanaUInt8RawBytes
 public enum DelayHighCutFrequency: UInt8, Sendable, Hashable, CaseIterable {
   case freq630Hz = 0x00
   case freq800Hz = 0x01
@@ -118,11 +101,13 @@ public enum DelayHighCutFrequency: UInt8, Sendable, Hashable, CaseIterable {
   case flat = 0x0E
 }
 
+@KatanaUInt8RawBytes
 public enum DelayFilterRange: UInt8, Sendable, Hashable, CaseIterable {
   case freq8kHz = 0x00
   case freq17kHz = 0x01
 }
 
+@KatanaUInt8RawBytes
 public enum DelayPhase: UInt8, Sendable, Hashable, CaseIterable {
   case normal = 0x00
   case inverted = 0x01

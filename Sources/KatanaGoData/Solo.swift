@@ -1,3 +1,6 @@
+import KatanaBank
+import KatanaMacros
+
 /// Represents the Solo parameters.
 public enum SoloParameter: Sendable, Hashable {
   case enable(Bool)
@@ -20,6 +23,7 @@ public enum SoloParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the solo parameters.
+@KatanaBank
 public struct SoloBank: Sendable, Hashable {
   @Parameter(at: 0x00_01_50_00)
   public var status: Bool = false
@@ -56,23 +60,4 @@ public struct SoloBank: Sendable, Hashable {
 
   @IntegerParameter(at: 0x00_01_60_09, range: 0...24)
   public var eqLevel: UInt8 = 12
-
-  public init(
-    status: Bool, level: UInt8, eqPosition: EQPosition, eqStatus: Bool, eqLowCut: EQLowCut,
-    eqLowGain: UInt8, eqMidFreq: EQFrequency, eqMidQ: EQQ, eqMidGain: UInt8, eqHighGain: UInt8,
-    eqHighCut: EQHighCut, eqLevel: UInt8
-  ) {
-    self.status = status
-    self.level = level
-    self.eqPosition = eqPosition
-    self.eqStatus = eqStatus
-    self.eqLowCut = eqLowCut
-    self.eqLowGain = eqLowGain
-    self.eqMidFreq = eqMidFreq
-    self.eqMidQ = eqMidQ
-    self.eqMidGain = eqMidGain
-    self.eqHighGain = eqHighGain
-    self.eqHighCut = eqHighCut
-    self.eqLevel = eqLevel
-  }
 }

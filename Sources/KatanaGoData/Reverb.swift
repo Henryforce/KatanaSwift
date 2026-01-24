@@ -1,3 +1,6 @@
+import KatanaBank
+import KatanaMacros
+
 /// Parameters for the Reverb effect.
 public enum ReverbParameter: Sendable, Hashable {
   case enable(Bool)
@@ -16,6 +19,7 @@ public enum ReverbParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the reverb parameters.
+@KatanaBank
 public struct ReverbBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_30_05)
   public var status: Bool = false
@@ -46,25 +50,10 @@ public struct ReverbBank: Sendable, Hashable {
 
   @IntegerParameter(at: 0x00_01_40_0C, range: 0...100)
   public var springSensitivity: UInt8 = 50
-
-  public init(
-    status: Bool, type: ReverbType, time: UInt8, preDelay: UInt16, lowCut: EQLowCut,
-    highCut: EQHighCut, density: UInt8, effectLevel: UInt8, directMix: UInt8,
-    springSensitivity: UInt8
-  ) {
-    self.status = status
-    self.type = type
-    self.time = time
-    self.preDelay = preDelay
-    self.lowCut = lowCut
-    self.highCut = highCut
-    self.density = density
-    self.effectLevel = effectLevel
-    self.directMix = directMix
-    self.springSensitivity = springSensitivity
-  }
 }
 
+/// Available reverb types.
+@KatanaUInt8RawBytes
 public enum ReverbType: UInt8, Sendable, Hashable, CaseIterable {
   case plate = 0x00
   case room = 0x01
