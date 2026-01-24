@@ -13,20 +13,20 @@ The following addresses are for the Katana GO and the address column is in hexad
 | BOOSTER: SOLO Level | 20004005 | 100 | UInt8 |
 | BOOSTER: Effect Level | 20004006 | 100 | UInt8 |
 | BOOSTER: Direct Mix | 20004007 | 100 | UInt8 |
-| PREAMP: Type | 2000200C | 4 | PREAMP_TYPE (UInt8) |
 | PREAMP: Gain | 20002000 | 100 | UInt8 |
+| PREAMP: Volume | 20002001 | 100 | UInt8 |
+| PREAMP BASS: Tone Shape | 20002002 | 100 | PREAMP_BASS_SHAPE (UInt8) |
 | PREAMP: Bass | 20002003 | 100 | UInt8 |
 | PREAMP: Middle | 20002004 | 100 | UInt8 |
 | PREAMP: Treble | 20002005 | 100 | UInt8 |
-| PREAMP: Presence | 2000200A | 100 | UInt8 |
-| PREAMP: Volume | 20002001 | 100 | UInt8 |
-| PREAMP BASS: Tone Shape | 20002002 | 100 | UInt8 |
-| PREAMP Guitar: Variation | 2000200D | 1 | Boolean |
 | PREAMP BASS: Low Mid Gain | 20002006 | 100 | UInt8 |
 | PREAMP BAS: Low Mid Freq | 20002007 | 27 | EQ_MID_FREQ (UInt8) |
 | PREAMP BASS: Hi Mid Gain | 20002008 | 100 | UInt8 |
 | PREAMP BASS: Hi Mid Freq | 20002009 | 27 | EQ_MID_FREQ (UInt8) |
+| PREAMP: Presence | 2000200A | 100 | UInt8 |
 | POWERAMP: Variation | 2000200B | 1 | POWERAMP_VARIATION (UInt8) |
+| PREAMP: Type | 2000200C | 4 | PREAMP_TYPE (UInt8) |
+| PREAMP Guitar: Variation | 2000200D | 1 | Boolean |
 | SOLO: Solo Sw | 20015000 | 1 | Boolean |
 | SOLO: Solo Level | 20015001 | 100 | UInt8 |
 | SOLO EQ: Position | 20016000 | 1 | EQ_POSITION (UInt8) |
@@ -94,11 +94,11 @@ The following addresses are for the Katana GO and the address column is in hexad
 | MOD: 2X2-Chorus Crossover f | 20010000 | 100 | UInt8 |
 | MOD: 2X2-Chorus Low Rate | 20010001 | 100 | UInt8 |
 | MOD: 2X2-Chorus Low Depth | 20010002 | 100 | UInt8 |
-| MOD: 2X2-Chorus Low Pre Dly | 20010003 | 80 | UInt8 |
+| MOD: 2X2-Chorus Low Pre Delay | 20010003 | 80 | UInt8 |
 | MOD: 2X2-Chorus Low Level | 20010004 | 100 | UInt8 |
 | MOD: 2X2-Chorus High Rate | 20010005 | 100 | UInt8 |
 | MOD: 2X2-Chorus High Depth | 20010006 | 100 | UInt8 |
-| MOD: 2X2-Chorus High Pre Dly | 20010007 | 80 | UInt8 |
+| MOD: 2X2-Chorus High Pre Delay | 20010007 | 80 | UInt8 |
 | MOD: 2X2-Chorus High Level | 20010008 | 100 | UInt8 |
 | MOD: 2X2-Chorus Direct Mix | 20010009 | 100 | UInt8 |
 | MOD: Flanger Rate | 2001000A | 100 | UInt8 |

@@ -21,7 +21,7 @@ public struct AmpBank: Sendable, Hashable {
   @IntegerParameter(at: 0x20_00_00_01, range: 0...100)
   public var volume: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_00_02, range: 0...100)
+  @IntegerParameter(at: 0x20_00_00_03, range: 0...100)
   public var bass: UInt8 = 50
 
   @IntegerParameter(at: 0x20_00_00_03, range: 0...100)
@@ -33,7 +33,7 @@ public struct AmpBank: Sendable, Hashable {
   @IntegerParameter(at: 0x20_00_00_0A, range: 0...100)
   public var presence: UInt8 = 50
 
-  @Parameter(at: 0x20_00_00_0B)
+  @Parameter(at: 0x20_00_00_0D)
   public var variation: Bool = false
 
   public init(
