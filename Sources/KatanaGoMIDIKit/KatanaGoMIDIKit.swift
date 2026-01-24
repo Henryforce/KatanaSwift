@@ -13,7 +13,7 @@ public actor KatanaGoMIDIKit: KatanaGo {
 
   private var continuation: AsyncStream<KatanaGoReadData>.Continuation?
 
-  private var dataBank = DataBank()
+  private var dataBank = DataBank(addressOffset: 0x20_00_00_00)
 
   public init(endpoint: MIDIEndpointProtocol, midiManager: MIDIManagerProtocol) {
     self.endpoint = endpoint

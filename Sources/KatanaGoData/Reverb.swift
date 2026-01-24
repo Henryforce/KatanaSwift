@@ -17,16 +17,35 @@ public enum ReverbParameter: Sendable, Hashable {
 
 /// The data bank representing the reverb parameters.
 public struct ReverbBank: Sendable, Hashable {
-  public let status: Bool
-  public let type: ReverbType
-  public let time: UInt8
-  public let preDelay: UInt16
-  public let lowCut: EQLowCut
-  public let highCut: EQHighCut
-  public let density: UInt8
-  public let effectLevel: UInt8
-  public let directMix: UInt8
-  public let springSensitivity: UInt8
+  @Parameter(at: 0x00_00_30_05)
+  public var status: Bool = false
+
+  @Parameter(at: 0x00_01_40_00)
+  public var type: ReverbType = .room
+
+  @IntegerParameter(at: 0x00_01_40_02, range: 0...100)
+  public var time: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_40_03, range: 0...500)
+  public var preDelay: UInt16 = 0
+
+  @Parameter(at: 0x00_01_40_07)
+  public var lowCut: EQLowCut = .flat
+
+  @Parameter(at: 0x00_01_40_08)
+  public var highCut: EQHighCut = .freq630Hz
+
+  @IntegerParameter(at: 0x00_01_40_09, range: 0...100)
+  public var density: UInt8 = 5
+
+  @IntegerParameter(at: 0x00_01_40_0A, range: 0...100)
+  public var effectLevel: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_40_0B, range: 0...100)
+  public var directMix: UInt8 = 0
+
+  @IntegerParameter(at: 0x00_01_40_0C, range: 0...100)
+  public var springSensitivity: UInt8 = 50
 
   public init(
     status: Bool, type: ReverbType, time: UInt8, preDelay: UInt16, lowCut: EQLowCut,

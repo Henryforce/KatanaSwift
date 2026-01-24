@@ -33,36 +33,40 @@ public enum ModFxParameter: Sendable, Hashable {
 
 /// The data bank representing the MOD/FX parameters.
 public struct ModFxBank: Sendable, Hashable {
-  public let status: Bool
-  public let type: ModFxType
-  public let chorus: ChorusBank
-  public let flanger: FlangerBank
-  public let phaser: PhaserBank
-  public let uniVibe: UniVibeBank
-  public let tremolo: TremoloBank
-  public let vibrato: VibratoBank
-  public let rotary: RotaryBank
-  public let ringMod: RingModBank
-  public let slowGear: SlowGearBank
-  public let slicer: SlicerBank
-  public let comp: CompBank
-  public let limiter: LimiterBank
-  public let tWah: TWahBank
-  public let autoWah: AutoWahBank
-  public let graphicEQ: ModFxGraphicEQBank
-  public let parametricEQ: ModFxParametricEQBank
-  public let guitarSim: GuitarSimBank
-  public let acSim: ACSimBank
-  public let acousticPro: AcousticProBank
-  public let waveSynth: WaveSynthBank
-  public let octaver: OctaverBank
-  public let heavyOctave: HeavyOctaveBank
-  public let pitchShifter: PitchShifterBank
-  public let harmonist: HarmonistBank
-  public let humanizer: HumanizerBank
-  public let phaser90E: Phaser90EBank
-  public let flanger117E: Flanger117EBank
-  public let dc30: DC30Bank
+  @Parameter(at: 0x00_00_30_01)
+  public var status: Bool = false
+
+  @Parameter(at: 0x00_00_60_00)
+  public var type: ModFxType = .chorus
+
+  public var chorus: ChorusBank
+  public var flanger: FlangerBank
+  public var phaser: PhaserBank
+  public var uniVibe: UniVibeBank
+  public var tremolo: TremoloBank
+  public var vibrato: VibratoBank
+  public var rotary: RotaryBank
+  public var ringMod: RingModBank
+  public var slowGear: SlowGearBank
+  public var slicer: SlicerBank
+  public var comp: CompBank
+  public var limiter: LimiterBank
+  public var tWah: TWahBank
+  public var autoWah: AutoWahBank
+  public var graphicEQ: ModFxGraphicEQBank
+  public var parametricEQ: ModFxParametricEQBank
+  public var guitarSim: GuitarSimBank
+  public var acSim: ACSimBank
+  public var acousticPro: AcousticProBank
+  public var waveSynth: WaveSynthBank
+  public var octaver: OctaverBank
+  public var heavyOctave: HeavyOctaveBank
+  public var pitchShifter: PitchShifterBank
+  public var harmonist: HarmonistBank
+  public var humanizer: HumanizerBank
+  public var phaser90E: Phaser90EBank
+  public var flanger117E: Flanger117EBank
+  public var dc30: DC30Bank
 
   public init(
     status: Bool, type: ModFxType, chorus: ChorusBank, flanger: FlangerBank, phaser: PhaserBank,
@@ -159,16 +163,35 @@ public enum ChorusParameter: Sendable, Hashable {
 
 /// The data bank representing the chorus parameters.
 public struct ChorusBank: Sendable, Hashable {
-  public let crossoverFrequency: UInt8
-  public let lowRate: UInt8
-  public let lowDepth: UInt8
-  public let lowPreDelay: UInt8
-  public let lowLevel: UInt8
-  public let highRate: UInt8
-  public let highDepth: UInt8
-  public let highPreDelay: UInt8
-  public let highLevel: UInt8
-  public let directMix: UInt8
+  @IntegerParameter(at: 0x00_01_00_00, range: 0...100)
+  public var crossoverFrequency: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_01, range: 0...100)
+  public var lowRate: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_02, range: 0...100)
+  public var lowDepth: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_03, range: 0...80)
+  public var lowPreDelay: UInt8 = 0
+
+  @IntegerParameter(at: 0x00_01_00_04, range: 0...100)
+  public var lowLevel: UInt8 = 100
+
+  @IntegerParameter(at: 0x00_01_00_05, range: 0...100)
+  public var highRate: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_06, range: 0...100)
+  public var highDepth: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_07, range: 0...80)
+  public var highPreDelay: UInt8 = 0
+
+  @IntegerParameter(at: 0x00_01_00_08, range: 0...100)
+  public var highLevel: UInt8 = 100
+
+  @IntegerParameter(at: 0x00_01_00_09, range: 0...100)
+  public var directMix: UInt8 = 0
 
   public init(
     crossoverFrequency: UInt8, lowRate: UInt8, lowDepth: UInt8, lowPreDelay: UInt8, lowLevel: UInt8,
@@ -201,13 +224,26 @@ public enum FlangerParameter: Sendable, Hashable {
 
 /// The data bank representing the flanger parameters.
 public struct FlangerBank: Sendable, Hashable {
-  public let rate: UInt8
-  public let depth: UInt8
-  public let manual: UInt8
-  public let resonance: UInt8
-  public let lowCut: FlangerLowCut
-  public let effectLevel: UInt8
-  public let directLevel: UInt8
+  @IntegerParameter(at: 0x00_01_00_0A, range: 0...100)
+  public var rate: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_0B, range: 0...100)
+  public var depth: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_0C, range: 0...100)
+  public var manual: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_0D, range: 0...100)
+  public var resonance: UInt8 = 50
+
+  @Parameter(at: 0x00_01_00_0E)
+  public var lowCut: FlangerLowCut = .flat
+
+  @IntegerParameter(at: 0x00_01_00_0F, range: 0...100)
+  public var effectLevel: UInt8 = 100
+
+  @IntegerParameter(at: 0x00_01_00_10, range: 0...100)
+  public var directLevel: UInt8 = 0
 
   public init(
     rate: UInt8, depth: UInt8, manual: UInt8, resonance: UInt8, lowCut: FlangerLowCut,
@@ -252,14 +288,29 @@ public enum PhaserParameter: Sendable, Hashable {
 
 /// The data bank representing the phaser parameters.
 public struct PhaserBank: Sendable, Hashable {
-  public let type: PhaserType
-  public let rate: UInt8
-  public let depth: UInt8
-  public let manual: UInt8
-  public let resonance: UInt8
-  public let stepRate: UInt8
-  public let effectLevel: UInt8
-  public let directLevel: UInt8
+  @Parameter(at: 0x00_01_00_11)
+  public var type: PhaserType = .fourStage
+
+  @IntegerParameter(at: 0x00_01_00_12, range: 0...100)
+  public var rate: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_13, range: 0...100)
+  public var depth: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_14, range: 0...100)
+  public var manual: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_15, range: 0...100)
+  public var resonance: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_16, range: 0...100)
+  public var stepRate: UInt8 = 0
+
+  @IntegerParameter(at: 0x00_01_00_17, range: 0...100)
+  public var effectLevel: UInt8 = 100
+
+  @IntegerParameter(at: 0x00_01_00_18, range: 0...100)
+  public var directLevel: UInt8 = 0
 
   public init(
     type: PhaserType, rate: UInt8, depth: UInt8, manual: UInt8, resonance: UInt8, stepRate: UInt8,
@@ -293,9 +344,14 @@ public enum UniVibeParameter: Sendable, Hashable {
 
 /// The data bank representing the univibe parameters.
 public struct UniVibeBank: Sendable, Hashable {
-  public let rate: UInt8
-  public let depth: UInt8
-  public let level: UInt8
+  @IntegerParameter(at: 0x00_01_00_19, range: 0...100)
+  public var rate: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_1A, range: 0...100)
+  public var depth: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_1B, range: 0...100)
+  public var level: UInt8 = 100
 
   public init(rate: UInt8, depth: UInt8, level: UInt8) {
     self.rate = rate
@@ -315,10 +371,17 @@ public enum TremoloParameter: Sendable, Hashable {
 
 /// The data bank representing the tremolo parameters.
 public struct TremoloBank: Sendable, Hashable {
-  public let waveShape: UInt8
-  public let rate: UInt8
-  public let depth: UInt8
-  public let level: UInt8
+  @IntegerParameter(at: 0x00_01_00_1C, range: 0...100)
+  public var waveShape: UInt8 = 0
+
+  @IntegerParameter(at: 0x00_01_00_1D, range: 0...100)
+  public var rate: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_1E, range: 0...100)
+  public var depth: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_1F, range: 0...100)
+  public var level: UInt8 = 100
 
   public init(waveShape: UInt8, rate: UInt8, depth: UInt8, level: UInt8) {
     self.waveShape = waveShape
@@ -338,9 +401,14 @@ public enum VibratoParameter: Sendable, Hashable {
 
 /// The data bank representing the vibrato parameters.
 public struct VibratoBank: Sendable, Hashable {
-  public let rate: UInt8
-  public let depth: UInt8
-  public let level: UInt8
+  @IntegerParameter(at: 0x00_01_00_20, range: 0...100)
+  public var rate: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_21, range: 0...100)
+  public var depth: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_22, range: 0...100)
+  public var level: UInt8 = 100
 
   public init(rate: UInt8, depth: UInt8, level: UInt8) {
     self.rate = rate
@@ -359,9 +427,14 @@ public enum RotaryParameter: Sendable, Hashable {
 
 /// The data bank representing the rotary parameters.
 public struct RotaryBank: Sendable, Hashable {
-  public let rate: UInt8
-  public let depth: UInt8
-  public let level: UInt8
+  @IntegerParameter(at: 0x00_01_00_23, range: 0...100)
+  public var rate: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_24, range: 0...100)
+  public var depth: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_25, range: 0...100)
+  public var level: UInt8 = 100
 
   public init(rate: UInt8, depth: UInt8, level: UInt8) {
     self.rate = rate
@@ -381,10 +454,17 @@ public enum RingModParameter: Sendable, Hashable {
 
 /// The data bank representing the ring modulator parameters.
 public struct RingModBank: Sendable, Hashable {
-  public let mode: RingModMode
-  public let frequency: UInt8
-  public let effectLevel: UInt8
-  public let directMix: UInt8
+  @Parameter(at: 0x00_01_00_26)
+  public var mode: RingModMode = .normal
+
+  @IntegerParameter(at: 0x00_01_00_27, range: 0...100)
+  public var frequency: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_28, range: 0...100)
+  public var effectLevel: UInt8 = 100
+
+  @IntegerParameter(at: 0x00_01_00_29, range: 0...100)
+  public var directMix: UInt8 = 0
 
   public init(mode: RingModMode, frequency: UInt8, effectLevel: UInt8, directMix: UInt8) {
     self.mode = mode
@@ -409,9 +489,14 @@ public enum SlowGearParameter: Sendable, Hashable {
 
 /// The data bank representing the slow gear parameters.
 public struct SlowGearBank: Sendable, Hashable {
-  public let sens: UInt8
-  public let riseTime: UInt8
-  public let level: UInt8
+  @IntegerParameter(at: 0x00_01_00_2A, range: 0...100)
+  public var sens: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_2B, range: 0...100)
+  public var riseTime: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_2C, range: 0...100)
+  public var level: UInt8 = 100
 
   public init(sens: UInt8, riseTime: UInt8, level: UInt8) {
     self.sens = sens
@@ -433,11 +518,20 @@ public enum SlicerParameter: Sendable, Hashable {
 
 /// The data bank representing the slicer parameters.
 public struct SlicerBank: Sendable, Hashable {
-  public let pattern: UInt8
-  public let rate: UInt8
-  public let triggerSens: UInt8
-  public let effectLevel: UInt8
-  public let directMix: UInt8
+  @IntegerParameter(at: 0x00_01_00_2D, range: 0...19)
+  public var pattern: UInt8 = 0
+
+  @IntegerParameter(at: 0x00_01_00_2E, range: 0...100)
+  public var rate: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_2F, range: 0...100)
+  public var triggerSens: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_30, range: 0...100)
+  public var effectLevel: UInt8 = 100
+
+  @IntegerParameter(at: 0x00_01_00_31, range: 0...100)
+  public var directMix: UInt8 = 0
 
   public init(
     pattern: UInt8, rate: UInt8, triggerSens: UInt8, effectLevel: UInt8, directMix: UInt8
@@ -462,11 +556,20 @@ public enum CompParameter: Sendable, Hashable {
 
 /// The data bank representing the compressor parameters.
 public struct CompBank: Sendable, Hashable {
-  public let type: CompType
-  public let sustain: UInt8
-  public let attack: UInt8
-  public let tone: UInt8
-  public let level: UInt8
+  @Parameter(at: 0x00_01_00_32)
+  public var type: CompType = .boss
+
+  @IntegerParameter(at: 0x00_01_00_33, range: 0...100)
+  public var sustain: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_34, range: 0...100)
+  public var attack: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_35, range: 0...100)
+  public var tone: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_36, range: 0...100)
+  public var level: UInt8 = 100
 
   public init(type: CompType, sustain: UInt8, attack: UInt8, tone: UInt8, level: UInt8) {
     self.type = type
@@ -500,12 +603,23 @@ public enum LimiterParameter: Sendable, Hashable {
 
 /// The data bank representing the limiter parameters.
 public struct LimiterBank: Sendable, Hashable {
-  public let type: LimiterType
-  public let attack: UInt8
-  public let threshold: UInt8
-  public let ratio: LimiterRatio
-  public let release: UInt8
-  public let level: UInt8
+  @Parameter(at: 0x00_01_00_37)
+  public var type: LimiterType = .boss
+
+  @IntegerParameter(at: 0x00_01_00_38, range: 0...100)
+  public var attack: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_39, range: 0...100)
+  public var threshold: UInt8 = 50
+
+  @Parameter(at: 0x00_01_00_3A)
+  public var ratio: LimiterRatio = .twoToOne
+
+  @IntegerParameter(at: 0x00_01_00_3B, range: 0...100)
+  public var release: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_3C, range: 0...100)
+  public var level: UInt8 = 100
 
   public init(
     type: LimiterType, attack: UInt8, threshold: UInt8, ratio: LimiterRatio, release: UInt8,
@@ -568,13 +682,26 @@ public enum TWahParameter: Sendable, Hashable {
 
 /// The data bank representing the T-Wah parameters.
 public struct TWahBank: Sendable, Hashable {
-  public let mode: WahMode
-  public let polarity: TWahPolarity
-  public let sens: UInt8
-  public let frequency: UInt8
-  public let peak: UInt8
-  public let effectLevel: UInt8
-  public let directLevel: UInt8
+  @Parameter(at: 0x00_01_00_3D)
+  public var mode: WahMode = .lowPassFilter
+
+  @Parameter(at: 0x00_01_00_3E)
+  public var polarity: TWahPolarity = .up
+
+  @IntegerParameter(at: 0x00_01_00_3F, range: 0...100)
+  public var sens: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_40, range: 0...100)
+  public var frequency: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_41, range: 0...100)
+  public var peak: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_42, range: 0...100)
+  public var effectLevel: UInt8 = 100
+
+  @IntegerParameter(at: 0x00_01_00_43, range: 0...100)
+  public var directLevel: UInt8 = 0
 
   public init(
     mode: WahMode, polarity: TWahPolarity, sens: UInt8, frequency: UInt8, peak: UInt8,
@@ -609,13 +736,26 @@ public enum AutoWahParameter: Sendable, Hashable {
 
 /// The data bank representing the auto wah parameters.
 public struct AutoWahBank: Sendable, Hashable {
-  public let mode: WahMode
-  public let frequency: UInt8
-  public let peak: UInt8
-  public let rate: UInt8
-  public let depth: UInt8
-  public let effectLevel: UInt8
-  public let directLevel: UInt8
+  @Parameter(at: 0x00_01_00_44)
+  public var mode: WahMode = .lowPassFilter
+
+  @IntegerParameter(at: 0x00_01_00_45, range: 0...100)
+  public var frequency: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_46, range: 0...100)
+  public var peak: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_47, range: 0...100)
+  public var rate: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_48, range: 0...100)
+  public var depth: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_49, range: 0...100)
+  public var effectLevel: UInt8 = 100
+
+  @IntegerParameter(at: 0x00_01_00_4A, range: 0...100)
+  public var directLevel: UInt8 = 0
 
   public init(
     mode: WahMode, frequency: UInt8, peak: UInt8, rate: UInt8, depth: UInt8, effectLevel: UInt8,
@@ -650,17 +790,38 @@ public enum ModFxGraphicEQParameter: Sendable, Hashable {
 
 /// The data bank representing the MOD/FX graphic equalizer parameters.
 public struct ModFxGraphicEQBank: Sendable, Hashable {
-  public let band31Hz: UInt8
-  public let band62Hz: UInt8
-  public let band125Hz: UInt8
-  public let band250Hz: UInt8
-  public let band500Hz: UInt8
-  public let band1kHz: UInt8
-  public let band2kHz: UInt8
-  public let band4kHz: UInt8
-  public let band8kHz: UInt8
-  public let band16kHz: UInt8
-  public let level: UInt8
+  @IntegerParameter(at: 0x00_01_00_4B, range: 0...40)
+  public var band31Hz: UInt8 = 20
+
+  @IntegerParameter(at: 0x00_01_00_4C, range: 0...40)
+  public var band62Hz: UInt8 = 20
+
+  @IntegerParameter(at: 0x00_01_00_4D, range: 0...40)
+  public var band125Hz: UInt8 = 20
+
+  @IntegerParameter(at: 0x00_01_00_4E, range: 0...40)
+  public var band250Hz: UInt8 = 20
+
+  @IntegerParameter(at: 0x00_01_00_4F, range: 0...40)
+  public var band500Hz: UInt8 = 20
+
+  @IntegerParameter(at: 0x00_01_00_50, range: 0...40)
+  public var band1kHz: UInt8 = 20
+
+  @IntegerParameter(at: 0x00_01_00_51, range: 0...40)
+  public var band2kHz: UInt8 = 20
+
+  @IntegerParameter(at: 0x00_01_00_52, range: 0...40)
+  public var band4kHz: UInt8 = 20
+
+  @IntegerParameter(at: 0x00_01_00_53, range: 0...40)
+  public var band8kHz: UInt8 = 20
+
+  @IntegerParameter(at: 0x00_01_00_54, range: 0...40)
+  public var band16kHz: UInt8 = 20
+
+  @IntegerParameter(at: 0x00_01_00_55, range: 0...40)
+  public var level: UInt8 = 20
 
   public init(
     band31Hz: UInt8, band62Hz: UInt8, band125Hz: UInt8, band250Hz: UInt8, band500Hz: UInt8,
@@ -704,17 +865,38 @@ public enum ModFxParametricEQParameter: Sendable, Hashable {
 
 /// The data bank representing the MOD/FX parametric equalizer parameters.
 public struct ModFxParametricEQBank: Sendable, Hashable {
-  public let lowCut: EQLowCut
-  public let lowGain: UInt8
-  public let lowMidFreq: EQFrequency
-  public let lowMidQ: EQQ
-  public let lowMidGain: UInt8
-  public let highMidFreq: EQFrequency
-  public let highMidQ: EQQ
-  public let highMidGain: UInt8
-  public let highGain: UInt8
-  public let highCut: EQHighCut
-  public let level: UInt8
+  @Parameter(at: 0x00_01_00_56)
+  public var lowCut: EQLowCut = .flat
+
+  @IntegerParameter(at: 0x00_01_00_57, range: 0...40)
+  public var lowGain: UInt8 = 20
+
+  @Parameter(at: 0x00_01_00_58)
+  public var lowMidFreq: EQFrequency = .freq200Hz
+
+  @Parameter(at: 0x00_01_00_59)
+  public var lowMidQ: EQQ = .q1
+
+  @IntegerParameter(at: 0x00_01_00_5A, range: 0...40)
+  public var lowMidGain: UInt8 = 20
+
+  @Parameter(at: 0x00_01_00_5B)
+  public var highMidFreq: EQFrequency = .freq2kHz
+
+  @Parameter(at: 0x00_01_00_5C)
+  public var highMidQ: EQQ = .q1
+
+  @IntegerParameter(at: 0x00_01_00_5D, range: 0...40)
+  public var highMidGain: UInt8 = 20
+
+  @IntegerParameter(at: 0x00_01_00_5E, range: 0...40)
+  public var highGain: UInt8 = 20
+
+  @Parameter(at: 0x00_01_00_5F)
+  public var highCut: EQHighCut = .flat
+
+  @IntegerParameter(at: 0x00_01_00_60, range: 0...40)
+  public var level: UInt8 = 20
 
   public init(
     lowCut: EQLowCut, lowGain: UInt8, lowMidFreq: EQFrequency, lowMidQ: EQQ, lowMidGain: UInt8,
@@ -749,11 +931,20 @@ public enum GuitarSimParameter: Sendable, Hashable {
 
 /// The data bank representing the guitar simulation parameters.
 public struct GuitarSimBank: Sendable, Hashable {
-  public let type: GuitarSimType
-  public let low: UInt8
-  public let high: UInt8
-  public let body: UInt8
-  public let level: UInt8
+  @Parameter(at: 0x00_01_00_61)
+  public var type: GuitarSimType = .sToH
+
+  @IntegerParameter(at: 0x00_01_00_62, range: 0...100)
+  public var low: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_63, range: 0...100)
+  public var high: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_64, range: 0...100)
+  public var body: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_65, range: 0...100)
+  public var level: UInt8 = 100
 
   public init(type: GuitarSimType, low: UInt8, high: UInt8, body: UInt8, level: UInt8) {
     self.type = type
@@ -788,10 +979,17 @@ public enum ACSimParameter: Sendable, Hashable {
 
 /// The data bank representing the acoustic simulation parameters.
 public struct ACSimBank: Sendable, Hashable {
-  public let high: UInt8
-  public let body: UInt8
-  public let low: UInt8
-  public let level: UInt8
+  @IntegerParameter(at: 0x00_01_00_66, range: 0...100)
+  public var high: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_67, range: 0...100)
+  public var body: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_68, range: 0...100)
+  public var low: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_69, range: 0...100)
+  public var level: UInt8 = 100
 
   public init(high: UInt8, body: UInt8, low: UInt8, level: UInt8) {
     self.high = high
@@ -819,13 +1017,26 @@ public enum AcousticProParameter: Sendable, Hashable {
 
 /// The data bank representing the acoustic pro parameters.
 public struct AcousticProBank: Sendable, Hashable {
-  public let type: AcousticProType
-  public let bass: UInt8
-  public let middle: UInt8
-  public let midFrequency: EQFrequency
-  public let treble: UInt8
-  public let presence: UInt8
-  public let level: UInt8
+  @Parameter(at: 0x00_01_00_6A)
+  public var type: AcousticProType = .small
+
+  @IntegerParameter(at: 0x00_01_00_6B, range: 0...100)
+  public var bass: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_6C, range: 0...100)
+  public var middle: UInt8 = 50
+
+  @Parameter(at: 0x00_01_00_6D)
+  public var midFrequency: EQFrequency = .freq500Hz
+
+  @IntegerParameter(at: 0x00_01_00_6E, range: 0...100)
+  public var treble: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_6F, range: 0...100)
+  public var presence: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_70, range: 0...100)
+  public var level: UInt8 = 100
 
   public init(
     type: AcousticProType, bass: UInt8, middle: UInt8, midFrequency: EQFrequency, treble: UInt8,
@@ -863,14 +1074,29 @@ public enum WaveSynthParameter: Sendable, Hashable {
 
 /// The data bank representing the wave synth parameters.
 public struct WaveSynthBank: Sendable, Hashable {
-  public let type: WaveSynthType
-  public let cutoff: UInt8
-  public let resonance: UInt8
-  public let filterSens: UInt8
-  public let filterDecay: UInt8
-  public let filterDepth: UInt8
-  public let synthLevel: UInt8
-  public let directMix: UInt8
+  @Parameter(at: 0x00_01_00_71)
+  public var type: WaveSynthType = .saw
+
+  @IntegerParameter(at: 0x00_01_00_72, range: 0...100)
+  public var cutoff: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_73, range: 0...100)
+  public var resonance: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_74, range: 0...100)
+  public var filterSens: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_75, range: 0...100)
+  public var filterDecay: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_76, range: 0...100)
+  public var filterDepth: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_77, range: 0...100)
+  public var synthLevel: UInt8 = 100
+
+  @IntegerParameter(at: 0x00_01_00_78, range: 0...100)
+  public var directMix: UInt8 = 0
 
   public init(
     type: WaveSynthType, cutoff: UInt8, resonance: UInt8, filterSens: UInt8, filterDecay: UInt8,
@@ -902,9 +1128,14 @@ public enum OctaverParameter: Sendable, Hashable {
 
 /// The data bank representing the octaver parameters.
 public struct OctaverBank: Sendable, Hashable {
-  public let range: OctaverRange
-  public let level: UInt8
-  public let directLevel: UInt8
+  @Parameter(at: 0x00_01_00_79)
+  public var range: OctaverRange = .range1
+
+  @IntegerParameter(at: 0x00_01_00_7A, range: 0...100)
+  public var level: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_7B, range: 0...100)
+  public var directLevel: UInt8 = 0
 
   public init(range: OctaverRange, level: UInt8, directLevel: UInt8) {
     self.range = range
@@ -930,9 +1161,14 @@ public enum HeavyOctaveParameter: Sendable, Hashable {
 
 /// The data bank representing the heavy octave parameters.
 public struct HeavyOctaveBank: Sendable, Hashable {
-  public let octaveMinus1: UInt8
-  public let octaveMinus2: UInt8
-  public let directMix: UInt8
+  @IntegerParameter(at: 0x00_01_00_7C, range: 0...100)
+  public var octaveMinus1: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_7D, range: 0...100)
+  public var octaveMinus2: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_00_7E, range: 0...100)
+  public var directMix: UInt8 = 0
 
   public init(octaveMinus1: UInt8, octaveMinus2: UInt8, directMix: UInt8) {
     self.octaveMinus1 = octaveMinus1
@@ -967,19 +1203,44 @@ public enum PitchShifterParameter: Sendable, Hashable {
 
 /// The data bank representing the pitch shifter parameters.
 public struct PitchShifterBank: Sendable, Hashable {
-  public let voice: PitchShifterVoice
-  public let ps1Mode: PitchShifterMode
-  public let ps1Pitch: UInt8
-  public let ps1Fine: UInt8
-  public let ps1PreDelay: UInt16
-  public let ps1Level: UInt8
-  public let ps2Mode: PitchShifterMode
-  public let ps2Pitch: UInt8
-  public let ps2Fine: UInt8
-  public let ps2PreDelay: UInt16
-  public let ps2Level: UInt8
-  public let ps1Feedback: UInt8
-  public let directLevel: UInt8
+  @Parameter(at: 0x00_01_00_7F)
+  public var voice: PitchShifterVoice = .oneVoice
+
+  @Parameter(at: 0x00_01_01_00)
+  public var ps1Mode: PitchShifterMode = .fast
+
+  @IntegerParameter(at: 0x00_01_01_01, range: 0...100)
+  public var ps1Pitch: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_01_02, range: 0...100)
+  public var ps1Fine: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_01_03, range: 0...300)
+  public var ps1PreDelay: UInt16 = 0
+
+  @IntegerParameter(at: 0x00_01_01_07, range: 0...100)
+  public var ps1Level: UInt8 = 100
+
+  @Parameter(at: 0x00_01_01_08)
+  public var ps2Mode: PitchShifterMode = .fast
+
+  @IntegerParameter(at: 0x00_01_01_09, range: 0...100)
+  public var ps2Pitch: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_01_0A, range: 0...100)
+  public var ps2Fine: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_01_0B, range: 0...300)
+  public var ps2PreDelay: UInt16 = 0
+
+  @IntegerParameter(at: 0x00_01_01_0F, range: 0...100)
+  public var ps2Level: UInt8 = 100
+
+  @IntegerParameter(at: 0x00_01_01_10, range: 0...100)
+  public var ps1Feedback: UInt8 = 0
+
+  @IntegerParameter(at: 0x00_01_01_11, range: 0...100)
+  public var directLevel: UInt8 = 0
 
   public init(
     voice: PitchShifterVoice, ps1Mode: PitchShifterMode, ps1Pitch: UInt8, ps1Fine: UInt8,
@@ -1030,15 +1291,32 @@ public enum HarmonistParameter: Sendable, Hashable {
 
 /// The data bank representing the harmonist parameters.
 public struct HarmonistBank: Sendable, Hashable {
-  public let voice: HarmonistVoice
-  public let h1Harmony: HarmonistHarmony
-  public let h1PreDelay: UInt16
-  public let h1Level: UInt8
-  public let h2Harmony: HarmonistHarmony
-  public let h2PreDelay: UInt16
-  public let h2Level: UInt8
-  public let h1Feedback: UInt8
-  public let directLevel: UInt8
+  @Parameter(at: 0x00_01_01_12)
+  public var voice: HarmonistVoice = .oneVoice
+
+  @Parameter(at: 0x00_01_01_13)
+  public var h1Harmony: HarmonistHarmony = .unison
+
+  @IntegerParameter(at: 0x00_01_01_14, range: 0...300)
+  public var h1PreDelay: UInt16 = 0
+
+  @IntegerParameter(at: 0x00_01_01_18, range: 0...100)
+  public var h1Level: UInt8 = 100
+
+  @Parameter(at: 0x00_01_01_19)
+  public var h2Harmony: HarmonistHarmony = .unison
+
+  @IntegerParameter(at: 0x00_01_01_1A, range: 0...300)
+  public var h2PreDelay: UInt16 = 0
+
+  @IntegerParameter(at: 0x00_01_01_1E, range: 0...100)
+  public var h2Level: UInt8 = 100
+
+  @IntegerParameter(at: 0x00_01_01_1F, range: 0...100)
+  public var h1Feedback: UInt8 = 0
+
+  @IntegerParameter(at: 0x00_01_01_20, range: 0...100)
+  public var directLevel: UInt8 = 0
 
   public init(
     voice: HarmonistVoice, h1Harmony: HarmonistHarmony, h1PreDelay: UInt16, h1Level: UInt8,
@@ -1110,14 +1388,29 @@ public enum HumanizerParameter: Sendable, Hashable {
 
 /// The data bank representing the humanizer parameters.
 public struct HumanizerBank: Sendable, Hashable {
-  public let mode: HumanizerMode
-  public let vowel1: HumanizerWovel
-  public let vowel2: HumanizerWovel
-  public let sens: UInt8
-  public let rate: UInt8
-  public let depth: UInt8
-  public let manual: UInt8
-  public let level: UInt8
+  @Parameter(at: 0x00_01_01_39)
+  public var mode: HumanizerMode = .picking
+
+  @Parameter(at: 0x00_01_01_3A)
+  public var vowel1: HumanizerWovel = .a
+
+  @Parameter(at: 0x00_01_01_3B)
+  public var vowel2: HumanizerWovel = .e
+
+  @IntegerParameter(at: 0x00_01_01_3C, range: 0...100)
+  public var sens: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_01_3D, range: 0...100)
+  public var rate: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_01_3E, range: 0...100)
+  public var depth: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_01_3F, range: 0...100)
+  public var manual: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_01_40, range: 0...100)
+  public var level: UInt8 = 100
 
   public init(
     mode: HumanizerMode, vowel1: HumanizerWovel, vowel2: HumanizerWovel, sens: UInt8, rate: UInt8,
@@ -1156,8 +1449,11 @@ public enum Phaser90EParameter: Sendable, Hashable {
 
 /// The data bank representing the phaser 90E parameters.
 public struct Phaser90EBank: Sendable, Hashable {
-  public let scriptStatus: Bool
-  public let speed: UInt8
+  @Parameter(at: 0x00_01_01_41)
+  public var scriptStatus: Bool = false
+
+  @IntegerParameter(at: 0x00_01_01_42, range: 0...100)
+  public var speed: UInt8 = 50
 
   public init(scriptStatus: Bool, speed: UInt8) {
     self.scriptStatus = scriptStatus
@@ -1176,10 +1472,17 @@ public enum Flanger117EParameter: Sendable, Hashable {
 
 /// The data bank representing the flanger 117E parameters.
 public struct Flanger117EBank: Sendable, Hashable {
-  public let manual: UInt8
-  public let width: UInt8
-  public let speed: UInt8
-  public let regen: UInt8
+  @IntegerParameter(at: 0x00_01_01_43, range: 0...100)
+  public var manual: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_01_44, range: 0...100)
+  public var width: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_01_45, range: 0...100)
+  public var speed: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_01_46, range: 0...100)
+  public var regen: UInt8 = 50
 
   public init(manual: UInt8, width: UInt8, speed: UInt8, regen: UInt8) {
     self.manual = manual
@@ -1204,14 +1507,29 @@ public enum DC30Parameter: Sendable, Hashable {
 
 /// The data bank representing the DC-30 parameters.
 public struct DC30Bank: Sendable, Hashable {
-  public let type: DC30Type
-  public let inputVolume: UInt8
-  public let chorusIntensity: UInt8
-  public let repeatTime: UInt16
-  public let echoIntensity: UInt8
-  public let volume: UInt8
-  public let tone: UInt8
-  public let outputType: DC30OutputType
+  @Parameter(at: 0x00_01_01_47)
+  public var type: DC30Type = .chorus
+
+  @IntegerParameter(at: 0x00_01_01_48, range: 0...100)
+  public var inputVolume: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_01_49, range: 0...100)
+  public var chorusIntensity: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_01_4A, range: 0...600)
+  public var repeatTime: UInt16 = 300
+
+  @IntegerParameter(at: 0x00_01_01_4E, range: 0...100)
+  public var echoIntensity: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_01_4F, range: 0...100)
+  public var volume: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_01_50, range: 0...100)
+  public var tone: UInt8 = 50
+
+  @Parameter(at: 0x00_01_01_51)
+  public var outputType: DC30OutputType = .dPlusE
 
   public init(
     type: DC30Type, inputVolume: UInt8, chorusIntensity: UInt8, repeatTime: UInt16,

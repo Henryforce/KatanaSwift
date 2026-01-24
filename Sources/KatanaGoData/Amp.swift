@@ -12,33 +12,33 @@ public enum AmpParameter: Sendable, Hashable {
 
 /// The data bank representing the amplifier parameters.
 public struct AmpBank: Sendable, Hashable {
-  @Parameter(at: 0x20_00_00_0C)
+  @Parameter(at: 0x00_00_00_0C)
   public var type: AmpType = .clean
 
-  @IntegerParameter(at: 0x20_00_00_00, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_00, range: 0...100)
   public var gain: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_00_01, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_01, range: 0...100)
   public var volume: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_00_03, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_03, range: 0...100)
   public var bass: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_00_03, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_04, range: 0...100)
   public var middle: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_00_04, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_05, range: 0...100)
   public var treble: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_00_0A, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_0A, range: 0...100)
   public var presence: UInt8 = 50
 
-  @Parameter(at: 0x20_00_00_0D)
+  @Parameter(at: 0x00_00_00_0D)
   public var variation: Bool = false
 
   public init(
-    type: AmpType, gain: UInt8, volume: UInt8, bass: UInt8, middle: UInt8, treble: UInt8,
-    presence: UInt8, variation: Bool
+    type: AmpType, gain: UInt8, volume: UInt8, bass: UInt8, middle: UInt8,
+    treble: UInt8, presence: UInt8, variation: Bool
   ) {
     self.type = type
     self.gain = gain

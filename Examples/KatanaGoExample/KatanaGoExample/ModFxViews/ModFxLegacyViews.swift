@@ -70,11 +70,14 @@ struct DC30View: View {
       ParameterSlider(title: "Input Volume", value: $inputVolume, range: 0...100) {
         onUpdate(.dc30(.inputVolume(UInt8($0))))
       }
-      ParameterSlider(title: "Intensity", value: $intensity, range: 0...100) {
-        onUpdate(.dc30(.intensity(UInt8($0))))
+      ParameterSlider(title: "Chorus Intensity", value: $intensity, range: 0...100) {
+        onUpdate(.dc30(.chorusIntensity(UInt8($0))))
       }
       ParameterSlider(title: "Repeat Time", value: $repeatTime, range: 0...1000) {
         onUpdate(.dc30(.repeatTime(UInt16($0))))
+      }
+      ParameterSlider(title: "Echo Intensity", value: $intensity, range: 0...100) {
+        onUpdate(.dc30(.echoIntensity(UInt8($0))))
       }
       ParameterSlider(title: "Volume", value: $volume, range: 0...100) {
         onUpdate(.dc30(.volume(UInt8($0))))
