@@ -1,6 +1,6 @@
 import Foundation
 
-public enum KatanaGoError: Error, Sendable {
+public enum KatanaError: Error, Sendable {
   case notConnected
   case connectionFailed(String)
   case encodingFailed

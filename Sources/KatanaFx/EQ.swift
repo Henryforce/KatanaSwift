@@ -9,39 +9,7 @@ public enum EQParameter: Sendable, Hashable {
   case graphic(GraphicEQParameter)
 }
 
-public enum ParametricEQParameter: Sendable, Hashable {
-  case lowCut(EQLowCut)
-  /// Range is from -20 to 20 mapped to 0..40.
-  case lowGain(UInt8)
-  case lowMidFreq(EQFrequency)
-  case lowMidQ(EQQ)
-  /// Range is from -20 to 20 mapped to 0..40.
-  case lowMidGain(UInt8)
-  case highMidFreq(EQFrequency)
-  case highMidQ(EQQ)
-  /// Range is from -20 to 20 mapped to 0..40.
-  case highMidGain(UInt8)
-  /// Range is from -20 to 20 mapped to 0..40.
-  case highGain(UInt8)
-  case highCut(EQHighCut)
-  /// Range is from -20 to 20 mapped to 0..40.
-  case level(UInt8)
-}
-
-public enum GraphicEQParameter: Sendable, Hashable {
-  /// Range is from -12dB to 12dB mapped to 0..24..48 with steps of 0.5dB.
-  case band31Hz(UInt8)
-  case band62Hz(UInt8)
-  case band125Hz(UInt8)
-  case band250Hz(UInt8)
-  case band500Hz(UInt8)
-  case band1kHz(UInt8)
-  case band2kHz(UInt8)
-  case band4kHz(UInt8)
-  case band8kHz(UInt8)
-  case band16kHz(UInt8)
-  case level(UInt8)
-}
+// MARK - EQ
 
 /// The data bank representing the equalizer parameters.
 public struct EQBank: WritableBank, Sendable, Hashable {
