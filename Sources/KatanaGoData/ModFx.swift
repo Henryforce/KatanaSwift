@@ -32,7 +32,7 @@ public enum ModFxParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the MOD/FX parameters.
-public struct ModFxBank: Sendable, Hashable {
+public struct ModFxBank: WritableBank, Sendable, Hashable {
   @Parameter(at: 0x00_00_30_01)
   public var status: Bool = false
 
@@ -68,7 +68,9 @@ public struct ModFxBank: Sendable, Hashable {
   public var flanger117E: Flanger117EBank
   public var dc30: DC30Bank
 
-  public init(
+  package var writeData = [WriteData]()
+
+  init(
     status: Bool, type: ModFxType, chorus: ChorusBank, flanger: FlangerBank, phaser: PhaserBank,
     uniVibe: UniVibeBank, tremolo: TremoloBank, vibrato: VibratoBank, rotary: RotaryBank,
     ringMod: RingModBank, slowGear: SlowGearBank, slicer: SlicerBank, comp: CompBank,
@@ -108,6 +110,106 @@ public struct ModFxBank: Sendable, Hashable {
     self.phaser90E = phaser90E
     self.flanger117E = flanger117E
     self.dc30 = dc30
+  }
+
+  public init(
+    status: Bool? = nil, type: ModFxType? = nil, chorus: ChorusBank? = nil,
+    flanger: FlangerBank? = nil, phaser: PhaserBank? = nil, uniVibe: UniVibeBank? = nil,
+    tremolo: TremoloBank? = nil, vibrato: VibratoBank? = nil, rotary: RotaryBank? = nil,
+    ringMod: RingModBank? = nil, slowGear: SlowGearBank? = nil, slicer: SlicerBank? = nil,
+    comp: CompBank? = nil, limiter: LimiterBank? = nil, tWah: TWahBank? = nil,
+    autoWah: AutoWahBank? = nil, graphicEQ: ModFxGraphicEQBank? = nil,
+    parametricEQ: ModFxParametricEQBank? = nil, guitarSim: GuitarSimBank? = nil,
+    acSim: ACSimBank? = nil, acousticPro: AcousticProBank? = nil, waveSynth: WaveSynthBank? = nil,
+    octaver: OctaverBank? = nil, heavyOctave: HeavyOctaveBank? = nil,
+    pitchShifter: PitchShifterBank? = nil, harmonist: HarmonistBank? = nil,
+    humanizer: HumanizerBank? = nil, phaser90E: Phaser90EBank? = nil,
+    flanger117E: Flanger117EBank? = nil, dc30: DC30Bank? = nil
+  ) {
+    self.status = status ?? false
+    self.type = type ?? .chorus
+    self.chorus = chorus ?? ChorusBank()
+    self.flanger = flanger ?? FlangerBank()
+    self.phaser = phaser ?? PhaserBank()
+    self.uniVibe = uniVibe ?? UniVibeBank()
+    self.tremolo = tremolo ?? TremoloBank()
+    self.vibrato = vibrato ?? VibratoBank()
+    self.rotary = rotary ?? RotaryBank()
+    self.ringMod = ringMod ?? RingModBank()
+    self.slowGear = slowGear ?? SlowGearBank()
+    self.slicer = slicer ?? SlicerBank()
+    self.comp = comp ?? CompBank()
+    self.limiter = limiter ?? LimiterBank()
+    self.tWah = tWah ?? TWahBank()
+    self.autoWah = autoWah ?? AutoWahBank()
+    self.graphicEQ = graphicEQ ?? ModFxGraphicEQBank()
+    self.parametricEQ = parametricEQ ?? ModFxParametricEQBank()
+    self.guitarSim = guitarSim ?? GuitarSimBank()
+    self.acSim = acSim ?? ACSimBank()
+    self.acousticPro = acousticPro ?? AcousticProBank()
+    self.waveSynth = waveSynth ?? WaveSynthBank()
+    self.octaver = octaver ?? OctaverBank()
+    self.heavyOctave = heavyOctave ?? HeavyOctaveBank()
+    self.pitchShifter = pitchShifter ?? PitchShifterBank()
+    self.harmonist = harmonist ?? HarmonistBank()
+    self.humanizer = humanizer ?? HumanizerBank()
+    self.phaser90E = phaser90E ?? Phaser90EBank()
+    self.flanger117E = flanger117E ?? Flanger117EBank()
+    self.dc30 = dc30 ?? DC30Bank()
+
+    if let status {
+      self.writeData.append(WriteData(address: self.$status.address, data: status.bytes))
+    }
+    if let type {
+      self.writeData.append(WriteData(address: self.$type.address, data: type.rawValue.bytes))
+    }
+    if let chorus { self.writeData.append(contentsOf: chorus.loadWriteData()) }
+    if let flanger { self.writeData.append(contentsOf: flanger.loadWriteData()) }
+    if let phaser { self.writeData.append(contentsOf: phaser.loadWriteData()) }
+    if let uniVibe { self.writeData.append(contentsOf: uniVibe.loadWriteData()) }
+    if let tremolo { self.writeData.append(contentsOf: tremolo.loadWriteData()) }
+    if let vibrato { self.writeData.append(contentsOf: vibrato.loadWriteData()) }
+    if let rotary { self.writeData.append(contentsOf: rotary.loadWriteData()) }
+    if let ringMod { self.writeData.append(contentsOf: ringMod.loadWriteData()) }
+    if let slowGear { self.writeData.append(contentsOf: slowGear.loadWriteData()) }
+    if let slicer { self.writeData.append(contentsOf: slicer.loadWriteData()) }
+    if let comp { self.writeData.append(contentsOf: comp.loadWriteData()) }
+    if let limiter { self.writeData.append(contentsOf: limiter.loadWriteData()) }
+    if let tWah { self.writeData.append(contentsOf: tWah.loadWriteData()) }
+    if let autoWah { self.writeData.append(contentsOf: autoWah.loadWriteData()) }
+    if let graphicEQ { self.writeData.append(contentsOf: graphicEQ.loadWriteData()) }
+    if let parametricEQ { self.writeData.append(contentsOf: parametricEQ.loadWriteData()) }
+    if let guitarSim { self.writeData.append(contentsOf: guitarSim.loadWriteData()) }
+    if let acSim { self.writeData.append(contentsOf: acSim.loadWriteData()) }
+    if let acousticPro { self.writeData.append(contentsOf: acousticPro.loadWriteData()) }
+    if let waveSynth { self.writeData.append(contentsOf: waveSynth.loadWriteData()) }
+    if let octaver { self.writeData.append(contentsOf: octaver.loadWriteData()) }
+    if let heavyOctave { self.writeData.append(contentsOf: heavyOctave.loadWriteData()) }
+    if let pitchShifter { self.writeData.append(contentsOf: pitchShifter.loadWriteData()) }
+    if let harmonist { self.writeData.append(contentsOf: harmonist.loadWriteData()) }
+    if let humanizer { self.writeData.append(contentsOf: humanizer.loadWriteData()) }
+    if let phaser90E { self.writeData.append(contentsOf: phaser90E.loadWriteData()) }
+    if let flanger117E { self.writeData.append(contentsOf: flanger117E.loadWriteData()) }
+    if let dc30 { self.writeData.append(contentsOf: dc30.loadWriteData()) }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$status.address, data: status.bytes),
+        WriteData(address: self.$type.address, data: type.rawValue.bytes),
+      ] + chorus.loadWriteData() + flanger.loadWriteData() + phaser.loadWriteData()
+        + uniVibe.loadWriteData() + tremolo.loadWriteData() + vibrato.loadWriteData()
+        + rotary.loadWriteData() + ringMod.loadWriteData() + slowGear.loadWriteData()
+        + slicer.loadWriteData() + comp.loadWriteData() + limiter.loadWriteData()
+        + tWah.loadWriteData() + autoWah.loadWriteData() + graphicEQ.loadWriteData()
+        + parametricEQ.loadWriteData() + guitarSim.loadWriteData() + acSim.loadWriteData()
+        + acousticPro.loadWriteData() + waveSynth.loadWriteData() + octaver.loadWriteData()
+        + heavyOctave.loadWriteData() + pitchShifter.loadWriteData() + harmonist.loadWriteData()
+        + humanizer.loadWriteData() + phaser90E.loadWriteData() + flanger117E.loadWriteData()
+        + dc30.loadWriteData()
+    }
+    return self.writeData
   }
 }
 
@@ -162,7 +264,7 @@ public enum ChorusParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the chorus parameters.
-public struct ChorusBank: Sendable, Hashable {
+public struct ChorusBank: WritableBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_00, range: 0...100)
   public var crossoverFrequency: UInt8 = 50
 
@@ -193,7 +295,9 @@ public struct ChorusBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_09, range: 0...100)
   public var directMix: UInt8 = 0
 
-  public init(
+  package var writeData = [WriteData]()
+
+  init(
     crossoverFrequency: UInt8, lowRate: UInt8, lowDepth: UInt8, lowPreDelay: UInt8, lowLevel: UInt8,
     highRate: UInt8, highDepth: UInt8, highPreDelay: UInt8, highLevel: UInt8, directMix: UInt8
   ) {
@@ -207,6 +311,74 @@ public struct ChorusBank: Sendable, Hashable {
     self.highPreDelay = highPreDelay
     self.highLevel = highLevel
     self.directMix = directMix
+  }
+
+  public init(
+    crossoverFrequency: UInt8? = nil, lowRate: UInt8? = nil, lowDepth: UInt8? = nil,
+    lowPreDelay: UInt8? = nil, lowLevel: UInt8? = nil, highRate: UInt8? = nil,
+    highDepth: UInt8? = nil, highPreDelay: UInt8? = nil, highLevel: UInt8? = nil,
+    directMix: UInt8? = nil
+  ) {
+    if let crossoverFrequency {
+      self.crossoverFrequency = crossoverFrequency
+      self.writeData.append(
+        WriteData(address: self.$crossoverFrequency.address, data: crossoverFrequency.bytes))
+    }
+    if let lowRate {
+      self.lowRate = lowRate
+      self.writeData.append(WriteData(address: self.$lowRate.address, data: lowRate.bytes))
+    }
+    if let lowDepth {
+      self.lowDepth = lowDepth
+      self.writeData.append(WriteData(address: self.$lowDepth.address, data: lowDepth.bytes))
+    }
+    if let lowPreDelay {
+      self.lowPreDelay = lowPreDelay
+      self.writeData.append(WriteData(address: self.$lowPreDelay.address, data: lowPreDelay.bytes))
+    }
+    if let lowLevel {
+      self.lowLevel = lowLevel
+      self.writeData.append(WriteData(address: self.$lowLevel.address, data: lowLevel.bytes))
+    }
+    if let highRate {
+      self.highRate = highRate
+      self.writeData.append(WriteData(address: self.$highRate.address, data: highRate.bytes))
+    }
+    if let highDepth {
+      self.highDepth = highDepth
+      self.writeData.append(WriteData(address: self.$highDepth.address, data: highDepth.bytes))
+    }
+    if let highPreDelay {
+      self.highPreDelay = highPreDelay
+      self.writeData.append(
+        WriteData(address: self.$highPreDelay.address, data: highPreDelay.bytes))
+    }
+    if let highLevel {
+      self.highLevel = highLevel
+      self.writeData.append(WriteData(address: self.$highLevel.address, data: highLevel.bytes))
+    }
+    if let directMix {
+      self.directMix = directMix
+      self.writeData.append(WriteData(address: self.$directMix.address, data: directMix.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$crossoverFrequency.address, data: crossoverFrequency.bytes),
+        WriteData(address: self.$lowRate.address, data: lowRate.bytes),
+        WriteData(address: self.$lowDepth.address, data: lowDepth.bytes),
+        WriteData(address: self.$lowPreDelay.address, data: lowPreDelay.bytes),
+        WriteData(address: self.$lowLevel.address, data: lowLevel.bytes),
+        WriteData(address: self.$highRate.address, data: highRate.bytes),
+        WriteData(address: self.$highDepth.address, data: highDepth.bytes),
+        WriteData(address: self.$highPreDelay.address, data: highPreDelay.bytes),
+        WriteData(address: self.$highLevel.address, data: highLevel.bytes),
+        WriteData(address: self.$directMix.address, data: directMix.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -223,7 +395,7 @@ public enum FlangerParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the flanger parameters.
-public struct FlangerBank: Sendable, Hashable {
+public struct FlangerBank: WritableBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_0A, range: 0...100)
   public var rate: UInt8 = 50
 
@@ -245,7 +417,9 @@ public struct FlangerBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_10, range: 0...100)
   public var directLevel: UInt8 = 0
 
-  public init(
+  package var writeData = [WriteData]()
+
+  init(
     rate: UInt8, depth: UInt8, manual: UInt8, resonance: UInt8, lowCut: FlangerLowCut,
     effectLevel: UInt8, directLevel: UInt8
   ) {
@@ -256,6 +430,55 @@ public struct FlangerBank: Sendable, Hashable {
     self.lowCut = lowCut
     self.effectLevel = effectLevel
     self.directLevel = directLevel
+  }
+
+  public init(
+    rate: UInt8? = nil, depth: UInt8? = nil, manual: UInt8? = nil, resonance: UInt8? = nil,
+    lowCut: FlangerLowCut? = nil, effectLevel: UInt8? = nil, directLevel: UInt8? = nil
+  ) {
+    if let rate {
+      self.rate = rate
+      self.writeData.append(WriteData(address: self.$rate.address, data: rate.bytes))
+    }
+    if let depth {
+      self.depth = depth
+      self.writeData.append(WriteData(address: self.$depth.address, data: depth.bytes))
+    }
+    if let manual {
+      self.manual = manual
+      self.writeData.append(WriteData(address: self.$manual.address, data: manual.bytes))
+    }
+    if let resonance {
+      self.resonance = resonance
+      self.writeData.append(WriteData(address: self.$resonance.address, data: resonance.bytes))
+    }
+    if let lowCut {
+      self.lowCut = lowCut
+      self.writeData.append(WriteData(address: self.$lowCut.address, data: lowCut.rawValue.bytes))
+    }
+    if let effectLevel {
+      self.effectLevel = effectLevel
+      self.writeData.append(WriteData(address: self.$effectLevel.address, data: effectLevel.bytes))
+    }
+    if let directLevel {
+      self.directLevel = directLevel
+      self.writeData.append(WriteData(address: self.$directLevel.address, data: directLevel.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$rate.address, data: rate.bytes),
+        WriteData(address: self.$depth.address, data: depth.bytes),
+        WriteData(address: self.$manual.address, data: manual.bytes),
+        WriteData(address: self.$resonance.address, data: resonance.bytes),
+        WriteData(address: self.$lowCut.address, data: lowCut.rawValue.bytes),
+        WriteData(address: self.$effectLevel.address, data: effectLevel.bytes),
+        WriteData(address: self.$directLevel.address, data: directLevel.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -287,7 +510,7 @@ public enum PhaserParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the phaser parameters.
-public struct PhaserBank: Sendable, Hashable {
+public struct PhaserBank: WritableBank, Sendable, Hashable {
   @Parameter(at: 0x00_01_00_11)
   public var type: PhaserType = .fourStage
 
@@ -312,7 +535,9 @@ public struct PhaserBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_18, range: 0...100)
   public var directLevel: UInt8 = 0
 
-  public init(
+  package var writeData = [WriteData]()
+
+  init(
     type: PhaserType, rate: UInt8, depth: UInt8, manual: UInt8, resonance: UInt8, stepRate: UInt8,
     effectLevel: UInt8, directLevel: UInt8
   ) {
@@ -324,6 +549,61 @@ public struct PhaserBank: Sendable, Hashable {
     self.stepRate = stepRate
     self.effectLevel = effectLevel
     self.directLevel = directLevel
+  }
+
+  public init(
+    type: PhaserType? = nil, rate: UInt8? = nil, depth: UInt8? = nil, manual: UInt8? = nil,
+    resonance: UInt8? = nil, stepRate: UInt8? = nil, effectLevel: UInt8? = nil,
+    directLevel: UInt8? = nil
+  ) {
+    if let type {
+      self.type = type
+      self.writeData.append(WriteData(address: self.$type.address, data: type.rawValue.bytes))
+    }
+    if let rate {
+      self.rate = rate
+      self.writeData.append(WriteData(address: self.$rate.address, data: rate.bytes))
+    }
+    if let depth {
+      self.depth = depth
+      self.writeData.append(WriteData(address: self.$depth.address, data: depth.bytes))
+    }
+    if let manual {
+      self.manual = manual
+      self.writeData.append(WriteData(address: self.$manual.address, data: manual.bytes))
+    }
+    if let resonance {
+      self.resonance = resonance
+      self.writeData.append(WriteData(address: self.$resonance.address, data: resonance.bytes))
+    }
+    if let stepRate {
+      self.stepRate = stepRate
+      self.writeData.append(WriteData(address: self.$stepRate.address, data: stepRate.bytes))
+    }
+    if let effectLevel {
+      self.effectLevel = effectLevel
+      self.writeData.append(WriteData(address: self.$effectLevel.address, data: effectLevel.bytes))
+    }
+    if let directLevel {
+      self.directLevel = directLevel
+      self.writeData.append(WriteData(address: self.$directLevel.address, data: directLevel.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$type.address, data: type.rawValue.bytes),
+        WriteData(address: self.$rate.address, data: rate.bytes),
+        WriteData(address: self.$depth.address, data: depth.bytes),
+        WriteData(address: self.$manual.address, data: manual.bytes),
+        WriteData(address: self.$resonance.address, data: resonance.bytes),
+        WriteData(address: self.$stepRate.address, data: stepRate.bytes),
+        WriteData(address: self.$effectLevel.address, data: effectLevel.bytes),
+        WriteData(address: self.$directLevel.address, data: directLevel.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -343,7 +623,7 @@ public enum UniVibeParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the univibe parameters.
-public struct UniVibeBank: Sendable, Hashable {
+public struct UniVibeBank: WritableBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_19, range: 0...100)
   public var rate: UInt8 = 50
 
@@ -353,10 +633,38 @@ public struct UniVibeBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_1B, range: 0...100)
   public var level: UInt8 = 100
 
-  public init(rate: UInt8, depth: UInt8, level: UInt8) {
+  package var writeData = [WriteData]()
+
+  init(rate: UInt8, depth: UInt8, level: UInt8) {
     self.rate = rate
     self.depth = depth
     self.level = level
+  }
+
+  public init(rate: UInt8? = nil, depth: UInt8? = nil, level: UInt8? = nil) {
+    if let rate {
+      self.rate = rate
+      self.writeData.append(WriteData(address: self.$rate.address, data: rate.bytes))
+    }
+    if let depth {
+      self.depth = depth
+      self.writeData.append(WriteData(address: self.$depth.address, data: depth.bytes))
+    }
+    if let level {
+      self.level = level
+      self.writeData.append(WriteData(address: self.$level.address, data: level.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$rate.address, data: rate.bytes),
+        WriteData(address: self.$depth.address, data: depth.bytes),
+        WriteData(address: self.$level.address, data: level.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -370,7 +678,7 @@ public enum TremoloParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the tremolo parameters.
-public struct TremoloBank: Sendable, Hashable {
+public struct TremoloBank: WritableBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_1C, range: 0...100)
   public var waveShape: UInt8 = 0
 
@@ -383,11 +691,46 @@ public struct TremoloBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_1F, range: 0...100)
   public var level: UInt8 = 100
 
-  public init(waveShape: UInt8, rate: UInt8, depth: UInt8, level: UInt8) {
+  package var writeData = [WriteData]()
+
+  init(waveShape: UInt8, rate: UInt8, depth: UInt8, level: UInt8) {
     self.waveShape = waveShape
     self.rate = rate
     self.depth = depth
     self.level = level
+  }
+
+  public init(
+    waveShape: UInt8? = nil, rate: UInt8? = nil, depth: UInt8? = nil, level: UInt8? = nil
+  ) {
+    if let waveShape {
+      self.waveShape = waveShape
+      self.writeData.append(WriteData(address: self.$waveShape.address, data: waveShape.bytes))
+    }
+    if let rate {
+      self.rate = rate
+      self.writeData.append(WriteData(address: self.$rate.address, data: rate.bytes))
+    }
+    if let depth {
+      self.depth = depth
+      self.writeData.append(WriteData(address: self.$depth.address, data: depth.bytes))
+    }
+    if let level {
+      self.level = level
+      self.writeData.append(WriteData(address: self.$level.address, data: level.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$waveShape.address, data: waveShape.bytes),
+        WriteData(address: self.$rate.address, data: rate.bytes),
+        WriteData(address: self.$depth.address, data: depth.bytes),
+        WriteData(address: self.$level.address, data: level.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -400,7 +743,7 @@ public enum VibratoParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the vibrato parameters.
-public struct VibratoBank: Sendable, Hashable {
+public struct VibratoBank: WritableBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_20, range: 0...100)
   public var rate: UInt8 = 50
 
@@ -410,10 +753,38 @@ public struct VibratoBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_22, range: 0...100)
   public var level: UInt8 = 100
 
-  public init(rate: UInt8, depth: UInt8, level: UInt8) {
+  package var writeData = [WriteData]()
+
+  init(rate: UInt8, depth: UInt8, level: UInt8) {
     self.rate = rate
     self.depth = depth
     self.level = level
+  }
+
+  public init(rate: UInt8? = nil, depth: UInt8? = nil, level: UInt8? = nil) {
+    if let rate {
+      self.rate = rate
+      self.writeData.append(WriteData(address: self.$rate.address, data: rate.bytes))
+    }
+    if let depth {
+      self.depth = depth
+      self.writeData.append(WriteData(address: self.$depth.address, data: depth.bytes))
+    }
+    if let level {
+      self.level = level
+      self.writeData.append(WriteData(address: self.$level.address, data: level.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$rate.address, data: rate.bytes),
+        WriteData(address: self.$depth.address, data: depth.bytes),
+        WriteData(address: self.$level.address, data: level.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -426,7 +797,7 @@ public enum RotaryParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the rotary parameters.
-public struct RotaryBank: Sendable, Hashable {
+public struct RotaryBank: WritableBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_23, range: 0...100)
   public var rate: UInt8 = 50
 
@@ -436,10 +807,38 @@ public struct RotaryBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_25, range: 0...100)
   public var level: UInt8 = 100
 
-  public init(rate: UInt8, depth: UInt8, level: UInt8) {
+  package var writeData = [WriteData]()
+
+  init(rate: UInt8, depth: UInt8, level: UInt8) {
     self.rate = rate
     self.depth = depth
     self.level = level
+  }
+
+  public init(rate: UInt8? = nil, depth: UInt8? = nil, level: UInt8? = nil) {
+    if let rate {
+      self.rate = rate
+      self.writeData.append(WriteData(address: self.$rate.address, data: rate.bytes))
+    }
+    if let depth {
+      self.depth = depth
+      self.writeData.append(WriteData(address: self.$depth.address, data: depth.bytes))
+    }
+    if let level {
+      self.level = level
+      self.writeData.append(WriteData(address: self.$level.address, data: level.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$rate.address, data: rate.bytes),
+        WriteData(address: self.$depth.address, data: depth.bytes),
+        WriteData(address: self.$level.address, data: level.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -453,7 +852,7 @@ public enum RingModParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the ring modulator parameters.
-public struct RingModBank: Sendable, Hashable {
+public struct RingModBank: WritableBank, Sendable, Hashable {
   @Parameter(at: 0x00_01_00_26)
   public var mode: RingModMode = .normal
 
@@ -466,11 +865,47 @@ public struct RingModBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_29, range: 0...100)
   public var directMix: UInt8 = 0
 
+  package var writeData = [WriteData]()
+
   public init(mode: RingModMode, frequency: UInt8, effectLevel: UInt8, directMix: UInt8) {
     self.mode = mode
     self.frequency = frequency
     self.effectLevel = effectLevel
     self.directMix = directMix
+  }
+
+  public init(
+    mode: RingModMode? = nil, frequency: UInt8? = nil, effectLevel: UInt8? = nil,
+    directMix: UInt8? = nil
+  ) {
+    if let mode {
+      self.mode = mode
+      self.writeData.append(WriteData(address: self.$mode.address, data: mode.rawValue.bytes))
+    }
+    if let frequency {
+      self.frequency = frequency
+      self.writeData.append(WriteData(address: self.$frequency.address, data: frequency.bytes))
+    }
+    if let effectLevel {
+      self.effectLevel = effectLevel
+      self.writeData.append(WriteData(address: self.$effectLevel.address, data: effectLevel.bytes))
+    }
+    if let directMix {
+      self.directMix = directMix
+      self.writeData.append(WriteData(address: self.$directMix.address, data: directMix.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$mode.address, data: mode.rawValue.bytes),
+        WriteData(address: self.$frequency.address, data: frequency.bytes),
+        WriteData(address: self.$effectLevel.address, data: effectLevel.bytes),
+        WriteData(address: self.$directMix.address, data: directMix.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -488,7 +923,7 @@ public enum SlowGearParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the slow gear parameters.
-public struct SlowGearBank: Sendable, Hashable {
+public struct SlowGearBank: WritableBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_2A, range: 0...100)
   public var sens: UInt8 = 50
 
@@ -498,10 +933,38 @@ public struct SlowGearBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_2C, range: 0...100)
   public var level: UInt8 = 100
 
-  public init(sens: UInt8, riseTime: UInt8, level: UInt8) {
+  package var writeData = [WriteData]()
+
+  init(sens: UInt8, riseTime: UInt8, level: UInt8) {
     self.sens = sens
     self.riseTime = riseTime
     self.level = level
+  }
+
+  public init(sens: UInt8? = nil, riseTime: UInt8? = nil, level: UInt8? = nil) {
+    if let sens {
+      self.sens = sens
+      self.writeData.append(WriteData(address: self.$sens.address, data: sens.bytes))
+    }
+    if let riseTime {
+      self.riseTime = riseTime
+      self.writeData.append(WriteData(address: self.$riseTime.address, data: riseTime.bytes))
+    }
+    if let level {
+      self.level = level
+      self.writeData.append(WriteData(address: self.$level.address, data: level.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$sens.address, data: sens.bytes),
+        WriteData(address: self.$riseTime.address, data: riseTime.bytes),
+        WriteData(address: self.$level.address, data: level.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -517,7 +980,7 @@ public enum SlicerParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the slicer parameters.
-public struct SlicerBank: Sendable, Hashable {
+public struct SlicerBank: WritableBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_2D, range: 0...19)
   public var pattern: UInt8 = 0
 
@@ -533,7 +996,9 @@ public struct SlicerBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_31, range: 0...100)
   public var directMix: UInt8 = 0
 
-  public init(
+  package var writeData = [WriteData]()
+
+  init(
     pattern: UInt8, rate: UInt8, triggerSens: UInt8, effectLevel: UInt8, directMix: UInt8
   ) {
     self.pattern = pattern
@@ -541,6 +1006,45 @@ public struct SlicerBank: Sendable, Hashable {
     self.triggerSens = triggerSens
     self.effectLevel = effectLevel
     self.directMix = directMix
+  }
+
+  public init(
+    pattern: UInt8? = nil, rate: UInt8? = nil, triggerSens: UInt8? = nil,
+    effectLevel: UInt8? = nil, directMix: UInt8? = nil
+  ) {
+    if let pattern {
+      self.pattern = pattern
+      self.writeData.append(WriteData(address: self.$pattern.address, data: pattern.bytes))
+    }
+    if let rate {
+      self.rate = rate
+      self.writeData.append(WriteData(address: self.$rate.address, data: rate.bytes))
+    }
+    if let triggerSens {
+      self.triggerSens = triggerSens
+      self.writeData.append(WriteData(address: self.$triggerSens.address, data: triggerSens.bytes))
+    }
+    if let effectLevel {
+      self.effectLevel = effectLevel
+      self.writeData.append(WriteData(address: self.$effectLevel.address, data: effectLevel.bytes))
+    }
+    if let directMix {
+      self.directMix = directMix
+      self.writeData.append(WriteData(address: self.$directMix.address, data: directMix.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$pattern.address, data: pattern.bytes),
+        WriteData(address: self.$rate.address, data: rate.bytes),
+        WriteData(address: self.$triggerSens.address, data: triggerSens.bytes),
+        WriteData(address: self.$effectLevel.address, data: effectLevel.bytes),
+        WriteData(address: self.$directMix.address, data: directMix.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -555,7 +1059,7 @@ public enum CompParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the compressor parameters.
-public struct CompBank: Sendable, Hashable {
+public struct CompBank: WritableBank, Sendable, Hashable {
   @Parameter(at: 0x00_01_00_32)
   public var type: CompType = .boss
 
@@ -571,12 +1075,53 @@ public struct CompBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_36, range: 0...100)
   public var level: UInt8 = 100
 
-  public init(type: CompType, sustain: UInt8, attack: UInt8, tone: UInt8, level: UInt8) {
+  package var writeData = [WriteData]()
+
+  init(type: CompType, sustain: UInt8, attack: UInt8, tone: UInt8, level: UInt8) {
     self.type = type
     self.sustain = sustain
     self.attack = attack
     self.tone = tone
     self.level = level
+  }
+
+  public init(
+    type: CompType? = nil, sustain: UInt8? = nil, attack: UInt8? = nil, tone: UInt8? = nil,
+    level: UInt8? = nil
+  ) {
+    if let type {
+      self.type = type
+      self.writeData.append(WriteData(address: self.$type.address, data: type.rawValue.bytes))
+    }
+    if let sustain {
+      self.sustain = sustain
+      self.writeData.append(WriteData(address: self.$sustain.address, data: sustain.bytes))
+    }
+    if let attack {
+      self.attack = attack
+      self.writeData.append(WriteData(address: self.$attack.address, data: attack.bytes))
+    }
+    if let tone {
+      self.tone = tone
+      self.writeData.append(WriteData(address: self.$tone.address, data: tone.bytes))
+    }
+    if let level {
+      self.level = level
+      self.writeData.append(WriteData(address: self.$level.address, data: level.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$type.address, data: type.rawValue.bytes),
+        WriteData(address: self.$sustain.address, data: sustain.bytes),
+        WriteData(address: self.$attack.address, data: attack.bytes),
+        WriteData(address: self.$tone.address, data: tone.bytes),
+        WriteData(address: self.$level.address, data: level.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -602,7 +1147,7 @@ public enum LimiterParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the limiter parameters.
-public struct LimiterBank: Sendable, Hashable {
+public struct LimiterBank: WritableBank, Sendable, Hashable {
   @Parameter(at: 0x00_01_00_37)
   public var type: LimiterType = .boss
 
@@ -621,7 +1166,9 @@ public struct LimiterBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_3C, range: 0...100)
   public var level: UInt8 = 100
 
-  public init(
+  package var writeData = [WriteData]()
+
+  init(
     type: LimiterType, attack: UInt8, threshold: UInt8, ratio: LimiterRatio, release: UInt8,
     level: UInt8
   ) {
@@ -631,6 +1178,50 @@ public struct LimiterBank: Sendable, Hashable {
     self.ratio = ratio
     self.release = release
     self.level = level
+  }
+
+  public init(
+    type: LimiterType? = nil, attack: UInt8? = nil, threshold: UInt8? = nil,
+    ratio: LimiterRatio? = nil, release: UInt8? = nil, level: UInt8? = nil
+  ) {
+    if let type {
+      self.type = type
+      self.writeData.append(WriteData(address: self.$type.address, data: type.rawValue.bytes))
+    }
+    if let attack {
+      self.attack = attack
+      self.writeData.append(WriteData(address: self.$attack.address, data: attack.bytes))
+    }
+    if let threshold {
+      self.threshold = threshold
+      self.writeData.append(WriteData(address: self.$threshold.address, data: threshold.bytes))
+    }
+    if let ratio {
+      self.ratio = ratio
+      self.writeData.append(WriteData(address: self.$ratio.address, data: ratio.rawValue.bytes))
+    }
+    if let release {
+      self.release = release
+      self.writeData.append(WriteData(address: self.$release.address, data: release.bytes))
+    }
+    if let level {
+      self.level = level
+      self.writeData.append(WriteData(address: self.$level.address, data: level.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$type.address, data: type.rawValue.bytes),
+        WriteData(address: self.$attack.address, data: attack.bytes),
+        WriteData(address: self.$threshold.address, data: threshold.bytes),
+        WriteData(address: self.$ratio.address, data: ratio.rawValue.bytes),
+        WriteData(address: self.$release.address, data: release.bytes),
+        WriteData(address: self.$level.address, data: level.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -681,7 +1272,7 @@ public enum TWahParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the T-Wah parameters.
-public struct TWahBank: Sendable, Hashable {
+public struct TWahBank: WritableBank, Sendable, Hashable {
   @Parameter(at: 0x00_01_00_3D)
   public var mode: WahMode = .lowPassFilter
 
@@ -703,7 +1294,9 @@ public struct TWahBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_43, range: 0...100)
   public var directLevel: UInt8 = 0
 
-  public init(
+  package var writeData = [WriteData]()
+
+  init(
     mode: WahMode, polarity: TWahPolarity, sens: UInt8, frequency: UInt8, peak: UInt8,
     effectLevel: UInt8, directLevel: UInt8
   ) {
@@ -714,6 +1307,57 @@ public struct TWahBank: Sendable, Hashable {
     self.peak = peak
     self.effectLevel = effectLevel
     self.directLevel = directLevel
+  }
+
+  public init(
+    mode: WahMode? = nil, polarity: TWahPolarity? = nil, sens: UInt8? = nil,
+    frequency: UInt8? = nil, peak: UInt8? = nil, effectLevel: UInt8? = nil,
+    directLevel: UInt8? = nil
+  ) {
+    if let mode {
+      self.mode = mode
+      self.writeData.append(WriteData(address: self.$mode.address, data: mode.rawValue.bytes))
+    }
+    if let polarity {
+      self.polarity = polarity
+      self.writeData.append(
+        WriteData(address: self.$polarity.address, data: polarity.rawValue.bytes))
+    }
+    if let sens {
+      self.sens = sens
+      self.writeData.append(WriteData(address: self.$sens.address, data: sens.bytes))
+    }
+    if let frequency {
+      self.frequency = frequency
+      self.writeData.append(WriteData(address: self.$frequency.address, data: frequency.bytes))
+    }
+    if let peak {
+      self.peak = peak
+      self.writeData.append(WriteData(address: self.$peak.address, data: peak.bytes))
+    }
+    if let effectLevel {
+      self.effectLevel = effectLevel
+      self.writeData.append(WriteData(address: self.$effectLevel.address, data: effectLevel.bytes))
+    }
+    if let directLevel {
+      self.directLevel = directLevel
+      self.writeData.append(WriteData(address: self.$directLevel.address, data: directLevel.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$mode.address, data: mode.rawValue.bytes),
+        WriteData(address: self.$polarity.address, data: polarity.rawValue.bytes),
+        WriteData(address: self.$sens.address, data: sens.bytes),
+        WriteData(address: self.$frequency.address, data: frequency.bytes),
+        WriteData(address: self.$peak.address, data: peak.bytes),
+        WriteData(address: self.$effectLevel.address, data: effectLevel.bytes),
+        WriteData(address: self.$directLevel.address, data: directLevel.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -735,7 +1379,7 @@ public enum AutoWahParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the auto wah parameters.
-public struct AutoWahBank: Sendable, Hashable {
+public struct AutoWahBank: WritableBank, Sendable, Hashable {
   @Parameter(at: 0x00_01_00_44)
   public var mode: WahMode = .lowPassFilter
 
@@ -757,7 +1401,9 @@ public struct AutoWahBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_4A, range: 0...100)
   public var directLevel: UInt8 = 0
 
-  public init(
+  package var writeData = [WriteData]()
+
+  init(
     mode: WahMode, frequency: UInt8, peak: UInt8, rate: UInt8, depth: UInt8, effectLevel: UInt8,
     directLevel: UInt8
   ) {
@@ -768,6 +1414,55 @@ public struct AutoWahBank: Sendable, Hashable {
     self.depth = depth
     self.effectLevel = effectLevel
     self.directLevel = directLevel
+  }
+
+  public init(
+    mode: WahMode? = nil, frequency: UInt8? = nil, peak: UInt8? = nil, rate: UInt8? = nil,
+    depth: UInt8? = nil, effectLevel: UInt8? = nil, directLevel: UInt8? = nil
+  ) {
+    if let mode {
+      self.mode = mode
+      self.writeData.append(WriteData(address: self.$mode.address, data: mode.rawValue.bytes))
+    }
+    if let frequency {
+      self.frequency = frequency
+      self.writeData.append(WriteData(address: self.$frequency.address, data: frequency.bytes))
+    }
+    if let peak {
+      self.peak = peak
+      self.writeData.append(WriteData(address: self.$peak.address, data: peak.bytes))
+    }
+    if let rate {
+      self.rate = rate
+      self.writeData.append(WriteData(address: self.$rate.address, data: rate.bytes))
+    }
+    if let depth {
+      self.depth = depth
+      self.writeData.append(WriteData(address: self.$depth.address, data: depth.bytes))
+    }
+    if let effectLevel {
+      self.effectLevel = effectLevel
+      self.writeData.append(WriteData(address: self.$effectLevel.address, data: effectLevel.bytes))
+    }
+    if let directLevel {
+      self.directLevel = directLevel
+      self.writeData.append(WriteData(address: self.$directLevel.address, data: directLevel.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$mode.address, data: mode.rawValue.bytes),
+        WriteData(address: self.$frequency.address, data: frequency.bytes),
+        WriteData(address: self.$peak.address, data: peak.bytes),
+        WriteData(address: self.$rate.address, data: rate.bytes),
+        WriteData(address: self.$depth.address, data: depth.bytes),
+        WriteData(address: self.$effectLevel.address, data: effectLevel.bytes),
+        WriteData(address: self.$directLevel.address, data: directLevel.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -789,7 +1484,7 @@ public enum ModFxGraphicEQParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the MOD/FX graphic equalizer parameters.
-public struct ModFxGraphicEQBank: Sendable, Hashable {
+public struct ModFxGraphicEQBank: WritableBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_4B, range: 0...40)
   public var band31Hz: UInt8 = 20
 
@@ -823,7 +1518,9 @@ public struct ModFxGraphicEQBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_55, range: 0...40)
   public var level: UInt8 = 20
 
-  public init(
+  package var writeData = [WriteData]()
+
+  init(
     band31Hz: UInt8, band62Hz: UInt8, band125Hz: UInt8, band250Hz: UInt8, band500Hz: UInt8,
     band1kHz: UInt8, band2kHz: UInt8, band4kHz: UInt8, band8kHz: UInt8, band16kHz: UInt8,
     level: UInt8
@@ -839,6 +1536,77 @@ public struct ModFxGraphicEQBank: Sendable, Hashable {
     self.band8kHz = band8kHz
     self.band16kHz = band16kHz
     self.level = level
+  }
+
+  public init(
+    band31Hz: UInt8? = nil, band62Hz: UInt8? = nil, band125Hz: UInt8? = nil,
+    band250Hz: UInt8? = nil, band500Hz: UInt8? = nil, band1kHz: UInt8? = nil,
+    band2kHz: UInt8? = nil, band4kHz: UInt8? = nil, band8kHz: UInt8? = nil,
+    band16kHz: UInt8? = nil, level: UInt8? = nil
+  ) {
+    if let band31Hz {
+      self.band31Hz = band31Hz
+      self.writeData.append(WriteData(address: self.$band31Hz.address, data: band31Hz.bytes))
+    }
+    if let band62Hz {
+      self.band62Hz = band62Hz
+      self.writeData.append(WriteData(address: self.$band62Hz.address, data: band62Hz.bytes))
+    }
+    if let band125Hz {
+      self.band125Hz = band125Hz
+      self.writeData.append(WriteData(address: self.$band125Hz.address, data: band125Hz.bytes))
+    }
+    if let band250Hz {
+      self.band250Hz = band250Hz
+      self.writeData.append(WriteData(address: self.$band250Hz.address, data: band250Hz.bytes))
+    }
+    if let band500Hz {
+      self.band500Hz = band500Hz
+      self.writeData.append(WriteData(address: self.$band500Hz.address, data: band500Hz.bytes))
+    }
+    if let band1kHz {
+      self.band1kHz = band1kHz
+      self.writeData.append(WriteData(address: self.$band1kHz.address, data: band1kHz.bytes))
+    }
+    if let band2kHz {
+      self.band2kHz = band2kHz
+      self.writeData.append(WriteData(address: self.$band2kHz.address, data: band2kHz.bytes))
+    }
+    if let band4kHz {
+      self.band4kHz = band4kHz
+      self.writeData.append(WriteData(address: self.$band4kHz.address, data: band4kHz.bytes))
+    }
+    if let band8kHz {
+      self.band8kHz = band8kHz
+      self.writeData.append(WriteData(address: self.$band8kHz.address, data: band8kHz.bytes))
+    }
+    if let band16kHz {
+      self.band16kHz = band16kHz
+      self.writeData.append(WriteData(address: self.$band16kHz.address, data: band16kHz.bytes))
+    }
+    if let level {
+      self.level = level
+      self.writeData.append(WriteData(address: self.$level.address, data: level.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$band31Hz.address, data: band31Hz.bytes),
+        WriteData(address: self.$band62Hz.address, data: band62Hz.bytes),
+        WriteData(address: self.$band125Hz.address, data: band125Hz.bytes),
+        WriteData(address: self.$band250Hz.address, data: band250Hz.bytes),
+        WriteData(address: self.$band500Hz.address, data: band500Hz.bytes),
+        WriteData(address: self.$band1kHz.address, data: band1kHz.bytes),
+        WriteData(address: self.$band2kHz.address, data: band2kHz.bytes),
+        WriteData(address: self.$band4kHz.address, data: band4kHz.bytes),
+        WriteData(address: self.$band8kHz.address, data: band8kHz.bytes),
+        WriteData(address: self.$band16kHz.address, data: band16kHz.bytes),
+        WriteData(address: self.$level.address, data: level.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -864,7 +1632,7 @@ public enum ModFxParametricEQParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the MOD/FX parametric equalizer parameters.
-public struct ModFxParametricEQBank: Sendable, Hashable {
+public struct ModFxParametricEQBank: WritableBank, Sendable, Hashable {
   @Parameter(at: 0x00_01_00_56)
   public var lowCut: EQLowCut = .flat
 
@@ -898,7 +1666,9 @@ public struct ModFxParametricEQBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_60, range: 0...40)
   public var level: UInt8 = 20
 
-  public init(
+  package var writeData = [WriteData]()
+
+  init(
     lowCut: EQLowCut, lowGain: UInt8, lowMidFreq: EQFrequency, lowMidQ: EQQ, lowMidGain: UInt8,
     highMidFreq: EQFrequency, highMidQ: EQQ, highMidGain: UInt8, highGain: UInt8,
     highCut: EQHighCut, level: UInt8
@@ -915,6 +1685,80 @@ public struct ModFxParametricEQBank: Sendable, Hashable {
     self.highCut = highCut
     self.level = level
   }
+
+  public init(
+    lowCut: EQLowCut? = nil, lowGain: UInt8? = nil, lowMidFreq: EQFrequency? = nil,
+    lowMidQ: EQQ? = nil, lowMidGain: UInt8? = nil, highMidFreq: EQFrequency? = nil,
+    highMidQ: EQQ? = nil, highMidGain: UInt8? = nil, highGain: UInt8? = nil,
+    highCut: EQHighCut? = nil, level: UInt8? = nil
+  ) {
+    if let lowCut {
+      self.lowCut = lowCut
+      self.writeData.append(WriteData(address: self.$lowCut.address, data: lowCut.rawValue.bytes))
+    }
+    if let lowGain {
+      self.lowGain = lowGain
+      self.writeData.append(WriteData(address: self.$lowGain.address, data: lowGain.bytes))
+    }
+    if let lowMidFreq {
+      self.lowMidFreq = lowMidFreq
+      self.writeData.append(
+        WriteData(address: self.$lowMidFreq.address, data: lowMidFreq.rawValue.bytes))
+    }
+    if let lowMidQ {
+      self.lowMidQ = lowMidQ
+      self.writeData.append(WriteData(address: self.$lowMidQ.address, data: lowMidQ.rawValue.bytes))
+    }
+    if let lowMidGain {
+      self.lowMidGain = lowMidGain
+      self.writeData.append(WriteData(address: self.$lowMidGain.address, data: lowMidGain.bytes))
+    }
+    if let highMidFreq {
+      self.highMidFreq = highMidFreq
+      self.writeData.append(
+        WriteData(address: self.$highMidFreq.address, data: highMidFreq.rawValue.bytes))
+    }
+    if let highMidQ {
+      self.highMidQ = highMidQ
+      self.writeData.append(
+        WriteData(address: self.$highMidQ.address, data: highMidQ.rawValue.bytes))
+    }
+    if let highMidGain {
+      self.highMidGain = highMidGain
+      self.writeData.append(WriteData(address: self.$highMidGain.address, data: highMidGain.bytes))
+    }
+    if let highGain {
+      self.highGain = highGain
+      self.writeData.append(WriteData(address: self.$highGain.address, data: highGain.bytes))
+    }
+    if let highCut {
+      self.highCut = highCut
+      self.writeData.append(WriteData(address: self.$highCut.address, data: highCut.rawValue.bytes))
+    }
+    if let level {
+      self.level = level
+      self.writeData.append(WriteData(address: self.$level.address, data: level.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$lowCut.address, data: lowCut.rawValue.bytes),
+        WriteData(address: self.$lowGain.address, data: lowGain.bytes),
+        WriteData(address: self.$lowMidFreq.address, data: lowMidFreq.rawValue.bytes),
+        WriteData(address: self.$lowMidQ.address, data: lowMidQ.rawValue.bytes),
+        WriteData(address: self.$lowMidGain.address, data: lowMidGain.bytes),
+        WriteData(address: self.$highMidFreq.address, data: highMidFreq.rawValue.bytes),
+        WriteData(address: self.$highMidQ.address, data: highMidQ.rawValue.bytes),
+        WriteData(address: self.$highMidGain.address, data: highMidGain.bytes),
+        WriteData(address: self.$highGain.address, data: highGain.bytes),
+        WriteData(address: self.$highCut.address, data: highCut.rawValue.bytes),
+        WriteData(address: self.$level.address, data: level.bytes),
+      ]
+    }
+    return self.writeData
+  }
 }
 
 // MARK: - GuitarSim
@@ -930,7 +1774,7 @@ public enum GuitarSimParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the guitar simulation parameters.
-public struct GuitarSimBank: Sendable, Hashable {
+public struct GuitarSimBank: WritableBank, Sendable, Hashable {
   @Parameter(at: 0x00_01_00_61)
   public var type: GuitarSimType = .sToH
 
@@ -946,12 +1790,53 @@ public struct GuitarSimBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_65, range: 0...100)
   public var level: UInt8 = 100
 
-  public init(type: GuitarSimType, low: UInt8, high: UInt8, body: UInt8, level: UInt8) {
+  package var writeData = [WriteData]()
+
+  init(type: GuitarSimType, low: UInt8, high: UInt8, body: UInt8, level: UInt8) {
     self.type = type
     self.low = low
     self.high = high
     self.body = body
     self.level = level
+  }
+
+  public init(
+    type: GuitarSimType? = nil, low: UInt8? = nil, high: UInt8? = nil, body: UInt8? = nil,
+    level: UInt8? = nil
+  ) {
+    if let type {
+      self.type = type
+      self.writeData.append(WriteData(address: self.$type.address, data: type.rawValue.bytes))
+    }
+    if let low {
+      self.low = low
+      self.writeData.append(WriteData(address: self.$low.address, data: low.bytes))
+    }
+    if let high {
+      self.high = high
+      self.writeData.append(WriteData(address: self.$high.address, data: high.bytes))
+    }
+    if let body {
+      self.body = body
+      self.writeData.append(WriteData(address: self.$body.address, data: body.bytes))
+    }
+    if let level {
+      self.level = level
+      self.writeData.append(WriteData(address: self.$level.address, data: level.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$type.address, data: type.rawValue.bytes),
+        WriteData(address: self.$low.address, data: low.bytes),
+        WriteData(address: self.$high.address, data: high.bytes),
+        WriteData(address: self.$body.address, data: body.bytes),
+        WriteData(address: self.$level.address, data: level.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -978,7 +1863,7 @@ public enum ACSimParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the acoustic simulation parameters.
-public struct ACSimBank: Sendable, Hashable {
+public struct ACSimBank: WritableBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_66, range: 0...100)
   public var high: UInt8 = 50
 
@@ -991,11 +1876,44 @@ public struct ACSimBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_69, range: 0...100)
   public var level: UInt8 = 100
 
-  public init(high: UInt8, body: UInt8, low: UInt8, level: UInt8) {
+  package var writeData = [WriteData]()
+
+  init(high: UInt8, body: UInt8, low: UInt8, level: UInt8) {
     self.high = high
     self.body = body
     self.low = low
     self.level = level
+  }
+
+  public init(high: UInt8? = nil, body: UInt8? = nil, low: UInt8? = nil, level: UInt8? = nil) {
+    if let high {
+      self.high = high
+      self.writeData.append(WriteData(address: self.$high.address, data: high.bytes))
+    }
+    if let body {
+      self.body = body
+      self.writeData.append(WriteData(address: self.$body.address, data: body.bytes))
+    }
+    if let low {
+      self.low = low
+      self.writeData.append(WriteData(address: self.$low.address, data: low.bytes))
+    }
+    if let level {
+      self.level = level
+      self.writeData.append(WriteData(address: self.$level.address, data: level.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$high.address, data: high.bytes),
+        WriteData(address: self.$body.address, data: body.bytes),
+        WriteData(address: self.$low.address, data: low.bytes),
+        WriteData(address: self.$level.address, data: level.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -1016,7 +1934,7 @@ public enum AcousticProParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the acoustic pro parameters.
-public struct AcousticProBank: Sendable, Hashable {
+public struct AcousticProBank: WritableBank, Sendable, Hashable {
   @Parameter(at: 0x00_01_00_6A)
   public var type: AcousticProType = .small
 
@@ -1038,7 +1956,9 @@ public struct AcousticProBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_70, range: 0...100)
   public var level: UInt8 = 100
 
-  public init(
+  package var writeData = [WriteData]()
+
+  init(
     type: AcousticProType, bass: UInt8, middle: UInt8, midFrequency: EQFrequency, treble: UInt8,
     presence: UInt8, level: UInt8
   ) {
@@ -1049,6 +1969,57 @@ public struct AcousticProBank: Sendable, Hashable {
     self.treble = treble
     self.presence = presence
     self.level = level
+  }
+
+  public init(
+    type: AcousticProType? = nil, bass: UInt8? = nil, middle: UInt8? = nil,
+    midFrequency: EQFrequency? = nil, treble: UInt8? = nil, presence: UInt8? = nil,
+    level: UInt8? = nil
+  ) {
+    if let type {
+      self.type = type
+      self.writeData.append(WriteData(address: self.$type.address, data: type.rawValue.bytes))
+    }
+    if let bass {
+      self.bass = bass
+      self.writeData.append(WriteData(address: self.$bass.address, data: bass.bytes))
+    }
+    if let middle {
+      self.middle = middle
+      self.writeData.append(WriteData(address: self.$middle.address, data: middle.bytes))
+    }
+    if let midFrequency {
+      self.midFrequency = midFrequency
+      self.writeData.append(
+        WriteData(address: self.$midFrequency.address, data: midFrequency.rawValue.bytes))
+    }
+    if let treble {
+      self.treble = treble
+      self.writeData.append(WriteData(address: self.$treble.address, data: treble.bytes))
+    }
+    if let presence {
+      self.presence = presence
+      self.writeData.append(WriteData(address: self.$presence.address, data: presence.bytes))
+    }
+    if let level {
+      self.level = level
+      self.writeData.append(WriteData(address: self.$level.address, data: level.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$type.address, data: type.rawValue.bytes),
+        WriteData(address: self.$bass.address, data: bass.bytes),
+        WriteData(address: self.$middle.address, data: middle.bytes),
+        WriteData(address: self.$midFrequency.address, data: midFrequency.rawValue.bytes),
+        WriteData(address: self.$treble.address, data: treble.bytes),
+        WriteData(address: self.$presence.address, data: presence.bytes),
+        WriteData(address: self.$level.address, data: level.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -1073,7 +2044,7 @@ public enum WaveSynthParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the wave synth parameters.
-public struct WaveSynthBank: Sendable, Hashable {
+public struct WaveSynthBank: WritableBank, Sendable, Hashable {
   @Parameter(at: 0x00_01_00_71)
   public var type: WaveSynthType = .saw
 
@@ -1098,7 +2069,9 @@ public struct WaveSynthBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_78, range: 0...100)
   public var directMix: UInt8 = 0
 
-  public init(
+  package var writeData = [WriteData]()
+
+  init(
     type: WaveSynthType, cutoff: UInt8, resonance: UInt8, filterSens: UInt8, filterDecay: UInt8,
     filterDepth: UInt8, synthLevel: UInt8, directMix: UInt8
   ) {
@@ -1110,6 +2083,61 @@ public struct WaveSynthBank: Sendable, Hashable {
     self.filterDepth = filterDepth
     self.synthLevel = synthLevel
     self.directMix = directMix
+  }
+
+  public init(
+    type: WaveSynthType? = nil, cutoff: UInt8? = nil, resonance: UInt8? = nil,
+    filterSens: UInt8? = nil, filterDecay: UInt8? = nil, filterDepth: UInt8? = nil,
+    synthLevel: UInt8? = nil, directMix: UInt8? = nil
+  ) {
+    if let type {
+      self.type = type
+      self.writeData.append(WriteData(address: self.$type.address, data: type.rawValue.bytes))
+    }
+    if let cutoff {
+      self.cutoff = cutoff
+      self.writeData.append(WriteData(address: self.$cutoff.address, data: cutoff.bytes))
+    }
+    if let resonance {
+      self.resonance = resonance
+      self.writeData.append(WriteData(address: self.$resonance.address, data: resonance.bytes))
+    }
+    if let filterSens {
+      self.filterSens = filterSens
+      self.writeData.append(WriteData(address: self.$filterSens.address, data: filterSens.bytes))
+    }
+    if let filterDecay {
+      self.filterDecay = filterDecay
+      self.writeData.append(WriteData(address: self.$filterDecay.address, data: filterDecay.bytes))
+    }
+    if let filterDepth {
+      self.filterDepth = filterDepth
+      self.writeData.append(WriteData(address: self.$filterDepth.address, data: filterDepth.bytes))
+    }
+    if let synthLevel {
+      self.synthLevel = synthLevel
+      self.writeData.append(WriteData(address: self.$synthLevel.address, data: synthLevel.bytes))
+    }
+    if let directMix {
+      self.directMix = directMix
+      self.writeData.append(WriteData(address: self.$directMix.address, data: directMix.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$type.address, data: type.rawValue.bytes),
+        WriteData(address: self.$cutoff.address, data: cutoff.bytes),
+        WriteData(address: self.$resonance.address, data: resonance.bytes),
+        WriteData(address: self.$filterSens.address, data: filterSens.bytes),
+        WriteData(address: self.$filterDecay.address, data: filterDecay.bytes),
+        WriteData(address: self.$filterDepth.address, data: filterDepth.bytes),
+        WriteData(address: self.$synthLevel.address, data: synthLevel.bytes),
+        WriteData(address: self.$directMix.address, data: directMix.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -1127,7 +2155,7 @@ public enum OctaverParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the octaver parameters.
-public struct OctaverBank: Sendable, Hashable {
+public struct OctaverBank: WritableBank, Sendable, Hashable {
   @Parameter(at: 0x00_01_00_79)
   public var range: OctaverRange = .range1
 
@@ -1137,10 +2165,38 @@ public struct OctaverBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_7B, range: 0...100)
   public var directLevel: UInt8 = 0
 
-  public init(range: OctaverRange, level: UInt8, directLevel: UInt8) {
+  package var writeData = [WriteData]()
+
+  init(range: OctaverRange, level: UInt8, directLevel: UInt8) {
     self.range = range
     self.level = level
     self.directLevel = directLevel
+  }
+
+  public init(range: OctaverRange? = nil, level: UInt8? = nil, directLevel: UInt8? = nil) {
+    if let range {
+      self.range = range
+      self.writeData.append(WriteData(address: self.$range.address, data: range.rawValue.bytes))
+    }
+    if let level {
+      self.level = level
+      self.writeData.append(WriteData(address: self.$level.address, data: level.bytes))
+    }
+    if let directLevel {
+      self.directLevel = directLevel
+      self.writeData.append(WriteData(address: self.$directLevel.address, data: directLevel.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$range.address, data: range.rawValue.bytes),
+        WriteData(address: self.$level.address, data: level.bytes),
+        WriteData(address: self.$directLevel.address, data: directLevel.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -1160,7 +2216,7 @@ public enum HeavyOctaveParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the heavy octave parameters.
-public struct HeavyOctaveBank: Sendable, Hashable {
+public struct HeavyOctaveBank: WritableBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_7C, range: 0...100)
   public var octaveMinus1: UInt8 = 50
 
@@ -1170,10 +2226,40 @@ public struct HeavyOctaveBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_7E, range: 0...100)
   public var directMix: UInt8 = 0
 
-  public init(octaveMinus1: UInt8, octaveMinus2: UInt8, directMix: UInt8) {
+  package var writeData = [WriteData]()
+
+  init(octaveMinus1: UInt8, octaveMinus2: UInt8, directMix: UInt8) {
     self.octaveMinus1 = octaveMinus1
     self.octaveMinus2 = octaveMinus2
     self.directMix = directMix
+  }
+
+  public init(octaveMinus1: UInt8? = nil, octaveMinus2: UInt8? = nil, directMix: UInt8? = nil) {
+    if let octaveMinus1 {
+      self.octaveMinus1 = octaveMinus1
+      self.writeData.append(
+        WriteData(address: self.$octaveMinus1.address, data: octaveMinus1.bytes))
+    }
+    if let octaveMinus2 {
+      self.octaveMinus2 = octaveMinus2
+      self.writeData.append(
+        WriteData(address: self.$octaveMinus2.address, data: octaveMinus2.bytes))
+    }
+    if let directMix {
+      self.directMix = directMix
+      self.writeData.append(WriteData(address: self.$directMix.address, data: directMix.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$octaveMinus1.address, data: octaveMinus1.bytes),
+        WriteData(address: self.$octaveMinus2.address, data: octaveMinus2.bytes),
+        WriteData(address: self.$directMix.address, data: directMix.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -1202,7 +2288,7 @@ public enum PitchShifterParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the pitch shifter parameters.
-public struct PitchShifterBank: Sendable, Hashable {
+public struct PitchShifterBank: WritableBank, Sendable, Hashable {
   @Parameter(at: 0x00_01_00_7F)
   public var voice: PitchShifterVoice = .oneVoice
 
@@ -1242,7 +2328,9 @@ public struct PitchShifterBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_01_11, range: 0...100)
   public var directLevel: UInt8 = 0
 
-  public init(
+  package var writeData = [WriteData]()
+
+  init(
     voice: PitchShifterVoice, ps1Mode: PitchShifterMode, ps1Pitch: UInt8, ps1Fine: UInt8,
     ps1PreDelay: UInt16, ps1Level: UInt8, ps2Mode: PitchShifterMode, ps2Pitch: UInt8,
     ps2Fine: UInt8, ps2PreDelay: UInt16, ps2Level: UInt8, ps1Feedback: UInt8, directLevel: UInt8
@@ -1260,6 +2348,88 @@ public struct PitchShifterBank: Sendable, Hashable {
     self.ps2Level = ps2Level
     self.ps1Feedback = ps1Feedback
     self.directLevel = directLevel
+  }
+
+  public init(
+    voice: PitchShifterVoice? = nil, ps1Mode: PitchShifterMode? = nil, ps1Pitch: UInt8? = nil,
+    ps1Fine: UInt8? = nil, ps1PreDelay: UInt16? = nil, ps1Level: UInt8? = nil,
+    ps2Mode: PitchShifterMode? = nil, ps2Pitch: UInt8? = nil, ps2Fine: UInt8? = nil,
+    ps2PreDelay: UInt16? = nil, ps2Level: UInt8? = nil, ps1Feedback: UInt8? = nil,
+    directLevel: UInt8? = nil
+  ) {
+    if let voice {
+      self.voice = voice
+      self.writeData.append(WriteData(address: self.$voice.address, data: voice.rawValue.bytes))
+    }
+    if let ps1Mode {
+      self.ps1Mode = ps1Mode
+      self.writeData.append(WriteData(address: self.$ps1Mode.address, data: ps1Mode.rawValue.bytes))
+    }
+    if let ps1Pitch {
+      self.ps1Pitch = ps1Pitch
+      self.writeData.append(WriteData(address: self.$ps1Pitch.address, data: ps1Pitch.bytes))
+    }
+    if let ps1Fine {
+      self.ps1Fine = ps1Fine
+      self.writeData.append(WriteData(address: self.$ps1Fine.address, data: ps1Fine.bytes))
+    }
+    if let ps1PreDelay {
+      self.ps1PreDelay = ps1PreDelay
+      self.writeData.append(WriteData(address: self.$ps1PreDelay.address, data: ps1PreDelay.bytes))
+    }
+    if let ps1Level {
+      self.ps1Level = ps1Level
+      self.writeData.append(WriteData(address: self.$ps1Level.address, data: ps1Level.bytes))
+    }
+    if let ps2Mode {
+      self.ps2Mode = ps2Mode
+      self.writeData.append(WriteData(address: self.$ps2Mode.address, data: ps2Mode.rawValue.bytes))
+    }
+    if let ps2Pitch {
+      self.ps2Pitch = ps2Pitch
+      self.writeData.append(WriteData(address: self.$ps2Pitch.address, data: ps2Pitch.bytes))
+    }
+    if let ps2Fine {
+      self.ps2Fine = ps2Fine
+      self.writeData.append(WriteData(address: self.$ps2Fine.address, data: ps2Fine.bytes))
+    }
+    if let ps2PreDelay {
+      self.ps2PreDelay = ps2PreDelay
+      self.writeData.append(WriteData(address: self.$ps2PreDelay.address, data: ps2PreDelay.bytes))
+    }
+    if let ps2Level {
+      self.ps2Level = ps2Level
+      self.writeData.append(WriteData(address: self.$ps2Level.address, data: ps2Level.bytes))
+    }
+    if let ps1Feedback {
+      self.ps1Feedback = ps1Feedback
+      self.writeData.append(WriteData(address: self.$ps1Feedback.address, data: ps1Feedback.bytes))
+    }
+    if let directLevel {
+      self.directLevel = directLevel
+      self.writeData.append(WriteData(address: self.$directLevel.address, data: directLevel.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$voice.address, data: voice.rawValue.bytes),
+        WriteData(address: self.$ps1Mode.address, data: ps1Mode.rawValue.bytes),
+        WriteData(address: self.$ps1Pitch.address, data: ps1Pitch.bytes),
+        WriteData(address: self.$ps1Fine.address, data: ps1Fine.bytes),
+        WriteData(address: self.$ps1PreDelay.address, data: ps1PreDelay.bytes),
+        WriteData(address: self.$ps1Level.address, data: ps1Level.bytes),
+        WriteData(address: self.$ps2Mode.address, data: ps2Mode.rawValue.bytes),
+        WriteData(address: self.$ps2Pitch.address, data: ps2Pitch.bytes),
+        WriteData(address: self.$ps2Fine.address, data: ps2Fine.bytes),
+        WriteData(address: self.$ps2PreDelay.address, data: ps2PreDelay.bytes),
+        WriteData(address: self.$ps2Level.address, data: ps2Level.bytes),
+        WriteData(address: self.$ps1Feedback.address, data: ps1Feedback.bytes),
+        WriteData(address: self.$directLevel.address, data: directLevel.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -1290,7 +2460,7 @@ public enum HarmonistParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the harmonist parameters.
-public struct HarmonistBank: Sendable, Hashable {
+public struct HarmonistBank: WritableBank, Sendable, Hashable {
   @Parameter(at: 0x00_01_01_12)
   public var voice: HarmonistVoice = .oneVoice
 
@@ -1318,7 +2488,9 @@ public struct HarmonistBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_01_20, range: 0...100)
   public var directLevel: UInt8 = 0
 
-  public init(
+  package var writeData = [WriteData]()
+
+  init(
     voice: HarmonistVoice, h1Harmony: HarmonistHarmony, h1PreDelay: UInt16, h1Level: UInt8,
     h2Harmony: HarmonistHarmony,
     h2PreDelay: UInt16, h2Level: UInt8, h1Feedback: UInt8, directLevel: UInt8
@@ -1332,6 +2504,68 @@ public struct HarmonistBank: Sendable, Hashable {
     self.h2Level = h2Level
     self.h1Feedback = h1Feedback
     self.directLevel = directLevel
+  }
+
+  public init(
+    voice: HarmonistVoice? = nil, h1Harmony: HarmonistHarmony? = nil, h1PreDelay: UInt16? = nil,
+    h1Level: UInt8? = nil, h2Harmony: HarmonistHarmony? = nil, h2PreDelay: UInt16? = nil,
+    h2Level: UInt8? = nil, h1Feedback: UInt8? = nil, directLevel: UInt8? = nil
+  ) {
+    if let voice {
+      self.voice = voice
+      self.writeData.append(WriteData(address: self.$voice.address, data: voice.rawValue.bytes))
+    }
+    if let h1Harmony {
+      self.h1Harmony = h1Harmony
+      self.writeData.append(
+        WriteData(address: self.$h1Harmony.address, data: h1Harmony.rawValue.bytes))
+    }
+    if let h1PreDelay {
+      self.h1PreDelay = h1PreDelay
+      self.writeData.append(WriteData(address: self.$h1PreDelay.address, data: h1PreDelay.bytes))
+    }
+    if let h1Level {
+      self.h1Level = h1Level
+      self.writeData.append(WriteData(address: self.$h1Level.address, data: h1Level.bytes))
+    }
+    if let h2Harmony {
+      self.h2Harmony = h2Harmony
+      self.writeData.append(
+        WriteData(address: self.$h2Harmony.address, data: h2Harmony.rawValue.bytes))
+    }
+    if let h2PreDelay {
+      self.h2PreDelay = h2PreDelay
+      self.writeData.append(WriteData(address: self.$h2PreDelay.address, data: h2PreDelay.bytes))
+    }
+    if let h2Level {
+      self.h2Level = h2Level
+      self.writeData.append(WriteData(address: self.$h2Level.address, data: h2Level.bytes))
+    }
+    if let h1Feedback {
+      self.h1Feedback = h1Feedback
+      self.writeData.append(WriteData(address: self.$h1Feedback.address, data: h1Feedback.bytes))
+    }
+    if let directLevel {
+      self.directLevel = directLevel
+      self.writeData.append(WriteData(address: self.$directLevel.address, data: directLevel.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$voice.address, data: voice.rawValue.bytes),
+        WriteData(address: self.$h1Harmony.address, data: h1Harmony.rawValue.bytes),
+        WriteData(address: self.$h1PreDelay.address, data: h1PreDelay.bytes),
+        WriteData(address: self.$h1Level.address, data: h1Level.bytes),
+        WriteData(address: self.$h2Harmony.address, data: h2Harmony.rawValue.bytes),
+        WriteData(address: self.$h2PreDelay.address, data: h2PreDelay.bytes),
+        WriteData(address: self.$h2Level.address, data: h2Level.bytes),
+        WriteData(address: self.$h1Feedback.address, data: h1Feedback.bytes),
+        WriteData(address: self.$directLevel.address, data: directLevel.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -1387,7 +2621,7 @@ public enum HumanizerParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the humanizer parameters.
-public struct HumanizerBank: Sendable, Hashable {
+public struct HumanizerBank: WritableBank, Sendable, Hashable {
   @Parameter(at: 0x00_01_01_39)
   public var mode: HumanizerMode = .picking
 
@@ -1412,7 +2646,9 @@ public struct HumanizerBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_01_40, range: 0...100)
   public var level: UInt8 = 100
 
-  public init(
+  package var writeData = [WriteData]()
+
+  init(
     mode: HumanizerMode, vowel1: HumanizerWovel, vowel2: HumanizerWovel, sens: UInt8, rate: UInt8,
     depth: UInt8, manual: UInt8, level: UInt8
   ) {
@@ -1424,6 +2660,61 @@ public struct HumanizerBank: Sendable, Hashable {
     self.depth = depth
     self.manual = manual
     self.level = level
+  }
+
+  public init(
+    mode: HumanizerMode? = nil, vowel1: HumanizerWovel? = nil, vowel2: HumanizerWovel? = nil,
+    sens: UInt8? = nil, rate: UInt8? = nil, depth: UInt8? = nil, manual: UInt8? = nil,
+    level: UInt8? = nil
+  ) {
+    if let mode {
+      self.mode = mode
+      self.writeData.append(WriteData(address: self.$mode.address, data: mode.rawValue.bytes))
+    }
+    if let vowel1 {
+      self.vowel1 = vowel1
+      self.writeData.append(WriteData(address: self.$vowel1.address, data: vowel1.rawValue.bytes))
+    }
+    if let vowel2 {
+      self.vowel2 = vowel2
+      self.writeData.append(WriteData(address: self.$vowel2.address, data: vowel2.rawValue.bytes))
+    }
+    if let sens {
+      self.sens = sens
+      self.writeData.append(WriteData(address: self.$sens.address, data: sens.bytes))
+    }
+    if let rate {
+      self.rate = rate
+      self.writeData.append(WriteData(address: self.$rate.address, data: rate.bytes))
+    }
+    if let depth {
+      self.depth = depth
+      self.writeData.append(WriteData(address: self.$depth.address, data: depth.bytes))
+    }
+    if let manual {
+      self.manual = manual
+      self.writeData.append(WriteData(address: self.$manual.address, data: manual.bytes))
+    }
+    if let level {
+      self.level = level
+      self.writeData.append(WriteData(address: self.$level.address, data: level.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$mode.address, data: mode.rawValue.bytes),
+        WriteData(address: self.$vowel1.address, data: vowel1.rawValue.bytes),
+        WriteData(address: self.$vowel2.address, data: vowel2.rawValue.bytes),
+        WriteData(address: self.$sens.address, data: sens.bytes),
+        WriteData(address: self.$rate.address, data: rate.bytes),
+        WriteData(address: self.$depth.address, data: depth.bytes),
+        WriteData(address: self.$manual.address, data: manual.bytes),
+        WriteData(address: self.$level.address, data: level.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -1448,16 +2739,40 @@ public enum Phaser90EParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the phaser 90E parameters.
-public struct Phaser90EBank: Sendable, Hashable {
+public struct Phaser90EBank: WritableBank, Sendable, Hashable {
   @Parameter(at: 0x00_01_01_41)
   public var scriptStatus: Bool = false
 
   @IntegerParameter(at: 0x00_01_01_42, range: 0...100)
   public var speed: UInt8 = 50
 
-  public init(scriptStatus: Bool, speed: UInt8) {
+  package var writeData = [WriteData]()
+
+  init(scriptStatus: Bool, speed: UInt8) {
     self.scriptStatus = scriptStatus
     self.speed = speed
+  }
+
+  public init(scriptStatus: Bool? = nil, speed: UInt8? = nil) {
+    if let scriptStatus {
+      self.scriptStatus = scriptStatus
+      self.writeData.append(
+        WriteData(address: self.$scriptStatus.address, data: scriptStatus.bytes))
+    }
+    if let speed {
+      self.speed = speed
+      self.writeData.append(WriteData(address: self.$speed.address, data: speed.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$scriptStatus.address, data: scriptStatus.bytes),
+        WriteData(address: self.$speed.address, data: speed.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -1471,7 +2786,7 @@ public enum Flanger117EParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the flanger 117E parameters.
-public struct Flanger117EBank: Sendable, Hashable {
+public struct Flanger117EBank: WritableBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_01_43, range: 0...100)
   public var manual: UInt8 = 50
 
@@ -1484,11 +2799,46 @@ public struct Flanger117EBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_01_46, range: 0...100)
   public var regen: UInt8 = 50
 
-  public init(manual: UInt8, width: UInt8, speed: UInt8, regen: UInt8) {
+  package var writeData = [WriteData]()
+
+  init(manual: UInt8, width: UInt8, speed: UInt8, regen: UInt8) {
     self.manual = manual
     self.width = width
     self.speed = speed
     self.regen = regen
+  }
+
+  public init(
+    manual: UInt8? = nil, width: UInt8? = nil, speed: UInt8? = nil, regen: UInt8? = nil
+  ) {
+    if let manual {
+      self.manual = manual
+      self.writeData.append(WriteData(address: self.$manual.address, data: manual.bytes))
+    }
+    if let width {
+      self.width = width
+      self.writeData.append(WriteData(address: self.$width.address, data: width.bytes))
+    }
+    if let speed {
+      self.speed = speed
+      self.writeData.append(WriteData(address: self.$speed.address, data: speed.bytes))
+    }
+    if let regen {
+      self.regen = regen
+      self.writeData.append(WriteData(address: self.$regen.address, data: regen.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$manual.address, data: manual.bytes),
+        WriteData(address: self.$width.address, data: width.bytes),
+        WriteData(address: self.$speed.address, data: speed.bytes),
+        WriteData(address: self.$regen.address, data: regen.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
@@ -1506,7 +2856,7 @@ public enum DC30Parameter: Sendable, Hashable {
 }
 
 /// The data bank representing the DC-30 parameters.
-public struct DC30Bank: Sendable, Hashable {
+public struct DC30Bank: WritableBank, Sendable, Hashable {
   @Parameter(at: 0x00_01_01_47)
   public var type: DC30Type = .chorus
 
@@ -1531,7 +2881,9 @@ public struct DC30Bank: Sendable, Hashable {
   @Parameter(at: 0x00_01_01_51)
   public var outputType: DC30OutputType = .dPlusE
 
-  public init(
+  package var writeData = [WriteData]()
+
+  init(
     type: DC30Type, inputVolume: UInt8, chorusIntensity: UInt8, repeatTime: UInt16,
     echoIntensity: UInt8, volume: UInt8, tone: UInt8, outputType: DC30OutputType
   ) {
@@ -1543,6 +2895,64 @@ public struct DC30Bank: Sendable, Hashable {
     self.volume = volume
     self.tone = tone
     self.outputType = outputType
+  }
+
+  public init(
+    type: DC30Type? = nil, inputVolume: UInt8? = nil, chorusIntensity: UInt8? = nil,
+    repeatTime: UInt16? = nil, echoIntensity: UInt8? = nil, volume: UInt8? = nil,
+    tone: UInt8? = nil, outputType: DC30OutputType? = nil
+  ) {
+    if let type {
+      self.type = type
+      self.writeData.append(WriteData(address: self.$type.address, data: type.rawValue.bytes))
+    }
+    if let inputVolume {
+      self.inputVolume = inputVolume
+      self.writeData.append(WriteData(address: self.$inputVolume.address, data: inputVolume.bytes))
+    }
+    if let chorusIntensity {
+      self.chorusIntensity = chorusIntensity
+      self.writeData.append(
+        WriteData(address: self.$chorusIntensity.address, data: chorusIntensity.bytes))
+    }
+    if let repeatTime {
+      self.repeatTime = repeatTime
+      self.writeData.append(WriteData(address: self.$repeatTime.address, data: repeatTime.bytes))
+    }
+    if let echoIntensity {
+      self.echoIntensity = echoIntensity
+      self.writeData.append(
+        WriteData(address: self.$echoIntensity.address, data: echoIntensity.bytes))
+    }
+    if let volume {
+      self.volume = volume
+      self.writeData.append(WriteData(address: self.$volume.address, data: volume.bytes))
+    }
+    if let tone {
+      self.tone = tone
+      self.writeData.append(WriteData(address: self.$tone.address, data: tone.bytes))
+    }
+    if let outputType {
+      self.outputType = outputType
+      self.writeData.append(
+        WriteData(address: self.$outputType.address, data: outputType.rawValue.bytes))
+    }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    if writeData.isEmpty {
+      return [
+        WriteData(address: self.$type.address, data: type.rawValue.bytes),
+        WriteData(address: self.$inputVolume.address, data: inputVolume.bytes),
+        WriteData(address: self.$chorusIntensity.address, data: chorusIntensity.bytes),
+        WriteData(address: self.$repeatTime.address, data: repeatTime.bytes),
+        WriteData(address: self.$echoIntensity.address, data: echoIntensity.bytes),
+        WriteData(address: self.$volume.address, data: volume.bytes),
+        WriteData(address: self.$tone.address, data: tone.bytes),
+        WriteData(address: self.$outputType.address, data: outputType.rawValue.bytes),
+      ]
+    }
+    return self.writeData
   }
 }
 
