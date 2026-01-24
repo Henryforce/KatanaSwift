@@ -1,3 +1,6 @@
+import KatanaBank
+import KatanaMacros
+
 /// Parameters for the Booster effect.
 public enum BoostParameter: Sendable, Hashable {
   case enable(Bool)

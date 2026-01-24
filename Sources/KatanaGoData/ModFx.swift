@@ -1,3 +1,6 @@
+import KatanaBank
+import KatanaMacros
+
 public enum ModFxParameter: Sendable, Hashable {
   case enable(Bool)
   case type(ModFxType)

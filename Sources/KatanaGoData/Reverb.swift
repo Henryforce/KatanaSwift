@@ -1,3 +1,6 @@
+import KatanaBank
+import KatanaMacros
+
 /// Parameters for the Reverb effect.
 public enum ReverbParameter: Sendable, Hashable {
   case enable(Bool)

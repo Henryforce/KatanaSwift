@@ -1,3 +1,6 @@
+import KatanaBank
+import KatanaMacros
+
 public enum EQParameter: Sendable, Hashable {
   case enable(Bool)
   case position(EQPosition)

@@ -1,3 +1,6 @@
+import KatanaBank
+import KatanaMacros
+
 /// Parameters for the Noise Gate.
 public enum NoiseGateParameter: Sendable, Hashable {
   case enable(Bool)

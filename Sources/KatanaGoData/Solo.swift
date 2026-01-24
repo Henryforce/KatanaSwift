@@ -1,3 +1,6 @@
+import KatanaBank
+import KatanaMacros
+
 /// Represents the Solo parameters.
 public enum SoloParameter: Sendable, Hashable {
   case enable(Bool)

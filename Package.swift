@@ -25,11 +25,13 @@ let package = Package(
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
     // Targets can depend on other targets in this package and products from dependencies.
+    .target(name: "KatanaBank"),
     .macro(
       name: "KatanaMacrosImpl",
       dependencies: [
         .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
         .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
+        "KatanaBank",
       ]
     ),
     .target(
@@ -39,28 +41,33 @@ let package = Package(
     .target(
       name: "KatanaGoData",
       dependencies: [
-        "KatanaMacros"
+        "KatanaMacros",
+        "KatanaBank",
       ]
     ),
     .target(
       name: "KatanaGoAPI",
-      dependencies: ["KatanaGoData"]
+      dependencies: [
+        "KatanaGoData",
+        "KatanaBank",
+      ]
     ),
     .target(
       name: "KatanaGoMIDIKit",
       dependencies: [
         "KatanaGoAPI",
         "KatanaGoData",
+        "KatanaBank",
         .product(name: "MIDIKit", package: "MIDIKit"),
       ]
     ),
     .target(
       name: "KatanaGoSwift",
-      dependencies: ["KatanaGoAPI", "KatanaGoData", "KatanaGoMIDIKit"]
+      dependencies: ["KatanaGoAPI", "KatanaGoData", "KatanaGoMIDIKit", "KatanaBank"]
     ),
     .testTarget(
       name: "KatanaGoMIDIKitTests",
-      dependencies: ["KatanaGoMIDIKit", "KatanaGoAPI"]
+      dependencies: ["KatanaGoMIDIKit", "KatanaGoAPI", "KatanaGoData", "KatanaBank"]
     ),
   ]
 )

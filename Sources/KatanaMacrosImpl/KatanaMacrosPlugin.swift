@@ -4,6 +4,7 @@ import SwiftSyntaxMacros
 @main
 struct KatanaMacrosPlugin: CompilerPlugin {
   let providingMacros: [Macro.Type] = [
-    BankAutoInitMacro.self
+    KatanaBankMacro.self,
+    KatanaUInt8RawBytesMacro.self,
   ]
 }
