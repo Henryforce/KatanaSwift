@@ -15,7 +15,8 @@ public enum BoostParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the booster parameters.
-public struct BoostBank: WritableBank, Sendable, Hashable {
+@KatanaBank
+public struct BoostBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_30_00)
   public var status: Bool = false
 
@@ -42,89 +43,12 @@ public struct BoostBank: WritableBank, Sendable, Hashable {
 
   @IntegerParameter(at: 0x00_00_40_07, range: 0...100)
   public var directMix: UInt8 = 0
-
-  package var writeData = [WriteData]()
-
-  init(
-    status: Bool, type: BoostType, drive: UInt8, bottom: UInt8, tone: UInt8,
-    soloSwitchStatus: Bool, soloLevel: UInt8, effectLevel: UInt8, directMix: UInt8
-  ) {
-    self.status = status
-    self.type = type
-    self.drive = drive
-    self.bottom = bottom
-    self.tone = tone
-    self.soloSwitchStatus = soloSwitchStatus
-    self.soloLevel = soloLevel
-    self.effectLevel = effectLevel
-    self.directMix = directMix
-  }
-
-  public init(
-    status: Bool? = nil, type: BoostType? = nil, drive: UInt8? = nil, bottom: UInt8? = nil,
-    tone: UInt8? = nil, soloSwitchStatus: Bool? = nil, soloLevel: UInt8? = nil,
-    effectLevel: UInt8? = nil, directMix: UInt8? = nil
-  ) {
-    if let status {
-      self.status = status
-      self.writeData.append(WriteData(address: self.$status.address, data: status.bytes))
-    }
-    if let type {
-      self.type = type
-      self.writeData.append(WriteData(address: self.$type.address, data: type.rawValue.bytes))
-    }
-    if let drive {
-      self.drive = drive
-      self.writeData.append(WriteData(address: self.$drive.address, data: drive.bytes))
-    }
-    if let bottom {
-      self.bottom = bottom
-      self.writeData.append(WriteData(address: self.$bottom.address, data: bottom.bytes))
-    }
-    if let tone {
-      self.tone = tone
-      self.writeData.append(WriteData(address: self.$tone.address, data: tone.bytes))
-    }
-    if let soloSwitchStatus {
-      self.soloSwitchStatus = soloSwitchStatus
-      self.writeData.append(
-        WriteData(address: self.$soloSwitchStatus.address, data: soloSwitchStatus.bytes))
-    }
-    if let soloLevel {
-      self.soloLevel = soloLevel
-      self.writeData.append(WriteData(address: self.$soloLevel.address, data: soloLevel.bytes))
-    }
-    if let effectLevel {
-      self.effectLevel = effectLevel
-      self.writeData.append(WriteData(address: self.$effectLevel.address, data: effectLevel.bytes))
-    }
-    if let directMix {
-      self.directMix = directMix
-      self.writeData.append(WriteData(address: self.$directMix.address, data: directMix.bytes))
-    }
-  }
-
-  public func loadWriteData() -> [WriteData] {
-    if writeData.isEmpty {
-      return [
-        WriteData(address: self.$status.address, data: status.bytes),
-        WriteData(address: self.$type.address, data: type.rawValue.bytes),
-        WriteData(address: self.$drive.address, data: drive.bytes),
-        WriteData(address: self.$bottom.address, data: bottom.bytes),
-        WriteData(address: self.$tone.address, data: tone.bytes),
-        WriteData(address: self.$soloSwitchStatus.address, data: soloSwitchStatus.bytes),
-        WriteData(address: self.$soloLevel.address, data: soloLevel.bytes),
-        WriteData(address: self.$effectLevel.address, data: effectLevel.bytes),
-        WriteData(address: self.$directMix.address, data: directMix.bytes),
-      ]
-    }
-    return self.writeData
-  }
 }
 
 // MARK - Types
 
 /// Available booster types for the Katana GO.
+@KatanaUInt8RawBytes
 public enum BoostType: UInt8, Sendable, Hashable, CaseIterable {
   case cleanBoost = 0x00
   case trebleBoost = 0x01

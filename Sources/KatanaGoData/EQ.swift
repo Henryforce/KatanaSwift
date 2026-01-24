@@ -1,5 +1,5 @@
-import KatanaMacros
 import KatanaBank
+import KatanaMacros
 
 public enum EQParameter: Sendable, Hashable {
   case enable(Bool)
