@@ -15,7 +15,7 @@ struct KatanaGoMIDIParserTests {
       115,  // Checksum
     ]
 
-    var dataBank = DataBank()
+    var dataBank = DataBank(addressOffset: 0)
     KatanaGoMIDIParser.parse(message, into: &dataBank)
 
     let expectedName: [UInt8] = [
@@ -36,7 +36,7 @@ struct KatanaGoMIDIParserTests {
       5,  // Checksum
     ]
 
-    var dataBank = DataBank()
+    var dataBank = DataBank(addressOffset: 0)
     KatanaGoMIDIParser.parse(message, into: &dataBank)
 
     let expectedPreamp: [UInt8] = [100, 100, 0, 70, 61, 49, 50, 11, 50, 16, 60, 0, 4, 0]
@@ -53,7 +53,7 @@ struct KatanaGoMIDIParserTests {
       29,  // Checksum
     ]
 
-    var dataBank = DataBank()
+    var dataBank = DataBank(addressOffset: 0)
     KatanaGoMIDIParser.parse(message, into: &dataBank)
 
     let expectedBooster: [UInt8] = [9, 50, 60, 50, 0, 50, 40, 0]

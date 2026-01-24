@@ -21,7 +21,8 @@ public enum DelayParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the delay parameters.
-public struct DelayBank: WritableBank, Sendable, Hashable {
+@KatanaBank
+public struct DelayBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_30_03)
   public var status: Bool = false
 
@@ -66,136 +67,10 @@ public struct DelayBank: WritableBank, Sendable, Hashable {
 
   @Parameter(at: 0x00_01_20_0E)
   public var feedbackPhase: DelayPhase = .normal
-
-  package var writeData = [WriteData]()
-
-  init(
-    status: Bool, type: DelayType, time: UInt16, feedback: UInt8, highCut: DelayHighCutFrequency,
-    effectLevel: UInt8, directMix: UInt8, modulationRate: UInt8, modulationDepth: UInt8,
-    modulationSwitchStatus: Bool, tapTimePercentage: UInt8, filterStatus: Bool,
-    filter: DelayFilterRange, delayPhase: DelayPhase, feedbackPhase: DelayPhase
-  ) {
-    self.status = status
-    self.type = type
-    self.time = time
-    self.feedback = feedback
-    self.highCut = highCut
-    self.effectLevel = effectLevel
-    self.directMix = directMix
-    self.modulationRate = modulationRate
-    self.modulationDepth = modulationDepth
-    self.modulationSwitchStatus = modulationSwitchStatus
-    self.tapTimePercentage = tapTimePercentage
-    self.filterStatus = filterStatus
-    self.filter = filter
-    self.delayPhase = delayPhase
-    self.feedbackPhase = feedbackPhase
-  }
-
-  public init(
-    status: Bool? = nil, type: DelayType? = nil, time: UInt16? = nil, feedback: UInt8? = nil,
-    highCut: DelayHighCutFrequency? = nil, effectLevel: UInt8? = nil, directMix: UInt8? = nil,
-    modulationRate: UInt8? = nil, modulationDepth: UInt8? = nil,
-    modulationSwitchStatus: Bool? = nil, tapTimePercentage: UInt8? = nil,
-    filterStatus: Bool? = nil, filter: DelayFilterRange? = nil, delayPhase: DelayPhase? = nil,
-    feedbackPhase: DelayPhase? = nil
-  ) {
-    if let status {
-      self.status = status
-      self.writeData.append(WriteData(address: self.$status.address, data: status.bytes))
-    }
-    if let type {
-      self.type = type
-      self.writeData.append(WriteData(address: self.$type.address, data: type.rawValue.bytes))
-    }
-    if let time {
-      self.time = time
-      self.writeData.append(WriteData(address: self.$time.address, data: time.bytes))
-    }
-    if let feedback {
-      self.feedback = feedback
-      self.writeData.append(WriteData(address: self.$feedback.address, data: feedback.bytes))
-    }
-    if let highCut {
-      self.highCut = highCut
-      self.writeData.append(WriteData(address: self.$highCut.address, data: highCut.rawValue.bytes))
-    }
-    if let effectLevel {
-      self.effectLevel = effectLevel
-      self.writeData.append(WriteData(address: self.$effectLevel.address, data: effectLevel.bytes))
-    }
-    if let directMix {
-      self.directMix = directMix
-      self.writeData.append(WriteData(address: self.$directMix.address, data: directMix.bytes))
-    }
-    if let modulationRate {
-      self.modulationRate = modulationRate
-      self.writeData.append(
-        WriteData(address: self.$modulationRate.address, data: modulationRate.bytes))
-    }
-    if let modulationDepth {
-      self.modulationDepth = modulationDepth
-      self.writeData.append(
-        WriteData(address: self.$modulationDepth.address, data: modulationDepth.bytes))
-    }
-    if let modulationSwitchStatus {
-      self.modulationSwitchStatus = modulationSwitchStatus
-      self.writeData.append(
-        WriteData(
-          address: self.$modulationSwitchStatus.address, data: modulationSwitchStatus.bytes))
-    }
-    if let tapTimePercentage {
-      self.tapTimePercentage = tapTimePercentage
-      self.writeData.append(
-        WriteData(address: self.$tapTimePercentage.address, data: tapTimePercentage.bytes))
-    }
-    if let filterStatus {
-      self.filterStatus = filterStatus
-      self.writeData.append(
-        WriteData(address: self.$filterStatus.address, data: filterStatus.bytes))
-    }
-    if let filter {
-      self.filter = filter
-      self.writeData.append(WriteData(address: self.$filter.address, data: filter.rawValue.bytes))
-    }
-    if let delayPhase {
-      self.delayPhase = delayPhase
-      self.writeData.append(
-        WriteData(address: self.$delayPhase.address, data: delayPhase.rawValue.bytes))
-    }
-    if let feedbackPhase {
-      self.feedbackPhase = feedbackPhase
-      self.writeData.append(
-        WriteData(address: self.$feedbackPhase.address, data: feedbackPhase.rawValue.bytes))
-    }
-  }
-
-  public func loadWriteData() -> [WriteData] {
-    if writeData.isEmpty {
-      return [
-        WriteData(address: self.$status.address, data: status.bytes),
-        WriteData(address: self.$type.address, data: type.rawValue.bytes),
-        WriteData(address: self.$time.address, data: time.bytes),
-        WriteData(address: self.$feedback.address, data: feedback.bytes),
-        WriteData(address: self.$highCut.address, data: highCut.rawValue.bytes),
-        WriteData(address: self.$effectLevel.address, data: effectLevel.bytes),
-        WriteData(address: self.$directMix.address, data: directMix.bytes),
-        WriteData(address: self.$modulationRate.address, data: modulationRate.bytes),
-        WriteData(address: self.$modulationDepth.address, data: modulationDepth.bytes),
-        WriteData(
-          address: self.$modulationSwitchStatus.address, data: modulationSwitchStatus.bytes),
-        WriteData(address: self.$tapTimePercentage.address, data: tapTimePercentage.bytes),
-        WriteData(address: self.$filterStatus.address, data: filterStatus.bytes),
-        WriteData(address: self.$filter.address, data: filter.rawValue.bytes),
-        WriteData(address: self.$delayPhase.address, data: delayPhase.rawValue.bytes),
-        WriteData(address: self.$feedbackPhase.address, data: feedbackPhase.rawValue.bytes),
-      ]
-    }
-    return self.writeData
-  }
 }
 
 /// Available delay types for the Katana GO.
+@KatanaUInt8RawBytes
 public enum DelayType: UInt8, Sendable, Hashable, CaseIterable {
   case digital = 0x00
   case pan = 0x01
@@ -207,6 +82,7 @@ public enum DelayType: UInt8, Sendable, Hashable, CaseIterable {
   case sde3000 = 0x07
 }
 
+@KatanaUInt8RawBytes
 public enum DelayHighCutFrequency: UInt8, Sendable, Hashable, CaseIterable {
   case freq630Hz = 0x00
   case freq800Hz = 0x01
@@ -225,11 +101,13 @@ public enum DelayHighCutFrequency: UInt8, Sendable, Hashable, CaseIterable {
   case flat = 0x0E
 }
 
+@KatanaUInt8RawBytes
 public enum DelayFilterRange: UInt8, Sendable, Hashable, CaseIterable {
   case freq8kHz = 0x00
   case freq17kHz = 0x01
 }
 
+@KatanaUInt8RawBytes
 public enum DelayPhase: UInt8, Sendable, Hashable, CaseIterable {
   case normal = 0x00
   case inverted = 0x01

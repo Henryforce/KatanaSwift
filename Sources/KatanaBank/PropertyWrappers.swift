@@ -17,7 +17,7 @@ public struct Parameter<T: Sendable & Hashable>: Sendable, Hashable {
     set { self = newValue }
   }
 
-  init(wrappedValue: T, at address: UInt32) {
+  public init(wrappedValue: T, at address: UInt32) {
     self.value = wrappedValue
     self.address = address
   }
@@ -45,7 +45,7 @@ public struct IntegerParameter<T: BinaryInteger & Sendable & Hashable>:
     set { self = newValue }
   }
 
-  init(wrappedValue: T, at address: UInt32, range: ClosedRange<T>) {
+  public init(wrappedValue: T, at address: UInt32, range: ClosedRange<T>) {
     self.value = max(range.lowerBound, min(wrappedValue, range.upperBound))
     self.address = address
     self.range = range

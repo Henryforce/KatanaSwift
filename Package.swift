@@ -69,5 +69,9 @@ let package = Package(
       name: "KatanaGoMIDIKitTests",
       dependencies: ["KatanaGoMIDIKit", "KatanaGoAPI", "KatanaGoData", "KatanaBank"]
     ),
+    .testTarget(
+      name: "KatanaGoDataTests",
+      dependencies: ["KatanaGoData", "KatanaBank"]
+    ),
   ]
 )

@@ -1,3 +1,4 @@
+import KatanaBank
 import KatanaGoAPI
 import KatanaGoData
 import MIDIKit
@@ -18,6 +19,7 @@ final class KatanaGoScannerMIDIKitTests: XCTestCase {
     func disconnect() async {}
     func connectionStatus() async -> ConnectionStatus { .disconnected }
     func write(_ command: KatanaGoWriteData) async throws {}
+    func writeBank(_ bank: WritableBank) async throws {}
     func read() -> AsyncStream<KatanaGoReadData> { AsyncStream { $0.finish() } }
   }
 
