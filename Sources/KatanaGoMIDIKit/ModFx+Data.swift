@@ -676,8 +676,9 @@ extension DC30Parameter {
     switch self {
     case .type: return [0x20, 0x01, 0x01, 0x47]
     case .inputVolume: return [0x20, 0x01, 0x01, 0x48]
-    case .intensity: return [0x20, 0x01, 0x01, 0x49]
+    case .chorusIntensity: return [0x20, 0x01, 0x01, 0x49]
     case .repeatTime: return [0x20, 0x01, 0x01, 0x4A]
+    case .echoIntensity: return [0x20, 0x01, 0x01, 0x4E]
     case .volume: return [0x20, 0x01, 0x01, 0x4F]
     case .tone: return [0x20, 0x01, 0x01, 0x50]
     case .outputType: return [0x20, 0x01, 0x01, 0x51]
@@ -689,7 +690,7 @@ extension DC30Parameter {
     case .type(let value): return [value.rawValue]
     case .outputType(let value): return [value.rawValue]
     case .repeatTime(let value): return value.encodeToByteArray()
-    case .inputVolume(let value), .intensity(let value),
+    case .inputVolume(let value), .chorusIntensity(let value), .echoIntensity(let value),
       .volume(let value), .tone(let value):
       return [value]
     }
@@ -938,8 +939,9 @@ extension DataBank {
       dc30: DC30Bank(
         type: DC30Type(rawValue: bank[199]) ?? .chorus,
         inputVolume: bank[200],
-        intensity: bank[201],
+        chorusIntensity: bank[201],
         repeatTime: UInt16.decodeFromByteArray([bank[202], bank[203], bank[204], bank[205]]),
+        echoIntensity: bank[206],
         volume: bank[207],
         tone: bank[208],
         outputType: DC30OutputType(rawValue: bank[209]) ?? .dPlusE

@@ -1194,8 +1194,9 @@ public struct Flanger117EBank: Sendable, Hashable {
 public enum DC30Parameter: Sendable, Hashable {
   case type(DC30Type)
   case inputVolume(UInt8)
-  case intensity(UInt8)
+  case chorusIntensity(UInt8)
   case repeatTime(UInt16)
+  case echoIntensity(UInt8)
   case volume(UInt8)
   case tone(UInt8)
   case outputType(DC30OutputType)
@@ -1205,20 +1206,22 @@ public enum DC30Parameter: Sendable, Hashable {
 public struct DC30Bank: Sendable, Hashable {
   public let type: DC30Type
   public let inputVolume: UInt8
-  public let intensity: UInt8
+  public let chorusIntensity: UInt8
   public let repeatTime: UInt16
+  public let echoIntensity: UInt8
   public let volume: UInt8
   public let tone: UInt8
   public let outputType: DC30OutputType
 
   public init(
-    type: DC30Type, inputVolume: UInt8, intensity: UInt8, repeatTime: UInt16, volume: UInt8,
-    tone: UInt8, outputType: DC30OutputType
+    type: DC30Type, inputVolume: UInt8, chorusIntensity: UInt8, repeatTime: UInt16,
+    echoIntensity: UInt8, volume: UInt8, tone: UInt8, outputType: DC30OutputType
   ) {
     self.type = type
     self.inputVolume = inputVolume
-    self.intensity = intensity
+    self.chorusIntensity = chorusIntensity
     self.repeatTime = repeatTime
+    self.echoIntensity = echoIntensity
     self.volume = volume
     self.tone = tone
     self.outputType = outputType
