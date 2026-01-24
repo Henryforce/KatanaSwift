@@ -7,9 +7,14 @@ public enum NoiseGateParameter: Sendable, Hashable {
 
 /// The data bank representing the noise gate parameters.
 public struct NoiseGateBank: Sendable, Hashable {
-  public let status: Bool
-  public let threshold: UInt8
-  public let release: UInt8
+  @Parameter(at: 0x00_03_40_00)
+  public var status: Bool = false
+
+  @IntegerParameter(at: 0x00_03_40_01, range: 0...100)
+  public var threshold: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_03_40_02, range: 0...100)
+  public var release: UInt8 = 50
 
   public init(status: Bool, threshold: UInt8, release: UInt8) {
     self.status = status

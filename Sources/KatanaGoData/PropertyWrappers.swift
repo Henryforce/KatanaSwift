@@ -1,8 +1,8 @@
 @propertyWrapper
 public struct Parameter<T: Sendable & Hashable>: Sendable, Hashable {
-  public var value: T
+  package var value: T
   public let address: UInt64
-  var shouldUpdate = false
+  package var shouldUpdate = false
 
   public var wrappedValue: T {
     get { return value }
@@ -22,10 +22,10 @@ public struct Parameter<T: Sendable & Hashable>: Sendable, Hashable {
 
 @propertyWrapper
 public struct IntegerParameter<T: BinaryInteger & Sendable & Hashable>: Sendable, Hashable {
-  public var value: T
+  package var value: T
   public let address: UInt64
   public let range: ClosedRange<T>
-  var shouldUpdate = false
+  package var shouldUpdate = false
 
   public var wrappedValue: T {
     get { return value }

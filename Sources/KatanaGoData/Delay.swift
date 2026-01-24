@@ -19,21 +19,50 @@ public enum DelayParameter: Sendable, Hashable {
 
 /// The data bank representing the delay parameters.
 public struct DelayBank: Sendable, Hashable {
-  public let status: Bool
-  public let type: DelayType
-  public let time: UInt16
-  public let feedback: UInt8
-  public let highCut: DelayHighCutFrequency
-  public let effectLevel: UInt8
-  public let directMix: UInt8
-  public let modulationRate: UInt8
-  public let modulationDepth: UInt8
-  public let modulationSwitchStatus: Bool
-  public let tapTimePercentage: UInt8
-  public let filterStatus: Bool
-  public let filter: DelayFilterRange
-  public let delayPhase: DelayPhase
-  public let feedbackPhase: DelayPhase
+  @Parameter(at: 0x00_00_30_03)
+  public var status: Bool = false
+
+  @Parameter(at: 0x00_01_20_00)
+  public var type: DelayType = .digital
+
+  @IntegerParameter(at: 0x00_01_20_01, range: 1...2000)
+  public var time: UInt16 = 100
+
+  @IntegerParameter(at: 0x00_01_20_05, range: 0...100)
+  public var feedback: UInt8 = 50
+
+  @Parameter(at: 0x00_01_20_06)
+  public var highCut: DelayHighCutFrequency = .flat
+
+  @IntegerParameter(at: 0x00_01_20_07, range: 0...100)
+  public var effectLevel: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_20_08, range: 0...100)
+  public var directMix: UInt8 = 0
+
+  @IntegerParameter(at: 0x00_01_20_0A, range: 0...100)
+  public var modulationRate: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_01_20_0B, range: 0...100)
+  public var modulationDepth: UInt8 = 50
+
+  @Parameter(at: 0x00_01_20_10)
+  public var modulationSwitchStatus: Bool = false
+
+  @IntegerParameter(at: 0x00_01_20_09, range: 0...100)
+  public var tapTimePercentage: UInt8 = 100
+
+  @Parameter(at: 0x00_01_20_0C)
+  public var filterStatus: Bool = false
+
+  @Parameter(at: 0x00_01_20_0D)
+  public var filter: DelayFilterRange = .freq8kHz
+
+  @Parameter(at: 0x00_01_20_0F)
+  public var delayPhase: DelayPhase = .normal
+
+  @Parameter(at: 0x00_01_20_0E)
+  public var feedbackPhase: DelayPhase = .normal
 
   public init(
     status: Bool, type: DelayType, time: UInt16, feedback: UInt8, highCut: DelayHighCutFrequency,

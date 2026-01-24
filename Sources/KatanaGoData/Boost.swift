@@ -13,19 +13,36 @@ public enum BoostParameter: Sendable, Hashable {
 
 /// The data bank representing the booster parameters.
 public struct BoostBank: Sendable, Hashable {
-  public let status: Bool
-  public let type: BoostType
-  public let drive: UInt8
-  public let bottom: UInt8
-  public let tone: UInt8
-  public let soloSwitchStatus: Bool
-  public let soloLevel: UInt8
-  public let effectLevel: UInt8
-  public let directMix: UInt8
+  @Parameter(at: 0x00_00_30_00)
+  public var status: Bool = false
+
+  @Parameter(at: 0x00_00_40_00)
+  public var type: BoostType = .midBoost
+
+  @IntegerParameter(at: 0x00_00_40_01, range: 0...100)
+  public var drive: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_00_40_02, range: 0...100)
+  public var bottom: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_00_40_03, range: 0...100)
+  public var tone: UInt8 = 50
+
+  @Parameter(at: 0x00_00_40_04)
+  public var soloSwitchStatus: Bool = false
+
+  @IntegerParameter(at: 0x00_00_40_05, range: 0...100)
+  public var soloLevel: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_00_40_06, range: 0...100)
+  public var effectLevel: UInt8 = 50
+
+  @IntegerParameter(at: 0x00_00_40_07, range: 0...100)
+  public var directMix: UInt8 = 0
 
   public init(
-    status: Bool, type: BoostType, drive: UInt8, bottom: UInt8, tone: UInt8, soloSwitchStatus: Bool,
-    soloLevel: UInt8, effectLevel: UInt8, directMix: UInt8
+    status: Bool, type: BoostType, drive: UInt8, bottom: UInt8, tone: UInt8,
+    soloSwitchStatus: Bool, soloLevel: UInt8, effectLevel: UInt8, directMix: UInt8
   ) {
     self.status = status
     self.type = type

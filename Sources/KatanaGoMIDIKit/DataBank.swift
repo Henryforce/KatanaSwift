@@ -2,6 +2,8 @@ import KatanaGoData
 
 /// The bank of data received from the Katana GO device.
 struct DataBank: Sendable, Hashable {
+  let addressOffset: UInt64
+
   var presetBank = [UInt8](repeating: 0x00, count: 1)
   var presetNameBank = [UInt8](repeating: 0x00, count: 23)
   var signalChainBank = [UInt8](repeating: 0x00, count: 3)
@@ -33,6 +35,10 @@ struct DataBank: Sendable, Hashable {
   var geq1Bank = [UInt8](repeating: 0x00, count: 11)
   var geq2Bank = [UInt8](repeating: 0x00, count: 11)
   var nsBank = [UInt8](repeating: 0x00, count: 3)
+
+  init(addressOffset: UInt64) {
+    self.addressOffset = addressOffset
+  }
 
   /// Updates the data bank with the given data.
   /// - Parameters:
