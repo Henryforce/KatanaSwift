@@ -107,6 +107,16 @@ public actor KatanaGoMIDIKit: KatanaGo {
     try writeRawBytes(command.bytes)
   }
 
+  public func writeBank(_ bank: WritableBank) async throws {
+    for writeData in bank.loadWriteData() {
+      let address = writeData.address + 0x20_00_00_00
+      let data = writeData.data
+
+      let bytes = finalizeSysex(address: address, data: data)
+      try writeRawBytes(bytes)
+    }
+  }
+
   public func read() -> AsyncStream<KatanaGoReadData> {
     AsyncStream { continuation in
       self.continuation = continuation
@@ -119,5 +129,23 @@ public actor KatanaGoMIDIKit: KatanaGo {
     }
     let event = try MIDIEvent.sysEx7(rawBytes: rawBytes)
     try connection.send(event: event)
+  }
+
+  private func finalizeSysex(address: UInt32, data: [UInt8]) -> [UInt8] {
+    let prefix: [UInt8] = [0xf0, 0x41, 0x10, 0x01, 0x05, 0x0d, 0x12]
+    let addressBytes = [
+      UInt8(address >> 24), UInt8(address >> 16), UInt8(address >> 8), UInt8(address),
+    ]
+    let body = addressBytes + data
+    let checksum = calculateChecksum(for: body)
+    return prefix + body + [checksum, 0xf7]
+  }
+
+  private func calculateChecksum(for data: [UInt8]) -> UInt8 {
+    var sum: Int = 0
+    for byte in data {
+      sum += Int(byte)
+    }
+    return UInt8((128 - (sum % 128)) % 128)
   }
 }

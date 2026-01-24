@@ -1,8 +1,7 @@
 @propertyWrapper
 public struct Parameter<T: Sendable & Hashable>: Sendable, Hashable {
   package var value: T
-  public let address: UInt64
-  package var shouldUpdate = false
+  public let address: UInt32
 
   public var wrappedValue: T {
     get { return value }
@@ -14,18 +13,19 @@ public struct Parameter<T: Sendable & Hashable>: Sendable, Hashable {
     set { self = newValue }
   }
 
-  init(wrappedValue: T, at address: UInt64) {
+  init(wrappedValue: T, at address: UInt32) {
     self.value = wrappedValue
     self.address = address
   }
 }
 
 @propertyWrapper
-public struct IntegerParameter<T: BinaryInteger & Sendable & Hashable>: Sendable, Hashable {
+public struct IntegerParameter<T: BinaryInteger & Sendable & Hashable>:
+  Sendable, Hashable
+{
   package var value: T
-  public let address: UInt64
+  public let address: UInt32
   public let range: ClosedRange<T>
-  package var shouldUpdate = false
 
   public var wrappedValue: T {
     get { return value }
@@ -37,7 +37,7 @@ public struct IntegerParameter<T: BinaryInteger & Sendable & Hashable>: Sendable
     set { self = newValue }
   }
 
-  init(wrappedValue: T, at address: UInt64, range: ClosedRange<T>) {
+  init(wrappedValue: T, at address: UInt32, range: ClosedRange<T>) {
     self.value = max(range.lowerBound, min(wrappedValue, range.upperBound))
     self.address = address
     self.range = range
