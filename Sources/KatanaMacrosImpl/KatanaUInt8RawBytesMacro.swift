@@ -12,7 +12,7 @@ public struct KatanaUInt8RawBytesMacro: MemberMacro {
   ) throws -> [DeclSyntax] {
     return [
       """
-      var bytes: [UInt8] {
+      public var bytes: [UInt8] {
         return [self.rawValue]
       }
       """

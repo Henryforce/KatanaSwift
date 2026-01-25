@@ -1,5 +1,6 @@
 import Foundation
-import KatanaBank
+import KatanaCore
+import KatanaFx
 import KatanaGoAPI
 import KatanaGoData
 import MIDIKit

@@ -3,6 +3,19 @@ import KatanaMacros
 
 // MARK: - Flanger
 
+<<<<<<< HEAD
+=======
+public enum FlangerParameter: Sendable, Hashable {
+  case rate(UInt8)
+  case depth(UInt8)
+  case manual(UInt8)
+  case resonance(UInt8)
+  case lowCut(FlangerLowCut)
+  case effectLevel(UInt8)
+  case directLevel(UInt8)
+}
+
+>>>>>>> 162b62e (Updated package arrangement)
 /// The data bank representing the flanger parameters.
 @KatanaBank
 public struct FlangerBank: Sendable, Hashable {

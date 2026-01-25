@@ -1,5 +1,5 @@
 import Foundation
-import KatanaBank
+import KatanaCore
 import KatanaGoData
 
 /// Represents a connected Katana GO device.

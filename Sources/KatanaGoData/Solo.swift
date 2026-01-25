@@ -1,4 +1,5 @@
-import KatanaBank
+import KatanaCore
+import KatanaFx
 import KatanaMacros
 
 /// Represents the Solo parameters.

@@ -1,4 +1,4 @@
-import KatanaBank
+import KatanaCore
 
 @attached(extension, conformances: WritableBank, names: named(loadWriteData))
 @attached(member, names: named(init))
