@@ -12,27 +12,27 @@ public enum WahMode: UInt8, Sendable, Hashable, CaseIterable {
 // MARK: - TWah
 
 /// The data bank representing the T-Wah parameters.
-@KatanaBank
+@KatanaFxBank
 public struct TWahBank: Sendable, Hashable {
-  @Parameter(at: 0x00_01_00_3D)
+  @FxParameter(id: .tWahMode)
   public var mode: WahMode = .lowPassFilter
 
-  @Parameter(at: 0x00_01_00_3E)
+  @FxParameter(id: .tWahPolarity)
   public var polarity: TWahPolarity = .up
 
-  @IntegerParameter(at: 0x00_01_00_3F, range: 0...100)
+  @FxIntegerParameter(id: .tWahSens, range: 0...100)
   public var sens: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_40, range: 0...100)
+  @FxIntegerParameter(id: .tWahFrequency, range: 0...100)
   public var frequency: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_41, range: 0...100)
+  @FxIntegerParameter(id: .tWahPeak, range: 0...100)
   public var peak: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_42, range: 0...100)
+  @FxIntegerParameter(id: .tWahEffectLevel, range: 0...100)
   public var effectLevel: UInt8 = 100
 
-  @IntegerParameter(at: 0x00_01_00_43, range: 0...100)
+  @FxIntegerParameter(id: .tWahDirectLevel, range: 0...100)
   public var directLevel: UInt8 = 0
 }
 
@@ -45,26 +45,26 @@ public enum TWahPolarity: UInt8, Sendable, Hashable, CaseIterable {
 // MARK: - AutoWah
 
 /// The data bank representing the auto wah parameters.
-@KatanaBank
+@KatanaFxBank
 public struct AutoWahBank: Sendable, Hashable {
-  @Parameter(at: 0x00_01_00_44)
+  @FxParameter(id: .autoWahMode)
   public var mode: WahMode = .lowPassFilter
 
-  @IntegerParameter(at: 0x00_01_00_45, range: 0...100)
+  @FxIntegerParameter(id: .autoWahFrequency, range: 0...100)
   public var frequency: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_46, range: 0...100)
+  @FxIntegerParameter(id: .autoWahPeak, range: 0...100)
   public var peak: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_47, range: 0...100)
+  @FxIntegerParameter(id: .autoWahRate, range: 0...100)
   public var rate: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_48, range: 0...100)
+  @FxIntegerParameter(id: .autoWahDepth, range: 0...100)
   public var depth: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_49, range: 0...100)
+  @FxIntegerParameter(id: .autoWahEffectLevel, range: 0...100)
   public var effectLevel: UInt8 = 100
 
-  @IntegerParameter(at: 0x00_01_00_4A, range: 0...100)
+  @FxIntegerParameter(id: .autoWahDirectLevel, range: 0...100)
   public var directLevel: UInt8 = 0
 }

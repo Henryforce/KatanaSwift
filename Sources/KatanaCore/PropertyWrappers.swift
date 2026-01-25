@@ -78,7 +78,7 @@ public struct IntegerParameter<T: BinaryInteger & Sendable & Hashable>:
 }
 
 @propertyWrapper
-public struct IntegerFxParameter<T: BinaryInteger & Sendable & Hashable>:
+public struct FxIntegerParameter<T: BinaryInteger & Sendable & Hashable>:
   Sendable, Hashable
 {
   package var value: T
@@ -94,7 +94,7 @@ public struct IntegerFxParameter<T: BinaryInteger & Sendable & Hashable>:
     }
   }
 
-  public var projectedValue: IntegerFxParameter<T> {
+  public var projectedValue: FxIntegerParameter<T> {
     get { return self }
     set { self = newValue }
   }

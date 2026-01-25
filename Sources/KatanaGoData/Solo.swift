@@ -1,6 +1,7 @@
 import KatanaCore
 import KatanaFx
 import KatanaMacros
+import KatanaEQ
 
 /// The data bank representing the solo parameters.
 @KatanaBank

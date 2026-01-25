@@ -4,21 +4,21 @@ import KatanaMacros
 // MARK: - Comp
 
 /// The data bank representing the compressor parameters.
-@KatanaBank
+@KatanaFxBank
 public struct CompBank: Sendable, Hashable {
-  @Parameter(at: 0x00_01_00_32)
+  @FxParameter(id: .compType)
   public var type: CompType = .boss
 
-  @IntegerParameter(at: 0x00_01_00_33, range: 0...100)
+  @FxIntegerParameter(id: .compSustain, range: 0...100)
   public var sustain: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_34, range: 0...100)
+  @FxIntegerParameter(id: .compAttack, range: 0...100)
   public var attack: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_35, range: 0...100)
+  @FxIntegerParameter(id: .compTone, range: 0...100)
   public var tone: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_36, range: 0...100)
+  @FxIntegerParameter(id: .compLevel, range: 0...100)
   public var level: UInt8 = 100
 }
 

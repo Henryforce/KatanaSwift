@@ -4,15 +4,15 @@ import KatanaMacros
 // MARK: - Octaver
 
 /// The data bank representing the octaver parameters.
-@KatanaBank
+@KatanaFxBank
 public struct OctaverBank: Sendable, Hashable {
-  @Parameter(at: 0x00_01_00_79)
+  @FxParameter(id: .octaverRange)
   public var range: OctaverRange = .range1
 
-  @IntegerParameter(at: 0x00_01_00_7A, range: 0...100)
+  @FxIntegerParameter(id: .octaverLevel, range: 0...100)
   public var level: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_7B, range: 0...100)
+  @FxIntegerParameter(id: .octaverDirectLevel, range: 0...100)
   public var directLevel: UInt8 = 0
 }
 
@@ -33,14 +33,14 @@ public enum HeavyOctaveParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the heavy octave parameters.
-@KatanaBank
+@KatanaFxBank
 public struct HeavyOctaveBank: Sendable, Hashable {
-  @IntegerParameter(at: 0x00_01_00_7C, range: 0...100)
+  @FxIntegerParameter(id: .heavyOctaveOctaveMinus1, range: 0...100)
   public var octaveMinus1: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_7D, range: 0...100)
+  @FxIntegerParameter(id: .heavyOctaveOctaveMinus2, range: 0...100)
   public var octaveMinus2: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_7E, range: 0...100)
+  @FxIntegerParameter(id: .heavyOctaveDirectMix, range: 0...100)
   public var directMix: UInt8 = 0
 }

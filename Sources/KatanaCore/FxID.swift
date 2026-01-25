@@ -134,6 +134,37 @@ public enum FxID: Sendable, Hashable, CaseIterable {
   case modFxParametricEQHighCut
   case modFxParametricEQLevel
 
+  // MARK - EQ
+  case eqStatus
+  case eqPosition
+  case eqType
+
+  // MARK - ParametricEQ
+  case parametricEQLowCut
+  case parametricEQLowGain
+  case parametricEQLowMidFreq
+  case parametricEQLowMidQ
+  case parametricEQLowMidGain
+  case parametricEQHighMidFreq
+  case parametricEQHighMidQ
+  case parametricEQHighMidGain
+  case parametricEQHighGain
+  case parametricEQHighCut
+  case parametricEQLevel
+
+  // MARK - GraphicEQ
+  case graphicEQBand31Hz
+  case graphicEQBand62Hz
+  case graphicEQBand125Hz
+  case graphicEQBand250Hz
+  case graphicEQBand500Hz
+  case graphicEQBand1kHz
+  case graphicEQBand2kHz
+  case graphicEQBand4kHz
+  case graphicEQBand8kHz
+  case graphicEQBand16kHz
+  case graphicEQLevel
+
   // MARK - Octaver
   case octaverRange
   case octaverLevel
@@ -173,6 +204,11 @@ public enum FxID: Sendable, Hashable, CaseIterable {
   case ringModFrequency
   case ringModEffectLevel
   case ringModDirectMix
+
+  // MARK - Rotary
+  case rotaryRate
+  case rotaryDepth
+  case rotaryLevel
 
   // MARK - Slicer
   case slicerPattern
