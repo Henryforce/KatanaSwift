@@ -4,49 +4,49 @@ import KatanaMacros
 /// The data bank representing the delay parameters.
 @KatanaBank
 public struct DelayBank: Sendable, Hashable {
-  @Parameter(at: 0x00_00_30_03)
+  @Parameter(at: 0x20_00_30_03)
   public var status: Bool = false
 
-  @Parameter(at: 0x00_01_20_00)
+  @Parameter(at: 0x20_01_20_00)
   public var type: DelayType = .digital
 
-  @IntegerParameter(at: 0x00_01_20_01, range: 1...2000)
+  @IntegerParameter(at: 0x20_01_20_01, range: 1...2000)
   public var time: UInt16 = 100
 
-  @IntegerParameter(at: 0x00_01_20_05, range: 0...100)
+  @IntegerParameter(at: 0x20_01_20_05, range: 0...100)
   public var feedback: UInt8 = 50
 
-  @Parameter(at: 0x00_01_20_06)
+  @Parameter(at: 0x20_01_20_06)
   public var highCut: DelayHighCutFrequency = .flat
 
-  @IntegerParameter(at: 0x00_01_20_07, range: 0...100)
+  @IntegerParameter(at: 0x20_01_20_07, range: 0...100)
   public var effectLevel: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_20_08, range: 0...100)
+  @IntegerParameter(at: 0x20_01_20_08, range: 0...100)
   public var directMix: UInt8 = 0
 
-  @IntegerParameter(at: 0x00_01_20_0A, range: 0...100)
+  @IntegerParameter(at: 0x20_01_20_0A, range: 0...100)
   public var modulationRate: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_20_0B, range: 0...100)
+  @IntegerParameter(at: 0x20_01_20_0B, range: 0...100)
   public var modulationDepth: UInt8 = 50
 
-  @Parameter(at: 0x00_01_20_10)
+  @Parameter(at: 0x20_01_20_10)
   public var modulationSwitchStatus: Bool = false
 
-  @IntegerParameter(at: 0x00_01_20_09, range: 0...100)
+  @IntegerParameter(at: 0x20_01_20_09, range: 0...100)
   public var tapTimePercentage: UInt8 = 100
 
-  @Parameter(at: 0x00_01_20_0C)
+  @Parameter(at: 0x20_01_20_0C)
   public var filterStatus: Bool = false
 
-  @Parameter(at: 0x00_01_20_0D)
+  @Parameter(at: 0x20_01_20_0D)
   public var filter: DelayFilterRange = .freq8kHz
 
-  @Parameter(at: 0x00_01_20_0F)
+  @Parameter(at: 0x20_01_20_0F)
   public var delayPhase: DelayPhase = .normal
 
-  @Parameter(at: 0x00_01_20_0E)
+  @Parameter(at: 0x20_01_20_0E)
   public var feedbackPhase: DelayPhase = .normal
 }
 

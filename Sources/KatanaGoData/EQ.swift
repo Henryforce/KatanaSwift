@@ -1,18 +1,18 @@
 import KatanaCore
-import KatanaMacros
 import KatanaEQ
+import KatanaMacros
 
 // MARK - EQ
 
 /// The data bank representing the equalizer parameters.
 public struct EQBank: WritableBank, Sendable, Hashable {
-  @Parameter(at: 0x00_02_60_01)
+  @Parameter(at: 0x20_02_60_01)
   public var status: Bool = false
 
-  @Parameter(at: 0x00_02_60_00)
+  @Parameter(at: 0x20_02_60_00)
   public var position: EQPosition = .ampIn
 
-  @Parameter(at: 0x00_02_60_02)
+  @Parameter(at: 0x20_02_60_02)
   public var type: EQType = .parametric
 
   public var parametric: ParametricEQBank
@@ -22,7 +22,10 @@ public struct EQBank: WritableBank, Sendable, Hashable {
   package var writeData = [WriteData]()
 
   // TODO
-  public init(status: Bool, position: EQPosition, type: EQType, parametric: ParametricEQBank, graphic: GraphicEQBank) {
+  public init(
+    status: Bool, position: EQPosition, type: EQType, parametric: ParametricEQBank,
+    graphic: GraphicEQBank
+  ) {
     self.status = status
     self.position = position
     self.type = type

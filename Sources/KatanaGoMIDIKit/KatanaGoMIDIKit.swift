@@ -73,7 +73,7 @@ public actor KatanaGoMIDIKit: KatanaGo {
         // Yield common MIDI command data.
         // For Boss devices, we often look for sysex.
         // For now, we wrap the whole sysex payload.
-        continuation?.yield(.midiCommand(command: 0xF0, data: sysEx.data))
+        continuation?.yield(.preset(.preset1A))  // TODO: update at some point.
 
         // Uncomment to print messages.
         print("SysEx: \(sysEx.data)")
@@ -103,11 +103,6 @@ public actor KatanaGoMIDIKit: KatanaGo {
     midiManager.remove(.outputConnection, .withTag(outputTag))
     continuation?.finish()
     continuation = nil
-  }
-
-  public func write(_ command: KatanaGoWriteData) async throws {
-    print("Writing bytes: \(command.bytes)")
-    try writeRawBytes(command.bytes)
   }
 
   public func writeBank(_ bank: WritableBank) async throws {

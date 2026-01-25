@@ -1,14 +1,14 @@
 import KatanaCore
+import KatanaEQ
 import KatanaFx
 import KatanaMacros
-import KatanaEQ
 
 /// The data bank representing the MOD/FX parameters.
 public struct ModFxBank: WritableBank, Sendable, Hashable {
-  @Parameter(at: 0x00_00_30_01)
+  @Parameter(at: 0x20_00_30_01)
   public var status: Bool = false
 
-  @Parameter(at: 0x00_00_60_00)
+  @Parameter(at: 0x20_00_60_00)
   public var type: ModFxType = .chorus
 
   public var chorus: ChorusBank
