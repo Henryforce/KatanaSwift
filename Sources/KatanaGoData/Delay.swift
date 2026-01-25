@@ -1,24 +1,5 @@
-import KatanaBank
+import KatanaCore
 import KatanaMacros
-
-/// Parameters for the Delay effect.
-public enum DelayParameter: Sendable, Hashable {
-  case enable(Bool)
-  case type(DelayType)
-  case time(UInt16)
-  case feedback(UInt8)
-  case highCut(DelayHighCutFrequency)
-  case effectLevel(UInt8)
-  case directMix(UInt8)
-  case modulationRate(UInt8)
-  case modulationDepth(UInt8)
-  case modulationSwitch(Bool)
-  case tapTimePercentage(UInt8)
-  case filterEnable(Bool)
-  case filter(DelayFilterRange)
-  case delayPhase(DelayPhase)
-  case feedbackPhase(DelayPhase)
-}
 
 /// The data bank representing the delay parameters.
 @KatanaBank

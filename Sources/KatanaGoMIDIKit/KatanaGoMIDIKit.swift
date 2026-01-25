@@ -1,5 +1,6 @@
 import Foundation
-import KatanaBank
+import KatanaCore
+import KatanaFx
 import KatanaGoAPI
 import KatanaGoData
 import MIDIKit
@@ -37,7 +38,7 @@ public actor KatanaGoMIDIKit: KatanaGo {
       })
     else {
       let displayName = endpoint.displayName ?? endpoint.name
-      throw KatanaGoError.connectionFailed(
+      throw KatanaError.connectionFailed(
         "Could not find matching MIDI input endpoint (destination) for \(displayName)")
     }
 
@@ -142,7 +143,7 @@ public actor KatanaGoMIDIKit: KatanaGo {
 
   private func writeRawBytes(_ rawBytes: [UInt8]) throws {
     guard let connection = midiManager.loadManagedOutputConnections()[outputTag] else {
-      throw KatanaGoError.connectionFailed("Could not find output connection for \(outputTag)")
+      throw KatanaError.connectionFailed("Could not find output connection for \(outputTag)")
     }
     let event = try MIDIEvent.sysEx7(rawBytes: rawBytes)
     try connection.send(event: event)

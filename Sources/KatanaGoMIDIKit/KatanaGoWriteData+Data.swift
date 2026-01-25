@@ -4,59 +4,60 @@ import KatanaGoData
 extension KatanaGoWriteData {
   /// The raw MIDI bytes for the command.
   public var bytes: [UInt8] {
-    switch self {
+    return []
+    // switch self {
 
-    case .amp(let param):
-      return finalizeSysex(address: param.address, data: param.values)
+    // case .amp(let param):
+    //   return finalizeSysex(address: param.address, data: param.values)
 
-    case .boost(let param):
-      return finalizeSysex(address: param.address, data: param.values)
+    // case .boost(let param):
+    //   return finalizeSysex(address: param.address, data: param.values)
 
-    case .mod(let param):
-      return finalizeSysex(address: param.address, data: param.values)
+    // case .mod(let param):
+    //   return finalizeSysex(address: param.address, data: param.values)
 
-    case .fx(let param):
-      // Offset the address as it has a different register space as Mod but the same structure.
-      var address = param.address
-      if case .enable = param {
-        // Offset the address by 0x01 as it has a different register space as Mod but the same
-        // structure.
-        address[3] += 0x01
-      } else {
-        // Offset the address by 0x10 as it has a different register space as Mod but the same
-        // structure.
-        address[2] += 0x10
-      }
-      return finalizeSysex(address: address, data: param.values)
+    // case .fx(let param):
+    //   // Offset the address as it has a different register space as Mod but the same structure.
+    //   var address = param.address
+    //   if case .enable = param {
+    //     // Offset the address by 0x01 as it has a different register space as Mod but the same
+    //     // structure.
+    //     address[3] += 0x01
+    //   } else {
+    //     // Offset the address by 0x10 as it has a different register space as Mod but the same
+    //     // structure.
+    //     address[2] += 0x10
+    //   }
+    //   return finalizeSysex(address: address, data: param.values)
 
-    case .delay1(let param):
-      return finalizeSysex(address: param.address(isDelay2: false), data: param.values)
+    // case .delay1(let param):
+    //   return finalizeSysex(address: param.address(isDelay2: false), data: param.values)
 
-    case .delay2(let param):
-      return finalizeSysex(address: param.address(isDelay2: true), data: param.values)
+    // case .delay2(let param):
+    //   return finalizeSysex(address: param.address(isDelay2: true), data: param.values)
 
-    case .reverb(let param):
-      return finalizeSysex(address: param.address, data: param.values)
+    // case .reverb(let param):
+    //   return finalizeSysex(address: param.address, data: param.values)
 
-    case .solo(let param):
-      return finalizeSysex(address: param.address, data: param.values)
+    // case .solo(let param):
+    //   return finalizeSysex(address: param.address, data: param.values)
 
-    case .eq1(let param):
-      return finalizeSysex(address: param.address(isEQ2: false), data: param.values)
+    // case .eq1(let param):
+    //   return finalizeSysex(address: param.address(isEQ2: false), data: param.values)
 
-    case .eq2(let param):
-      return finalizeSysex(address: param.address(isEQ2: true), data: param.values)
+    // case .eq2(let param):
+    //   return finalizeSysex(address: param.address(isEQ2: true), data: param.values)
 
-    case .noiseGate(let param):
-      return finalizeSysex(address: param.address, data: param.values)
+    // case .noiseGate(let param):
+    //   return finalizeSysex(address: param.address, data: param.values)
 
-    case .selectPreset(let preset):
-      return finalizeSysex(address: [0x7f, 0x00, 0x01, 0x00], data: [0x00, preset.rawValue])
+    // case .selectPreset(let preset):
+    //   return finalizeSysex(address: [0x7f, 0x00, 0x01, 0x00], data: [0x00, preset.rawValue])
 
-    case .writePreset(let preset):
-      // NOTE: If the write preset does not work, remove the last byte from the data.
-      return finalizeSysex(address: [0x7f, 0x00, 0x01, 0x04], data: [0x00, preset.rawValue, 0x00])
-    }
+    // case .writePreset(let preset):
+    //   // NOTE: If the write preset does not work, remove the last byte from the data.
+    //   return finalizeSysex(address: [0x7f, 0x00, 0x01, 0x04], data: [0x00, preset.rawValue, 0x00])
+    // }
   }
 
   // MARK: - Helpers

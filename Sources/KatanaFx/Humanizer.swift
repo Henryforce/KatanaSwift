@@ -1,16 +1,7 @@
-import KatanaBank
+import KatanaCore
 import KatanaMacros
 
-public enum HumanizerParameter: Sendable, Hashable {
-  case mode(HumanizerMode)
-  case vowel1(HumanizerWovel)
-  case vowel2(HumanizerWovel)
-  case sens(UInt8)
-  case rate(UInt8)
-  case depth(UInt8)
-  case manual(UInt8)
-  case level(UInt8)
-}
+// MARK: - Humanizer
 
 /// The data bank representing the humanizer parameters.
 @KatanaBank

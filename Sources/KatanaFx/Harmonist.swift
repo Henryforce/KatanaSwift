@@ -1,17 +1,7 @@
-import KatanaBank
+import KatanaCore
 import KatanaMacros
 
-public enum HarmonistParameter: Sendable, Hashable {
-  case voice(HarmonistVoice)
-  case h1Harmony(HarmonistHarmony)
-  case h1PreDelay(UInt16)
-  case h1Level(UInt8)
-  case h2Harmony(HarmonistHarmony)
-  case h2PreDelay(UInt16)
-  case h2Level(UInt8)
-  case h1Feedback(UInt8)
-  case directLevel(UInt8)
-}
+// MARK: - Harmonist
 
 /// The data bank representing the harmonist parameters.
 @KatanaBank

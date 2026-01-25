@@ -1,18 +1,5 @@
-import KatanaBank
+import KatanaCore
 import KatanaMacros
-
-/// Parameters for the Booster effect.
-public enum BoostParameter: Sendable, Hashable {
-  case enable(Bool)
-  case type(BoostType)
-  case drive(UInt8)
-  case bottom(UInt8)
-  case tone(UInt8)
-  case soloSwitchEnable(Bool)
-  case soloLevel(UInt8)
-  case effectLevel(UInt8)
-  case directMix(UInt8)
-}
 
 /// The data bank representing the booster parameters.
 @KatanaBank

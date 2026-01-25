@@ -1,4 +1,4 @@
-import KatanaBank
+import KatanaCore
 import KatanaMacros
 
 // MARK - TwoByTwoChorus

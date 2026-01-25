@@ -1,17 +1,5 @@
-import KatanaBank
+import KatanaCore
 import KatanaMacros
-
-/// Parameters for the Amplifier block and front panel.
-public enum AmpParameter: Sendable, Hashable {
-  case ampType(AmpType)
-  case gain(UInt8)
-  case volume(UInt8)
-  case bass(UInt8)
-  case middle(UInt8)
-  case treble(UInt8)
-  case presence(UInt8)
-  case variation(Bool)
-}
 
 @KatanaBank
 public struct AmpBank: Sendable, Hashable {

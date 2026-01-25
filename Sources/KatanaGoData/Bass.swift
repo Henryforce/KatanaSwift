@@ -1,6 +1,7 @@
-import Foundation
+import KatanaMacros
 
 /// Available MOD/FX types for the Katana GO in Bass Mode.
+@KatanaUInt8RawBytes
 public enum BassModFXType: UInt8, Sendable, Hashable, CaseIterable {
   case chorus = 0x00
   case flanger = 0x01

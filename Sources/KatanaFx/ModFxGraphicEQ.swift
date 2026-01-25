@@ -1,20 +1,7 @@
-import KatanaBank
+import KatanaCore
 import KatanaMacros
 
-public enum ModFxGraphicEQParameter: Sendable, Hashable {
-  /// Range is from -20 to 20 mapped to 0..40.
-  case band31Hz(UInt8)
-  case band62Hz(UInt8)
-  case band125Hz(UInt8)
-  case band250Hz(UInt8)
-  case band500Hz(UInt8)
-  case band1kHz(UInt8)
-  case band2kHz(UInt8)
-  case band4kHz(UInt8)
-  case band8kHz(UInt8)
-  case band16kHz(UInt8)
-  case level(UInt8)
-}
+// MARK: - ModFxGraphicEQ
 
 /// The data bank representing the MOD/FX graphic equalizer parameters.
 @KatanaBank

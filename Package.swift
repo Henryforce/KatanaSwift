@@ -25,31 +25,34 @@ let package = Package(
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
     // Targets can depend on other targets in this package and products from dependencies.
-    .target(name: "KatanaBank"),
+    .target(name: "KatanaCore"),
     .macro(
       name: "KatanaMacrosImpl",
       dependencies: [
         .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
         .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
-        "KatanaBank",
+        "KatanaCore",
       ]
     ),
     .target(
       name: "KatanaMacros",
       dependencies: ["KatanaMacrosImpl"]
     ),
+    .target(name: "KatanaFx", dependencies: ["KatanaCore", "KatanaMacros"]),
     .target(
       name: "KatanaGoData",
       dependencies: [
         "KatanaMacros",
-        "KatanaBank",
+        "KatanaCore",
+        "KatanaFx",
       ]
     ),
     .target(
       name: "KatanaGoAPI",
       dependencies: [
         "KatanaGoData",
-        "KatanaBank",
+        "KatanaCore",
+        "KatanaFx",
       ]
     ),
     .target(
@@ -57,21 +60,22 @@ let package = Package(
       dependencies: [
         "KatanaGoAPI",
         "KatanaGoData",
-        "KatanaBank",
+        "KatanaCore",
+        "KatanaFx",
         .product(name: "MIDIKit", package: "MIDIKit"),
       ]
     ),
     .target(
       name: "KatanaGoSwift",
-      dependencies: ["KatanaGoAPI", "KatanaGoData", "KatanaGoMIDIKit", "KatanaBank"]
+      dependencies: ["KatanaGoAPI", "KatanaGoData", "KatanaGoMIDIKit", "KatanaCore", "KatanaFx"]
     ),
     .testTarget(
       name: "KatanaGoMIDIKitTests",
-      dependencies: ["KatanaGoMIDIKit", "KatanaGoAPI", "KatanaGoData", "KatanaBank"]
+      dependencies: ["KatanaGoMIDIKit", "KatanaGoAPI", "KatanaGoData", "KatanaCore", "KatanaFx"]
     ),
     .testTarget(
       name: "KatanaGoDataTests",
-      dependencies: ["KatanaGoData", "KatanaBank"]
+      dependencies: ["KatanaGoData", "KatanaCore", "KatanaFx"]
     ),
   ]
 )
