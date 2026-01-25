@@ -3,20 +3,26 @@ import KatanaFx
 import KatanaGoData
 
 extension DataBank {
-  func buildModBank() -> ModFxBank {
-    return buildModFxBank(
+  func buildModSelectionBank() -> ModSelectionBank {
+    return ModSelectionBank(
       status: self.effectsOnOffBank[1] == 1,
-      type: ModFxType(rawValue: self.modTypeBank[0]) ?? .chorus,
-      bank: self.modBank
+      type: ModFxType(rawValue: self.modTypeBank[0]) ?? .chorus
     )
   }
 
-  func buildFxBank() -> ModFxBank {
-    return buildModFxBank(
+  func buildFxSelectionBank() -> FxSelectionBank {
+    return FxSelectionBank(
       status: self.effectsOnOffBank[2] == 1,
-      type: ModFxType(rawValue: self.fxTypeBank[0]) ?? .chorus,
-      bank: self.fxBank
+      type: ModFxType(rawValue: self.fxTypeBank[0]) ?? .chorus
     )
+  }
+
+  func buildModBank() -> ModFxBank {
+    return buildModFxBank(bank: self.modBank)
+  }
+
+  func buildFxBank() -> ModFxBank {
+    return buildModFxBank(bank: self.fxBank)
   }
 
   func buildChorusBank(bank: [UInt8]) -> ChorusBank {
@@ -330,10 +336,8 @@ extension DataBank {
     )
   }
 
-  private func buildModFxBank(status: Bool, type: ModFxType, bank: [UInt8]) -> ModFxBank {
+  private func buildModFxBank(bank: [UInt8]) -> ModFxBank {
     return ModFxBank(
-      status: status,
-      type: type,
       chorus: buildChorusBank(bank: bank),
       flanger: buildFlangerBank(bank: bank),
       phaser: buildPhaserBank(bank: bank),

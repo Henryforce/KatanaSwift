@@ -3,14 +3,26 @@ import KatanaEQ
 import KatanaFx
 import KatanaMacros
 
-/// The data bank representing the MOD/FX parameters.
-public struct ModFxBank: WritableBank, Sendable, Hashable {
+@KatanaBank
+public struct ModSelectionBank: Sendable, Hashable {
   @Parameter(at: 0x20_00_30_01)
   public var status: Bool = false
 
   @Parameter(at: 0x20_00_60_00)
   public var type: ModFxType = .chorus
+}
 
+@KatanaBank
+public struct FxSelectionBank: Sendable, Hashable {
+  @Parameter(at: 0x20_00_30_02)
+  public var status: Bool = false
+
+  @Parameter(at: 0x20_00_70_00)
+  public var type: ModFxType = .chorus
+}
+
+/// The data bank representing the MOD/FX parameters.
+public struct ModFxBank: Sendable, Hashable {
   public var chorus: ChorusBank
   public var flanger: FlangerBank
   public var phaser: PhaserBank
@@ -40,10 +52,8 @@ public struct ModFxBank: WritableBank, Sendable, Hashable {
   public var flanger117E: Flanger117EBank
   public var dc30: DC30Bank
 
-  package var writeData = [WriteData]()
-
-  init(
-    status: Bool, type: ModFxType, chorus: ChorusBank, flanger: FlangerBank, phaser: PhaserBank,
+  public init(
+    chorus: ChorusBank, flanger: FlangerBank, phaser: PhaserBank,
     uniVibe: UniVibeBank, tremolo: TremoloBank, vibrato: VibratoBank, rotary: RotaryBank,
     ringMod: RingModBank, slowGear: SlowGearBank, slicer: SlicerBank, comp: CompBank,
     limiter: LimiterBank, tWah: TWahBank, autoWah: AutoWahBank, graphicEQ: ModFxGraphicEQBank,
@@ -52,8 +62,6 @@ public struct ModFxBank: WritableBank, Sendable, Hashable {
     heavyOctave: HeavyOctaveBank, pitchShifter: PitchShifterBank, harmonist: HarmonistBank,
     humanizer: HumanizerBank, phaser90E: Phaser90EBank, flanger117E: Flanger117EBank, dc30: DC30Bank
   ) {
-    self.status = status
-    self.type = type
     self.chorus = chorus
     self.flanger = flanger
     self.phaser = phaser
@@ -82,107 +90,6 @@ public struct ModFxBank: WritableBank, Sendable, Hashable {
     self.phaser90E = phaser90E
     self.flanger117E = flanger117E
     self.dc30 = dc30
-  }
-
-  // TODO: decide what todo about the init
-  public init(
-    status: Bool? = nil, type: ModFxType? = nil, chorus: ChorusBank? = nil,
-    flanger: FlangerBank? = nil, phaser: PhaserBank? = nil, uniVibe: UniVibeBank? = nil,
-    tremolo: TremoloBank? = nil, vibrato: VibratoBank? = nil, rotary: RotaryBank? = nil,
-    ringMod: RingModBank? = nil, slowGear: SlowGearBank? = nil, slicer: SlicerBank? = nil,
-    comp: CompBank? = nil, limiter: LimiterBank? = nil, tWah: TWahBank? = nil,
-    autoWah: AutoWahBank? = nil, graphicEQ: ModFxGraphicEQBank? = nil,
-    parametricEQ: ModFxParametricEQBank? = nil, guitarSim: GuitarSimBank? = nil,
-    acSim: ACSimBank? = nil, acousticPro: AcousticProBank? = nil, waveSynth: WaveSynthBank? = nil,
-    octaver: OctaverBank? = nil, heavyOctave: HeavyOctaveBank? = nil,
-    pitchShifter: PitchShifterBank? = nil, harmonist: HarmonistBank? = nil,
-    humanizer: HumanizerBank? = nil, phaser90E: Phaser90EBank? = nil,
-    flanger117E: Flanger117EBank? = nil, dc30: DC30Bank? = nil
-  ) {
-    self.status = status ?? false
-    self.type = type ?? .chorus
-    self.chorus = chorus ?? ChorusBank()
-    self.flanger = flanger ?? FlangerBank()
-    self.phaser = phaser ?? PhaserBank()
-    self.uniVibe = uniVibe ?? UniVibeBank()
-    self.tremolo = tremolo ?? TremoloBank()
-    self.vibrato = vibrato ?? VibratoBank()
-    self.rotary = rotary ?? RotaryBank()
-    self.ringMod = ringMod ?? RingModBank()
-    self.slowGear = slowGear ?? SlowGearBank()
-    self.slicer = slicer ?? SlicerBank()
-    self.comp = comp ?? CompBank()
-    self.limiter = limiter ?? LimiterBank()
-    self.tWah = tWah ?? TWahBank()
-    self.autoWah = autoWah ?? AutoWahBank()
-    self.graphicEQ = graphicEQ ?? ModFxGraphicEQBank()
-    self.parametricEQ = parametricEQ ?? ModFxParametricEQBank()
-    self.guitarSim = guitarSim ?? GuitarSimBank()
-    self.acSim = acSim ?? ACSimBank()
-    self.acousticPro = acousticPro ?? AcousticProBank()
-    self.waveSynth = waveSynth ?? WaveSynthBank()
-    self.octaver = octaver ?? OctaverBank()
-    self.heavyOctave = heavyOctave ?? HeavyOctaveBank()
-    self.pitchShifter = pitchShifter ?? PitchShifterBank()
-    self.harmonist = harmonist ?? HarmonistBank()
-    self.humanizer = humanizer ?? HumanizerBank()
-    self.phaser90E = phaser90E ?? Phaser90EBank()
-    self.flanger117E = flanger117E ?? Flanger117EBank()
-    self.dc30 = dc30 ?? DC30Bank()
-
-    // if let status {
-    //   self.writeData.append(WriteData(address: self.$status.address, data: status.bytes))
-    // }
-    // if let type {
-    //   self.writeData.append(WriteData(address: self.$type.address, data: type.rawValue.bytes))
-    // }
-    // if let chorus { self.writeData.append(contentsOf: chorus.loadWriteData()) }
-    // if let flanger { self.writeData.append(contentsOf: flanger.loadWriteData()) }
-    // if let phaser { self.writeData.append(contentsOf: phaser.loadWriteData()) }
-    // if let uniVibe { self.writeData.append(contentsOf: uniVibe.loadWriteData()) }
-    // if let tremolo { self.writeData.append(contentsOf: tremolo.loadWriteData()) }
-    // if let vibrato { self.writeData.append(contentsOf: vibrato.loadWriteData()) }
-    // if let rotary { self.writeData.append(contentsOf: rotary.loadWriteData()) }
-    // if let ringMod { self.writeData.append(contentsOf: ringMod.loadWriteData()) }
-    // if let slowGear { self.writeData.append(contentsOf: slowGear.loadWriteData()) }
-    // if let slicer { self.writeData.append(contentsOf: slicer.loadWriteData()) }
-    // if let comp { self.writeData.append(contentsOf: comp.loadWriteData()) }
-    // if let limiter { self.writeData.append(contentsOf: limiter.loadWriteData()) }
-    // if let tWah { self.writeData.append(contentsOf: tWah.loadWriteData()) }
-    // if let autoWah { self.writeData.append(contentsOf: autoWah.loadWriteData()) }
-    // if let graphicEQ { self.writeData.append(contentsOf: graphicEQ.loadWriteData()) }
-    // if let parametricEQ { self.writeData.append(contentsOf: parametricEQ.loadWriteData()) }
-    // if let guitarSim { self.writeData.append(contentsOf: guitarSim.loadWriteData()) }
-    // if let acSim { self.writeData.append(contentsOf: acSim.loadWriteData()) }
-    // if let acousticPro { self.writeData.append(contentsOf: acousticPro.loadWriteData()) }
-    // if let waveSynth { self.writeData.append(contentsOf: waveSynth.loadWriteData()) }
-    // if let octaver { self.writeData.append(contentsOf: octaver.loadWriteData()) }
-    // if let heavyOctave { self.writeData.append(contentsOf: heavyOctave.loadWriteData()) }
-    // if let pitchShifter { self.writeData.append(contentsOf: pitchShifter.loadWriteData()) }
-    // if let harmonist { self.writeData.append(contentsOf: harmonist.loadWriteData()) }
-    // if let humanizer { self.writeData.append(contentsOf: humanizer.loadWriteData()) }
-    // if let phaser90E { self.writeData.append(contentsOf: phaser90E.loadWriteData()) }
-    // if let flanger117E { self.writeData.append(contentsOf: flanger117E.loadWriteData()) }
-    // if let dc30 { self.writeData.append(contentsOf: dc30.loadWriteData()) }
-  }
-
-  public func loadWriteData() -> [WriteData] {
-    // if writeData.isEmpty {
-    //   return [
-    //     WriteData(address: self.$status.address, data: status.bytes),
-    //     WriteData(address: self.$type.address, data: type.rawValue.bytes),
-    //   ] + chorus.loadWriteData() + flanger.loadWriteData() + phaser.loadWriteData()
-    //     + uniVibe.loadWriteData() + tremolo.loadWriteData() + vibrato.loadWriteData()
-    //     + rotary.loadWriteData() + ringMod.loadWriteData() + slowGear.loadWriteData()
-    //     + slicer.loadWriteData() + comp.loadWriteData() + limiter.loadWriteData()
-    //     + tWah.loadWriteData() + autoWah.loadWriteData() + graphicEQ.loadWriteData()
-    //     + parametricEQ.loadWriteData() + guitarSim.loadWriteData() + acSim.loadWriteData()
-    //     + acousticPro.loadWriteData() + waveSynth.loadWriteData() + octaver.loadWriteData()
-    //     + heavyOctave.loadWriteData() + pitchShifter.loadWriteData() + harmonist.loadWriteData()
-    //     + humanizer.loadWriteData() + phaser90E.loadWriteData() + flanger117E.loadWriteData()
-    //     + dc30.loadWriteData()
-    // }
-    return self.writeData
   }
 }
 

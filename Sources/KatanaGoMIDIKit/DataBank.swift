@@ -209,6 +209,8 @@ extension DataBank {
       delay2: buildDelay2Bank(),
       reverb: buildReverbBank(),
       solo: buildSoloBank(),
+      contour: buildContourBank(),
+      pedalFx: buildPedalFxBank(),
       eq1: buildEQ1Bank(),
       eq2: buildEQ2Bank(),
       noiseGate: buildNoiseGateBank())
