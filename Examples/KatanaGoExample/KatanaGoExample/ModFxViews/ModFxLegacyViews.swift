@@ -1,20 +1,22 @@
 import KatanaGoData
 import SwiftUI
+import KatanaFx
+import KatanaCore
 
 struct Phaser90EView: View {
   @State private var scriptEnable = false
   @State private var speed: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("Phaser 90E Parameters") {
       Toggle("Script", isOn: $scriptEnable)
         .onChange(of: scriptEnable) { _, newValue in
-          onUpdate(.phaser90E(.scriptEnable(newValue)))
+          onUpdate(Phaser90EBank(scriptStatus: newValue))
         }
       ParameterSlider(title: "Speed", value: $speed, range: 0...100) {
-        onUpdate(.phaser90E(.speed(UInt8($0))))
+        onUpdate(Phaser90EBank(speed: UInt8($0)))
       }
     }
   }
@@ -26,21 +28,21 @@ struct Flanger117EView: View {
   @State private var speed: Double = 50
   @State private var regen: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("Flanger 117E Parameters") {
       ParameterSlider(title: "Manual", value: $manual, range: 0...100) {
-        onUpdate(.flanger117E(.manual(UInt8($0))))
+        onUpdate(Flanger117EBank(manual: UInt8($0)))
       }
       ParameterSlider(title: "Width", value: $width, range: 0...100) {
-        onUpdate(.flanger117E(.width(UInt8($0))))
+        onUpdate(Flanger117EBank(width: UInt8($0)))
       }
       ParameterSlider(title: "Speed", value: $speed, range: 0...100) {
-        onUpdate(.flanger117E(.speed(UInt8($0))))
+        onUpdate(Flanger117EBank(speed: UInt8($0)))
       }
       ParameterSlider(title: "Regen", value: $regen, range: 0...100) {
-        onUpdate(.flanger117E(.regen(UInt8($0))))
+        onUpdate(Flanger117EBank(regen: UInt8($0)))
       }
     }
   }
@@ -55,7 +57,7 @@ struct DC30View: View {
   @State private var tone: Double = 50
   @State private var outputType = DC30OutputType.dPlusE
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("DC-30 Parameters") {
@@ -65,25 +67,25 @@ struct DC30View: View {
         }
       }
       .onChange(of: type) { _, newValue in
-        onUpdate(.dc30(.type(newValue)))
+        onUpdate(DC30Bank(type: newValue))
       }
       ParameterSlider(title: "Input Volume", value: $inputVolume, range: 0...100) {
-        onUpdate(.dc30(.inputVolume(UInt8($0))))
+        onUpdate(DC30Bank(inputVolume: UInt8($0)))
       }
       ParameterSlider(title: "Chorus Intensity", value: $intensity, range: 0...100) {
-        onUpdate(.dc30(.chorusIntensity(UInt8($0))))
+        onUpdate(DC30Bank(chorusIntensity: UInt8($0)))
       }
       ParameterSlider(title: "Repeat Time", value: $repeatTime, range: 0...1000) {
-        onUpdate(.dc30(.repeatTime(UInt16($0))))
+        onUpdate(DC30Bank(repeatTime: UInt16($0)))
       }
       ParameterSlider(title: "Echo Intensity", value: $intensity, range: 0...100) {
-        onUpdate(.dc30(.echoIntensity(UInt8($0))))
+        onUpdate(DC30Bank(echoIntensity: UInt8($0)))
       }
       ParameterSlider(title: "Volume", value: $volume, range: 0...100) {
-        onUpdate(.dc30(.volume(UInt8($0))))
+        onUpdate(DC30Bank(volume: UInt8($0)))
       }
       ParameterSlider(title: "Tone", value: $tone, range: 0...100) {
-        onUpdate(.dc30(.tone(UInt8($0))))
+        onUpdate(DC30Bank(tone: UInt8($0)))
       }
       Picker("Output Type", selection: $outputType) {
         ForEach(DC30OutputType.allCases, id: \.self) { type in
@@ -91,7 +93,7 @@ struct DC30View: View {
         }
       }
       .onChange(of: outputType) { _, newValue in
-        onUpdate(.dc30(.outputType(newValue)))
+        onUpdate(DC30Bank(outputType: newValue))
       }
     }
   }

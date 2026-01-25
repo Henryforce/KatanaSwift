@@ -1,12 +1,14 @@
 import KatanaGoData
+import KatanaFx
 import SwiftUI
+import KatanaCore
 
 struct OctaverView: View {
   @State private var range = OctaverRange.range1
   @State private var level: Double = 50
   @State private var directLevel: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("Octaver Parameters") {
@@ -16,13 +18,13 @@ struct OctaverView: View {
         }
       }
       .onChange(of: range) { _, newValue in
-        onUpdate(.octaver(.range(newValue)))
+        onUpdate(OctaverBank(range: newValue))
       }
       ParameterSlider(title: "Level", value: $level, range: 0...100) {
-        onUpdate(.octaver(.level(UInt8($0))))
+        onUpdate(OctaverBank(level: UInt8($0)))
       }
       ParameterSlider(title: "Direct Level", value: $directLevel, range: 0...100) {
-        onUpdate(.octaver(.directLevel(UInt8($0))))
+        onUpdate(OctaverBank(directLevel: UInt8($0)))
       }
     }
   }
@@ -33,18 +35,18 @@ struct HeavyOctaveView: View {
   @State private var octaveMinus2: Double = 50
   @State private var directMix: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("Heavy Octave Parameters") {
       ParameterSlider(title: "Octave -1", value: $octaveMinus1, range: 0...100) {
-        onUpdate(.heavyOctave(.octaveMinus1(UInt8($0))))
+        onUpdate(HeavyOctaveBank(octaveMinus1: UInt8($0)))
       }
       ParameterSlider(title: "Octave -2", value: $octaveMinus2, range: 0...100) {
-        onUpdate(.heavyOctave(.octaveMinus2(UInt8($0))))
+        onUpdate(HeavyOctaveBank(octaveMinus2: UInt8($0)))
       }
       ParameterSlider(title: "Direct Mix", value: $directMix, range: 0...100) {
-        onUpdate(.heavyOctave(.directMix(UInt8($0))))
+        onUpdate(HeavyOctaveBank(directMix: UInt8($0)))
       }
     }
   }
@@ -65,7 +67,7 @@ struct PitchShifterView: View {
   @State private var ps1Feedback: Double = 0
   @State private var directLevel: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("Pitch Shifter Parameters") {
@@ -75,7 +77,7 @@ struct PitchShifterView: View {
         }
       }
       .onChange(of: voice) { _, newValue in
-        onUpdate(.pitchShifter(.voice(newValue)))
+        onUpdate(PitchShifterBank(voice: newValue))
       }
 
       Group {
@@ -86,22 +88,22 @@ struct PitchShifterView: View {
           }
         }
         .onChange(of: ps1Mode) { _, newValue in
-          onUpdate(.pitchShifter(.ps1Mode(newValue)))
+          onUpdate(PitchShifterBank(ps1Mode: newValue))
         }
         ParameterSlider(title: "Pitch", value: $ps1Pitch, range: 0...100) {
-          onUpdate(.pitchShifter(.ps1Pitch(UInt8($0))))
+          onUpdate(PitchShifterBank(ps1Pitch: UInt8($0)))
         }
         ParameterSlider(title: "Fine", value: $ps1Fine, range: 0...100) {
-          onUpdate(.pitchShifter(.ps1Fine(UInt8($0))))
+          onUpdate(PitchShifterBank(ps1Fine: UInt8($0)))
         }
         ParameterSlider(title: "Pre-Delay", value: $ps1PreDelay, range: 0...300) {
-          onUpdate(.pitchShifter(.ps1PreDelay(UInt16($0))))
+          onUpdate(PitchShifterBank(ps1PreDelay: UInt16($0)))
         }
         ParameterSlider(title: "Level", value: $ps1Level, range: 0...100) {
-          onUpdate(.pitchShifter(.ps1Level(UInt8($0))))
+          onUpdate(PitchShifterBank(ps1Level: UInt8($0)))
         }
         ParameterSlider(title: "Feedback", value: $ps1Feedback, range: 0...100) {
-          onUpdate(.pitchShifter(.ps1Feedback(UInt8($0))))
+          onUpdate(PitchShifterBank(ps1Feedback: UInt8($0)))
         }
       }
 
@@ -114,25 +116,25 @@ struct PitchShifterView: View {
             }
           }
           .onChange(of: ps2Mode) { _, newValue in
-            onUpdate(.pitchShifter(.ps2Mode(newValue)))
+            onUpdate(PitchShifterBank(ps2Mode: newValue))
           }
           ParameterSlider(title: "Pitch", value: $ps2Pitch, range: 0...100) {
-            onUpdate(.pitchShifter(.ps2Pitch(UInt8($0))))
+            onUpdate(PitchShifterBank(ps2Pitch: UInt8($0)))
           }
           ParameterSlider(title: "Fine", value: $ps2Fine, range: 0...100) {
-            onUpdate(.pitchShifter(.ps2Fine(UInt8($0))))
+            onUpdate(PitchShifterBank(ps2Fine: UInt8($0)))
           }
           ParameterSlider(title: "Pre-Delay", value: $ps2PreDelay, range: 0...300) {
-            onUpdate(.pitchShifter(.ps2PreDelay(UInt16($0))))
+            onUpdate(PitchShifterBank(ps2PreDelay: UInt16($0)))
           }
           ParameterSlider(title: "Level", value: $ps2Level, range: 0...100) {
-            onUpdate(.pitchShifter(.ps2Level(UInt8($0))))
+            onUpdate(PitchShifterBank(ps2Level: UInt8($0)))
           }
         }
       }
 
       ParameterSlider(title: "Direct Level", value: $directLevel, range: 0...100) {
-        onUpdate(.pitchShifter(.directLevel(UInt8($0))))
+        onUpdate(PitchShifterBank(directLevel: UInt8($0)))
       }
     }
   }
@@ -149,7 +151,7 @@ struct HarmonistView: View {
   @State private var h1Feedback: Double = 0
   @State private var directLevel: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("Harmonist Parameters") {
@@ -159,23 +161,23 @@ struct HarmonistView: View {
         }
       }
       .onChange(of: voice) { _, newValue in
-        onUpdate(.harmonist(.voice(newValue)))
+        onUpdate(HarmonistBank(voice: newValue))
       }
 
       Group {
         Text("H1")
         // TODO: fix and uncomment slider.
         //        ParameterSlider(title: "Harmony", value: $h1Harmony, range: 0...100) {
-        //          onUpdate(.harmonist(.h1Harmony(UInt8($0))))
+        //          onUpdate(HarmonistBank(h1Harmony: UInt8($0)))
         //        }
         ParameterSlider(title: "Pre-Delay", value: $h1PreDelay, range: 0...300) {
-          onUpdate(.harmonist(.h1PreDelay(UInt16($0))))
+          onUpdate(HarmonistBank(h1PreDelay: UInt16($0)))
         }
         ParameterSlider(title: "Level", value: $h1Level, range: 0...100) {
-          onUpdate(.harmonist(.h1Level(UInt8($0))))
+          onUpdate(HarmonistBank(h1Level: UInt8($0)))
         }
         ParameterSlider(title: "Feedback", value: $h1Feedback, range: 0...100) {
-          onUpdate(.harmonist(.h1Feedback(UInt8($0))))
+          onUpdate(HarmonistBank(h1Feedback: UInt8($0)))
         }
       }
 
@@ -184,19 +186,19 @@ struct HarmonistView: View {
           Text("H2")
           // TODO: fix and uncomment slider.
           //          ParameterSlider(title: "Harmony", value: $h2Harmony, range: 0...100) {
-          //            onUpdate(.harmonist(.h2Harmony(UInt8($0))))
+          //            onUpdate(HarmonistBank(h2Harmony: UInt8($0)))
           //          }
           ParameterSlider(title: "Pre-Delay", value: $h2PreDelay, range: 0...300) {
-            onUpdate(.harmonist(.h2PreDelay(UInt16($0))))
+            onUpdate(HarmonistBank(h2PreDelay: UInt16($0)))
           }
           ParameterSlider(title: "Level", value: $h2Level, range: 0...100) {
-            onUpdate(.harmonist(.h2Level(UInt8($0))))
+            onUpdate(HarmonistBank(h2Level: UInt8($0)))
           }
         }
       }
 
       ParameterSlider(title: "Direct Level", value: $directLevel, range: 0...100) {
-        onUpdate(.harmonist(.directLevel(UInt8($0))))
+        onUpdate(HarmonistBank(directLevel: UInt8($0)))
       }
     }
   }
