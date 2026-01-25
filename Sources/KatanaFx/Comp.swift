@@ -3,14 +3,6 @@ import KatanaMacros
 
 // MARK: - Comp
 
-public enum CompParameter: Sendable, Hashable {
-  case type(CompType)
-  case sustain(UInt8)
-  case attack(UInt8)
-  case tone(UInt8)
-  case level(UInt8)
-}
-
 /// The data bank representing the compressor parameters.
 @KatanaBank
 public struct CompBank: Sendable, Hashable {

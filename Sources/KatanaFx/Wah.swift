@@ -11,16 +11,6 @@ public enum WahMode: UInt8, Sendable, Hashable, CaseIterable {
 
 // MARK: - TWah
 
-public enum TWahParameter: Sendable, Hashable {
-  case mode(WahMode)
-  case polarity(TWahPolarity)
-  case sens(UInt8)
-  case frequency(UInt8)
-  case peak(UInt8)
-  case effectLevel(UInt8)
-  case directLevel(UInt8)
-}
-
 /// The data bank representing the T-Wah parameters.
 @KatanaBank
 public struct TWahBank: Sendable, Hashable {
@@ -53,16 +43,6 @@ public enum TWahPolarity: UInt8, Sendable, Hashable, CaseIterable {
 }
 
 // MARK: - AutoWah
-
-public enum AutoWahParameter: Sendable, Hashable {
-  case mode(WahMode)
-  case frequency(UInt8)
-  case peak(UInt8)
-  case rate(UInt8)
-  case depth(UInt8)
-  case effectLevel(UInt8)
-  case directLevel(UInt8)
-}
 
 /// The data bank representing the auto wah parameters.
 @KatanaBank

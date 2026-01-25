@@ -3,12 +3,6 @@ import KatanaMacros
 
 // MARK: - SlowGear
 
-public enum SlowGearParameter: Sendable, Hashable {
-  case sens(UInt8)
-  case riseTime(UInt8)
-  case level(UInt8)
-}
-
 /// The data bank representing the slow gear parameters.
 @KatanaBank
 public struct SlowGearBank: Sendable, Hashable {

@@ -1,12 +1,6 @@
 import KatanaCore
 import KatanaMacros
 
-public enum UniVibeParameter: Sendable, Hashable {
-  case rate(UInt8)
-  case depth(UInt8)
-  case level(UInt8)
-}
-
 /// The data bank representing the univibe parameters.
 @KatanaBank
 public struct UniVibeBank: Sendable, Hashable {

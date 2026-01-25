@@ -3,12 +3,6 @@ import KatanaMacros
 
 // MARK: - Vibrato
 
-public enum VibratoParameter: Sendable, Hashable {
-  case rate(UInt8)
-  case depth(UInt8)
-  case level(UInt8)
-}
-
 /// The data bank representing the vibrato parameters.
 @KatanaBank
 public struct VibratoBank: Sendable, Hashable {

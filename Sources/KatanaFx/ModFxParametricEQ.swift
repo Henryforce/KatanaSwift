@@ -1,27 +1,6 @@
 import KatanaCore
 import KatanaMacros
 
-// MARK: - ModFxParametricEQ
-
-public enum ModFxParametricEQParameter: Sendable, Hashable {
-  case lowCut(EQLowCut)
-  /// Range is from -20 to 20 mapped to 0..40.
-  case lowGain(UInt8)
-  case lowMidFreq(EQFrequency)
-  case lowMidQ(EQQ)
-  /// Range is from -20 to 20 mapped to 0..40.
-  case lowMidGain(UInt8)
-  case highMidFreq(EQFrequency)
-  case highMidQ(EQQ)
-  /// Range is from -20 to 20 mapped to 0..40.
-  case highMidGain(UInt8)
-  /// Range is from -20 to 20 mapped to 0..40.
-  case highGain(UInt8)
-  case highCut(EQHighCut)
-  /// Range is from -20 to 20 mapped to 0..40.
-  case level(UInt8)
-}
-
 /// The data bank representing the MOD/FX parametric equalizer parameters.
 @KatanaBank
 public struct ModFxParametricEQBank: Sendable, Hashable {

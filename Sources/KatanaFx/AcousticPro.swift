@@ -3,20 +3,6 @@ import KatanaMacros
 
 // MARK: - AcousticPro
 
-public enum AcousticProParameter: Sendable, Hashable {
-  case type(AcousticProType)
-  /// Range is from -50 to 50 mapped to 0..100.
-  case bass(UInt8)
-  /// Range is from -50 to 50 mapped to 0..100.
-  case middle(UInt8)
-  case midFrequency(EQFrequency)
-  /// Range is from -50 to 50 mapped to 0..100.
-  case treble(UInt8)
-  /// Range is from -50 to 50 mapped to 0..100.
-  case presence(UInt8)
-  case level(UInt8)
-}
-
 /// The data bank representing the acoustic pro parameters.
 @KatanaBank
 public struct AcousticProBank: Sendable, Hashable {

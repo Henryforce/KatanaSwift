@@ -3,16 +3,6 @@ import KatanaMacros
 
 // MARK: - GuitarSim
 
-public enum GuitarSimParameter: Sendable, Hashable {
-  case type(GuitarSimType)
-  /// Range is from -50 to 50 mapped to 0..100.
-  case low(UInt8)
-  /// Range is from -50 to 50 mapped to 0..100.
-  case high(UInt8)
-  case body(UInt8)
-  case level(UInt8)
-}
-
 /// The data bank representing the guitar simulation parameters.
 @KatanaBank
 public struct GuitarSimBank: Sendable, Hashable {

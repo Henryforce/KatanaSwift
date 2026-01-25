@@ -3,15 +3,6 @@ import KatanaMacros
 
 // MARK: - ACSim
 
-public enum ACSimParameter: Sendable, Hashable {
-  /// Range is from -50 to 50 mapped to 0..100.
-  case high(UInt8)
-  case body(UInt8)
-  /// Range is from -50 to 50 mapped to 0..100.
-  case low(UInt8)
-  case level(UInt8)
-}
-
 /// The data bank representing the acoustic simulation parameters.
 @KatanaBank
 public struct ACSimBank: Sendable, Hashable {

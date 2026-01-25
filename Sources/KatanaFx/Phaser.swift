@@ -3,17 +3,6 @@ import KatanaMacros
 
 // MARK: - Phaser
 
-public enum PhaserParameter: Sendable, Hashable {
-  case type(PhaserType)
-  case rate(UInt8)
-  case depth(UInt8)
-  case manual(UInt8)
-  case resonance(UInt8)
-  case stepRate(UInt8)
-  case effectLevel(UInt8)
-  case directLevel(UInt8)
-}
-
 /// The data bank representing the phaser parameters.
 @KatanaBank
 public struct PhaserBank: Sendable, Hashable {

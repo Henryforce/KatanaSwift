@@ -1,38 +1,6 @@
 import KatanaCore
+import KatanaFx
 import KatanaMacros
-
-public enum ModFxParameter: Sendable, Hashable {
-  case enable(Bool)
-  case type(ModFxType)
-  case chorus(ChorusParameter)
-  case flanger(FlangerParameter)
-  case phaser(PhaserParameter)
-  case uniVibe(UniVibeParameter)
-  case tremolo(TremoloParameter)
-  case vibrato(VibratoParameter)
-  case rotary(RotaryParameter)
-  case ringMod(RingModParameter)
-  case slowGear(SlowGearParameter)
-  case slicer(SlicerParameter)
-  case comp(CompParameter)
-  case limiter(LimiterParameter)
-  case tWah(TWahParameter)
-  case autoWah(AutoWahParameter)
-  case graphicEQ(ModFxGraphicEQParameter)
-  case parametricEQ(ModFxParametricEQParameter)
-  case guitarSim(GuitarSimParameter)
-  case acSim(ACSimParameter)
-  case acousticPro(AcousticProParameter)
-  case waveSynth(WaveSynthParameter)
-  case octaver(OctaverParameter)
-  case heavyOctave(HeavyOctaveParameter)
-  case pitchShifter(PitchShifterParameter)
-  case harmonist(HarmonistParameter)
-  case humanizer(HumanizerParameter)
-  case phaser90E(Phaser90EParameter)
-  case flanger117E(Flanger117EParameter)
-  case dc30(DC30Parameter)
-}
 
 /// The data bank representing the MOD/FX parameters.
 public struct ModFxBank: WritableBank, Sendable, Hashable {

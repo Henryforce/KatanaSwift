@@ -3,12 +3,6 @@ import KatanaMacros
 
 // MARK: - Rotary
 
-public enum RotaryParameter: Sendable, Hashable {
-  case rate(UInt8)
-  case depth(UInt8)
-  case level(UInt8)
-}
-
 /// The data bank representing the rotary parameters.
 public struct RotaryBank: WritableBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00_01_00_23, range: 0...100)

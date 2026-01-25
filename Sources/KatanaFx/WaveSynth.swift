@@ -3,17 +3,6 @@ import KatanaMacros
 
 // MARK: - WaveSynth
 
-public enum WaveSynthParameter: Sendable, Hashable {
-  case type(WaveSynthType)
-  case cutoff(UInt8)
-  case resonance(UInt8)
-  case filterSens(UInt8)
-  case filterDecay(UInt8)
-  case filterDepth(UInt8)
-  case synthLevel(UInt8)
-  case directMix(UInt8)
-}
-
 /// The data bank representing the wave synth parameters.
 @KatanaBank
 public struct WaveSynthBank: Sendable, Hashable {

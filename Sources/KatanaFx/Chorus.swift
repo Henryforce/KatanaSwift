@@ -3,21 +3,6 @@ import KatanaMacros
 
 // MARK - TwoByTwoChorus
 
-public enum ChorusParameter: Sendable, Hashable {
-  case crossoverFrequency(UInt8)
-  case lowRate(UInt8)
-  case lowDepth(UInt8)
-  /// Low pre-delay, range between 0 and 40ms with 0.5ms steps mapped to 0..80.
-  case lowPreDelay(UInt8)
-  case lowLevel(UInt8)
-  case highRate(UInt8)
-  case highDepth(UInt8)
-  /// High pre-delay, range between 0 and 40ms with 0.5ms steps mapped to 0..80.
-  case highPreDelay(UInt8)
-  case highLevel(UInt8)
-  case directMix(UInt8)
-}
-
 /// The data bank representing the chorus parameters.
 @KatanaBank
 public struct ChorusBank: Sendable, Hashable {

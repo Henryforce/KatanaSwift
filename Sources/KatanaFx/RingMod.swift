@@ -3,13 +3,6 @@ import KatanaMacros
 
 // MARK: - RingMod
 
-public enum RingModParameter: Sendable, Hashable {
-  case mode(RingModMode)
-  case frequency(UInt8)
-  case effectLevel(UInt8)
-  case directMix(UInt8)
-}
-
 /// The data bank representing the ring modulator parameters.
 @KatanaBank
 public struct RingModBank: Sendable, Hashable {

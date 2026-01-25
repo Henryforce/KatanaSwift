@@ -3,15 +3,6 @@ import KatanaMacros
 
 // MARK: - Limiter
 
-public enum LimiterParameter: Sendable, Hashable {
-  case type(LimiterType)
-  case attack(UInt8)
-  case threshold(UInt8)
-  case ratio(LimiterRatio)
-  case release(UInt8)
-  case level(UInt8)
-}
-
 /// The data bank representing the limiter parameters.
 @KatanaBank
 public struct LimiterBank: Sendable, Hashable {

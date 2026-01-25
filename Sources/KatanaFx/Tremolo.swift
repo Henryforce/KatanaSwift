@@ -3,13 +3,6 @@ import KatanaMacros
 
 // MARK: - Tremolo
 
-public enum TremoloParameter: Sendable, Hashable {
-  case waveShape(UInt8)
-  case rate(UInt8)
-  case depth(UInt8)
-  case level(UInt8)
-}
-
 /// The data bank representing the tremolo parameters.
 @KatanaBank
 public struct TremoloBank: Sendable, Hashable {

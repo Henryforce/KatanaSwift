@@ -3,12 +3,6 @@ import KatanaMacros
 
 // MARK: - Octaver
 
-public enum OctaverParameter: Sendable, Hashable {
-  case range(OctaverRange)
-  case level(UInt8)
-  case directLevel(UInt8)
-}
-
 /// The data bank representing the octaver parameters.
 @KatanaBank
 public struct OctaverBank: Sendable, Hashable {

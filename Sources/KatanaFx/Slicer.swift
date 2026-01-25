@@ -3,15 +3,6 @@ import KatanaMacros
 
 // MARK: - Slicer
 
-public enum SlicerParameter: Sendable, Hashable {
-  /// Starts from 0 to 19 where 0 is Pattern 1 and 19 is Pattern 20.
-  case pattern(UInt8)
-  case rate(UInt8)
-  case triggerSens(UInt8)
-  case effectLevel(UInt8)
-  case directMix(UInt8)
-}
-
 /// The data bank representing the slicer parameters.
 @KatanaBank
 public struct SlicerBank: Sendable, Hashable {

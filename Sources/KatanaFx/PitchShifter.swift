@@ -3,28 +3,6 @@ import KatanaMacros
 
 // MARK: - PitchShifter
 
-public enum PitchShifterParameter: Sendable, Hashable {
-  case voice(PitchShifterVoice)
-  case ps1Mode(PitchShifterMode)
-  /// Range is from -50 to 50 mapped to 0..100.
-  case ps1Pitch(UInt8)
-  /// Range is from -50 to 50 mapped to 0..100.
-  case ps1Fine(UInt8)
-  /// Range is from 0 to 300.
-  case ps1PreDelay(UInt16)
-  case ps1Level(UInt8)
-  case ps2Mode(PitchShifterMode)
-  /// Range is from -50 to 50 mapped to 0..100.
-  case ps2Pitch(UInt8)
-  /// Range is from -50 to 50 mapped to 0..100.
-  case ps2Fine(UInt8)
-  /// Range is from 0 to 300.
-  case ps2PreDelay(UInt16)
-  case ps2Level(UInt8)
-  case ps1Feedback(UInt8)
-  case directLevel(UInt8)
-}
-
 /// The data bank representing the pitch shifter parameters.
 @KatanaBank
 public struct PitchShifterBank: Sendable, Hashable {
