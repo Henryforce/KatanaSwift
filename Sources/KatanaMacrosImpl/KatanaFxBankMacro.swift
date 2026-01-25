@@ -3,7 +3,7 @@ import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
-public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
+public struct KatanaFxBankMacro: MemberMacro, ExtensionMacro {
   public static func expansion(
     of node: AttributeSyntax,
     providingMembersOf declaration: some DeclGroupSyntax,
@@ -70,16 +70,16 @@ public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
     let lines = variableNames.map { name in
       """
       if self.$\(name).updated {
-          writeData.append(WriteData(address: self.$\(name).address, data: self.$\(name).value.bytes))
+          writeData.append(FxWriteData(id: self.$\(name).id, data: self.$\(name).value.bytes))
       }
       """
     }.joined(separator: "\n")
 
     // 3. Construct the final method
     let writableBankExtension: DeclSyntax = """
-      extension \(type.trimmed): WritableBank {
-        public func loadWriteData() -> [WriteData] {
-            var writeData = [WriteData]()
+      extension \(type.trimmed): WritableFxBank {
+        public func loadWriteData() -> [FxWriteData] {
+            var writeData = [FxWriteData]()
             \(raw: lines)
             return writeData
         }
@@ -92,4 +92,8 @@ public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
 
     return [extensionDecl]
   }
+}
+
+enum WritableBankExtensionError: Error {
+  case invalidSyntax
 }
