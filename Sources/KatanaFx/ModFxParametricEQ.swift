@@ -1,6 +1,6 @@
 import KatanaCore
-import KatanaMacros
 import KatanaEQ
+import KatanaMacros
 
 /// The data bank representing the MOD/FX parametric equalizer parameters.
 @KatanaFxBank

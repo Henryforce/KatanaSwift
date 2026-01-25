@@ -1,6 +1,6 @@
 import KatanaCore
-import KatanaMacros
 import KatanaEQ
+import KatanaMacros
 
 // MARK: - ModFxGraphicEQ
 

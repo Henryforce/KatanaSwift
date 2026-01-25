@@ -5,10 +5,10 @@
 //  Created by Henry Javier Serrano Echeverria on 2026/01/18.
 //
 
-import KatanaGoData
-import KatanaFx
-import SwiftUI
 import KatanaCore
+import KatanaFx
+import KatanaGoData
+import SwiftUI
 
 struct ModFxView: View {
   var viewModel: ContentViewModel
@@ -51,7 +51,7 @@ struct ModFxView: View {
   }
 
   @Environment(\.dismiss) private var dismissAction
-  
+
   @ViewBuilder
   private func buildViewFromType(_ type: ModFxType) -> some View {
     switch type {
@@ -85,11 +85,11 @@ struct ModFxView: View {
     case .dc30: DC30View(onUpdate: updateBank)
     }
   }
-  
+
   private func updateBank(_ bank: WritableFxBank) {
     viewModel.updateWritableBank(bank, id: id)
   }
-  
+
   private func updateNormalBank(_ bank: WritableBank) {
     viewModel.updateWritableBank(bank)
   }

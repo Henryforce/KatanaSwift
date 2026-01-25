@@ -1,7 +1,7 @@
-import KatanaGoData
-import KatanaFx
 import KatanaCore
 import KatanaEQ
+import KatanaFx
+import KatanaGoData
 import SwiftUI
 
 struct GuitarSimView: View {

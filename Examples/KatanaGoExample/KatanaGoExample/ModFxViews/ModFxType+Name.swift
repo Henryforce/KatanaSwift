@@ -1,6 +1,6 @@
-import KatanaGoData
-import KatanaFx
 import KatanaEQ
+import KatanaFx
+import KatanaGoData
 
 extension ModFxType {
   var name: String {

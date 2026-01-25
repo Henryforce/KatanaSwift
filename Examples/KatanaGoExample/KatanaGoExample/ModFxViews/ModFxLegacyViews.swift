@@ -1,7 +1,7 @@
+import KatanaCore
+import KatanaFx
 import KatanaGoData
 import SwiftUI
-import KatanaFx
-import KatanaCore
 
 struct Phaser90EView: View {
   @State private var scriptEnable = false

@@ -1,8 +1,8 @@
-import KatanaGoData
-import KatanaFx
-import KatanaEQ
-import SwiftUI
 import KatanaCore
+import KatanaEQ
+import KatanaFx
+import KatanaGoData
+import SwiftUI
 
 struct TWahView: View {
   @State private var mode = WahMode.lowPassFilter

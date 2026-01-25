@@ -37,17 +37,17 @@ public enum EQHighCut: UInt8, Sendable, Hashable, CaseIterable {
   case freq630Hz = 0x00
   case freq800Hz = 0x01
   case freq1kHz = 0x02
-  case freq1k25Hz = 0x03
-  case freq1k6Hz = 0x04
+  case freq1k250Hz = 0x03
+  case freq1k600Hz = 0x04
   case freq2kHz = 0x05
-  case freq2k5Hz = 0x06
-  case freq3k15Hz = 0x07
+  case freq2k500Hz = 0x06
+  case freq3k150Hz = 0x07
   case freq4kHz = 0x08
   case freq5kHz = 0x09
-  case freq6k3Hz = 0x0A
+  case freq6k300Hz = 0x0A
   case freq8kHz = 0x0B
   case freq10kHz = 0x0C
-  case freq12k5Hz = 0x0D
+  case freq12k500Hz = 0x0D
   case flat = 0x0E
 }
 
@@ -72,14 +72,14 @@ public enum EQFrequency: UInt8, Sendable, Hashable, CaseIterable {
   case freq630Hz = 0x0F
   case freq800Hz = 0x10
   case freq1kHz = 0x11
-  case freq1k25Hz = 0x12
-  case freq1k6Hz = 0x13
+  case freq1k250Hz = 0x12
+  case freq1k600Hz = 0x13
   case freq2kHz = 0x14
-  case freq2k5Hz = 0x15
-  case freq3k15Hz = 0x16
+  case freq2k500Hz = 0x15
+  case freq3k150Hz = 0x16
   case freq4kHz = 0x17
   case freq5kHz = 0x18
-  case freq6k3Hz = 0x19
+  case freq6k300Hz = 0x19
   case freq8kHz = 0x1A
   case freq10kHz = 0x1B
 }

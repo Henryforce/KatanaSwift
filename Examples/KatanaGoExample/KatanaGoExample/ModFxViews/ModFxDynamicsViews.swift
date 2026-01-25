@@ -1,7 +1,7 @@
-import KatanaGoData
-import KatanaFx
-import SwiftUI
 import KatanaCore
+import KatanaFx
+import KatanaGoData
+import SwiftUI
 
 struct CompressorView: View {
   @State private var type = CompType.boss
