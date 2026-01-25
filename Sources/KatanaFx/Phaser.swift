@@ -4,30 +4,30 @@ import KatanaMacros
 // MARK: - Phaser
 
 /// The data bank representing the phaser parameters.
-@KatanaBank
+@KatanaFxBank
 public struct PhaserBank: Sendable, Hashable {
-  @Parameter(at: 0x00_01_00_11)
+  @FxParameter(id: .phaserType)
   public var type: PhaserType = .fourStage
 
-  @IntegerParameter(at: 0x00_01_00_12, range: 0...100)
+  @FxIntegerParameter(id: .phaserRate, range: 0...100)
   public var rate: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_13, range: 0...100)
+  @FxIntegerParameter(id: .phaserDepth, range: 0...100)
   public var depth: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_14, range: 0...100)
+  @FxIntegerParameter(id: .phaserManual, range: 0...100)
   public var manual: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_15, range: 0...100)
+  @FxIntegerParameter(id: .phaserResonance, range: 0...100)
   public var resonance: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_16, range: 0...100)
+  @FxIntegerParameter(id: .phaserStepRate, range: 0...100)
   public var stepRate: UInt8 = 0
 
-  @IntegerParameter(at: 0x00_01_00_17, range: 0...100)
+  @FxIntegerParameter(id: .phaserEffectLevel, range: 0...100)
   public var effectLevel: UInt8 = 100
 
-  @IntegerParameter(at: 0x00_01_00_18, range: 0...100)
+  @FxIntegerParameter(id: .phaserDirectLevel, range: 0...100)
   public var directLevel: UInt8 = 0
 }
 
@@ -47,11 +47,11 @@ public enum Phaser90EParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the phaser 90E parameters.
-@KatanaBank
+@KatanaFxBank
 public struct Phaser90EBank: Sendable, Hashable {
-  @Parameter(at: 0x00_01_01_41)
+  @FxParameter(id: .phaser90EScriptStatus)
   public var scriptStatus: Bool = false
 
-  @IntegerParameter(at: 0x00_01_01_42, range: 0...100)
+  @FxIntegerParameter(id: .phaser90ESpeed, range: 0...100)
   public var speed: UInt8 = 50
 }

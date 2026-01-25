@@ -1,6 +1,7 @@
 import KatanaFx
 import KatanaCore
 import KatanaMacros
+import KatanaEQ
 
 /// The data bank representing the reverb parameters.
 @KatanaBank

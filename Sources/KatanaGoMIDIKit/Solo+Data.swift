@@ -1,5 +1,6 @@
 import KatanaGoData
 import KatanaFx
+import KatanaEQ
 
 // extension SoloParameter {
 //   var address: [UInt8] {

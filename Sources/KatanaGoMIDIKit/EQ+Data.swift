@@ -1,6 +1,7 @@
 import KatanaGoData
 import KatanaCore
 import KatanaFx
+import KatanaEQ
 
 // extension EQParameter {
 //   func address(isEQ2: Bool) -> [UInt8] {

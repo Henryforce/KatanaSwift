@@ -4,30 +4,30 @@ import KatanaMacros
 // MARK: - WaveSynth
 
 /// The data bank representing the wave synth parameters.
-@KatanaBank
+@KatanaFxBank
 public struct WaveSynthBank: Sendable, Hashable {
-  @Parameter(at: 0x00_01_00_71)
+  @FxParameter(id: .waveSynthType)
   public var type: WaveSynthType = .saw
 
-  @IntegerParameter(at: 0x00_01_00_72, range: 0...100)
+  @FxIntegerParameter(id: .waveSynthCutoff, range: 0...100)
   public var cutoff: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_73, range: 0...100)
+  @FxIntegerParameter(id: .waveSynthResonance, range: 0...100)
   public var resonance: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_74, range: 0...100)
+  @FxIntegerParameter(id: .waveSynthFilterSens, range: 0...100)
   public var filterSens: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_75, range: 0...100)
+  @FxIntegerParameter(id: .waveSynthFilterDecay, range: 0...100)
   public var filterDecay: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_76, range: 0...100)
+  @FxIntegerParameter(id: .waveSynthFilterDepth, range: 0...100)
   public var filterDepth: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_77, range: 0...100)
+  @FxIntegerParameter(id: .waveSynthSynthLevel, range: 0...100)
   public var synthLevel: UInt8 = 100
 
-  @IntegerParameter(at: 0x00_01_00_78, range: 0...100)
+  @FxIntegerParameter(id: .waveSynthDirectMix, range: 0...100)
   public var directMix: UInt8 = 0
 }
 

@@ -4,36 +4,36 @@ import KatanaMacros
 // MARK - TwoByTwoChorus
 
 /// The data bank representing the chorus parameters.
-@KatanaBank
+@KatanaFxBank
 public struct ChorusBank: Sendable, Hashable {
-  @IntegerParameter(at: 0x00_01_00_00, range: 0...100)
+  @FxIntegerParameter(id: .chorusCrossoverFrequency, range: 0...100)
   public var crossoverFrequency: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_01, range: 0...100)
+  @FxIntegerParameter(id: .chorusLowRate, range: 0...100)
   public var lowRate: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_02, range: 0...100)
+  @FxIntegerParameter(id: .chorusLowDepth, range: 0...100)
   public var lowDepth: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_03, range: 0...80)
+  @FxIntegerParameter(id: .chorusLowPreDelay, range: 0...80)
   public var lowPreDelay: UInt8 = 0
 
-  @IntegerParameter(at: 0x00_01_00_04, range: 0...100)
+  @FxIntegerParameter(id: .chorusLowLevel, range: 0...100)
   public var lowLevel: UInt8 = 100
 
-  @IntegerParameter(at: 0x00_01_00_05, range: 0...100)
+  @FxIntegerParameter(id: .chorusHighRate, range: 0...100)
   public var highRate: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_06, range: 0...100)
+  @FxIntegerParameter(id: .chorusHighDepth, range: 0...100)
   public var highDepth: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_00_07, range: 0...80)
+  @FxIntegerParameter(id: .chorusHighPreDelay, range: 0...80)
   public var highPreDelay: UInt8 = 0
 
-  @IntegerParameter(at: 0x00_01_00_08, range: 0...100)
+  @FxIntegerParameter(id: .chorusHighLevel, range: 0...100)
   public var highLevel: UInt8 = 100
 
-  @IntegerParameter(at: 0x00_01_00_09, range: 0...100)
+  @FxIntegerParameter(id: .chorusDirectMix, range: 0...100)
   public var directMix: UInt8 = 0
 }
 
@@ -51,30 +51,30 @@ public enum DC30Parameter: Sendable, Hashable {
 }
 
 /// The data bank representing the DC-30 parameters.
-@KatanaBank
+@KatanaFxBank
 public struct DC30Bank: Sendable, Hashable {
-  @Parameter(at: 0x00_01_01_47)
+  @FxParameter(id: .dc30Type)
   public var type: DC30Type = .chorus
 
-  @IntegerParameter(at: 0x00_01_01_48, range: 0...100)
+  @FxIntegerParameter(id: .dc30InputVolume, range: 0...100)
   public var inputVolume: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_01_49, range: 0...100)
+  @FxIntegerParameter(id: .dc30ChorusIntensity, range: 0...100)
   public var chorusIntensity: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_01_4A, range: 0...600)
+  @FxIntegerParameter(id: .dc30RepeatTime, range: 0...600)
   public var repeatTime: UInt16 = 300
 
-  @IntegerParameter(at: 0x00_01_01_4E, range: 0...100)
+  @FxIntegerParameter(id: .dc30EchoIntensity, range: 0...100)
   public var echoIntensity: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_01_4F, range: 0...100)
+  @FxIntegerParameter(id: .dc30Volume, range: 0...100)
   public var volume: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_01_50, range: 0...100)
+  @FxIntegerParameter(id: .dc30Tone, range: 0...100)
   public var tone: UInt8 = 50
 
-  @Parameter(at: 0x00_01_01_51)
+  @FxParameter(id: .dc30OutputType)
   public var outputType: DC30OutputType = .dPlusE
 }
 

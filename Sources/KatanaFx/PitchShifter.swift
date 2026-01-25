@@ -4,45 +4,45 @@ import KatanaMacros
 // MARK: - PitchShifter
 
 /// The data bank representing the pitch shifter parameters.
-@KatanaBank
+@KatanaFxBank
 public struct PitchShifterBank: Sendable, Hashable {
-  @Parameter(at: 0x00_01_00_7F)
+  @FxParameter(id: .pitchShifterVoice)
   public var voice: PitchShifterVoice = .oneVoice
 
-  @Parameter(at: 0x00_01_01_00)
+  @FxParameter(id: .pitchShifterPs1Mode)
   public var ps1Mode: PitchShifterMode = .fast
 
-  @IntegerParameter(at: 0x00_01_01_01, range: 0...100)
+  @FxIntegerParameter(id: .pitchShifterPs1Pitch, range: 0...100)
   public var ps1Pitch: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_01_02, range: 0...100)
+  @FxIntegerParameter(id: .pitchShifterPs1Fine, range: 0...100)
   public var ps1Fine: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_01_03, range: 0...300)
+  @FxIntegerParameter(id: .pitchShifterPs1PreDelay, range: 0...300)
   public var ps1PreDelay: UInt16 = 0
 
-  @IntegerParameter(at: 0x00_01_01_07, range: 0...100)
+  @FxIntegerParameter(id: .pitchShifterPs1Level, range: 0...100)
   public var ps1Level: UInt8 = 100
 
-  @Parameter(at: 0x00_01_01_08)
+  @FxParameter(id: .pitchShifterPs2Mode)
   public var ps2Mode: PitchShifterMode = .fast
 
-  @IntegerParameter(at: 0x00_01_01_09, range: 0...100)
+  @FxIntegerParameter(id: .pitchShifterPs2Pitch, range: 0...100)
   public var ps2Pitch: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_01_0A, range: 0...100)
+  @FxIntegerParameter(id: .pitchShifterPs2Fine, range: 0...100)
   public var ps2Fine: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_01_01_0B, range: 0...300)
+  @FxIntegerParameter(id: .pitchShifterPs2PreDelay, range: 0...300)
   public var ps2PreDelay: UInt16 = 0
 
-  @IntegerParameter(at: 0x00_01_01_0F, range: 0...100)
+  @FxIntegerParameter(id: .pitchShifterPs2Level, range: 0...100)
   public var ps2Level: UInt8 = 100
 
-  @IntegerParameter(at: 0x00_01_01_10, range: 0...100)
+  @FxIntegerParameter(id: .pitchShifterPs1Feedback, range: 0...100)
   public var ps1Feedback: UInt8 = 0
 
-  @IntegerParameter(at: 0x00_01_01_11, range: 0...100)
+  @FxIntegerParameter(id: .pitchShifterDirectLevel, range: 0...100)
   public var directLevel: UInt8 = 0
 }
 

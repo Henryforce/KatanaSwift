@@ -38,13 +38,15 @@ let package = Package(
       name: "KatanaMacros",
       dependencies: ["KatanaMacrosImpl"]
     ),
-    .target(name: "KatanaFx", dependencies: ["KatanaCore", "KatanaMacros"]),
+    .target(name: "KatanaEQ", dependencies: ["KatanaCore", "KatanaMacros"]),
+    .target(name: "KatanaFx", dependencies: ["KatanaCore", "KatanaMacros", "KatanaEQ"]),
     .target(
       name: "KatanaGoData",
       dependencies: [
         "KatanaMacros",
         "KatanaCore",
         "KatanaFx",
+        "KatanaEQ",
       ]
     ),
     .target(
@@ -53,6 +55,7 @@ let package = Package(
         "KatanaGoData",
         "KatanaCore",
         "KatanaFx",
+        "KatanaEQ",
       ]
     ),
     .target(
@@ -62,20 +65,21 @@ let package = Package(
         "KatanaGoData",
         "KatanaCore",
         "KatanaFx",
+        "KatanaEQ",
         .product(name: "MIDIKit", package: "MIDIKit"),
       ]
     ),
     .target(
       name: "KatanaGoSwift",
-      dependencies: ["KatanaGoAPI", "KatanaGoData", "KatanaGoMIDIKit", "KatanaCore", "KatanaFx"]
+      dependencies: ["KatanaGoAPI", "KatanaGoData", "KatanaGoMIDIKit", "KatanaCore", "KatanaFx", "KatanaEQ"]
     ),
     .testTarget(
       name: "KatanaGoMIDIKitTests",
-      dependencies: ["KatanaGoMIDIKit", "KatanaGoAPI", "KatanaGoData", "KatanaCore", "KatanaFx"]
+      dependencies: ["KatanaGoMIDIKit", "KatanaGoAPI", "KatanaGoData", "KatanaCore", "KatanaFx", "KatanaEQ"]
     ),
     .testTarget(
       name: "KatanaGoDataTests",
-      dependencies: ["KatanaGoData", "KatanaCore", "KatanaFx"]
+      dependencies: ["KatanaGoData", "KatanaCore", "KatanaFx", "KatanaEQ"]
     ),
   ]
 )

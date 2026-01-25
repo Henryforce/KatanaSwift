@@ -114,10 +114,10 @@ public actor KatanaGoMIDIKit: KatanaGo {
     try await writeBank(bank, addressModifiers: 0x20_00_00_00)
   }
 
-  public func writeFxBank(_ bank: ModFxBank, id: BankID) async throws {
-    let idModifier = id.fxOffset
-    try await writeBank(bank, addressModifiers: 0x20_00_00_00 | idModifier)
-  }
+  // public func writeFxBank(_ bank: ModFxBank, id: BankID) async throws {
+  //   let idModifier = id.fxOffset
+  //   try await writeBank(bank, addressModifiers: 0x20_00_00_00 | idModifier)
+  // }
 
   public func writeEQBank(_ bank: EQBank, id: BankID) async throws {
     let idModifier = id.eqOffset

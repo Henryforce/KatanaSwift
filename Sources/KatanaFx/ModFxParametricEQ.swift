@@ -1,39 +1,40 @@
 import KatanaCore
 import KatanaMacros
+import KatanaEQ
 
 /// The data bank representing the MOD/FX parametric equalizer parameters.
-@KatanaBank
+@KatanaFxBank
 public struct ModFxParametricEQBank: Sendable, Hashable {
-  @Parameter(at: 0x00_01_00_56)
+  @FxParameter(id: .modFxParametricEQLowCut)
   public var lowCut: EQLowCut = .flat
 
-  @IntegerParameter(at: 0x00_01_00_57, range: 0...40)
+  @FxIntegerParameter(id: .modFxParametricEQLowGain, range: 0...40)
   public var lowGain: UInt8 = 20
 
-  @Parameter(at: 0x00_01_00_58)
+  @FxParameter(id: .modFxParametricEQLowMidFreq)
   public var lowMidFreq: EQFrequency = .freq200Hz
 
-  @Parameter(at: 0x00_01_00_59)
+  @FxParameter(id: .modFxParametricEQLowMidQ)
   public var lowMidQ: EQQ = .q1
 
-  @IntegerParameter(at: 0x00_01_00_5A, range: 0...40)
+  @FxIntegerParameter(id: .modFxParametricEQLowMidGain, range: 0...40)
   public var lowMidGain: UInt8 = 20
 
-  @Parameter(at: 0x00_01_00_5B)
+  @FxParameter(id: .modFxParametricEQHighMidFreq)
   public var highMidFreq: EQFrequency = .freq2kHz
 
-  @Parameter(at: 0x00_01_00_5C)
+  @FxParameter(id: .modFxParametricEQHighMidQ)
   public var highMidQ: EQQ = .q1
 
-  @IntegerParameter(at: 0x00_01_00_5D, range: 0...40)
+  @FxIntegerParameter(id: .modFxParametricEQHighMidGain, range: 0...40)
   public var highMidGain: UInt8 = 20
 
-  @IntegerParameter(at: 0x00_01_00_5E, range: 0...40)
+  @FxIntegerParameter(id: .modFxParametricEQHighGain, range: 0...40)
   public var highGain: UInt8 = 20
 
-  @Parameter(at: 0x00_01_00_5F)
+  @FxParameter(id: .modFxParametricEQHighCut)
   public var highCut: EQHighCut = .flat
 
-  @IntegerParameter(at: 0x00_01_00_60, range: 0...40)
+  @FxIntegerParameter(id: .modFxParametricEQLevel, range: 0...40)
   public var level: UInt8 = 20
 }

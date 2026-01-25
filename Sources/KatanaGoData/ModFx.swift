@@ -1,6 +1,7 @@
 import KatanaCore
 import KatanaFx
 import KatanaMacros
+import KatanaEQ
 
 /// The data bank representing the MOD/FX parameters.
 public struct ModFxBank: WritableBank, Sendable, Hashable {
@@ -83,6 +84,7 @@ public struct ModFxBank: WritableBank, Sendable, Hashable {
     self.dc30 = dc30
   }
 
+  // TODO: decide what todo about the init
   public init(
     status: Bool? = nil, type: ModFxType? = nil, chorus: ChorusBank? = nil,
     flanger: FlangerBank? = nil, phaser: PhaserBank? = nil, uniVibe: UniVibeBank? = nil,
@@ -128,58 +130,58 @@ public struct ModFxBank: WritableBank, Sendable, Hashable {
     self.flanger117E = flanger117E ?? Flanger117EBank()
     self.dc30 = dc30 ?? DC30Bank()
 
-    if let status {
-      self.writeData.append(WriteData(address: self.$status.address, data: status.bytes))
-    }
-    if let type {
-      self.writeData.append(WriteData(address: self.$type.address, data: type.rawValue.bytes))
-    }
-    if let chorus { self.writeData.append(contentsOf: chorus.loadWriteData()) }
-    if let flanger { self.writeData.append(contentsOf: flanger.loadWriteData()) }
-    if let phaser { self.writeData.append(contentsOf: phaser.loadWriteData()) }
-    if let uniVibe { self.writeData.append(contentsOf: uniVibe.loadWriteData()) }
-    if let tremolo { self.writeData.append(contentsOf: tremolo.loadWriteData()) }
-    if let vibrato { self.writeData.append(contentsOf: vibrato.loadWriteData()) }
-    if let rotary { self.writeData.append(contentsOf: rotary.loadWriteData()) }
-    if let ringMod { self.writeData.append(contentsOf: ringMod.loadWriteData()) }
-    if let slowGear { self.writeData.append(contentsOf: slowGear.loadWriteData()) }
-    if let slicer { self.writeData.append(contentsOf: slicer.loadWriteData()) }
-    if let comp { self.writeData.append(contentsOf: comp.loadWriteData()) }
-    if let limiter { self.writeData.append(contentsOf: limiter.loadWriteData()) }
-    if let tWah { self.writeData.append(contentsOf: tWah.loadWriteData()) }
-    if let autoWah { self.writeData.append(contentsOf: autoWah.loadWriteData()) }
-    if let graphicEQ { self.writeData.append(contentsOf: graphicEQ.loadWriteData()) }
-    if let parametricEQ { self.writeData.append(contentsOf: parametricEQ.loadWriteData()) }
-    if let guitarSim { self.writeData.append(contentsOf: guitarSim.loadWriteData()) }
-    if let acSim { self.writeData.append(contentsOf: acSim.loadWriteData()) }
-    if let acousticPro { self.writeData.append(contentsOf: acousticPro.loadWriteData()) }
-    if let waveSynth { self.writeData.append(contentsOf: waveSynth.loadWriteData()) }
-    if let octaver { self.writeData.append(contentsOf: octaver.loadWriteData()) }
-    if let heavyOctave { self.writeData.append(contentsOf: heavyOctave.loadWriteData()) }
-    if let pitchShifter { self.writeData.append(contentsOf: pitchShifter.loadWriteData()) }
-    if let harmonist { self.writeData.append(contentsOf: harmonist.loadWriteData()) }
-    if let humanizer { self.writeData.append(contentsOf: humanizer.loadWriteData()) }
-    if let phaser90E { self.writeData.append(contentsOf: phaser90E.loadWriteData()) }
-    if let flanger117E { self.writeData.append(contentsOf: flanger117E.loadWriteData()) }
-    if let dc30 { self.writeData.append(contentsOf: dc30.loadWriteData()) }
+    // if let status {
+    //   self.writeData.append(WriteData(address: self.$status.address, data: status.bytes))
+    // }
+    // if let type {
+    //   self.writeData.append(WriteData(address: self.$type.address, data: type.rawValue.bytes))
+    // }
+    // if let chorus { self.writeData.append(contentsOf: chorus.loadWriteData()) }
+    // if let flanger { self.writeData.append(contentsOf: flanger.loadWriteData()) }
+    // if let phaser { self.writeData.append(contentsOf: phaser.loadWriteData()) }
+    // if let uniVibe { self.writeData.append(contentsOf: uniVibe.loadWriteData()) }
+    // if let tremolo { self.writeData.append(contentsOf: tremolo.loadWriteData()) }
+    // if let vibrato { self.writeData.append(contentsOf: vibrato.loadWriteData()) }
+    // if let rotary { self.writeData.append(contentsOf: rotary.loadWriteData()) }
+    // if let ringMod { self.writeData.append(contentsOf: ringMod.loadWriteData()) }
+    // if let slowGear { self.writeData.append(contentsOf: slowGear.loadWriteData()) }
+    // if let slicer { self.writeData.append(contentsOf: slicer.loadWriteData()) }
+    // if let comp { self.writeData.append(contentsOf: comp.loadWriteData()) }
+    // if let limiter { self.writeData.append(contentsOf: limiter.loadWriteData()) }
+    // if let tWah { self.writeData.append(contentsOf: tWah.loadWriteData()) }
+    // if let autoWah { self.writeData.append(contentsOf: autoWah.loadWriteData()) }
+    // if let graphicEQ { self.writeData.append(contentsOf: graphicEQ.loadWriteData()) }
+    // if let parametricEQ { self.writeData.append(contentsOf: parametricEQ.loadWriteData()) }
+    // if let guitarSim { self.writeData.append(contentsOf: guitarSim.loadWriteData()) }
+    // if let acSim { self.writeData.append(contentsOf: acSim.loadWriteData()) }
+    // if let acousticPro { self.writeData.append(contentsOf: acousticPro.loadWriteData()) }
+    // if let waveSynth { self.writeData.append(contentsOf: waveSynth.loadWriteData()) }
+    // if let octaver { self.writeData.append(contentsOf: octaver.loadWriteData()) }
+    // if let heavyOctave { self.writeData.append(contentsOf: heavyOctave.loadWriteData()) }
+    // if let pitchShifter { self.writeData.append(contentsOf: pitchShifter.loadWriteData()) }
+    // if let harmonist { self.writeData.append(contentsOf: harmonist.loadWriteData()) }
+    // if let humanizer { self.writeData.append(contentsOf: humanizer.loadWriteData()) }
+    // if let phaser90E { self.writeData.append(contentsOf: phaser90E.loadWriteData()) }
+    // if let flanger117E { self.writeData.append(contentsOf: flanger117E.loadWriteData()) }
+    // if let dc30 { self.writeData.append(contentsOf: dc30.loadWriteData()) }
   }
 
   public func loadWriteData() -> [WriteData] {
-    if writeData.isEmpty {
-      return [
-        WriteData(address: self.$status.address, data: status.bytes),
-        WriteData(address: self.$type.address, data: type.rawValue.bytes),
-      ] + chorus.loadWriteData() + flanger.loadWriteData() + phaser.loadWriteData()
-        + uniVibe.loadWriteData() + tremolo.loadWriteData() + vibrato.loadWriteData()
-        + rotary.loadWriteData() + ringMod.loadWriteData() + slowGear.loadWriteData()
-        + slicer.loadWriteData() + comp.loadWriteData() + limiter.loadWriteData()
-        + tWah.loadWriteData() + autoWah.loadWriteData() + graphicEQ.loadWriteData()
-        + parametricEQ.loadWriteData() + guitarSim.loadWriteData() + acSim.loadWriteData()
-        + acousticPro.loadWriteData() + waveSynth.loadWriteData() + octaver.loadWriteData()
-        + heavyOctave.loadWriteData() + pitchShifter.loadWriteData() + harmonist.loadWriteData()
-        + humanizer.loadWriteData() + phaser90E.loadWriteData() + flanger117E.loadWriteData()
-        + dc30.loadWriteData()
-    }
+    // if writeData.isEmpty {
+    //   return [
+    //     WriteData(address: self.$status.address, data: status.bytes),
+    //     WriteData(address: self.$type.address, data: type.rawValue.bytes),
+    //   ] + chorus.loadWriteData() + flanger.loadWriteData() + phaser.loadWriteData()
+    //     + uniVibe.loadWriteData() + tremolo.loadWriteData() + vibrato.loadWriteData()
+    //     + rotary.loadWriteData() + ringMod.loadWriteData() + slowGear.loadWriteData()
+    //     + slicer.loadWriteData() + comp.loadWriteData() + limiter.loadWriteData()
+    //     + tWah.loadWriteData() + autoWah.loadWriteData() + graphicEQ.loadWriteData()
+    //     + parametricEQ.loadWriteData() + guitarSim.loadWriteData() + acSim.loadWriteData()
+    //     + acousticPro.loadWriteData() + waveSynth.loadWriteData() + octaver.loadWriteData()
+    //     + heavyOctave.loadWriteData() + pitchShifter.loadWriteData() + harmonist.loadWriteData()
+    //     + humanizer.loadWriteData() + phaser90E.loadWriteData() + flanger117E.loadWriteData()
+    //     + dc30.loadWriteData()
+    // }
     return self.writeData
   }
 }
