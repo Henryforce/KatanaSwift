@@ -1,14 +1,6 @@
 import KatanaCore
 import KatanaMacros
 
-public enum EQParameter: Sendable, Hashable {
-  case enable(Bool)
-  case position(EQPosition)
-  case type(EQType)
-  case parametric(ParametricEQParameter)
-  case graphic(GraphicEQParameter)
-}
-
 // MARK - EQ
 
 /// The data bank representing the equalizer parameters.

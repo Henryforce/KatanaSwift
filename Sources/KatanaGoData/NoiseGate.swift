@@ -1,13 +1,6 @@
 import KatanaCore
 import KatanaMacros
 
-/// Parameters for the Noise Gate.
-public enum NoiseGateParameter: Sendable, Hashable {
-  case enable(Bool)
-  case threshold(UInt8)
-  case release(UInt8)
-}
-
 /// The data bank representing the noise gate parameters.
 @KatanaBank
 public struct NoiseGateBank: Sendable, Hashable {
