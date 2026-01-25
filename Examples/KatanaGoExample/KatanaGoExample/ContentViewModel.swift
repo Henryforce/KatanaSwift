@@ -50,7 +50,7 @@ final class ContentViewModel {
     Task {
       do {
         print("🎸 Switching to Preset 1A...")
-        try await device.write(.selectPreset(.preset1A))
+//        try await device.write(.selectPreset(.preset1A))
       } catch {
         print("❌ Error: \(error)")
       }
@@ -62,71 +62,71 @@ final class ContentViewModel {
     Task {
       do {
         print("🎸 Switching to Preset 3A...")
-        try await device.write(.selectPreset(.preset3A))
+//        try await device.write(.selectPreset(.preset3A))
       } catch {
         print("❌ Error: \(error)")
       }
     }
   }
 
-  func updateVolume(_ value: Int) {
-    guard let device else { return }
-    Task {
-      do {
-        print("🔊 Updating Volume to \(value)...")
-        try await device.write(.amp(.volume(UInt8(value))))
-      } catch {
-        print("❌ Error: \(error)")
-      }
-    }
-  }
+//  func updateVolume(_ value: Int) {
+//    guard let device else { return }
+//    Task {
+//      do {
+//        print("🔊 Updating Volume to \(value)...")
+////        try await device.write(.amp(.volume(UInt8(value))))
+//      } catch {
+//        print("❌ Error: \(error)")
+//      }
+//    }
+//  }
 
-  func updateDeviceVolume(_ value: Int) {
-    guard let device else { return }
-    Task {
-      do {
-        print("🔊 Updating Volume to \(value)...")
-        try await device.write(.amp(.volume(UInt8(value))))
-      } catch {
-        print("❌ Error: \(error)")
-      }
-    }
-  }
+//  func updateDeviceVolume(_ value: Int) {
+//    guard let device else { return }
+//    Task {
+//      do {
+//        print("🔊 Updating Volume to \(value)...")
+////        try await device.write(.amp(.volume(UInt8(value))))
+//      } catch {
+//        print("❌ Error: \(error)")
+//      }
+//    }
+//  }
 
-  func updateDeviceGain(_ value: Int) {
-    guard let device else { return }
-    Task {
-      do {
-        print("🔊 Updating Gain to \(value)...")
-        try await device.write(.amp(.gain(UInt8(value))))
-      } catch {
-        print("❌ Error: \(error)")
-      }
-    }
-  }
-  func updateBoost(_ parameter: BoostParameter) {
-    guard let device else { return }
-    Task {
-      do {
-        print("🎸 Updating Boost \(parameter)...")
-        try await device.write(.boost(parameter))
-      } catch {
-        print("❌ Error: \(error)")
-      }
-    }
-  }
+//  func updateDeviceGain(_ value: Int) {
+//    guard let device else { return }
+//    Task {
+//      do {
+//        print("🔊 Updating Gain to \(value)...")
+////        try await device.write(.amp(.gain(UInt8(value))))
+//      } catch {
+//        print("❌ Error: \(error)")
+//      }
+//    }
+//  }
+//  func updateBoost(_ parameter: BoostParameter) {
+//    guard let device else { return }
+//    Task {
+//      do {
+//        print("🎸 Updating Boost \(parameter)...")
+//        try await device.write(.boost(parameter))
+//      } catch {
+//        print("❌ Error: \(error)")
+//      }
+//    }
+//  }
 
-  func updateAmp(_ parameter: AmpParameter) {
-    guard let device else { return }
-    Task {
-      do {
-        print("🎸 Updating Amp \(parameter)...")
-        try await device.write(.amp(parameter))
-      } catch {
-        print("❌ Error: \(error)")
-      }
-    }
-  }
+//  func updateAmp(_ parameter: AmpParameter) {
+//    guard let device else { return }
+//    Task {
+//      do {
+//        print("🎸 Updating Amp \(parameter)...")
+//        try await device.write(.amp(parameter))
+//      } catch {
+//        print("❌ Error: \(error)")
+//      }
+//    }
+//  }
 
   func updateAmpBank(_ bank: AmpBank) {
     guard let device else { return }
@@ -139,29 +139,77 @@ final class ContentViewModel {
       }
     }
   }
-
-  func updateMod(_ parameter: ModFxParameter) {
+  
+  func enableFx(_ enabled: Bool, id: BankID) {
     guard let device else { return }
     Task {
       do {
-        print("🎸 Updating MOD \(parameter)...")
-        try await device.write(.mod(parameter))
+        print("🎸 Updating Fx enablement \(id)...")
+        try await device.enableFx(enabled, id: id)
+      } catch {
+        print("❌ Error: \(error)")
+      }
+    }
+  }
+  
+  func selectFxType(_ type: ModFxType, id: BankID) {
+    guard let device else { return }
+    Task {
+      do {
+        print("🎸 Select ModFx \(type), \(id)...")
+        try await device.selectFxType(type, id: id)
+      } catch {
+        print("❌ Error: \(error)")
+      }
+    }
+  }
+  
+  func updateWritableBank<T: WritableBank>(_ bank: T) {
+    guard let device else { return }
+    Task {
+      do {
+        print("🎸 Updating bank \(bank)...")
+        try await device.writeBank(bank)
+      } catch {
+        print("❌ Error: \(error)")
+      }
+    }
+  }
+  
+  func updateWritableBank<T: WritableFxBank>(_ bank: T, id: BankID) {
+    guard let device else { return }
+    Task {
+      do {
+        print("🎸 Updating bank \(bank)...")
+        try await device.writeFxBank(bank, id: id)
       } catch {
         print("❌ Error: \(error)")
       }
     }
   }
 
-  func updateFx(_ parameter: ModFxParameter) {
-    guard let device else { return }
-    Task {
-      do {
-        print("🎸 Updating FX \(parameter)...")
-        try await device.write(.fx(parameter))
-      } catch {
-        print("❌ Error: \(error)")
-      }
-    }
-  }
+//  func updateMod(_ parameter: ModFxParameter) {
+//    guard let device else { return }
+//    Task {
+//      do {
+//        print("🎸 Updating MOD \(parameter)...")
+//        try await device.write(.mod(parameter))
+//      } catch {
+//        print("❌ Error: \(error)")
+//      }
+//    }
+//  }
+
+//  func updateFx(_ parameter: ModFxParameter) {
+//    guard let device else { return }
+//    Task {
+//      do {
+//        print("🎸 Updating FX \(parameter)...")
+//        try await device.write(.fx(parameter))
+//      } catch {
+//        print("❌ Error: \(error)")
+//      }
+//    }
+//  }
 
 }

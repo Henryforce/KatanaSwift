@@ -22,6 +22,19 @@ public protocol KatanaGo: Actor {
   /// - Parameter bank: The bank of parameters to send to the device.
   func writeBank(_ bank: WritableBank) async throws
 
+  /// Write a bank of parameters to the device.
+  /// - Parameter bank: The bank of parameters to send to the device.
+  func writeFxBank(_ bank: WritableFxBank, id: BankID) async throws
+
+  /// Enable or disable the FX bank.
+  /// - Parameter enabled: The bank of parameters to send to the device.
+  func enableFx(_ enabled: Bool, id: BankID) async throws
+
+  /// Select the FX type.
+  /// - Parameter type: The FX type to select.
+  /// - Parameter id: The bank ID.
+  func selectFxType(_ type: ModFxType, id: BankID) async throws
+
   /// Provides a stream of data received from the device.
   /// - Returns: An AsyncStream of KatanaGoReadData.
   func read() -> AsyncStream<KatanaGoReadData>

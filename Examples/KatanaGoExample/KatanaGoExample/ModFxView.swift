@@ -6,16 +6,13 @@
 //
 
 import KatanaGoData
+import KatanaFx
 import SwiftUI
-
-enum ModFxMode: String {
-  case mod = "MOD"
-  case fx = "FX"
-}
+import KatanaCore
 
 struct ModFxView: View {
   var viewModel: ContentViewModel
-  let mode: ModFxMode
+  let id: BankID
 
   @State private var isEnabled = false
   @State private var type = ModFxType.chorus
@@ -26,7 +23,8 @@ struct ModFxView: View {
         Section("General") {
           Toggle("Enabled", isOn: $isEnabled)
             .onChange(of: isEnabled) { _, newValue in
-              updateParameter(.enable(newValue))
+              print("Dog")
+              viewModel.enableFx(newValue, id: id)
             }
 
           Picker("Type", selection: $type) {
@@ -35,42 +33,13 @@ struct ModFxView: View {
             }
           }
           .onChange(of: type) { _, newValue in
-            updateParameter(.type(newValue))
+            viewModel.selectFxType(type, id: id)
           }
         }
 
-        switch type {
-        case .chorus: ChorusView(onUpdate: updateParameter)
-        case .flanger: FlangerView(onUpdate: updateParameter)
-        case .phaser: PhaserView(onUpdate: updateParameter)
-        case .uniV: UniVibeView(onUpdate: updateParameter)
-        case .tremolo: TremoloView(onUpdate: updateParameter)
-        case .vibrato: VibratoView(onUpdate: updateParameter)
-        case .rotary: RotaryView(onUpdate: updateParameter)
-        case .ringMod: RingModView(onUpdate: updateParameter)
-        case .slowGear: SlowGearView(onUpdate: updateParameter)
-        case .slicer: SlicerView(onUpdate: updateParameter)
-        case .comp: CompressorView(onUpdate: updateParameter)
-        case .limiter: LimiterView(onUpdate: updateParameter)
-        case .tWah: TWahView(onUpdate: updateParameter)
-        case .autoWah: AutoWahView(onUpdate: updateParameter)
-        case .graphicEQ: GraphicEQView(onUpdate: updateParameter)
-        case .parametricEQ: ParametricEQView(onUpdate: updateParameter)
-        case .guitarSim: GuitarSimView(onUpdate: updateParameter)
-        case .acSim: ACSimView(onUpdate: updateParameter)
-        case .acousticPro: AcousticProView(onUpdate: updateParameter)
-        case .waveSynth: WaveSynthView(onUpdate: updateParameter)
-        case .octave: OctaverView(onUpdate: updateParameter)
-        case .heavyOctave: HeavyOctaveView(onUpdate: updateParameter)
-        case .pitchShifter: PitchShifterView(onUpdate: updateParameter)
-        case .harmonist: HarmonistView(onUpdate: updateParameter)
-        case .humanizer: HumanizerView(onUpdate: updateParameter)
-        case .phaser90E: Phaser90EView(onUpdate: updateParameter)
-        case .flanger117E: Flanger117EView(onUpdate: updateParameter)
-        case .dc30: DC30View(onUpdate: updateParameter)
-        }
+        buildViewFromType(type)
       }
-      .navigationTitle("\(mode.rawValue) Settings")
+      .navigationTitle("Settings \(id.name)")
       .toolbar {
         ToolbarItem(placement: .confirmationAction) {
           Button("Done") {
@@ -82,13 +51,56 @@ struct ModFxView: View {
   }
 
   @Environment(\.dismiss) private var dismissAction
+  
+  @ViewBuilder
+  private func buildViewFromType(_ type: ModFxType) -> some View {
+    switch type {
+    case .chorus: ChorusView(onUpdate: updateBank)
+    case .flanger: FlangerView(onUpdate: updateBank)
+    case .phaser: PhaserView(onUpdate: updateBank)
+    case .uniV: UniVibeView(onUpdate: updateBank)
+    case .tremolo: TremoloView(onUpdate: updateBank)
+    case .vibrato: VibratoView(onUpdate: updateBank)
+    case .rotary: RotaryView(onUpdate: updateBank)
+    case .ringMod: RingModView(onUpdate: updateBank)
+    case .slowGear: SlowGearView(onUpdate: updateBank)
+    case .slicer: SlicerView(onUpdate: updateBank)
+    case .comp: CompressorView(onUpdate: updateBank)
+    case .limiter: LimiterView(onUpdate: updateBank)
+    case .tWah: TWahView(onUpdate: updateBank)
+    case .autoWah: AutoWahView(onUpdate: updateBank)
+    case .graphicEQ: GraphicEQView(onUpdate: updateNormalBank)
+    case .parametricEQ: ParametricEQView(onUpdate: updateNormalBank)
+    case .guitarSim: GuitarSimView(onUpdate: updateBank)
+    case .acSim: ACSimView(onUpdate: updateBank)
+    case .acousticPro: AcousticProView(onUpdate: updateBank)
+    case .waveSynth: WaveSynthView(onUpdate: updateBank)
+    case .octave: OctaverView(onUpdate: updateBank)
+    case .heavyOctave: HeavyOctaveView(onUpdate: updateBank)
+    case .pitchShifter: PitchShifterView(onUpdate: updateBank)
+    case .harmonist: HarmonistView(onUpdate: updateBank)
+    case .humanizer: HumanizerView(onUpdate: updateBank)
+    case .phaser90E: Phaser90EView(onUpdate: updateBank)
+    case .flanger117E: Flanger117EView(onUpdate: updateBank)
+    case .dc30: DC30View(onUpdate: updateBank)
+    }
+  }
+  
+  private func updateBank(_ bank: WritableFxBank) {
+    viewModel.updateWritableBank(bank, id: id)
+  }
+  
+  private func updateNormalBank(_ bank: WritableBank) {
+    viewModel.updateWritableBank(bank)
+  }
+}
 
-  private func updateParameter(_ parameter: ModFxParameter) {
-    switch mode {
-    case .mod:
-      viewModel.updateMod(parameter)
-    case .fx:
-      viewModel.updateFx(parameter)
+extension BankID {
+  var name: String {
+    switch self {
+    case .id1: "MOD"
+    case .id2: "FX"
+    default: ""
     }
   }
 }

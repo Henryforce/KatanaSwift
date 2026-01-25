@@ -35,7 +35,7 @@ struct BoostView: View {
         Section("General") {
           Toggle("Enabled", isOn: $isEnabled)
             .onChange(of: isEnabled) { _, newValue in
-              viewModel.updateBoost(.enable(newValue))
+              viewModel.updateWritableBank(BoostBank(status: newValue))
             }
 
           Picker("Type", selection: $type) {
@@ -44,40 +44,40 @@ struct BoostView: View {
             }
           }
           .onChange(of: type) { _, newValue in
-            viewModel.updateBoost(.type(newValue))
+            viewModel.updateWritableBank(BoostBank(type: newValue))
           }
         }
 
         Section("Parameters") {
           parameterSlider(title: "Drive", value: $drive, range: driveRange) {
-            viewModel.updateBoost(.drive(UInt8($0)))
+            viewModel.updateWritableBank(BoostBank(drive: UInt8($0)))
           }
 
           parameterSlider(title: "Bottom", value: $bottom, range: bottomRange) {
-            viewModel.updateBoost(.bottom(UInt8($0)))
+            viewModel.updateWritableBank(BoostBank(bottom: UInt8($0)))
           }
 
           parameterSlider(title: "Tone", value: $tone, range: toneRange) {
-            viewModel.updateBoost(.tone(UInt8($0)))
+            viewModel.updateWritableBank(BoostBank(tone: UInt8($0)))
           }
 
           parameterSlider(title: "Effect Level", value: $effectLevel, range: effectLevelRange) {
-            viewModel.updateBoost(.effectLevel(UInt8($0)))
+            viewModel.updateWritableBank(BoostBank(effectLevel: UInt8($0)))
           }
 
           parameterSlider(title: "Direct Mix", value: $directMix, range: directMixRange) {
-            viewModel.updateBoost(.directMix(UInt8($0)))
+            viewModel.updateWritableBank(BoostBank(directMix: UInt8($0)))
           }
         }
 
         Section("Solo") {
           Toggle("Solo Switch", isOn: $soloSwitchEnable)
             .onChange(of: soloSwitchEnable) { _, newValue in
-              viewModel.updateBoost(.soloSwitchEnable(newValue))
+              viewModel.updateWritableBank(BoostBank(soloSwitchStatus: newValue))
             }
 
           parameterSlider(title: "Solo Level", value: $soloLevel, range: soloLevelRange) {
-            viewModel.updateBoost(.soloLevel(UInt8($0)))
+            viewModel.updateWritableBank(BoostBank(soloLevel: UInt8($0)))
           }
         }
       }

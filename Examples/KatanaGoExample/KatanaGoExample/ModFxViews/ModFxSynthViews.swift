@@ -1,4 +1,7 @@
 import KatanaGoData
+import KatanaFx
+import KatanaCore
+import KatanaEQ
 import SwiftUI
 
 struct GuitarSimView: View {
@@ -8,7 +11,7 @@ struct GuitarSimView: View {
   @State private var bodyVal: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("Guitar Sim Parameters") {
@@ -18,19 +21,19 @@ struct GuitarSimView: View {
         }
       }
       .onChange(of: type) { _, newValue in
-        onUpdate(.guitarSim(.type(newValue)))
+        onUpdate(GuitarSimBank(type: newValue))
       }
       ParameterSlider(title: "Low", value: $low, range: 0...100) {
-        onUpdate(.guitarSim(.low(UInt8($0))))
+        onUpdate(GuitarSimBank(low: UInt8($0)))
       }
       ParameterSlider(title: "High", value: $high, range: 0...100) {
-        onUpdate(.guitarSim(.high(UInt8($0))))
+        onUpdate(GuitarSimBank(high: UInt8($0)))
       }
       ParameterSlider(title: "Body", value: $bodyVal, range: 0...100) {
-        onUpdate(.guitarSim(.body(UInt8($0))))
+        onUpdate(GuitarSimBank(body: UInt8($0)))
       }
       ParameterSlider(title: "Level", value: $level, range: 0...100) {
-        onUpdate(.guitarSim(.level(UInt8($0))))
+        onUpdate(GuitarSimBank(level: UInt8($0)))
       }
     }
   }
@@ -42,21 +45,21 @@ struct ACSimView: View {
   @State private var low: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("AC Sim Parameters") {
       ParameterSlider(title: "High", value: $high, range: 0...100) {
-        onUpdate(.acSim(.high(UInt8($0))))
+        onUpdate(ACSimBank(high: UInt8($0)))
       }
       ParameterSlider(title: "Body", value: $bodyVal, range: 0...100) {
-        onUpdate(.acSim(.body(UInt8($0))))
+        onUpdate(ACSimBank(body: UInt8($0)))
       }
       ParameterSlider(title: "Low", value: $low, range: 0...100) {
-        onUpdate(.acSim(.low(UInt8($0))))
+        onUpdate(ACSimBank(low: UInt8($0)))
       }
       ParameterSlider(title: "Level", value: $level, range: 0...100) {
-        onUpdate(.acSim(.level(UInt8($0))))
+        onUpdate(ACSimBank(level: UInt8($0)))
       }
     }
   }
@@ -71,7 +74,7 @@ struct AcousticProView: View {
   @State private var presence: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("Acoustic Pro Parameters") {
@@ -81,13 +84,13 @@ struct AcousticProView: View {
         }
       }
       .onChange(of: type) { _, newValue in
-        onUpdate(.acousticPro(.type(newValue)))
+        onUpdate(AcousticProBank(type: newValue))
       }
       ParameterSlider(title: "Bass", value: $bass, range: 0...100) {
-        onUpdate(.acousticPro(.bass(UInt8($0))))
+        onUpdate(AcousticProBank(bass: UInt8($0)))
       }
       ParameterSlider(title: "Middle", value: $middle, range: 0...100) {
-        onUpdate(.acousticPro(.middle(UInt8($0))))
+        onUpdate(AcousticProBank(middle: UInt8($0)))
       }
       Picker("Mid Frequency", selection: $midFrequency) {
         ForEach(EQFrequency.allCases, id: \.self) { type in
@@ -95,16 +98,16 @@ struct AcousticProView: View {
         }
       }
       .onChange(of: midFrequency) { _, newValue in
-        onUpdate(.acousticPro(.midFrequency(newValue)))
+        onUpdate(AcousticProBank(midFrequency: newValue))
       }
       ParameterSlider(title: "Treble", value: $treble, range: 0...100) {
-        onUpdate(.acousticPro(.treble(UInt8($0))))
+        onUpdate(AcousticProBank(treble: UInt8($0)))
       }
       ParameterSlider(title: "Presence", value: $presence, range: 0...100) {
-        onUpdate(.acousticPro(.presence(UInt8($0))))
+        onUpdate(AcousticProBank(presence: UInt8($0)))
       }
       ParameterSlider(title: "Level", value: $level, range: 0...100) {
-        onUpdate(.acousticPro(.level(UInt8($0))))
+        onUpdate(AcousticProBank(level: UInt8($0)))
       }
     }
   }
@@ -120,7 +123,7 @@ struct WaveSynthView: View {
   @State private var synthLevel: Double = 50
   @State private var directMix: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("Wave Synth Parameters") {
@@ -130,28 +133,28 @@ struct WaveSynthView: View {
         }
       }
       .onChange(of: type) { _, newValue in
-        onUpdate(.waveSynth(.type(newValue)))
+        onUpdate(WaveSynthBank(type: newValue))
       }
       ParameterSlider(title: "Cutoff", value: $cutoff, range: 0...100) {
-        onUpdate(.waveSynth(.cutoff(UInt8($0))))
+        onUpdate(WaveSynthBank(cutoff: UInt8($0)))
       }
       ParameterSlider(title: "Resonance", value: $resonance, range: 0...100) {
-        onUpdate(.waveSynth(.resonance(UInt8($0))))
+        onUpdate(WaveSynthBank(resonance: UInt8($0)))
       }
       ParameterSlider(title: "Filter Sens", value: $filterSens, range: 0...100) {
-        onUpdate(.waveSynth(.filterSens(UInt8($0))))
+        onUpdate(WaveSynthBank(filterSens: UInt8($0)))
       }
       ParameterSlider(title: "Filter Decay", value: $filterDecay, range: 0...100) {
-        onUpdate(.waveSynth(.filterDecay(UInt8($0))))
+        onUpdate(WaveSynthBank(filterDecay: UInt8($0)))
       }
       ParameterSlider(title: "Filter Depth", value: $filterDepth, range: 0...100) {
-        onUpdate(.waveSynth(.filterDepth(UInt8($0))))
+        onUpdate(WaveSynthBank(filterDepth: UInt8($0)))
       }
       ParameterSlider(title: "Synth Level", value: $synthLevel, range: 0...100) {
-        onUpdate(.waveSynth(.synthLevel(UInt8($0))))
+        onUpdate(WaveSynthBank(synthLevel: UInt8($0)))
       }
       ParameterSlider(title: "Direct Mix", value: $directMix, range: 0...100) {
-        onUpdate(.waveSynth(.directMix(UInt8($0))))
+        onUpdate(WaveSynthBank(directMix: UInt8($0)))
       }
     }
   }

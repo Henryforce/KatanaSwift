@@ -114,6 +114,37 @@ public actor KatanaGoMIDIKit: KatanaGo {
     try await writeBank(bank, addressModifiers: 0x20_00_00_00)
   }
 
+  public func writeFxBank(_ bank: WritableFxBank, id: BankID) async throws {
+    for writeData in bank.loadWriteData() {
+      let address = writeData.id.address
+      let data = writeData.data
+
+      let bytes = finalizeSysex(addressBytes: address, data: data)
+      print("Writing bytes: \(bytes)")
+      try writeRawBytes(bytes)
+    }
+  }
+
+  /// Enable or disable the FX bank.
+  /// - Parameter enabled: The bank of parameters to send to the device.
+  public func enableFx(_ enabled: Bool, id: BankID) async throws {
+    var address: UInt32 = 0x20_00_30_01
+    if id == .id2 {
+      address |= 0x20_00_30_02
+    }
+    let bytes = finalizeSysex(address: address, data: [enabled ? 0x01 : 0x00])
+    try writeRawBytes(bytes)
+  }
+
+  public func selectFxType(_ type: ModFxType, id: BankID) async throws {
+    var address: UInt32 = 0x20_00_60_00
+    if id == .id2 {
+      address |= 0x20_00_70_00
+    }
+    let bytes = finalizeSysex(address: address, data: [type.rawValue])
+    try writeRawBytes(bytes)
+  }
+
   // public func writeFxBank(_ bank: ModFxBank, id: BankID) async throws {
   //   let idModifier = id.fxOffset
   //   try await writeBank(bank, addressModifiers: 0x20_00_00_00 | idModifier)
@@ -155,6 +186,13 @@ public actor KatanaGoMIDIKit: KatanaGo {
       UInt8((address >> 24) & 0xFF), UInt8((address >> 16) & 0xFF), UInt8((address >> 8) & 0xFF),
       UInt8(address & 0xFF),
     ]
+    let body = addressBytes + data
+    let checksum = calculateChecksum(for: body)
+    return prefix + body + [checksum, 0xf7]
+  }
+
+  private func finalizeSysex(addressBytes: [UInt8], data: [UInt8]) -> [UInt8] {
+    let prefix: [UInt8] = [0xf0, 0x41, 0x10, 0x01, 0x05, 0x0d, 0x12]
     let body = addressBytes + data
     let checksum = calculateChecksum(for: body)
     return prefix + body + [checksum, 0xf7]

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import KatanaGoData
 
 struct ContentView: View {
   @State var viewModel = ContentViewModel()
@@ -44,32 +45,21 @@ struct ContentView: View {
       VStack {
         Text("Volume: \(Int(volume))")
         Slider(value: $volume, in: 0...100)
-        // .onChange(of: volume) { oldValue, newValue in
-        //   viewModel.updateVolume(Int(newValue))
-        // }
+         .onChange(of: volume) { oldValue, newValue in
+           viewModel.updateWritableBank(AmpBank(volume: UInt8(newValue)))
+         }
       }
       .padding()
-
-      Button {
-        viewModel.updateDeviceVolume(Int(volume))
-      } label: {
-        Text("Update Volume")
-      }
 
       VStack {
         Text("Gain: \(Int(gain))")
         Slider(value: $gain, in: 0...100)
-        // .onChange(of: volume) { oldValue, newValue in
-        //   viewModel.updateVolume(Int(newValue))
-        // }
+         .onChange(of: volume) { oldValue, newValue in
+           viewModel.updateWritableBank(AmpBank(gain: UInt8(newValue)))
+         }
       }
       .padding()
 
-      Button {
-        viewModel.updateDeviceGain(Int(gain))
-      } label: {
-        Text("Update Gain")
-      }
       Button {
         showBoostSettings = true
       } label: {
@@ -120,10 +110,10 @@ struct ContentView: View {
       AmpView(viewModel: viewModel)
     }
     .sheet(isPresented: $showModSettings) {
-      ModFxView(viewModel: viewModel, mode: .mod)
+      ModFxView(viewModel: viewModel, id: .id1)
     }
     .sheet(isPresented: $showFxSettings) {
-      ModFxView(viewModel: viewModel, mode: .fx)
+      ModFxView(viewModel: viewModel, id: .id2)
     }
   }
 }

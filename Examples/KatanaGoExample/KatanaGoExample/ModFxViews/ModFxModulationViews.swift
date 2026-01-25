@@ -1,5 +1,7 @@
 import KatanaGoData
+import KatanaFx
 import SwiftUI
+import KatanaCore
 
 struct ChorusView: View {
   @State private var crossoverFrequency: Double = 50
@@ -13,39 +15,39 @@ struct ChorusView: View {
   @State private var highLevel: Double = 50
   @State private var directMix: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("Chorus Parameters") {
       ParameterSlider(title: "Crossover Frequency", value: $crossoverFrequency, range: 0...100) {
-        onUpdate(.chorus(.crossoverFrequency(UInt8($0))))
+        onUpdate(ChorusBank(crossoverFrequency: UInt8($0)))
       }
       ParameterSlider(title: "Low Rate", value: $lowRate, range: 0...100) {
-        onUpdate(.chorus(.lowRate(UInt8($0))))
+        onUpdate(ChorusBank(lowRate: UInt8($0)))
       }
       ParameterSlider(title: "Low Depth", value: $lowDepth, range: 0...100) {
-        onUpdate(.chorus(.lowDepth(UInt8($0))))
+        onUpdate(ChorusBank(lowDepth: UInt8($0)))
       }
       ParameterSlider(title: "Low Pre-Delay", value: $lowPreDelay, range: 0...80) {
-        onUpdate(.chorus(.lowPreDelay(UInt8($0))))
+        onUpdate(ChorusBank(lowPreDelay: UInt8($0)))
       }
       ParameterSlider(title: "Low Level", value: $lowLevel, range: 0...100) {
-        onUpdate(.chorus(.lowLevel(UInt8($0))))
+        onUpdate(ChorusBank(lowLevel: UInt8($0)))
       }
       ParameterSlider(title: "High Rate", value: $highRate, range: 0...100) {
-        onUpdate(.chorus(.highRate(UInt8($0))))
+        onUpdate(ChorusBank(highRate: UInt8($0)))
       }
       ParameterSlider(title: "High Depth", value: $highDepth, range: 0...100) {
-        onUpdate(.chorus(.highDepth(UInt8($0))))
+        onUpdate(ChorusBank(highDepth: UInt8($0)))
       }
       ParameterSlider(title: "High Pre-Delay", value: $highPreDelay, range: 0...80) {
-        onUpdate(.chorus(.highPreDelay(UInt8($0))))
+        onUpdate(ChorusBank(highPreDelay: UInt8($0)))
       }
       ParameterSlider(title: "High Level", value: $highLevel, range: 0...100) {
-        onUpdate(.chorus(.highLevel(UInt8($0))))
+        onUpdate(ChorusBank(highLevel: UInt8($0)))
       }
       ParameterSlider(title: "Direct Mix", value: $directMix, range: 0...100) {
-        onUpdate(.chorus(.directMix(UInt8($0))))
+        onUpdate(ChorusBank(directMix: UInt8($0)))
       }
     }
   }
@@ -60,21 +62,21 @@ struct FlangerView: View {
   @State private var effectLevel: Double = 50
   @State private var directLevel: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("Flanger Parameters") {
       ParameterSlider(title: "Rate", value: $rate, range: 0...100) {
-        onUpdate(.flanger(.rate(UInt8($0))))
+        onUpdate(FlangerBank(rate: UInt8($0)))
       }
       ParameterSlider(title: "Depth", value: $depth, range: 0...100) {
-        onUpdate(.flanger(.depth(UInt8($0))))
+        onUpdate(FlangerBank(depth: UInt8($0)))
       }
       ParameterSlider(title: "Manual", value: $manual, range: 0...100) {
-        onUpdate(.flanger(.manual(UInt8($0))))
+        onUpdate(FlangerBank(manual: UInt8($0)))
       }
       ParameterSlider(title: "Resonance", value: $resonance, range: 0...100) {
-        onUpdate(.flanger(.resonance(UInt8($0))))
+        onUpdate(FlangerBank(resonance: UInt8($0)))
       }
       Picker("Low Cut", selection: $lowCut) {
         ForEach(FlangerLowCut.allCases, id: \.self) { type in
@@ -82,13 +84,13 @@ struct FlangerView: View {
         }
       }
       .onChange(of: lowCut) { _, newValue in
-        onUpdate(.flanger(.lowCut(newValue)))
+        onUpdate(FlangerBank(lowCut: newValue))
       }
       ParameterSlider(title: "Effect Level", value: $effectLevel, range: 0...100) {
-        onUpdate(.flanger(.effectLevel(UInt8($0))))
+        onUpdate(FlangerBank(effectLevel: UInt8($0)))
       }
       ParameterSlider(title: "Direct Level", value: $directLevel, range: 0...100) {
-        onUpdate(.flanger(.directLevel(UInt8($0))))
+        onUpdate(FlangerBank(directLevel: UInt8($0)))
       }
     }
   }
@@ -104,7 +106,7 @@ struct PhaserView: View {
   @State private var effectLevel: Double = 50
   @State private var directLevel: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("Phaser Parameters") {
@@ -114,28 +116,28 @@ struct PhaserView: View {
         }
       }
       .onChange(of: type) { _, newValue in
-        onUpdate(.phaser(.type(newValue)))
+        onUpdate(PhaserBank(type: newValue))
       }
       ParameterSlider(title: "Rate", value: $rate, range: 0...100) {
-        onUpdate(.phaser(.rate(UInt8($0))))
+        onUpdate(PhaserBank(rate: UInt8($0)))
       }
       ParameterSlider(title: "Depth", value: $depth, range: 0...100) {
-        onUpdate(.phaser(.depth(UInt8($0))))
+        onUpdate(PhaserBank(depth: UInt8($0)))
       }
       ParameterSlider(title: "Manual", value: $manual, range: 0...100) {
-        onUpdate(.phaser(.manual(UInt8($0))))
+        onUpdate(PhaserBank(manual: UInt8($0)))
       }
       ParameterSlider(title: "Resonance", value: $resonance, range: 0...100) {
-        onUpdate(.phaser(.resonance(UInt8($0))))
+        onUpdate(PhaserBank(resonance: UInt8($0)))
       }
       ParameterSlider(title: "Step Rate", value: $stepRate, range: 0...100) {
-        onUpdate(.phaser(.stepRate(UInt8($0))))
+        onUpdate(PhaserBank(stepRate: UInt8($0)))
       }
       ParameterSlider(title: "Effect Level", value: $effectLevel, range: 0...100) {
-        onUpdate(.phaser(.effectLevel(UInt8($0))))
+        onUpdate(PhaserBank(effectLevel: UInt8($0)))
       }
       ParameterSlider(title: "Direct Level", value: $directLevel, range: 0...100) {
-        onUpdate(.phaser(.directLevel(UInt8($0))))
+        onUpdate(PhaserBank(directLevel: UInt8($0)))
       }
     }
   }
@@ -146,18 +148,18 @@ struct UniVibeView: View {
   @State private var depth: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("Uni-Vibe Parameters") {
       ParameterSlider(title: "Rate", value: $rate, range: 0...100) {
-        onUpdate(.uniVibe(.rate(UInt8($0))))
+        onUpdate(UniVibeBank(rate: UInt8($0)))
       }
       ParameterSlider(title: "Depth", value: $depth, range: 0...100) {
-        onUpdate(.uniVibe(.depth(UInt8($0))))
+        onUpdate(UniVibeBank(depth: UInt8($0)))
       }
       ParameterSlider(title: "Level", value: $level, range: 0...100) {
-        onUpdate(.uniVibe(.level(UInt8($0))))
+        onUpdate(UniVibeBank(level: UInt8($0)))
       }
     }
   }
@@ -169,21 +171,21 @@ struct TremoloView: View {
   @State private var depth: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("Tremolo Parameters") {
       ParameterSlider(title: "Wave Shape", value: $waveShape, range: 0...100) {
-        onUpdate(.tremolo(.waveShape(UInt8($0))))
+        onUpdate(TremoloBank(waveShape: UInt8($0)))
       }
       ParameterSlider(title: "Rate", value: $rate, range: 0...100) {
-        onUpdate(.tremolo(.rate(UInt8($0))))
+        onUpdate(TremoloBank(rate: UInt8($0)))
       }
       ParameterSlider(title: "Depth", value: $depth, range: 0...100) {
-        onUpdate(.tremolo(.depth(UInt8($0))))
+        onUpdate(TremoloBank(depth: UInt8($0)))
       }
       ParameterSlider(title: "Level", value: $level, range: 0...100) {
-        onUpdate(.tremolo(.level(UInt8($0))))
+        onUpdate(TremoloBank(level: UInt8($0)))
       }
     }
   }
@@ -194,18 +196,18 @@ struct VibratoView: View {
   @State private var depth: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("Vibrato Parameters") {
       ParameterSlider(title: "Rate", value: $rate, range: 0...100) {
-        onUpdate(.vibrato(.rate(UInt8($0))))
+        onUpdate(VibratoBank(rate: UInt8($0)))
       }
       ParameterSlider(title: "Depth", value: $depth, range: 0...100) {
-        onUpdate(.vibrato(.depth(UInt8($0))))
+        onUpdate(VibratoBank(depth: UInt8($0)))
       }
       ParameterSlider(title: "Level", value: $level, range: 0...100) {
-        onUpdate(.vibrato(.level(UInt8($0))))
+        onUpdate(VibratoBank(level: UInt8($0)))
       }
     }
   }
@@ -216,18 +218,18 @@ struct RotaryView: View {
   @State private var depth: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("Rotary Parameters") {
       ParameterSlider(title: "Rate", value: $rate, range: 0...100) {
-        onUpdate(.rotary(.rate(UInt8($0))))
+        onUpdate(RotaryBank(rate: UInt8($0)))
       }
       ParameterSlider(title: "Depth", value: $depth, range: 0...100) {
-        onUpdate(.rotary(.depth(UInt8($0))))
+        onUpdate(RotaryBank(depth: UInt8($0)))
       }
       ParameterSlider(title: "Level", value: $level, range: 0...100) {
-        onUpdate(.rotary(.level(UInt8($0))))
+        onUpdate(RotaryBank(level: UInt8($0)))
       }
     }
   }
@@ -239,7 +241,7 @@ struct RingModView: View {
   @State private var effectLevel: Double = 50
   @State private var directMix: Double = 50
 
-  let onUpdate: (ModFxParameter) -> Void
+  let onUpdate: (WritableFxBank) -> Void
 
   var body: some View {
     Section("Ring Mod Parameters") {
@@ -249,16 +251,16 @@ struct RingModView: View {
         }
       }
       .onChange(of: mode) { _, newValue in
-        onUpdate(.ringMod(.mode(newValue)))
+        onUpdate(RingModBank(mode: newValue))
       }
       ParameterSlider(title: "Frequency", value: $frequency, range: 0...100) {
-        onUpdate(.ringMod(.frequency(UInt8($0))))
+        onUpdate(RingModBank(frequency: UInt8($0)))
       }
       ParameterSlider(title: "Effect Level", value: $effectLevel, range: 0...100) {
-        onUpdate(.ringMod(.effectLevel(UInt8($0))))
+        onUpdate(RingModBank(effectLevel: UInt8($0)))
       }
       ParameterSlider(title: "Direct Mix", value: $directMix, range: 0...100) {
-        onUpdate(.ringMod(.directMix(UInt8($0))))
+        onUpdate(RingModBank(directMix: UInt8($0)))
       }
     }
   }
