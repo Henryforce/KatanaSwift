@@ -3,15 +3,18 @@ import KatanaEQ
 import KatanaFx
 import KatanaMacros
 
-/// The data bank representing the solo parameters.
 @KatanaBank
-public struct SoloBank: Sendable, Hashable {
+public struct SoloSwitchLevelBank: Sendable, Hashable {
   @Parameter(at: 0x20_01_50_00)
   public var status: Bool = false
 
   @IntegerParameter(at: 0x20_01_50_01, range: 0...100)
   public var level: UInt8 = 50
+}
 
+/// The data bank representing the solo parameters.
+@KatanaBank
+public struct SoloBank: Sendable, Hashable {
   @Parameter(at: 0x20_01_60_00)
   public var eqPosition: EQPosition = .ampIn
 

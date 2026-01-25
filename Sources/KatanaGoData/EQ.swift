@@ -5,7 +5,8 @@ import KatanaMacros
 // MARK - EQ
 
 /// The data bank representing the equalizer parameters.
-public struct EQBank: WritableBank, Sendable, Hashable {
+@KatanaBank
+public struct EQSelectionBank: Sendable, Hashable {
   @Parameter(at: 0x20_02_60_01)
   public var status: Bool = false
 
@@ -14,44 +15,6 @@ public struct EQBank: WritableBank, Sendable, Hashable {
 
   @Parameter(at: 0x20_02_60_02)
   public var type: EQType = .parametric
-
-  public var parametric: ParametricEQBank
-
-  public var graphic: GraphicEQBank
-
-  package var writeData = [WriteData]()
-
-  // TODO
-  public init(
-    status: Bool, position: EQPosition, type: EQType, parametric: ParametricEQBank,
-    graphic: GraphicEQBank
-  ) {
-    self.status = status
-    self.position = position
-    self.type = type
-    self.parametric = parametric
-    self.graphic = graphic
-  }
-
-  public func loadWriteData() -> [WriteData] {
-    var writeData: [WriteData] = []
-    if self.$status.updated {
-      writeData.append(WriteData(address: self.$status.address, data: self.$status.value.bytes))
-    }
-    if self.$position.updated {
-      writeData.append(WriteData(address: self.$position.address, data: self.$position.value.bytes))
-    }
-    if self.$type.updated {
-      writeData.append(WriteData(address: self.$type.address, data: self.$type.value.bytes))
-    }
-    // if self.$parametric.updated {
-    //   writeData.append(WriteData(address: self.$parametric.address, data: self.$parametric.value.bytes))
-    // }
-    // if self.$graphic.updated {
-    //   writeData.append(WriteData(address: self.$graphic.address, data: self.$graphic.value.bytes))
-    // }
-    return writeData
-  }
 }
 
 /// The data bank representing the parametric equalizer parameters.

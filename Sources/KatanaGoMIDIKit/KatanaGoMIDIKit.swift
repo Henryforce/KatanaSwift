@@ -13,9 +13,9 @@ public actor KatanaGoMIDIKit: KatanaGo {
   private var inputTag: String { "KatanaGo_In_\(endpoint.uniqueID)" }
   private var outputTag: String { "KatanaGo_Out_\(endpoint.uniqueID)" }
 
-  private var continuation: AsyncStream<KatanaGoReadData>.Continuation?
+  private var continuation: AsyncStream<KatanaGoDataBank>.Continuation?
 
-  private var dataBank = DataBank(addressOffset: 0x20_00_00_00)
+  private var dataBank = DataBank()
 
   public init(endpoint: MIDIEndpointProtocol, midiManager: MIDIManagerProtocol) {
     self.endpoint = endpoint
@@ -70,29 +70,13 @@ public actor KatanaGoMIDIKit: KatanaGo {
     print("-----------------")
     for event in events {
       if case .sysEx7(let sysEx) = event {
-        // Yield common MIDI command data.
-        // For Boss devices, we often look for sysex.
-        // For now, we wrap the whole sysex payload.
-        continuation?.yield(.preset(.preset1A))  // TODO: update at some point.
-
         // Uncomment to print messages.
         print("SysEx: \(sysEx.data)")
 
-        let status = KatanaGoMIDIParser.parse(sysEx.data, into: &dataBank)
-        switch status {
-        case .invalidMessageLength:
-          print("Invalid message length")
-        case .invalidMessageCommand:
-          print("Invalid message command")
-        case .start:
-          print("Start")
-        case .processed:
-          print("Processed")
-        case .end:
-          print("End")
-
-          let katanaState = dataBank.state
-          print("Katana State: \(katanaState)")
+        let banks = KatanaGoMIDIParser.parse(sysEx.data, into: &dataBank)
+        for bank in banks {
+          print("Bank: \(bank)")
+          continuation?.yield(bank)
         }
       }
     }
@@ -140,12 +124,7 @@ public actor KatanaGoMIDIKit: KatanaGo {
     try writeRawBytes(bytes)
   }
 
-  // public func writeFxBank(_ bank: ModFxBank, id: BankID) async throws {
-  //   let idModifier = id.fxOffset
-  //   try await writeBank(bank, addressModifiers: 0x20_00_00_00 | idModifier)
-  // }
-
-  public func writeEQBank(_ bank: EQBank, id: BankID) async throws {
+  public func writeEQBank(_ bank: EQSelectionBank, id: BankID) async throws {
     let idModifier = id.eqOffset
     try await writeBank(bank, addressModifiers: 0x20_00_00_00 | idModifier)
   }
@@ -161,7 +140,7 @@ public actor KatanaGoMIDIKit: KatanaGo {
     }
   }
 
-  public func read() -> AsyncStream<KatanaGoReadData> {
+  public func read() -> AsyncStream<KatanaGoDataBank> {
     AsyncStream { continuation in
       self.continuation = continuation
     }

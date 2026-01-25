@@ -10,7 +10,13 @@ struct KatanaGoState: Sendable, Hashable {
   var delay2: DelayBank
   var reverb: ReverbBank
   var solo: SoloBank
-  var eq1: EQBank
-  var eq2: EQBank
+  var contour: ContourBank
+  var pedalFx: PedalFxBank
+  var eq1Selection: EQSelectionBank
+  var eq2Selection: EQSelectionBank
+  var eq1Parametric: ParametricEQBank
+  var eq2Parametric: ParametricEQBank
+  var eq1Graphic: GraphicEQBank
+  var eq2Graphic: GraphicEQBank
   var noiseGate: NoiseGateBank
 }

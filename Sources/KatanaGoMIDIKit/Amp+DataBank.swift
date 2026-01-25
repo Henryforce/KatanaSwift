@@ -2,7 +2,7 @@ import KatanaGoData
 
 extension DataBank {
   func buildAmpBank() -> AmpBank {
-    let rawDataBank = self.preampBank
+    let rawDataBank = self.ampBank
     return AmpBank(
       type: AmpType(rawValue: rawDataBank[0x0C]) ?? .clean,
       gain: rawDataBank[0x00],

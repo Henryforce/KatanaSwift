@@ -3,10 +3,15 @@ import KatanaFx
 import KatanaGoData
 
 extension DataBank {
+  func buildSoloSwitchLevelBank() -> SoloSwitchLevelBank {
+    return SoloSwitchLevelBank(
+      status: self.soloSwitchLevelBank[0x00] == 1,
+      level: self.soloSwitchLevelBank[0x01]
+    )
+  }
+
   func buildSoloBank() -> SoloBank {
     return SoloBank(
-      status: self.soloSwitchLevelBank[0x00] == 1,
-      level: self.soloSwitchLevelBank[0x01],
       eqPosition: EQPosition(rawValue: self.soloBank[0x00]) ?? .ampIn,
       eqStatus: self.soloBank[0x01] == 1,
       eqLowCut: EQLowCut(rawValue: self.soloBank[0x02]) ?? .flat,

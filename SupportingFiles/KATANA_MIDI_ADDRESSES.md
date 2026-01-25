@@ -582,11 +582,11 @@ The following addresses are for the Katana GO and the address column is in hexad
 | MASTER: Patch Key | 20001003 | 11 | PATCH_KEY (UInt8) |
 | Contour: Off/On | 20020000 | 1 | Boolean |
 | Contour: Contour Select | 20020000 | 3 | CONTOUR_SELECT (UInt8) |
-| Contour 1: Contour Shape | 20021000 | 2 | CONTOUR_SHAPE (UInt8) |
+| Contour 1: Contour Type | 20021000 | 2 | Contour_Type (UInt8) |
 | Contour 1: Freq Shift | 20021001 | 100 | UInt8 |
-| Contour 2: Contour Shape | 20022000 | 2 | CONTOUR_SHAPE (UInt8) |
+| Contour 2: Contour Type | 20022000 | 2 | Contour_Type (UInt8) |
 | Contour 2: Freq Shift | 20022001 | 100 | UInt8 |
-| Contour 3: Contour Shape | 20023000 | 2 | CONTOUR_SHAPE (UInt8) |
+| Contour 3: Contour Type | 20023000 | 2 | Contour_Type (UInt8) |
 | Contour 3: Freq Shift | 20023001 | 100 | UInt8 |
 | Cabinet Resonance | 20001001 | 3 | CABINET_RESONANCE (UInt8) |
 | Signal chain : Pedal FX | 20024000 | 30 | UInt8 |
