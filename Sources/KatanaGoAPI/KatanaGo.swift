@@ -32,6 +32,6 @@ public protocol KatanaGo: Actor {
   func selectFxType(_ type: ModFxType, id: BankID) async throws
 
   /// Provides a stream of data received from the device.
-  /// - Returns: An AsyncStream of KatanaGoReadData.
-  func read() -> AsyncStream<KatanaGoReadData>
+  /// - Returns: An AsyncStream of KatanaGoDataBank.
+  func read() -> AsyncStream<KatanaGoDataBank>
 }

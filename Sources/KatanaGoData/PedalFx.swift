@@ -14,7 +14,10 @@ public struct PedalFxBank: Sendable, Hashable {
 
   public var wah95: PedalFxWah95Bank
 
-  public init(status: Bool, type: PedalFxType, wah: PedalFxWahBank, bend: PedalFxBendBank, wah95: PedalFxWah95Bank) {
+  public init(
+    status: Bool, type: PedalFxType, wah: PedalFxWahBank, bend: PedalFxBendBank,
+    wah95: PedalFxWah95Bank
+  ) {
     self.status = status
     self.type = type
     self.wah = wah

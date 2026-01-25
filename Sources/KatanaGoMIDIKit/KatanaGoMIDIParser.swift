@@ -1,4 +1,5 @@
 import Foundation
+import KatanaGoData
 
 enum DataBankParseStatus {
   case invalidMessageLength
@@ -18,16 +19,16 @@ enum KatanaGoMIDIParser {
   /// - Parameters:
   ///   - message: The raw bytes received from the MIDI device.
   ///   - dataBank: The bank to be updated with the parsed data.
-  static func parse(_ message: [UInt8], into dataBank: inout DataBank) -> DataBankParseStatus {
+  static func parse(_ message: [UInt8], into dataBank: inout DataBank) -> [KatanaGoDataBank] {
     // Minimum valid message length: Header(5) + Address(4) + Checksum(1) = 10 bytes
     guard message.count >= 10 else {
-      return .invalidMessageLength
+      return []
     }
 
     // Validate the DT1 command byte (0x12, which is 18)
     // Most Katana Go messages start with a preamble like [16, 1, 5, 13, 18]
     guard message[4] == 18 else {
-      return .invalidMessageCommand
+      return []
     }
 
     // Extract Address (4 bytes starting at index 5)
