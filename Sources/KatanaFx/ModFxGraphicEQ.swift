@@ -1,5 +1,7 @@
-import KatanaBank
+import KatanaCore
 import KatanaMacros
+
+// MARK: - ModFxGraphicEQ
 
 public enum ModFxGraphicEQParameter: Sendable, Hashable {
   /// Range is from -20 to 20 mapped to 0..40.

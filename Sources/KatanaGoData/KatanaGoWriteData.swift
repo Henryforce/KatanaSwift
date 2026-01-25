@@ -1,3 +1,5 @@
+import KatanaFx
+
 /// Commands sent to the Katana GO device.
 public enum KatanaGoWriteData: Sendable {
 

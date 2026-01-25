@@ -1,4 +1,4 @@
-import KatanaBank
+import KatanaCore
 import KatanaMacros
 
 public enum EQParameter: Sendable, Hashable {
@@ -60,10 +60,8 @@ public struct EQBank: WritableBank, Sendable, Hashable {
 
   package var writeData = [WriteData]()
 
-  init(
-    status: Bool, position: EQPosition, type: EQType, parametric: ParametricEQBank,
-    graphic: GraphicEQBank
-  ) {
+  // TODO
+  public init(status: Bool, position: EQPosition, type: EQType, parametric: ParametricEQBank, graphic: GraphicEQBank) {
     self.status = status
     self.position = position
     self.type = type
@@ -71,46 +69,24 @@ public struct EQBank: WritableBank, Sendable, Hashable {
     self.graphic = graphic
   }
 
-  public init(
-    status: Bool? = nil, position: EQPosition? = nil, type: EQType? = nil,
-    parametric: ParametricEQBank? = nil, graphic: GraphicEQBank? = nil
-  ) {
-    let baseParametric = parametric ?? ParametricEQBank()
-    let baseGraphic = graphic ?? GraphicEQBank()
-
-    self.status = status ?? false
-    self.position = position ?? .ampIn
-    self.type = type ?? .parametric
-    self.parametric = baseParametric
-    self.graphic = baseGraphic
-
-    if let status {
-      self.writeData.append(WriteData(address: self.$status.address, data: status.bytes))
-    }
-    if let position {
-      self.writeData.append(
-        WriteData(address: self.$position.address, data: position.rawValue.bytes))
-    }
-    if let type {
-      self.writeData.append(WriteData(address: self.$type.address, data: type.rawValue.bytes))
-    }
-    if let parametric {
-      self.writeData.append(contentsOf: parametric.loadWriteData())
-    }
-    if let graphic {
-      self.writeData.append(contentsOf: graphic.loadWriteData())
-    }
-  }
-
   public func loadWriteData() -> [WriteData] {
-    if writeData.isEmpty {
-      return [
-        WriteData(address: self.$status.address, data: status.bytes),
-        WriteData(address: self.$position.address, data: position.rawValue.bytes),
-        WriteData(address: self.$type.address, data: type.rawValue.bytes),
-      ] + parametric.loadWriteData() + graphic.loadWriteData()
+    var writeData: [WriteData] = []
+    if self.$status.updated {
+      writeData.append(WriteData(address: self.$status.address, data: self.$status.value.bytes))
     }
-    return self.writeData
+    if self.$position.updated {
+      writeData.append(WriteData(address: self.$position.address, data: self.$position.value.bytes))
+    }
+    if self.$type.updated {
+      writeData.append(WriteData(address: self.$type.address, data: self.$type.value.bytes))
+    }
+    // if self.$parametric.updated {
+    //   writeData.append(WriteData(address: self.$parametric.address, data: self.$parametric.value.bytes))
+    // }
+    // if self.$graphic.updated {
+    //   writeData.append(WriteData(address: self.$graphic.address, data: self.$graphic.value.bytes))
+    // }
+    return writeData
   }
 }
 

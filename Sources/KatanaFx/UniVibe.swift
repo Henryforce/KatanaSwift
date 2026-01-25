@@ -1,4 +1,4 @@
-import KatanaBank
+import KatanaCore
 import KatanaMacros
 
 public enum UniVibeParameter: Sendable, Hashable {

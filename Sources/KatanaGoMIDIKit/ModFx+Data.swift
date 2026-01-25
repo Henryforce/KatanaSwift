@@ -1,4 +1,5 @@
 import KatanaGoData
+import KatanaFx
 
 extension ModFxParameter {
   var address: [UInt8] {

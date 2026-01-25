@@ -1,4 +1,4 @@
-import KatanaBank
+import KatanaCore
 import KatanaMacros
 
 /// Parameters for the Booster effect.

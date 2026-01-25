@@ -1,4 +1,5 @@
 import Foundation
+import KatanaFx
 
 /// Data received from the Katana GO device.
 public enum KatanaGoReadData: Sendable {

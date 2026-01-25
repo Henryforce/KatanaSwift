@@ -1,5 +1,7 @@
-import KatanaBank
+import KatanaCore
 import KatanaMacros
+
+// MARK: - Harmonist
 
 public enum HarmonistParameter: Sendable, Hashable {
   case voice(HarmonistVoice)

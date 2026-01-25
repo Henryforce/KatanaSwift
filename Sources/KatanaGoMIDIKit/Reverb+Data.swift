@@ -1,4 +1,5 @@
 import KatanaGoData
+import KatanaFx
 
 extension ReverbParameter {
   var address: [UInt8] {

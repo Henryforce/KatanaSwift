@@ -1,5 +1,7 @@
-import KatanaBank
+import KatanaCore
 import KatanaMacros
+
+// MARK: - Humanizer
 
 public enum HumanizerParameter: Sendable, Hashable {
   case mode(HumanizerMode)

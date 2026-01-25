@@ -1,4 +1,5 @@
-import KatanaBank
+import KatanaFx
+import KatanaCore
 import KatanaMacros
 
 /// Parameters for the Reverb effect.
