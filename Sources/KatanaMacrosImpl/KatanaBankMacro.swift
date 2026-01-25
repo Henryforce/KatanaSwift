@@ -93,7 +93,3 @@ public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
     return [extensionDecl]
   }
 }
-
-enum WritableBankExtensionError: Error {
-  case invalidSyntax
-}

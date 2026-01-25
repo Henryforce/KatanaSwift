@@ -8,6 +8,14 @@ public macro KatanaBank() =
     type: "KatanaBankMacro"
   )
 
+@attached(extension, conformances: WritableFxBank, names: named(loadWriteData))
+@attached(member, names: named(init))
+public macro KatanaFxBank() =
+  #externalMacro(
+    module: "KatanaMacrosImpl",
+    type: "KatanaFxBankMacro"
+  )
+
 @attached(member, names: named(bytes))
 public macro KatanaUInt8RawBytes() =
   #externalMacro(
