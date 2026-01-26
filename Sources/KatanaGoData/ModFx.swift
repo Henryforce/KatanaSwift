@@ -5,18 +5,12 @@ import KatanaMacros
 
 @KatanaBank
 public struct ModSelectionBank: Sendable, Hashable {
-  @Parameter(at: 0x20_00_30_01)
-  public var status: Bool = false
-
   @Parameter(at: 0x20_00_60_00)
   public var type: ModFxType = .chorus
 }
 
 @KatanaBank
 public struct FxSelectionBank: Sendable, Hashable {
-  @Parameter(at: 0x20_00_30_02)
-  public var status: Bool = false
-
   @Parameter(at: 0x20_00_70_00)
   public var type: ModFxType = .chorus
 }

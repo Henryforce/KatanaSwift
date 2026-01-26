@@ -4,9 +4,6 @@ import KatanaMacros
 /// The data bank representing the delay parameters.
 @KatanaBank
 public struct DelayBank: Sendable, Hashable {
-  @Parameter(at: 0x20_00_30_03)
-  public var status: Bool = false
-
   @Parameter(at: 0x20_01_20_00)
   public var type: DelayType = .digital
 

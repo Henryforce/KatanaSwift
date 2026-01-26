@@ -6,9 +6,6 @@ import KatanaMacros
 /// The data bank representing the reverb parameters.
 @KatanaBank
 public struct ReverbBank: Sendable, Hashable {
-  @Parameter(at: 0x20_00_30_05)
-  public var status: Bool = false
-
   @Parameter(at: 0x20_01_40_00)
   public var type: ReverbType = .room
 

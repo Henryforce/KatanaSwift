@@ -35,7 +35,7 @@ struct BoostView: View {
         Section("General") {
           Toggle("Enabled", isOn: $isEnabled)
             .onChange(of: isEnabled) { _, newValue in
-              viewModel.updateWritableBank(BoostBank(status: newValue))
+              viewModel.updateWritableBank(EffectStatusBank(booster: newValue))
             }
 
           Picker("Type", selection: $type) {

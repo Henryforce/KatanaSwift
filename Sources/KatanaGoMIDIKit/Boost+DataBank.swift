@@ -2,10 +2,8 @@ import KatanaGoData
 
 extension DataBank {
   func buildBoostBank() -> BoostBank {
-    let effectsOnOffBank = self.effectsOnOffBank
     let rawDataBank = self.boosterBank
     return BoostBank(
-      status: effectsOnOffBank[0x00] == 1,
       type: BoostType(rawValue: rawDataBank[0x00]) ?? .midBoost,
       drive: rawDataBank[0x01],
       bottom: rawDataBank[0x02],
