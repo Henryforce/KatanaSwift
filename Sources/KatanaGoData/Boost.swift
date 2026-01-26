@@ -4,9 +4,6 @@ import KatanaMacros
 /// The data bank representing the booster parameters.
 @KatanaBank
 public struct BoostBank: Sendable, Hashable {
-  @Parameter(at: 0x20_00_30_00)
-  public var status: Bool = false
-
   @Parameter(at: 0x20_00_40_00)
   public var type: BoostType = .midBoost
 

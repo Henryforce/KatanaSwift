@@ -2,22 +2,15 @@ import KatanaGoData
 
 extension DataBank {
   func buildDelay1Bank() -> DelayBank {
-    return buildDelayBank(
-      status: self.effectsOnOffBank[3] == 1,
-      rawDataBank: self.delay1Bank
-    )
+    return buildDelayBank(rawDataBank: self.delay1Bank)
   }
 
   func buildDelay2Bank() -> DelayBank {
-    return buildDelayBank(
-      status: self.effectsOnOffBank[4] == 1,
-      rawDataBank: self.delay2Bank
-    )
+    return buildDelayBank(rawDataBank: self.delay2Bank)
   }
 
-  private func buildDelayBank(status: Bool, rawDataBank: [UInt8]) -> DelayBank {
+  private func buildDelayBank(rawDataBank: [UInt8]) -> DelayBank {
     return DelayBank(
-      status: status,
       type: DelayType(rawValue: rawDataBank[0x00]) ?? .digital,
       time: UInt16.decodeFromByteArray([
         rawDataBank[0x01], rawDataBank[0x02], rawDataBank[0x03], rawDataBank[0x04],

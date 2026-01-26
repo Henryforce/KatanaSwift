@@ -5,7 +5,6 @@ import KatanaGoData
 extension DataBank {
   func buildReverbBank() -> ReverbBank {
     return ReverbBank(
-      status: self.effectsOnOffBank[5] == 1,
       type: ReverbType(rawValue: reverbBank[0x00]) ?? .room,
       time: reverbBank[0x02],
       preDelay: UInt16.decodeFromByteArray([

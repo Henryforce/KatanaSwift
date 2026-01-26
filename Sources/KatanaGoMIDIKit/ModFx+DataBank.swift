@@ -5,14 +5,12 @@ import KatanaGoData
 extension DataBank {
   func buildModSelectionBank() -> ModSelectionBank {
     return ModSelectionBank(
-      status: self.effectsOnOffBank[1] == 1,
       type: ModFxType(rawValue: self.modTypeBank[0]) ?? .chorus
     )
   }
 
   func buildFxSelectionBank() -> FxSelectionBank {
     return FxSelectionBank(
-      status: self.effectsOnOffBank[2] == 1,
       type: ModFxType(rawValue: self.fxTypeBank[0]) ?? .chorus
     )
   }

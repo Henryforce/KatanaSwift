@@ -11,7 +11,7 @@ struct DataBank: Sendable, Hashable {
   /// The order is: BOOSTER, MOD, FX, DELAY1, DELAY2, REVERB, BASS
   var effectsOnOffBank = [UInt8](repeating: 0x00, count: 7)
   var boosterBank = [UInt8](repeating: 0x00, count: 8)
-  var bassBank = [UInt8](repeating: 0x00, count: 12)
+  var bassCompBank = [UInt8](repeating: 0x00, count: 12)
   var modTypeBank = [UInt8](repeating: 0x00, count: 1)
   var fxTypeBank = [UInt8](repeating: 0x00, count: 1)
   var modBank = [UInt8](repeating: 0x00, count: 245)
@@ -67,25 +67,23 @@ struct DataBank: Sendable, Hashable {
     // }
 
     if DataBank.applyUpdate(
-      &presetBank, bankBase: [127, 0, 1, 0], incomingData: data, incomingStart: incomingStart)
+      &presetBank, bankBase: [127, 0, 1, 0], incomingData: data, incomingStart: incomingStart),
+      let preset = Preset(rawValue: presetNameBank[0x00])
     {
-      // TODO: implement
-      // banks.append(buildPresetBank())
+      banks.append(.preset(preset))
     }
 
     // Bank base address: 20000000
     if DataBank.applyUpdate(
       &presetNameBank, bankBase: [32, 0, 0, 0], incomingData: data, incomingStart: incomingStart)
     {
-      // TODO: implement
-      // banks.append(buildPresetNameBank())
+      banks.append(.presetName(buildPresetName()))
     }
     // Bank base address: 20001000
     if DataBank.applyUpdate(
       &signalChainBank, bankBase: [32, 0, 16, 0], incomingData: data, incomingStart: incomingStart)
     {
-      // TODO: implement
-      // banks.append(buildSignalChainBank())
+      banks.append(.signalChainBank(buildSignalChainBank()))
     }
     // Bank base address: 20002000
     if DataBank.applyUpdate(
@@ -97,8 +95,7 @@ struct DataBank: Sendable, Hashable {
     if DataBank.applyUpdate(
       &effectsOnOffBank, bankBase: [32, 0, 48, 0], incomingData: data, incomingStart: incomingStart)
     {
-      // TODO: implement
-      // banks.append(buildEffectStatusBank())
+      banks.append(.effectStatusBank(buildEffectStatusBank()))
     }
     // Bank base address: 20004000
     if DataBank.applyUpdate(
@@ -108,23 +105,21 @@ struct DataBank: Sendable, Hashable {
     }
     // Bank base address: 20005000
     if DataBank.applyUpdate(
-      &bassBank, bankBase: [32, 0, 80, 0], incomingData: data, incomingStart: incomingStart)
+      &bassCompBank, bankBase: [32, 0, 80, 0], incomingData: data, incomingStart: incomingStart)
     {
-      // banks.append(.bassBank(buildBassBank()))
+      banks.append(.bassBank(buildBassCompBank()))
     }
     // Bank base address: 20006000
     if DataBank.applyUpdate(
       &modTypeBank, bankBase: [32, 0, 96, 0], incomingData: data, incomingStart: incomingStart)
     {
-      // TODO: implement
-      // banks.append(.modSelectionBank(buildModTypeBank()))
+      banks.append(.modSelectionBank(buildModSelectionBank()))
     }
     // Bank base address: 20007000
     if DataBank.applyUpdate(
       &fxTypeBank, bankBase: [32, 0, 112, 0], incomingData: data, incomingStart: incomingStart)
     {
-      // TODO: implement
-      // banks.append(.fxSelectionBank(buildFxTypeBank()))
+      banks.append(.fxSelectionBank(buildFxSelectionBank()))
     }
     // Bank base address: 20010000
     if DataBank.applyUpdate(
@@ -199,8 +194,7 @@ struct DataBank: Sendable, Hashable {
     if DataBank.applyUpdate(
       &pfxWahBank, bankBase: [32, 2, 80, 0], incomingData: data, incomingStart: incomingStart)
     {
-      // TODO: implement
-      // banks.append(.pfxWah(buildPfxWahBank()))
+      banks.append(.pedalFxBank(buildPedalFxBank()))
     }
     // Bank base address: 20026000
     if DataBank.applyUpdate(
@@ -291,27 +285,3 @@ struct DataBank: Sendable, Hashable {
       | Int(address[3])
   }
 }
-
-// extension DataBank {
-//   var state: KatanaGoState {
-//     return KatanaGoState(
-//       amp: buildAmpBank(),
-//       boost: buildBoostBank(),
-//       mod: buildModBank(),
-//       fx: buildFxBank(),
-//       delay1: buildDelay1Bank(),
-//       delay2: buildDelay2Bank(),
-//       reverb: buildReverbBank(),
-//       solo: buildSoloBank(),
-//       contour: buildContourBank(),
-//       pedalFx: buildPedalFxBank(),
-//       eq1Selection: buildEQ1SelectionBank(),
-//       eq2Selection: buildEQ2SelectionBank(),
-//       eq1Parametric: buildParametricEQ1Bank(),
-//       eq2Parametric: buildParametricEQ2Bank(),
-//       eq1Graphic: buildGraphicEQ1Bank(),
-//       eq2Graphic: buildGraphicEQ2Bank(),
-//       noiseGate: buildNoiseGateBank()
-//     )
-//   }
-// }
