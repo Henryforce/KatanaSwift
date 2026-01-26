@@ -1,12 +1,12 @@
 Sent after pairing:
 
-[16, 1, 5, 13, 18, 127, 0, 0, 0, 1, 0] : UNKNOWN
-[16, 1, 5, 13, 18, 127, 1, 0, 4, 0, 124] : UNKNOWN
-[16, 1, 5, 13, 18, 127, 0, 0, 3, 0, 126] : UNKNOWN
+[16, 1, 5, 13, 18, 127, 0, 0, 0, 1, 0] : Editor communication level (ON)
+[16, 1, 5, 13, 18, 127, 1, 0, 4, 0, 124] : Mode setting (guitar?)
+[16, 1, 5, 13, 18, 127, 0, 0, 3, 0, 126] : Patch temp clear
 
 Sent after manually changing preset to 2A:
 
-[16, 1, 5, 13, 18, 127, 0, 1, 0, 0, 3, 125] : Preset selected (2A) - start?
+[16, 1, 5, 13, 18, 127, 0, 1, 0, 0, 3, 125] : Patch select (2A) - start?
 [16, 1, 5, 13, 18, 32, 0, 0, 0, 0, 0, 0, 0, 77, 79, 68, 69, 82, 78, 32, 66, 82, 79, 87, 78, 32, 32, 32, 32, 115] : Preset name (MODERN BROWN    )
 [16, 1, 5, 13, 18, 32, 0, 16, 0, 2, 2, 0, 76] : SIGNAL CHAIN, CABINET RESONANCE, LAST BYTE UNUSED
 [16, 1, 5, 13, 18, 32, 0, 32, 0, 100, 100, 0, 70, 61, 49, 50, 11, 50, 16, 60, 0, 4, 0, 5] : PREAMP
@@ -39,4 +39,4 @@ Sent after manually changing preset to 2A:
 [16, 1, 5, 13, 18, 32, 3, 48, 0, 17, 21, 24, 21, 20, 22, 24, 25, 21, 10, 20, 76] : GEQ2
 [16, 1, 5, 13, 18, 32, 3, 64, 0, 1, 30, 50, 76] : NS
 [16, 1, 5, 13, 18, 32, 3, 80, 0, 0, 0, 0, 50, 50, 41] : SENDRETURN
-[16, 1, 5, 13, 18, 0, 0, 0, 0, 3, 125] : Preset message finished?
+[16, 1, 5, 13, 18, 0, 0, 0, 0, 3, 125] : Current patch number

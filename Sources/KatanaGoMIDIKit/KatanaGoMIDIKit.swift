@@ -140,6 +140,10 @@ public actor KatanaGoMIDIKit: KatanaGo {
     }
   }
 
+  // TODO: add method to write KatanaGoDataBank enum cases.
+  // Note that preset write is different than read. Preset write is on address 0x7f000104 and
+  // is of two bytes size (first byte is 00 and second one has the preset's raw value).
+
   public func read() -> AsyncStream<KatanaGoDataBank> {
     AsyncStream { continuation in
       self.continuation = continuation

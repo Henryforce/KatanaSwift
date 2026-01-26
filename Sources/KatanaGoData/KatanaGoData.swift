@@ -36,7 +36,7 @@ public struct KatanaGoReadOptions: OptionSet, Sendable, Hashable {
   }
 }
 
-/// Data received from the Katana GO device.
+/// Data received/sent from the Katana GO device.
 public enum KatanaGoDataBank: Sendable {
   case preset(Preset)
   case presetName(String)

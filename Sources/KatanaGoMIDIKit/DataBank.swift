@@ -4,7 +4,7 @@ import KatanaGoData
 struct DataBank: Sendable, Hashable {
 
   var presetBank = [UInt8](repeating: 0x00, count: 1)
-  var presetNameBank = [UInt8](repeating: 0x00, count: 23)
+  var presetNameBank = [UInt8](repeating: 0x00, count: 20)
   var signalChainBank = [UInt8](repeating: 0x00, count: 3)
   var ampBank = [UInt8](repeating: 0x00, count: 14)
   /// The bank of data for the effects on/off switch.
@@ -21,7 +21,7 @@ struct DataBank: Sendable, Hashable {
   var reverbBank = [UInt8](repeating: 0x00, count: 13)
   var soloSwitchLevelBank = [UInt8](repeating: 0x00, count: 2)
   var soloBank = [UInt8](repeating: 0x00, count: 10)
-  var contourBank = [UInt8](repeating: 0x00, count: 1)
+  var contourBank = [UInt8](repeating: 0x00, count: 2)
   var countour1Bank = [UInt8](repeating: 0x00, count: 2)
   var countour2Bank = [UInt8](repeating: 0x00, count: 2)
   var countour3Bank = [UInt8](repeating: 0x00, count: 2)
@@ -68,7 +68,7 @@ struct DataBank: Sendable, Hashable {
 
     if DataBank.applyUpdate(
       &presetBank, bankBase: [127, 0, 1, 0], incomingData: data, incomingStart: incomingStart),
-      let preset = Preset(rawValue: presetNameBank[0x00])
+      let preset = Preset(rawValue: presetBank[0x00])
     {
       banks.append(.preset(preset))
     }
