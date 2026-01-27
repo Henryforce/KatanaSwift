@@ -142,52 +142,52 @@ extension TWahPolarity {
   }
 }
 
-extension EQLowCut {
-  var name: String {
-    switch self {
-    case .flat: return "Flat"
-    case .freq20Hz: return "20 Hz"
-    case .freq25Hz: return "25 Hz"
-    case .freq31Hz5: return "31.5 Hz"
-    case .freq40Hz: return "40 Hz"
-    case .freq50Hz: return "50 Hz"
-    case .freq63Hz: return "63 Hz"
-    case .freq80Hz: return "80 Hz"
-    case .freq100Hz: return "100 Hz"
-    case .freq125Hz: return "125 Hz"
-    case .freq160Hz: return "160 Hz"
-    case .freq200Hz: return "200 Hz"
-    case .freq250Hz: return "250 Hz"
-    case .freq315Hz: return "315 Hz"
-    case .freq400Hz: return "400 Hz"
-    case .freq500Hz: return "500 Hz"
-    case .freq630Hz: return "630 Hz"
-    case .freq800Hz: return "800 Hz"
-    }
-  }
-}
-
-extension EQHighCut {
-  var name: String {
-    switch self {
-    case .freq630Hz: return "630 Hz"
-    case .freq800Hz: return "800 Hz"
-    case .freq1kHz: return "1 kHz"
-    case .freq1k250Hz: return "1.25 kHz"
-    case .freq1k600Hz: return "1.6 kHz"
-    case .freq2kHz: return "2 kHz"
-    case .freq2k500Hz: return "2.5 kHz"
-    case .freq3k150Hz: return "3.15 kHz"
-    case .freq4kHz: return "4 kHz"
-    case .freq5kHz: return "5 kHz"
-    case .freq6k300Hz: return "6.3 kHz"
-    case .freq8kHz: return "8 kHz"
-    case .freq10kHz: return "10 kHz"
-    case .freq12k500Hz: return "12.5 kHz"
-    case .flat: return "Flat"
-    }
-  }
-}
+//extension EQLowCut {
+//  var name: String {
+//    switch self {
+//    case .flat: return "Flat"
+//    case .freq20Hz: return "20 Hz"
+//    case .freq25Hz: return "25 Hz"
+//    case .freq31Hz5: return "31.5 Hz"
+//    case .freq40Hz: return "40 Hz"
+//    case .freq50Hz: return "50 Hz"
+//    case .freq63Hz: return "63 Hz"
+//    case .freq80Hz: return "80 Hz"
+//    case .freq100Hz: return "100 Hz"
+//    case .freq125Hz: return "125 Hz"
+//    case .freq160Hz: return "160 Hz"
+//    case .freq200Hz: return "200 Hz"
+//    case .freq250Hz: return "250 Hz"
+//    case .freq315Hz: return "315 Hz"
+//    case .freq400Hz: return "400 Hz"
+//    case .freq500Hz: return "500 Hz"
+//    case .freq630Hz: return "630 Hz"
+//    case .freq800Hz: return "800 Hz"
+//    }
+//  }
+//}
+//
+//extension EQHighCut {
+//  var name: String {
+//    switch self {
+//    case .freq630Hz: return "630 Hz"
+//    case .freq800Hz: return "800 Hz"
+//    case .freq1kHz: return "1 kHz"
+//    case .freq1k250Hz: return "1.25 kHz"
+//    case .freq1k600Hz: return "1.6 kHz"
+//    case .freq2kHz: return "2 kHz"
+//    case .freq2k500Hz: return "2.5 kHz"
+//    case .freq3k150Hz: return "3.15 kHz"
+//    case .freq4kHz: return "4 kHz"
+//    case .freq5kHz: return "5 kHz"
+//    case .freq6k300Hz: return "6.3 kHz"
+//    case .freq8kHz: return "8 kHz"
+//    case .freq10kHz: return "10 kHz"
+//    case .freq12k500Hz: return "12.5 kHz"
+//    case .flat: return "Flat"
+//    }
+//  }
+//}
 
 extension EQFrequency {
   var name: String {

@@ -107,19 +107,13 @@ public actor KatanaGoMIDIKit: KatanaGo {
   /// Enable or disable the FX bank.
   /// - Parameter enabled: The bank of parameters to send to the device.
   public func enableFx(_ enabled: Bool, id: BankID) async throws {
-    var address: UInt32 = 0x20_00_30_01
-    if id == .id2 {
-      address |= 0x20_00_30_02
-    }
+    let address: UInt32 = id == .id2 ? 0x20_00_30_02 : 0x20_00_30_01
     let bytes = finalizeSysex(address: address, data: [enabled ? 0x01 : 0x00])
     try writeRawBytes(bytes)
   }
 
   public func selectFxType(_ type: ModFxType, id: BankID) async throws {
-    var address: UInt32 = 0x20_00_60_00
-    if id == .id2 {
-      address |= 0x20_00_70_00
-    }
+    let address: UInt32 = id == .id2 ? 0x20_00_70_00 : 0x20_00_60_00
     let bytes = finalizeSysex(address: address, data: [type.rawValue])
     try writeRawBytes(bytes)
   }

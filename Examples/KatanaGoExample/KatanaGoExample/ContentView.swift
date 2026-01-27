@@ -16,104 +16,134 @@ struct ContentView: View {
   @State private var showAmpSettings = false
   @State private var showModSettings = false
   @State private var showFxSettings = false
+  @State private var showDelaySettings = false
+  @State private var showReverbSettings = false
 
   var body: some View {
-    VStack(spacing: 20) {
-      Image(systemName: "globe")
-        .imageScale(.large)
-        .foregroundStyle(.tint)
-      Text("Hello, world!")
+    ScrollView {
+      VStack(spacing: 20) {
+        Image(systemName: "globe")
+          .imageScale(.large)
+          .foregroundStyle(.tint)
+        Text("Hello, world!")
 
-      Button {
-        viewModel.connect()
-      } label: {
-        Text("Connect")
-      }
+        Button {
+          viewModel.connect()
+        } label: {
+          Text("Connect")
+        }
 
-      Button {
-        viewModel.changePreset1A()
-      } label: {
-        Text("Preset 1A")
-      }
+        Button {
+          viewModel.changePreset1A()
+        } label: {
+          Text("Preset 1A")
+        }
 
-      Button {
-        viewModel.changePreset3A()
-      } label: {
-        Text("Preset 3A")
-      }
+        Button {
+          viewModel.changePreset3A()
+        } label: {
+          Text("Preset 3A")
+        }
 
-      VStack {
-        Text("Volume: \(Int(volume))")
-        Slider(value: $volume, in: 0...100)
-          .onChange(of: volume) { oldValue, newValue in
-            viewModel.updateWritableBank(AmpBank(volume: UInt8(newValue)))
-          }
+        VStack {
+          Text("Volume: \(Int(volume))")
+          Slider(value: $volume, in: 0...100)
+            .onChange(of: volume) { oldValue, newValue in
+              viewModel.updateWritableBank(AmpBank(volume: UInt8(newValue)))
+            }
+        }
+        .padding()
+
+        VStack {
+          Text("Gain: \(Int(gain))")
+          Slider(value: $gain, in: 0...100)
+            .onChange(of: volume) { oldValue, newValue in
+              viewModel.updateWritableBank(AmpBank(gain: UInt8(newValue)))
+            }
+        }
+        .padding()
+
+        Button {
+          showBoostSettings = true
+        } label: {
+          Text("Boost Settings")
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.orange)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+        }
+        Button {
+          showAmpSettings = true
+        } label: {
+          Text("Amp Settings")
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+        }
+        Button {
+          showModSettings = true
+        } label: {
+          Text("MOD Settings")
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.purple)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+        }
+        Button {
+          showFxSettings = true
+        } label: {
+          Text("FX Settings")
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.green)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+        }
+        Button {
+          showDelaySettings = true
+        } label: {
+          Text("Delay Settings")
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.cyan)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+        }
+        Button {
+          showReverbSettings = true
+        } label: {
+          Text("Reverb Settings")
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.pink)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+        }
+
       }
       .padding()
-
-      VStack {
-        Text("Gain: \(Int(gain))")
-        Slider(value: $gain, in: 0...100)
-          .onChange(of: volume) { oldValue, newValue in
-            viewModel.updateWritableBank(AmpBank(gain: UInt8(newValue)))
-          }
+      .sheet(isPresented: $showBoostSettings) {
+        BoostView(viewModel: viewModel)
       }
-      .padding()
-
-      Button {
-        showBoostSettings = true
-      } label: {
-        Text("Boost Settings")
-          .frame(maxWidth: .infinity)
-          .padding()
-          .background(Color.orange)
-          .foregroundColor(.white)
-          .cornerRadius(10)
+      .sheet(isPresented: $showAmpSettings) {
+        AmpView(viewModel: viewModel)
       }
-      Button {
-        showAmpSettings = true
-      } label: {
-        Text("Amp Settings")
-          .frame(maxWidth: .infinity)
-          .padding()
-          .background(Color.blue)
-          .foregroundColor(.white)
-          .cornerRadius(10)
+      .sheet(isPresented: $showModSettings) {
+        ModFxView(viewModel: viewModel, id: .id1)
       }
-      Button {
-        showModSettings = true
-      } label: {
-        Text("MOD Settings")
-          .frame(maxWidth: .infinity)
-          .padding()
-          .background(Color.purple)
-          .foregroundColor(.white)
-          .cornerRadius(10)
+      .sheet(isPresented: $showFxSettings) {
+        ModFxView(viewModel: viewModel, id: .id2)
       }
-      Button {
-        showFxSettings = true
-      } label: {
-        Text("FX Settings")
-          .frame(maxWidth: .infinity)
-          .padding()
-          .background(Color.green)
-          .foregroundColor(.white)
-          .cornerRadius(10)
+      .sheet(isPresented: $showDelaySettings) {
+        DelayView(viewModel: viewModel)
       }
-
-    }
-    .padding()
-    .sheet(isPresented: $showBoostSettings) {
-      BoostView(viewModel: viewModel)
-    }
-    .sheet(isPresented: $showAmpSettings) {
-      AmpView(viewModel: viewModel)
-    }
-    .sheet(isPresented: $showModSettings) {
-      ModFxView(viewModel: viewModel, id: .id1)
-    }
-    .sheet(isPresented: $showFxSettings) {
-      ModFxView(viewModel: viewModel, id: .id2)
+      .sheet(isPresented: $showReverbSettings) {
+        ReverbView(viewModel: viewModel)
+      }
     }
   }
 }
