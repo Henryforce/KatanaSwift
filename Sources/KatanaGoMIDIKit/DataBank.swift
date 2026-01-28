@@ -3,6 +3,7 @@ import KatanaGoData
 /// The bank of data received from the Katana GO device.
 struct DataBank: Sendable, Hashable {
 
+  var modeBank = [UInt8](repeating: 0x00, count: 1)
   var presetBank = [UInt8](repeating: 0x00, count: 1)
   var presetNameBank = [UInt8](repeating: 0x00, count: 20)
   var signalChainBank = [UInt8](repeating: 0x00, count: 3)
@@ -67,7 +68,15 @@ struct DataBank: Sendable, Hashable {
     // }
 
     if DataBank.applyUpdate(
-      &presetBank, bankBase: [127, 0, 1, 0], incomingData: data, incomingStart: incomingStart),
+      &modeBank, bankBase: [0x7F, 0x01, 0x00, 0x04], incomingData: data,
+      incomingStart: incomingStart)
+    {
+      banks.append(.modeBank(buildModeBank()))
+    }
+
+    if DataBank.applyUpdate(
+      &presetBank, bankBase: [0x7F, 0x00, 0x01, 0x00], incomingData: data,
+      incomingStart: incomingStart),
       let preset = Preset(rawValue: presetBank[0x00])
     {
       banks.append(.preset(preset))

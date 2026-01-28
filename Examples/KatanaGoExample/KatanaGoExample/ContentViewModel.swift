@@ -69,65 +69,6 @@ final class ContentViewModel {
     }
   }
 
-  //  func updateVolume(_ value: Int) {
-  //    guard let device else { return }
-  //    Task {
-  //      do {
-  //        print("🔊 Updating Volume to \(value)...")
-  ////        try await device.write(.amp(.volume(UInt8(value))))
-  //      } catch {
-  //        print("❌ Error: \(error)")
-  //      }
-  //    }
-  //  }
-
-  //  func updateDeviceVolume(_ value: Int) {
-  //    guard let device else { return }
-  //    Task {
-  //      do {
-  //        print("🔊 Updating Volume to \(value)...")
-  ////        try await device.write(.amp(.volume(UInt8(value))))
-  //      } catch {
-  //        print("❌ Error: \(error)")
-  //      }
-  //    }
-  //  }
-
-  //  func updateDeviceGain(_ value: Int) {
-  //    guard let device else { return }
-  //    Task {
-  //      do {
-  //        print("🔊 Updating Gain to \(value)...")
-  ////        try await device.write(.amp(.gain(UInt8(value))))
-  //      } catch {
-  //        print("❌ Error: \(error)")
-  //      }
-  //    }
-  //  }
-  //  func updateBoost(_ parameter: BoostParameter) {
-  //    guard let device else { return }
-  //    Task {
-  //      do {
-  //        print("🎸 Updating Boost \(parameter)...")
-  //        try await device.write(.boost(parameter))
-  //      } catch {
-  //        print("❌ Error: \(error)")
-  //      }
-  //    }
-  //  }
-
-  //  func updateAmp(_ parameter: AmpParameter) {
-  //    guard let device else { return }
-  //    Task {
-  //      do {
-  //        print("🎸 Updating Amp \(parameter)...")
-  //        try await device.write(.amp(parameter))
-  //      } catch {
-  //        print("❌ Error: \(error)")
-  //      }
-  //    }
-  //  }
-
   func updateAmpBank(_ bank: AmpBank) {
     guard let device else { return }
     Task {

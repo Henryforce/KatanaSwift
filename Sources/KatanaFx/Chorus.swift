@@ -39,17 +39,6 @@ public struct ChorusBank: Sendable, Hashable {
 
 // MARK: - DC30
 
-public enum DC30Parameter: Sendable, Hashable {
-  case type(DC30Type)
-  case inputVolume(UInt8)
-  case chorusIntensity(UInt8)
-  case repeatTime(UInt16)
-  case echoIntensity(UInt8)
-  case volume(UInt8)
-  case tone(UInt8)
-  case outputType(DC30OutputType)
-}
-
 /// The data bank representing the DC-30 parameters.
 @KatanaFxBank
 public struct DC30Bank: Sendable, Hashable {
