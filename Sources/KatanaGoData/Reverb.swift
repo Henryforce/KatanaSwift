@@ -32,6 +32,10 @@ public struct ReverbBank: Sendable, Hashable {
 
   @IntegerParameter(at: 0x20_01_40_0C, range: 0...100)
   public var springSensitivity: UInt8 = 50
+
+  public static let address: UInt32 = 0x20_01_40_00
+
+  public static let size: UInt32 = 13
 }
 
 /// Available reverb types.

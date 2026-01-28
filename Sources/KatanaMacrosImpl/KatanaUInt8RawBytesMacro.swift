@@ -15,7 +15,12 @@ public struct KatanaUInt8RawBytesMacro: MemberMacro {
       public var bytes: [UInt8] {
         return [self.rawValue]
       }
+      """,
       """
+      package static func decodeFromByteArray(_ array: [UInt8], offset: Int = 0) -> Self {
+        return Self(rawValue: array[offset])!
+      }
+      """,
     ]
   }
 }

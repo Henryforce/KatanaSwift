@@ -144,6 +144,13 @@ public actor KatanaGoMIDIKit: KatanaGo {
     }
   }
 
+  // Example of how to build a bank from raw data:
+  // public func deleteMe() {
+  //   let rawData: [UInt8] = [0, 0, 0, 0, 0, 1, 0]
+  //   let bank = EffectStatusBank.buildFromByteArray(rawData)
+  //   print(bank)
+  // }
+
   // Use like this:
   // Read preset name
   // let bytes = finalizeReadSysex(addressBytes: [0x20, 0x00, 0x00, 0x00], data: [0x00, 0x00, 0x00, 10])

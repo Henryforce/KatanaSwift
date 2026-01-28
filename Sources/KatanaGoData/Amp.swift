@@ -26,6 +26,10 @@ public struct AmpBank: Sendable, Hashable {
 
   @Parameter(at: 0x20_00_00_0D)
   public var variation: Bool = false
+
+  public static let address: UInt32 = 0x20_00_00_00
+
+  public static let size: UInt32 = 14
 }
 
 /// Available amplifier types.

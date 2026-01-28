@@ -10,6 +10,10 @@ public struct SoloSwitchLevelBank: Sendable, Hashable {
 
   @IntegerParameter(at: 0x20_01_50_01, range: 0...100)
   public var level: UInt8 = 50
+
+  public static let address: UInt32 = 0x20_01_50_00
+
+  public static let size: UInt32 = 2
 }
 
 /// The data bank representing the solo parameters.
@@ -44,4 +48,8 @@ public struct SoloBank: Sendable, Hashable {
 
   @IntegerParameter(at: 0x20_01_60_09, range: 0...24)
   public var eqLevel: UInt8 = 12
+
+  public static let address: UInt32 = 0x20_01_60_00
+
+  public static let size: UInt32 = 10
 }

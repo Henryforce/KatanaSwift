@@ -45,6 +45,10 @@ public struct DelayBank: Sendable, Hashable {
 
   @Parameter(at: 0x20_01_20_0E)
   public var feedbackPhase: DelayPhase = .normal
+
+  public static let address: UInt32 = 0x20_01_20_00
+
+  public static let size: UInt32 = 17
 }
 
 /// Available delay types for the Katana GO.

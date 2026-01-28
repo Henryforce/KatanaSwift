@@ -11,5 +11,10 @@ public struct WriteData: Sendable, Hashable {
 }
 
 public protocol WritableBank {
+  static var address: UInt32 { get }
+  static var size: UInt32 { get }
+
   func loadWriteData() -> [WriteData]
+
+  static func buildFromByteArray(_ array: [UInt8]) -> Self
 }
