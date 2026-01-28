@@ -7,12 +7,20 @@ import KatanaMacros
 public struct ModSelectionBank: Sendable, Hashable {
   @Parameter(at: 0x20_00_60_00)
   public var type: ModFxType = .chorus
+
+  public static let address: UInt32 = 0x20_00_60_00
+
+  public static let size: UInt32 = 1
 }
 
 @KatanaBank
 public struct FxSelectionBank: Sendable, Hashable {
   @Parameter(at: 0x20_00_70_00)
   public var type: ModFxType = .chorus
+
+  public static let address: UInt32 = 0x20_00_70_00
+
+  public static let size: UInt32 = 1
 }
 
 /// The data bank representing the MOD/FX parameters.

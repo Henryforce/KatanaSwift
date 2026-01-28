@@ -45,6 +45,10 @@ public struct PedalFxWahBank: Sendable, Hashable {
 
   @IntegerParameter(at: 0x20_02_50_05, range: 0...100)
   public var directMix: UInt8 = 50
+
+  public static let address: UInt32 = 0x20_02_50_00
+
+  public static let size: UInt32 = 6
 }
 
 @KatanaBank
@@ -60,6 +64,10 @@ public struct PedalFxBendBank: Sendable, Hashable {
 
   @IntegerParameter(at: 0x20_02_50_09, range: 0...100)
   public var directMix: UInt8 = 50
+
+  public static let address: UInt32 = 0x20_02_50_06
+
+  public static let size: UInt32 = 4
 }
 
 @KatanaBank
@@ -78,6 +86,10 @@ public struct PedalFxWah95Bank: Sendable, Hashable {
 
   @IntegerParameter(at: 0x20_02_50_0E, range: 0...100)
   public var directMix: UInt8 = 50
+
+  public static let address: UInt32 = 0x20_02_50_0A
+
+  public static let size: UInt32 = 5
 }
 
 // MARK - Pedal FX Options

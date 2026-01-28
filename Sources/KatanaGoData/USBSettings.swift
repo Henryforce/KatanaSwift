@@ -11,4 +11,8 @@ public struct USBSettingsBank: Sendable, Hashable {
 
   @Parameter(at: 0x10_01_70_02)
   public var loopback: Bool = false
+
+  public static let address: UInt32 = 0x10_01_70_00
+
+  public static let size: UInt32 = 3
 }

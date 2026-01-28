@@ -8,6 +8,10 @@ public struct ContourBank: Sendable, Hashable {
 
   @IntegerParameter(at: 0x20_02_10_01, range: 0...100)
   public var frequencyShift: UInt8 = 50
+
+  public static let address: UInt32 = 0x20_02_10_00
+
+  public static let size: UInt32 = 2
 }
 
 @KatanaUInt8RawBytes

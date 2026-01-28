@@ -40,6 +40,10 @@ public struct BassCompLimBank: Sendable, Hashable {
 
   @IntegerParameter(at: 0x20_00_50_0B, range: 0...100)
   public var limiterEffect: UInt8 = 50
+
+  public static let address: UInt32 = 0x20_00_50_00
+
+  public static let size: UInt32 = 12
 }
 
 @KatanaUInt8RawBytes

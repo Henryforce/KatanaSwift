@@ -21,6 +21,10 @@ public struct BassEnhancerBank: Sendable, Hashable {
 
   @Parameter(at: 0x20_01_01_56)
   public var highFreq: BassHighFrequency = .freq5kHz
+
+  public static let address: UInt32 = 0x20_01_01_52
+
+  public static let size: UInt32 = 5
 }
 
 // MARK: - BASS SIMULATOR
@@ -41,6 +45,10 @@ public struct BassSimulatorBank: Sendable, Hashable {
 
   @IntegerParameter(at: 0x20_01_01_5B, range: 0...100)
   public var body: UInt8 = 50
+
+  public static let address: UInt32 = 0x20_01_01_57
+
+  public static let size: UInt32 = 5
 }
 
 // MARK: - MOD BASS DE-FR
@@ -61,6 +69,10 @@ public struct BassDeFretterBank: Sendable, Hashable {
 
   @IntegerParameter(at: 0x20_01_01_62, range: 0...100)
   public var directMix: UInt8 = 100
+
+  public static let address: UInt32 = 0x20_01_01_5C
+
+  public static let size: UInt32 = 5
 }
 
 // MARK: - MOD BASS OCT
@@ -75,6 +87,10 @@ public struct BassOctaveBank: Sendable, Hashable {
 
   @IntegerParameter(at: 0x20_01_01_65, range: 0...100)
   public var directMix: UInt8 = 100
+
+  public static let address: UInt32 = 0x20_01_01_63
+
+  public static let size: UInt32 = 3
 }
 
 // MARK: - MOD BASS T-Wah
@@ -101,6 +117,10 @@ public struct BassTWahBank: Sendable, Hashable {
 
   @IntegerParameter(at: 0x20_01_01_6C, range: 0...100)
   public var directLevel: UInt8 = 0
+
+  public static let address: UInt32 = 0x20_01_01_66
+
+  public static let size: UInt32 = 7
 }
 
 // MARK: - MOD BASS Synth
@@ -132,6 +152,10 @@ public struct BassSynthBank: Sendable, Hashable {
 
   @IntegerParameter(at: 0x20_01_01_74, range: 0...100)
   public var directMix: UInt8 = 0
+
+  public static let address: UInt32 = 0x20_01_01_6D
+
+  public static let size: UInt32 = 8
 }
 
 // MARK: - MOD BASS Options
@@ -183,6 +207,10 @@ public struct BassCompressorBank: Sendable, Hashable {
 
   @IntegerParameter(at: 0x20_01_01_7A, range: 0...100)
   public var blend: UInt8 = 50
+
+  public static let address: UInt32 = 0x20_01_01_75
+
+  public static let size: UInt32 = 6
 }
 
 @KatanaUInt8RawBytes
