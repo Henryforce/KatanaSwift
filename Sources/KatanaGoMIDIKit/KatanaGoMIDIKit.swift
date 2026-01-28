@@ -144,6 +144,17 @@ public actor KatanaGoMIDIKit: KatanaGo {
     }
   }
 
+  // Use like this:
+  // Read preset name
+  // let bytes = finalizeReadSysex(addressBytes: [0x20, 0x00, 0x00, 0x00], data: [0x00, 0x00, 0x00, 10])
+
+  private func finalizeReadSysex(addressBytes: [UInt8], data: [UInt8]) -> [UInt8] {
+    let prefix: [UInt8] = [0xf0, 0x41, 0x10, 0x01, 0x05, 0x0d, 0x11]
+    let body = addressBytes + data
+    let checksum = calculateChecksum(for: body)
+    return prefix + body + [checksum, 0xf7]
+  }
+
   private func writeRawBytes(_ rawBytes: [UInt8]) throws {
     guard let connection = midiManager.loadManagedOutputConnections()[outputTag] else {
       throw KatanaError.connectionFailed("Could not find output connection for \(outputTag)")
