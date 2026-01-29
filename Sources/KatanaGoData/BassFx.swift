@@ -7,19 +7,19 @@ import KatanaMacros
 
 @KatanaBank
 public struct BassEnhancerBank: Sendable, Hashable {
-  @IntegerParameter(at: 0x20_01_01_52, range: 0...100)
+  @IntegerParameter(at: 0x00, range: 0...100)
   public var sense: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_01_01_53, range: 0...100)
+  @IntegerParameter(at: 0x01, range: 0...100)
   public var lowLevel: UInt8 = 50
 
-  @Parameter(at: 0x20_01_01_54)
+  @Parameter(at: 0x02)
   public var lowFreq: BassLowFrequency = .freq63Hz
 
-  @IntegerParameter(at: 0x20_01_01_55, range: 0...100)
+  @IntegerParameter(at: 0x03, range: 0...100)
   public var highLevel: UInt8 = 50
 
-  @Parameter(at: 0x20_01_01_56)
+  @Parameter(at: 0x04)
   public var highFreq: BassHighFrequency = .freq5kHz
 
   public static let address: UInt32 = 0x20_01_01_52
@@ -31,19 +31,19 @@ public struct BassEnhancerBank: Sendable, Hashable {
 
 @KatanaBank
 public struct BassSimulatorBank: Sendable, Hashable {
-  @Parameter(at: 0x20_01_01_57)
+  @Parameter(at: 0x00)
   public var type: BassSimType = .pasToAct
 
-  @IntegerParameter(at: 0x20_01_01_58, range: 0...100)
+  @IntegerParameter(at: 0x01, range: 0...100)
   public var low: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_01_01_59, range: 0...100)
+  @IntegerParameter(at: 0x02, range: 0...100)
   public var high: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_01_01_5A, range: 0...100)
+  @IntegerParameter(at: 0x03, range: 0...100)
   public var level: UInt8 = 100
 
-  @IntegerParameter(at: 0x20_01_01_5B, range: 0...100)
+  @IntegerParameter(at: 0x04, range: 0...100)
   public var body: UInt8 = 50
 
   public static let address: UInt32 = 0x20_01_01_57
@@ -55,37 +55,37 @@ public struct BassSimulatorBank: Sendable, Hashable {
 
 @KatanaBank
 public struct BassDeFretterBank: Sendable, Hashable {
-  @IntegerParameter(at: 0x20_01_01_5C, range: 0...100)
+  @IntegerParameter(at: 0x00, range: 0...100)
   public var sense: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_01_01_5D, range: 0...100)
+  @IntegerParameter(at: 0x01, range: 0...100)
   public var attack: UInt8 = 70
 
-  @IntegerParameter(at: 0x20_01_01_60, range: 0...100)
+  @IntegerParameter(at: 0x02, range: 0...100)
   public var tone: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_01_01_61, range: 0...100)
+  @IntegerParameter(at: 0x05, range: 0...100)
   public var effect: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_01_01_62, range: 0...100)
+  @IntegerParameter(at: 0x06, range: 0...100)
   public var directMix: UInt8 = 100
 
   public static let address: UInt32 = 0x20_01_01_5C
 
-  public static let size: UInt32 = 5
+  public static let size: UInt32 = 7
 }
 
 // MARK: - MOD BASS OCT
 
 @KatanaBank
 public struct BassOctaveBank: Sendable, Hashable {
-  @IntegerParameter(at: 0x20_01_01_63, range: 0...100)
+  @IntegerParameter(at: 0x00, range: 0...100)
   public var tenCTLevel: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_01_01_64, range: 0...100)
+  @IntegerParameter(at: 0x01, range: 0...100)
   public var twentyCTLevel: UInt8 = 0
 
-  @IntegerParameter(at: 0x20_01_01_65, range: 0...100)
+  @IntegerParameter(at: 0x02, range: 0...100)
   public var directMix: UInt8 = 100
 
   public static let address: UInt32 = 0x20_01_01_63
@@ -97,25 +97,25 @@ public struct BassOctaveBank: Sendable, Hashable {
 
 @KatanaBank
 public struct BassTWahBank: Sendable, Hashable {
-  @Parameter(at: 0x20_01_01_66)
+  @Parameter(at: 0x00)
   public var mode: WahMode = .lowPassFilter
 
-  @Parameter(at: 0x20_01_01_67)
+  @Parameter(at: 0x01)
   public var polarity: TWahPolarity = .up
 
-  @IntegerParameter(at: 0x20_01_01_68, range: 0...100)
+  @IntegerParameter(at: 0x02, range: 0...100)
   public var sens: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_01_01_69, range: 0...100)
+  @IntegerParameter(at: 0x03, range: 0...100)
   public var frequency: UInt8 = 35
 
-  @IntegerParameter(at: 0x20_01_01_6A, range: 0...100)
+  @IntegerParameter(at: 0x04, range: 0...100)
   public var peak: UInt8 = 35
 
-  @IntegerParameter(at: 0x20_01_01_6B, range: 0...100)
+  @IntegerParameter(at: 0x05, range: 0...100)
   public var effectLevel: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_01_01_6C, range: 0...100)
+  @IntegerParameter(at: 0x06, range: 0...100)
   public var directLevel: UInt8 = 0
 
   public static let address: UInt32 = 0x20_01_01_66
@@ -129,28 +129,28 @@ public struct BassTWahBank: Sendable, Hashable {
 @KatanaBank
 public struct BassSynthBank: Sendable, Hashable {
 
-  @Parameter(at: 0x20_01_01_6D)
+  @Parameter(at: 0x00)
   public var wave: WaveSynthType = .saw
 
-  @IntegerParameter(at: 0x20_01_01_6E, range: 0...100)
+  @IntegerParameter(at: 0x01, range: 0...100)
   public var cutoff: UInt8 = 40
 
-  @IntegerParameter(at: 0x20_01_01_6F, range: 0...100)
+  @IntegerParameter(at: 0x02, range: 0...100)
   public var resonance: UInt8 = 30
 
-  @IntegerParameter(at: 0x20_01_01_70, range: 0...100)
+  @IntegerParameter(at: 0x03, range: 0...100)
   public var filterSens: UInt8 = 40
 
-  @IntegerParameter(at: 0x20_01_01_71, range: 0...100)
+  @IntegerParameter(at: 0x04, range: 0...100)
   public var filterDecay: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_01_01_72, range: 0...100)
+  @IntegerParameter(at: 0x05, range: 0...100)
   public var filterDepth: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_01_01_73, range: 0...100)
+  @IntegerParameter(at: 0x06, range: 0...100)
   public var synthLevel: UInt8 = 25
 
-  @IntegerParameter(at: 0x20_01_01_74, range: 0...100)
+  @IntegerParameter(at: 0x07, range: 0...100)
   public var directMix: UInt8 = 0
 
   public static let address: UInt32 = 0x20_01_01_6D
@@ -190,22 +190,22 @@ public enum BassModFXType: UInt8, Sendable, Hashable, CaseIterable {
 
 @KatanaBank
 public struct BassCompressorBank: Sendable, Hashable {
-  @IntegerParameter(at: 0x20_01_01_75, range: 0...100)
+  @IntegerParameter(at: 0x00, range: 0...100)
   public var threshold: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_01_01_76, range: 0...100)
+  @IntegerParameter(at: 0x01, range: 0...100)
   public var ratio: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_01_01_77, range: 0...100)
+  @IntegerParameter(at: 0x02, range: 0...100)
   public var attack: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_01_01_78, range: 0...100)
+  @IntegerParameter(at: 0x03, range: 0...100)
   public var release: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_01_01_79, range: 0...100)
+  @IntegerParameter(at: 0x04, range: 0...100)
   public var makeup: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_01_01_7A, range: 0...100)
+  @IntegerParameter(at: 0x05, range: 0...100)
   public var blend: UInt8 = 50
 
   public static let address: UInt32 = 0x20_01_01_75

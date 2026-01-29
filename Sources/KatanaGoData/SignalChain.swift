@@ -4,10 +4,10 @@ import KatanaMacros
 
 @KatanaBank
 public struct SignalChainBank: Sendable, Hashable {
-  @Parameter(at: 0x20_00_10_00)
+  @Parameter(at: 0x00)
   public var chain: Chain = .threeOne
 
-  @Parameter(at: 0x20_00_10_01)
+  @Parameter(at: 0x01)
   public var resonance: CabinetResonance = .vintage
 
   public static let address: UInt32 = 0x20_00_10_00
