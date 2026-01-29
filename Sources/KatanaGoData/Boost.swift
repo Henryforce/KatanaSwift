@@ -4,28 +4,28 @@ import KatanaMacros
 /// The data bank representing the booster parameters.
 @KatanaBank
 public struct BoostBank: Sendable, Hashable {
-  @Parameter(at: 0x20_00_40_00)
+  @Parameter(at: 0x00)
   public var type: BoostType = .midBoost
 
-  @IntegerParameter(at: 0x20_00_40_01, range: 0...100)
+  @IntegerParameter(at: 0x01, range: 0...100)
   public var drive: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_40_02, range: 0...100)
+  @IntegerParameter(at: 0x02, range: 0...100)
   public var bottom: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_40_03, range: 0...100)
+  @IntegerParameter(at: 0x03, range: 0...100)
   public var tone: UInt8 = 50
 
-  @Parameter(at: 0x20_00_40_04)
+  @Parameter(at: 0x04)
   public var soloSwitchStatus: Bool = false
 
-  @IntegerParameter(at: 0x20_00_40_05, range: 0...100)
+  @IntegerParameter(at: 0x05, range: 0...100)
   public var soloLevel: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_40_06, range: 0...100)
+  @IntegerParameter(at: 0x06, range: 0...100)
   public var effectLevel: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_40_07, range: 0...100)
+  @IntegerParameter(at: 0x07, range: 0...100)
   public var directMix: UInt8 = 0
 
   public static let address: UInt32 = 0x20_00_40_00

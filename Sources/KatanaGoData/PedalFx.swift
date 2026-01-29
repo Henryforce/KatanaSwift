@@ -1,49 +1,90 @@
 import KatanaCore
 import KatanaMacros
 
-public struct PedalFxBank: Sendable, Hashable {
-  @Parameter(at: 0x20_02_40_01)
+public struct PedalFxBank: WritableBank, Sendable, Hashable {
+  @Parameter(at: 0x00)
+  public var position: Bool = false  // TODO: This could be a different type
+
+  @Parameter(at: 0x01)
   public var status: Bool = false
 
-  @Parameter(at: 0x20_02_40_02)
+  @Parameter(at: 0x02)
   public var type: PedalFxType = .wah
 
-  public var wah: PedalFxWahBank
+  public var wah = PedalFxWahBank()
 
-  public var bend: PedalFxBendBank
+  public var bend = PedalFxBendBank()
 
-  public var wah95: PedalFxWah95Bank
+  public var wah95 = PedalFxWah95Bank()
+
+  public static let address: UInt32 = 0x20_02_40_00
+
+  public static let size: UInt32 =
+    3 + PedalFxWahBank.size + PedalFxBendBank.size + PedalFxWah95Bank.size
 
   public init(
-    status: Bool, type: PedalFxType, wah: PedalFxWahBank, bend: PedalFxBendBank,
-    wah95: PedalFxWah95Bank
+    position: Bool? = nil, status: Bool? = nil, type: PedalFxType? = nil,
+    wah: PedalFxWahBank? = nil, bend: PedalFxBendBank? = nil,
+    wah95: PedalFxWah95Bank? = nil
   ) {
-    self.status = status
-    self.type = type
-    self.wah = wah
-    self.bend = bend
-    self.wah95 = wah95
+    if let position { self.position = position }
+    if let status { self.status = status }
+    if let type { self.type = type }
+    if let wah { self.wah = wah }
+    if let bend { self.bend = bend }
+    if let wah95 { self.wah95 = wah95 }
+  }
+
+  public func loadWriteData() -> [WriteData] {
+    var writeData = [WriteData]()
+    if self.$position.updated {
+      writeData.append(
+        WriteData(address: Self.address + self.$position.address, data: self.position.bytes))
+    }
+    if self.$status.updated {
+      writeData.append(
+        WriteData(address: Self.address + self.$status.address, data: self.status.bytes))
+    }
+    if self.$type.updated {
+      writeData.append(WriteData(address: Self.address + self.$type.address, data: self.type.bytes))
+    }
+    writeData.append(contentsOf: wah.loadWriteData())
+    writeData.append(contentsOf: bend.loadWriteData())
+    writeData.append(contentsOf: wah95.loadWriteData())
+    return writeData
+  }
+
+  public static func buildFromByteArray(_ array: [UInt8]) -> Self {
+    let template = Self()
+    return Self(
+      position: Bool.decodeFromByteArray(array, offset: Int(template.$position.address)),
+      status: Bool.decodeFromByteArray(array, offset: Int(template.$status.address)),
+      type: PedalFxType.decodeFromByteArray(array, offset: Int(template.$type.address)),
+      wah: PedalFxWahBank.buildFromByteArray(array),
+      bend: PedalFxBendBank.buildFromByteArray(array),
+      wah95: PedalFxWah95Bank.buildFromByteArray(array)
+    )
   }
 }
 
 @KatanaBank
 public struct PedalFxWahBank: Sendable, Hashable {
-  @Parameter(at: 0x20_02_50_00)
+  @Parameter(at: 0x00)
   public var wahType: PedalFxWahType = .cryWah
 
-  @IntegerParameter(at: 0x20_02_50_01, range: 0...100)
+  @IntegerParameter(at: 0x01, range: 0...100)
   public var pedalPosition: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_02_50_02, range: 0...100)
+  @IntegerParameter(at: 0x02, range: 0...100)
   public var pedalMin: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_02_50_03, range: 0...100)
+  @IntegerParameter(at: 0x03, range: 0...100)
   public var pedalMax: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_02_50_04, range: 0...100)
+  @IntegerParameter(at: 0x04, range: 0...100)
   public var effectLevel: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_02_50_05, range: 0...100)
+  @IntegerParameter(at: 0x05, range: 0...100)
   public var directMix: UInt8 = 50
 
   public static let address: UInt32 = 0x20_02_50_00
@@ -53,16 +94,16 @@ public struct PedalFxWahBank: Sendable, Hashable {
 
 @KatanaBank
 public struct PedalFxBendBank: Sendable, Hashable {
-  @IntegerParameter(at: 0x20_02_50_06, range: 0...100)
+  @IntegerParameter(at: 0x00, range: 0...100)
   public var pitch: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_02_50_07, range: 0...100)
+  @IntegerParameter(at: 0x01, range: 0...100)
   public var position: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_02_50_08, range: 0...100)
+  @IntegerParameter(at: 0x02, range: 0...100)
   public var effectLevel: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_02_50_09, range: 0...100)
+  @IntegerParameter(at: 0x03, range: 0...100)
   public var directMix: UInt8 = 50
 
   public static let address: UInt32 = 0x20_02_50_06
@@ -72,19 +113,19 @@ public struct PedalFxBendBank: Sendable, Hashable {
 
 @KatanaBank
 public struct PedalFxWah95Bank: Sendable, Hashable {
-  @IntegerParameter(at: 0x20_02_50_0A, range: 0...100)
+  @IntegerParameter(at: 0x00, range: 0...100)
   public var pedalPosition: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_02_50_0B, range: 0...100)
+  @IntegerParameter(at: 0x01, range: 0...100)
   public var pedalMin: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_02_50_0C, range: 0...100)
+  @IntegerParameter(at: 0x02, range: 0...100)
   public var pedalMax: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_02_50_0D, range: 0...100)
+  @IntegerParameter(at: 0x03, range: 0...100)
   public var effectLevel: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_02_50_0E, range: 0...100)
+  @IntegerParameter(at: 0x04, range: 0...100)
   public var directMix: UInt8 = 50
 
   public static let address: UInt32 = 0x20_02_50_0A

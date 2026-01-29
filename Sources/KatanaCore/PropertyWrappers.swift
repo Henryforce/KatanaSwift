@@ -55,12 +55,14 @@ public struct IntegerParameter<T: BinaryInteger & Sendable & Hashable>:
   package var value: T
   public let address: UInt32
   public let range: ClosedRange<T>
+  public let offsetFromMin: Bool
   package var updated = false
 
   public var wrappedValue: T {
-    get { return value }
+    get { return value + (offsetFromMin ? range.lowerBound : 0) }
     set {
-      value = max(range.lowerBound, min(newValue, range.upperBound))
+      let offset = offsetFromMin ? range.lowerBound : 0
+      value = max(range.lowerBound, min(newValue, range.upperBound)) - offset
       updated = true
     }
   }
@@ -70,10 +72,15 @@ public struct IntegerParameter<T: BinaryInteger & Sendable & Hashable>:
     set { self = newValue }
   }
 
-  public init(wrappedValue: T, at address: UInt32, range: ClosedRange<T>) {
-    self.value = max(range.lowerBound, min(wrappedValue, range.upperBound))
+  public init(
+    wrappedValue: T, at address: UInt32, range: ClosedRange<T>, offsetFromMin: Bool = false
+  ) {
+    self.value =
+      max(range.lowerBound, min(wrappedValue, range.upperBound))
+      - (offsetFromMin ? range.lowerBound : 0)
     self.address = address
     self.range = range
+    self.offsetFromMin = offsetFromMin
   }
 }
 

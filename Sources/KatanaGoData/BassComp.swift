@@ -5,40 +5,40 @@ import KatanaMacros
 /// The data bank representing the booster parameters.
 @KatanaBank
 public struct BassCompLimBank: Sendable, Hashable {
-  @Parameter(at: 0x20_00_50_00)
+  @Parameter(at: 0x00)
   public var mode: BassCompLimMode = .comp
 
-  @Parameter(at: 0x20_00_50_01)
+  @Parameter(at: 0x01)
   public var compType: BassCompType = .bossComp
 
-  @IntegerParameter(at: 0x20_00_50_02, range: 0...100)
+  @IntegerParameter(at: 0x02, range: 0...100)
   public var sustain: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_50_03, range: 0...100)
+  @IntegerParameter(at: 0x03, range: 0...100)
   public var compAttack: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_50_04, range: 0...100)
+  @IntegerParameter(at: 0x04, range: 0...100)
   public var tone: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_50_05, range: 0...100)
+  @IntegerParameter(at: 0x05, range: 0...100)
   public var compEffect: UInt8 = 50
 
-  @Parameter(at: 0x20_00_50_06)
+  @Parameter(at: 0x06)
   public var limiterType: BassLimType = .bossLimiter
 
-  @IntegerParameter(at: 0x20_00_50_07, range: 0...100)
+  @IntegerParameter(at: 0x07, range: 0...100)
   public var limiterAttack: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_50_08, range: 0...100)
+  @IntegerParameter(at: 0x08, range: 0...100)
   public var threshold: UInt8 = 50
 
-  @Parameter(at: 0x20_00_50_09)
+  @Parameter(at: 0x09)
   public var ratio: LimiterRatio = .fiveToOne
 
-  @IntegerParameter(at: 0x20_00_50_0A, range: 0...100)
+  @IntegerParameter(at: 0x0A, range: 0...100)
   public var release: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_50_0B, range: 0...100)
+  @IntegerParameter(at: 0x0B, range: 0...100)
   public var limiterEffect: UInt8 = 50
 
   public static let address: UInt32 = 0x20_00_50_00

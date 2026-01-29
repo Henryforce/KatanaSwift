@@ -3,25 +3,25 @@ import KatanaMacros
 
 @KatanaBank
 public struct EffectStatusBank: Sendable, Hashable {
-  @Parameter(at: 0x20_00_30_00)
+  @Parameter(at: 0x00)
   public var booster: Bool = false
 
-  @Parameter(at: 0x20_00_30_01)
+  @Parameter(at: 0x01)
   public var mod: Bool = false
 
-  @Parameter(at: 0x20_00_30_02)
+  @Parameter(at: 0x02)
   public var fx: Bool = false
 
-  @Parameter(at: 0x20_00_30_03)
+  @Parameter(at: 0x03)
   public var delay1: Bool = false
 
-  @Parameter(at: 0x20_00_30_04)
+  @Parameter(at: 0x04)
   public var delay2: Bool = false
 
-  @Parameter(at: 0x20_00_30_05)
+  @Parameter(at: 0x05)
   public var reverb: Bool = false
 
-  @Parameter(at: 0x20_00_30_06)
+  @Parameter(at: 0x06)
   public var bassComp: Bool = false
 
   public static let address: UInt32 = 0x20_00_30_00

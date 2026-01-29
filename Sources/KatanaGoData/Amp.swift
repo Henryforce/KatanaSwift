@@ -3,28 +3,28 @@ import KatanaMacros
 
 @KatanaBank
 public struct AmpBank: Sendable, Hashable {
-  @Parameter(at: 0x20_00_00_0C)
+  @Parameter(at: 0x0C)
   public var type: AmpType = .clean
 
-  @IntegerParameter(at: 0x20_00_00_00, range: 0...100)
+  @IntegerParameter(at: 0x00, range: 0...100)
   public var gain: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_00_01, range: 0...100)
+  @IntegerParameter(at: 0x01, range: 0...100)
   public var volume: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_00_03, range: 0...100)
+  @IntegerParameter(at: 0x03, range: 0...100)
   public var bass: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_00_04, range: 0...100)
+  @IntegerParameter(at: 0x04, range: 0...100)
   public var middle: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_00_05, range: 0...100)
+  @IntegerParameter(at: 0x05, range: 0...100)
   public var treble: UInt8 = 50
 
-  @IntegerParameter(at: 0x20_00_00_0A, range: 0...100)
+  @IntegerParameter(at: 0x0A, range: 0...100)
   public var presence: UInt8 = 50
 
-  @Parameter(at: 0x20_00_00_0D)
+  @Parameter(at: 0x0D)
   public var variation: Bool = false
 
   public static let address: UInt32 = 0x20_00_00_00

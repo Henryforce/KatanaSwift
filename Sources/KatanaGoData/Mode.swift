@@ -3,7 +3,7 @@ import KatanaMacros
 
 @KatanaBank
 public struct ModeBank: Sendable, Hashable {
-  @Parameter(at: 0x7F_01_00_04)
+  @Parameter(at: 0x00)
   public var mode: KatanaGoMode = .guitar
 
   public static let address: UInt32 = 0x7F_01_00_04  // TODO: verify address

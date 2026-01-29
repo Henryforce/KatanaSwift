@@ -86,14 +86,14 @@ public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
     let writeLines = propertyData.map { data in
       """
       if self.$\(data.name).updated {
-          writeData.append(WriteData(address: self.$\(data.name).address, data: self.$\(data.name).value.bytes))
+          writeData.append(WriteData(address: Self.address + self.$\(data.name).address, data: self.$\(data.name).value.bytes))
       }
       """
     }.joined(separator: "\n")
 
     // 3. Build the buildFromByteArray function arguments
     let buildArguments = propertyData.map { data in
-      "\(data.name): \(data.type).decodeFromByteArray(array, offset: Int(template.$\(data.name).address - Self.address))"
+      "\(data.name): \(data.type).decodeFromByteArray(array, offset: Int(template.$\(data.name).address))"
     }.joined(separator: ",\n        ")
 
     // 4. Construct the final method
