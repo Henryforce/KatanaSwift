@@ -89,8 +89,8 @@ public actor KatanaGoMIDIKit: KatanaGo {
     continuation = nil
   }
 
-  public func writeBank(_ bank: WritableBank) async throws {
-    try await writeBank(bank, addressModifiers: 0x20_00_00_00)
+  public func writeBank<T: WritableBank>(_ bank: T) async throws {
+    try await writeBank(bank, addressModifiers: 0)
   }
 
   public func writeFxBank(_ bank: WritableFxBank, id: BankID) async throws {
