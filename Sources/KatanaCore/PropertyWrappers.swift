@@ -1,5 +1,7 @@
 @propertyWrapper
-public struct Parameter<T: Sendable & Hashable>: Sendable, Hashable {
+public struct Parameter<T: Sendable & Hashable>: Sendable, Hashable, CustomStringConvertible,
+  CustomDebugStringConvertible
+{
   package var value: T
   public let address: UInt32
   package var updated = false
@@ -21,10 +23,20 @@ public struct Parameter<T: Sendable & Hashable>: Sendable, Hashable {
     self.value = wrappedValue
     self.address = address
   }
+
+  public var description: String {
+    "\(wrappedValue)"
+  }
+
+  public var debugDescription: String {
+    "\(wrappedValue)"
+  }
 }
 
 @propertyWrapper
-public struct FxParameter<T: Sendable & Hashable>: Sendable, Hashable {
+public struct FxParameter<T: Sendable & Hashable>: Sendable, Hashable, CustomStringConvertible,
+  CustomDebugStringConvertible
+{
   package var value: T
   public let id: FxID
   package var updated = false
@@ -46,11 +58,19 @@ public struct FxParameter<T: Sendable & Hashable>: Sendable, Hashable {
     self.value = wrappedValue
     self.id = id
   }
+
+  public var description: String {
+    "\(wrappedValue)"
+  }
+
+  public var debugDescription: String {
+    "\(wrappedValue)"
+  }
 }
 
 @propertyWrapper
 public struct IntegerParameter<T: BinaryInteger & Sendable & Hashable>:
-  Sendable, Hashable
+  Sendable, Hashable, CustomStringConvertible, CustomDebugStringConvertible
 {
   package var value: T
   public let address: UInt32
@@ -82,11 +102,19 @@ public struct IntegerParameter<T: BinaryInteger & Sendable & Hashable>:
     self.range = range
     self.offsetFromMin = offsetFromMin
   }
+
+  public var description: String {
+    "\(wrappedValue)"
+  }
+
+  public var debugDescription: String {
+    "\(wrappedValue)"
+  }
 }
 
 @propertyWrapper
 public struct FxIntegerParameter<T: BinaryInteger & Sendable & Hashable>:
-  Sendable, Hashable
+  Sendable, Hashable, CustomStringConvertible, CustomDebugStringConvertible
 {
   package var value: T
   public let id: FxID
@@ -110,5 +138,13 @@ public struct FxIntegerParameter<T: BinaryInteger & Sendable & Hashable>:
     self.value = max(range.lowerBound, min(wrappedValue, range.upperBound))
     self.id = id
     self.range = range
+  }
+
+  public var description: String {
+    "\(wrappedValue)"
+  }
+
+  public var debugDescription: String {
+    "\(wrappedValue)"
   }
 }

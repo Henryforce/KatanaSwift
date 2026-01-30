@@ -42,7 +42,7 @@ public struct BassAmpBank: Sendable, Hashable {
   @Parameter(at: 0x0D)
   public var variation: Bool = false
 
-  public static let address: UInt32 = 0x20_00_00_00
+  public static let address: UInt32 = 0x20_00_20_00
 
   public static let size: UInt32 = 14
 }

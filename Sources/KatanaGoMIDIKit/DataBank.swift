@@ -4,7 +4,7 @@ import KatanaGoData
 struct DataBank: Sendable, Hashable {
 
   var modeBank = [UInt8](repeating: 0x00, count: 1)
-  var presetBank = [UInt8](repeating: 0x00, count: 1)
+  var presetBank = [UInt8](repeating: 0x00, count: 2)
   var presetNameBank = [UInt8](repeating: 0x00, count: 20)
   var signalChainBank = [UInt8](repeating: 0x00, count: 3)
   var ampBank = [UInt8](repeating: 0x00, count: 14)
@@ -78,7 +78,7 @@ struct DataBank: Sendable, Hashable {
     if DataBank.applyUpdate(
       &presetBank, bankBase: [0x7F, 0x00, 0x01, 0x00], incomingData: data,
       incomingStart: incomingStart),
-      let preset = Preset(rawValue: presetBank[0x00])  // TODO: update index
+      let preset = Preset(rawValue: presetBank[0x01])
     {
       banks.append(.preset(preset))
     }
@@ -124,18 +124,20 @@ struct DataBank: Sendable, Hashable {
       let bassComp = BassCompLimBank.buildFromByteArray(bassCompBank)
       banks.append(.bassBank(bassComp))
     }
-    // // Bank base address: 20006000
-    // if DataBank.applyUpdate(
-    //   &modTypeBank, bankBase: [32, 0, 96, 0], incomingData: data, incomingStart: incomingStart)
-    // {
-    //   banks.append(.modSelectionBank(buildModSelectionBank()))
-    // }
-    // // Bank base address: 20007000
-    // if DataBank.applyUpdate(
-    //   &fxTypeBank, bankBase: [32, 0, 112, 0], incomingData: data, incomingStart: incomingStart)
-    // {
-    //   banks.append(.fxSelectionBank(buildFxSelectionBank()))
-    // }
+    // Bank base address: 20006000
+    if DataBank.applyUpdate(
+      &modTypeBank, bankBase: [32, 0, 96, 0], incomingData: data, incomingStart: incomingStart)
+    {
+      let modType = ModSelectionBank.buildFromByteArray(modTypeBank)
+      banks.append(.modSelectionBank(modType))
+    }
+    // Bank base address: 20007000
+    if DataBank.applyUpdate(
+      &fxTypeBank, bankBase: [32, 0, 112, 0], incomingData: data, incomingStart: incomingStart)
+    {
+      let fxType = FxSelectionBank.buildFromByteArray(fxTypeBank)
+      banks.append(.fxSelectionBank(fxType))
+    }
     // // Bank base address: 20010000
     // if DataBank.applyUpdate(
     //   &modBank, bankBase: [32, 1, 0, 0], incomingData: data, incomingStart: incomingStart)
