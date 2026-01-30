@@ -14,26 +14,28 @@ public enum WahMode: UInt8, Sendable, Hashable, CaseIterable {
 /// The data bank representing the T-Wah parameters.
 @KatanaFxBank
 public struct TWahBank: Sendable, Hashable {
-  @FxParameter(id: .tWahMode)
+  @Parameter(at: 0x00_00_00_00)
   public var mode: WahMode = .lowPassFilter
 
-  @FxParameter(id: .tWahPolarity)
+  @Parameter(at: 0x00_00_00_01)
   public var polarity: TWahPolarity = .up
 
-  @FxIntegerParameter(id: .tWahSens, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_02, range: 0...100)
   public var sens: UInt8 = 50
 
-  @FxIntegerParameter(id: .tWahFrequency, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_03, range: 0...100)
   public var frequency: UInt8 = 50
 
-  @FxIntegerParameter(id: .tWahPeak, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_04, range: 0...100)
   public var peak: UInt8 = 50
 
-  @FxIntegerParameter(id: .tWahEffectLevel, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_05, range: 0...100)
   public var effectLevel: UInt8 = 100
 
-  @FxIntegerParameter(id: .tWahDirectLevel, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_06, range: 0...100)
   public var directLevel: UInt8 = 0
+
+  static let size: UInt32 = 7
 }
 
 @KatanaUInt8RawBytes
@@ -47,24 +49,26 @@ public enum TWahPolarity: UInt8, Sendable, Hashable, CaseIterable {
 /// The data bank representing the auto wah parameters.
 @KatanaFxBank
 public struct AutoWahBank: Sendable, Hashable {
-  @FxParameter(id: .autoWahMode)
+  @Parameter(at: 0x00_00_00_00)
   public var mode: WahMode = .lowPassFilter
 
-  @FxIntegerParameter(id: .autoWahFrequency, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_01, range: 0...100)
   public var frequency: UInt8 = 50
 
-  @FxIntegerParameter(id: .autoWahPeak, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_02, range: 0...100)
   public var peak: UInt8 = 50
 
-  @FxIntegerParameter(id: .autoWahRate, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_03, range: 0...100)
   public var rate: UInt8 = 50
 
-  @FxIntegerParameter(id: .autoWahDepth, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_04, range: 0...100)
   public var depth: UInt8 = 50
 
-  @FxIntegerParameter(id: .autoWahEffectLevel, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_05, range: 0...100)
   public var effectLevel: UInt8 = 100
 
-  @FxIntegerParameter(id: .autoWahDirectLevel, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_06, range: 0...100)
   public var directLevel: UInt8 = 0
+
+  static let size: UInt32 = 7
 }

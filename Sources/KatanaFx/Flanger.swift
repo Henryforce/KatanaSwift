@@ -5,26 +5,28 @@ import KatanaMacros
 
 @KatanaFxBank
 public struct FlangerBank: Sendable, Hashable {
-  @FxIntegerParameter(id: .flangerRate, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_00, range: 0...100)
   public var rate: UInt8 = 50
 
-  @FxIntegerParameter(id: .flangerDepth, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_01, range: 0...100)
   public var depth: UInt8 = 50
 
-  @FxIntegerParameter(id: .flangerManual, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_02, range: 0...100)
   public var manual: UInt8 = 50
 
-  @FxIntegerParameter(id: .flangerResonance, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_03, range: 0...100)
   public var resonance: UInt8 = 50
 
-  @FxParameter(id: .flangerLowCut)
+  @Parameter(at: 0x00_00_00_04)
   public var lowCut: FlangerLowCut = .flat
 
-  @FxIntegerParameter(id: .flangerEffectLevel, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_05, range: 0...100)
   public var effectLevel: UInt8 = 100
 
-  @FxIntegerParameter(id: .flangerDirectLevel, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_06, range: 0...100)
   public var directLevel: UInt8 = 0
+
+  public static let size: UInt32 = 7
 }
 
 @KatanaUInt8RawBytes
@@ -47,15 +49,17 @@ public enum FlangerLowCut: UInt8, Sendable, Hashable, CaseIterable {
 /// The data bank representing the flanger 117E parameters.
 @KatanaFxBank
 public struct Flanger117EBank: Sendable, Hashable {
-  @FxIntegerParameter(id: .flanger117EManual, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_00, range: 0...100)
   public var manual: UInt8 = 50
 
-  @FxIntegerParameter(id: .flanger117EWidth, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_01, range: 0...100)
   public var width: UInt8 = 50
 
-  @FxIntegerParameter(id: .flanger117ESpeed, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_02, range: 0...100)
   public var speed: UInt8 = 50
 
-  @FxIntegerParameter(id: .flanger117ERegen, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_03, range: 0...100)
   public var regen: UInt8 = 50
+
+  public static let size: UInt32 = 4
 }

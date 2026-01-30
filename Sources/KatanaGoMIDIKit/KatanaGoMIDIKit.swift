@@ -93,17 +93,6 @@ public actor KatanaGoMIDIKit: KatanaGo {
     try await writeBank(bank, addressModifiers: 0)
   }
 
-  public func writeFxBank(_ bank: WritableFxBank, id: BankID) async throws {
-    for writeData in bank.loadWriteData() {
-      let address = writeData.id.address
-      let data = writeData.data
-
-      let bytes = finalizeSysex(addressBytes: address, data: data)
-      print("Writing bytes: \(bytes)")
-      try writeRawBytes(bytes)
-    }
-  }
-
   /// Enable or disable the FX bank.
   /// - Parameter enabled: The bank of parameters to send to the device.
   public func enableFx(_ enabled: Bool, id: BankID) async throws {

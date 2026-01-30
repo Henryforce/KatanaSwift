@@ -18,10 +18,6 @@ public protocol KatanaGo: Actor {
   /// - Parameter bank: The bank of parameters to send to the device.
   func writeBank<T: WritableBank>(_ bank: T) async throws
 
-  /// Write a bank of parameters to the device.
-  /// - Parameter bank: The bank of parameters to send to the device.
-  func writeFxBank(_ bank: WritableFxBank, id: BankID) async throws
-
   /// Enable or disable the FX bank.
   /// - Parameter enabled: The bank of parameters to send to the device.
   func enableFx(_ enabled: Bool, id: BankID) async throws

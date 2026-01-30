@@ -6,20 +6,22 @@ import KatanaMacros
 /// The data bank representing the compressor parameters.
 @KatanaFxBank
 public struct CompBank: Sendable, Hashable {
-  @FxParameter(id: .compType)
+  @Parameter(at: 0x00_00_00_00)
   public var type: CompType = .boss
 
-  @FxIntegerParameter(id: .compSustain, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_01, range: 0...100)
   public var sustain: UInt8 = 50
 
-  @FxIntegerParameter(id: .compAttack, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_02, range: 0...100)
   public var attack: UInt8 = 50
 
-  @FxIntegerParameter(id: .compTone, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_03, range: 0...100)
   public var tone: UInt8 = 50
 
-  @FxIntegerParameter(id: .compLevel, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_04, range: 0...100)
   public var level: UInt8 = 100
+
+  public static let size: UInt32 = 5
 }
 
 @KatanaUInt8RawBytes
