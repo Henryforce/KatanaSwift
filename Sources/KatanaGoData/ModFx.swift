@@ -3,6 +3,9 @@ import KatanaEQ
 import KatanaFx
 import KatanaMacros
 
+/// A bank of parameters for the MOD/FX section.
+public protocol KatanaGoFxBank: WritableBank {}
+
 @KatanaBank
 public struct ModSelectionBank: Sendable, Hashable {
   @Parameter(at: 0x00)

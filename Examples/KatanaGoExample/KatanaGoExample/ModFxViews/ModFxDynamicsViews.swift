@@ -10,7 +10,7 @@ struct CompressorView: View {
   @State private var tone: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Compressor Parameters") {
@@ -46,7 +46,7 @@ struct LimiterView: View {
   @State private var release: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Limiter Parameters") {
@@ -87,7 +87,7 @@ struct SlowGearView: View {
   @State private var riseTime: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Slow Gear Parameters") {
@@ -111,7 +111,7 @@ struct SlicerView: View {
   @State private var effectLevel: Double = 50
   @State private var directMix: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Slicer Parameters") {

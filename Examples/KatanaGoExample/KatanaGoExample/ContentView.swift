@@ -133,10 +133,10 @@ struct ContentView: View {
         AmpView(viewModel: viewModel)
       }
       .sheet(isPresented: $showModSettings) {
-        ModFxView(viewModel: viewModel, id: .id1)
+        ModFxView(viewModel: viewModel, channel: .mod)
       }
       .sheet(isPresented: $showFxSettings) {
-        ModFxView(viewModel: viewModel, id: .id2)
+        ModFxView(viewModel: viewModel, channel: .fx)
       }
       .sheet(isPresented: $showDelaySettings) {
         DelayView(viewModel: viewModel)

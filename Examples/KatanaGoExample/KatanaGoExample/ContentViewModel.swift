@@ -46,27 +46,27 @@ final class ContentViewModel {
   }
 
   func changePreset1A() {
-    guard let device else { return }
-    Task {
-      do {
-        print("🎸 Switching to Preset 1A...")
-        //        try await device.write(.selectPreset(.preset1A))
-      } catch {
-        print("❌ Error: \(error)")
-      }
-    }
+    //    guard let device else { return }
+    //    Task {
+    //      do {
+    //        print("🎸 Switching to Preset 1A...")
+    //        //        try await device.write(.selectPreset(.preset1A))
+    //      } catch {
+    //        print("❌ Error: \(error)")
+    //      }
+    //    }
   }
 
   func changePreset3A() {
-    guard let device else { return }
-    Task {
-      do {
-        print("🎸 Switching to Preset 3A...")
-        //        try await device.write(.selectPreset(.preset3A))
-      } catch {
-        print("❌ Error: \(error)")
-      }
-    }
+    //    guard let device else { return }
+    //    Task {
+    //      do {
+    //        print("🎸 Switching to Preset 3A...")
+    //        //        try await device.write(.selectPreset(.preset3A))
+    //      } catch {
+    //        print("❌ Error: \(error)")
+    //      }
+    //    }
   }
 
   func updateAmpBank(_ bank: AmpBank) {
@@ -81,24 +81,24 @@ final class ContentViewModel {
     }
   }
 
-  func enableFx(_ enabled: Bool, id: BankID) {
+  func enableFx(_ enabled: Bool, channel: KatanaGoFxChannel) {
     guard let device else { return }
     Task {
       do {
-        print("🎸 Updating Fx enablement \(id)...")
-        try await device.enableFx(enabled, id: id)
+        print("🎸 Updating Fx enablement \(channel)...")
+        try await device.enableFx(enabled, channel: channel)
       } catch {
         print("❌ Error: \(error)")
       }
     }
   }
 
-  func selectFxType(_ type: ModFxType, id: BankID) {
+  func selectFxType(_ type: ModFxType, channel: KatanaGoFxChannel) {
     guard let device else { return }
     Task {
       do {
-        print("🎸 Select ModFx \(type), \(id)...")
-        try await device.selectFxType(type, id: id)
+        print("🎸 Select ModFx \(type), \(channel)...")
+        try await device.selectFxType(type, channel: channel)
       } catch {
         print("❌ Error: \(error)")
       }
@@ -117,12 +117,12 @@ final class ContentViewModel {
     }
   }
 
-  func updateWritableBank<T: WritableFxBank>(_ bank: T, id: BankID) {
+  func updateWritableBank<T: KatanaGoFxBank>(_ bank: T, channel: KatanaGoFxChannel) {
     guard let device else { return }
     Task {
       do {
         print("🎸 Updating bank \(bank)...")
-        try await device.writeFxBank(bank, id: id)
+        try await device.writeFxBank(bank, channel: channel)
       } catch {
         print("❌ Error: \(error)")
       }

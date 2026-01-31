@@ -12,7 +12,7 @@ import SwiftUI
 
 struct ModFxView: View {
   var viewModel: ContentViewModel
-  let id: BankID
+  let channel: KatanaGoFxChannel
 
   @State private var isEnabled = false
   @State private var type = ModFxType.chorus
@@ -24,7 +24,7 @@ struct ModFxView: View {
           Toggle("Enabled", isOn: $isEnabled)
             .onChange(of: isEnabled) { _, newValue in
               print("Dog")
-              viewModel.enableFx(newValue, id: id)
+              viewModel.enableFx(newValue, channel: channel)
             }
 
           Picker("Type", selection: $type) {
@@ -33,13 +33,13 @@ struct ModFxView: View {
             }
           }
           .onChange(of: type) { _, newValue in
-            viewModel.selectFxType(type, id: id)
+            viewModel.selectFxType(type, channel: channel)
           }
         }
 
         buildViewFromType(type)
       }
-      .navigationTitle("Settings \(id.name)")
+      .navigationTitle("Settings \(channel.name)")
       .toolbar {
         ToolbarItem(placement: .confirmationAction) {
           Button("Done") {
@@ -86,8 +86,8 @@ struct ModFxView: View {
     }
   }
 
-  private func updateBank(_ bank: WritableFxBank) {
-    viewModel.updateWritableBank(bank, id: id)
+  private func updateBank(_ bank: KatanaGoFxBank) {
+    viewModel.updateWritableBank(bank, channel: channel)
   }
 
   private func updateNormalBank(_ bank: WritableBank) {
@@ -95,12 +95,11 @@ struct ModFxView: View {
   }
 }
 
-extension BankID {
+extension KatanaGoFxChannel {
   var name: String {
     switch self {
-    case .id1: "MOD"
-    case .id2: "FX"
-    default: ""
+    case .mod: "MOD"
+    case .fx: "FX"
     }
   }
 }

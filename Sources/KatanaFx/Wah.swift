@@ -35,7 +35,7 @@ public struct TWahBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_00_00_06, range: 0...100)
   public var directLevel: UInt8 = 0
 
-  static let size: UInt32 = 7
+  public static let size: UInt32 = 7
 }
 
 @KatanaUInt8RawBytes
@@ -70,5 +70,5 @@ public struct AutoWahBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_00_00_06, range: 0...100)
   public var directLevel: UInt8 = 0
 
-  static let size: UInt32 = 7
+  public static let size: UInt32 = 7
 }

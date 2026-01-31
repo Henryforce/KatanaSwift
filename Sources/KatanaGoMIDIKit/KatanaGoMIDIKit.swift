@@ -93,16 +93,21 @@ public actor KatanaGoMIDIKit: KatanaGo {
     try await writeBank(bank, addressModifiers: 0)
   }
 
+  public func writeFxBank<T: KatanaGoFxBank>(_ bank: T, channel: KatanaGoFxChannel) async throws {
+    let address: UInt32 = T.address + (channel == .fx ? 0x00_00_10_00 : 0x00)
+    try await writeBank(bank, addressModifiers: address)
+  }
+
   /// Enable or disable the FX bank.
   /// - Parameter enabled: The bank of parameters to send to the device.
-  public func enableFx(_ enabled: Bool, id: BankID) async throws {
-    let address: UInt32 = id == .id2 ? 0x20_00_30_02 : 0x20_00_30_01
+  public func enableFx(_ enabled: Bool, channel: KatanaGoFxChannel) async throws {
+    let address: UInt32 = channel == .fx ? 0x20_00_30_02 : 0x20_00_30_01
     let bytes = finalizeSysex(address: address, data: [enabled ? 0x01 : 0x00])
     try writeRawBytes(bytes)
   }
 
-  public func selectFxType(_ type: ModFxType, id: BankID) async throws {
-    let address: UInt32 = id == .id2 ? 0x20_00_70_00 : 0x20_00_60_00
+  public func selectFxType(_ type: ModFxType, channel: KatanaGoFxChannel) async throws {
+    let address: UInt32 = channel == .fx ? 0x20_00_70_00 : 0x20_00_60_00
     let bytes = finalizeSysex(address: address, data: [type.rawValue])
     try writeRawBytes(bytes)
   }
@@ -187,17 +192,6 @@ public actor KatanaGoMIDIKit: KatanaGo {
 }
 
 extension BankID {
-  var fxOffset: UInt32 {
-    switch self {
-    case .id1:
-      return 0x00_01_20_00
-    case .id2:
-      return 0x00_01_30_00
-    default:
-      return 0x00_00_00_00
-    }
-  }
-
   var eqOffset: UInt32 {
     switch self {
     case .id1:
