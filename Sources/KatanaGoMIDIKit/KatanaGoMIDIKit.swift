@@ -133,6 +133,18 @@ public actor KatanaGoMIDIKit: KatanaGo {
   // Note that preset write is different than read. Preset write is on address 0x7f000104 and
   // is of two bytes size (first byte is 00 and second one has the preset's raw value).
 
+  public func readBank<T: WritableBank>(_ type: T.Type) async throws -> T {
+    // TODO: implement.
+    return T.buildFromByteArray([])
+  }
+
+  public func readFxBank<T: KatanaGoFxBank>(_ type: T.Type, channel: KatanaGoFxChannel) async throws
+    -> T
+  {
+    // TODO: implement.
+    return T.buildFromByteArray([])
+  }
+
   public func read() -> AsyncStream<KatanaGoDataBank> {
     AsyncStream { continuation in
       self.continuation = continuation

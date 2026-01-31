@@ -9,9 +9,6 @@ public struct PitchShifterBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_00_00)
   public var voice: PitchShifterVoice = .oneVoice
 
-  // TODO: update address modifier as this one can go above 0x00_00_00_7F, so it should not
-  // 0x00_00_00_8F but 0x00_00_01_00.
-
   @Parameter(at: 0x00_00_00_01)
   public var ps1Mode: PitchShifterMode = .fast
 

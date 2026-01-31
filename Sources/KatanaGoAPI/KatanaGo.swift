@@ -9,14 +9,8 @@ public protocol WritableChannelBank: WritableBank {
   static var channelType: BankChannel.Type { get }
 }
 
-// public protocol KatanaGoFxBank: WritableBank, WritableChannelBank {
-
-// }
-
-// public extension KatanaGoFxBank {
-//   nonisolated(unsafe)
-//   public static var channelType: KatanaGoFxChannel.Type = { KatanaGoFxChannel.self }
-// }
+// TODO: think about moving some methods as extensions and instead have simple methods
+// that perform write and read with raw bytes.
 
 /// Represents a connected Katana GO device.
 public protocol KatanaGo: Actor {
@@ -47,6 +41,15 @@ public protocol KatanaGo: Actor {
   /// - Parameter type: The FX type to select.
   /// - Parameter channel: The channel to send the bank to.
   func selectFxType(_ type: ModFxType, channel: KatanaGoFxChannel) async throws
+
+  /// Read a bank of parameters from the device.
+  /// - Parameter type: The type of bank to read.
+  func readBank<T: WritableBank>(_ type: T.Type) async throws -> T
+
+  /// Read a bank of parameters from the device.
+  /// - Parameter type: The type of bank to read.
+  /// - Parameter channel: The channel to read the bank from.
+  func readFxBank<T: KatanaGoFxBank>(_ type: T.Type, channel: KatanaGoFxChannel) async throws -> T
 
   /// Provides a stream of data received from the device.
   /// - Returns: An AsyncStream of KatanaGoDataBank.

@@ -15,15 +15,14 @@ struct KatanaGoMIDIParserTests {
       115,  // Checksum
     ]
 
-    var dataBank = DataBank(addressOffset: 0)
-    KatanaGoMIDIParser.parse(message, into: &dataBank)
-
-    let expectedName: [UInt8] = [
-      0, 0, 0, 0, 0, 0, 0,
-      77, 79, 68, 69, 82, 78, 32, 66, 82, 79, 87, 78,
-      32, 32, 32, 32,
-    ]
-    #expect(dataBank.presetNameBank == expectedName)
+    var dataBank = DataBank()
+    let commands = KatanaGoMIDIParser.parse(message, into: &dataBank)
+    #expect(commands.count == 1)
+    if let firstCommand = commands.first, case .presetName(let name) = firstCommand {
+      #expect(name == "MODERN BROWN")
+    } else {
+      Issue.record("Unexpected command, presetName was expected")
+    }
   }
 
   @Test func testParsePreamp() throws {
@@ -36,11 +35,23 @@ struct KatanaGoMIDIParserTests {
       5,  // Checksum
     ]
 
-    var dataBank = DataBank(addressOffset: 0)
-    KatanaGoMIDIParser.parse(message, into: &dataBank)
+    var dataBank = DataBank()
+    let commands = KatanaGoMIDIParser.parse(message, into: &dataBank)
 
     let expectedPreamp: [UInt8] = [100, 100, 0, 70, 61, 49, 50, 11, 50, 16, 60, 0, 4, 0]
-    #expect(dataBank.preampBank == expectedPreamp)
+    #expect(dataBank.ampBank == expectedPreamp)
+    #expect(commands.count == 1)
+    if let firstCommand = commands.first, case .ampBank(let ampBank) = firstCommand {
+      #expect(ampBank.bass == 70)
+      #expect(ampBank.gain == 100)
+      #expect(ampBank.middle == 61)
+      #expect(ampBank.treble == 49)
+      #expect(ampBank.variation == false)
+      #expect(ampBank.volume == 100)
+      #expect(ampBank.type == .brown)
+    } else {
+      Issue.record("Unexpected command, ampBank was expected")
+    }
   }
 
   @Test func testParseBooster() throws {
@@ -53,10 +64,23 @@ struct KatanaGoMIDIParserTests {
       29,  // Checksum
     ]
 
-    var dataBank = DataBank(addressOffset: 0)
-    KatanaGoMIDIParser.parse(message, into: &dataBank)
+    var dataBank = DataBank()
+    let commands = KatanaGoMIDIParser.parse(message, into: &dataBank)
 
     let expectedBooster: [UInt8] = [9, 50, 60, 50, 0, 50, 40, 0]
     #expect(dataBank.boosterBank == expectedBooster)
+    #expect(commands.count == 1)
+    if let firstCommand = commands.first, case .boostBank(let boostBank) = firstCommand {
+      #expect(boostBank.bottom == 60)
+      #expect(boostBank.directMix == 0)
+      #expect(boostBank.drive == 50)
+      #expect(boostBank.effectLevel == 40)
+      #expect(boostBank.soloLevel == 50)
+      #expect(boostBank.soloSwitchStatus == false)
+      #expect(boostBank.tone == 50)
+      #expect(boostBank.type == .tubescreamer)
+    } else {
+      Issue.record("Unexpected command, boostBank was expected")
+    }
   }
 }

@@ -1,4 +1,4 @@
-import KatanaBank
+import KatanaCore
 import Testing
 
 @testable import KatanaGoData
@@ -44,14 +44,14 @@ struct AmpTests {
   @Test func testAmpBankAddresses() {
     let bank = AmpBank()
 
-    #expect(bank.$gain.address == 0x00_00_20_00)
-    #expect(bank.$volume.address == 0x00_00_20_01)
-    #expect(bank.$bass.address == 0x00_00_20_03)
-    #expect(bank.$middle.address == 0x00_00_20_04)
-    #expect(bank.$treble.address == 0x00_00_20_05)
-    #expect(bank.$presence.address == 0x00_00_20_0A)
-    #expect(bank.$type.address == 0x00_00_20_0C)
-    #expect(bank.$variation.address == 0x00_00_20_0D)
+    #expect(bank.$gain.address == 0x00)
+    #expect(bank.$volume.address == 0x01)
+    #expect(bank.$bass.address == 0x03)
+    #expect(bank.$middle.address == 0x04)
+    #expect(bank.$treble.address == 0x05)
+    #expect(bank.$presence.address == 0x0A)
+    #expect(bank.$type.address == 0x0C)
+    #expect(bank.$variation.address == 0x0D)
   }
 
   @Test func testLoadWriteData() {
@@ -69,13 +69,13 @@ struct AmpTests {
 
     #expect(writeData.count == 3)
 
-    let gainData = writeData.first { $0.address == 0x00_00_20_00 }
+    let gainData = writeData.first { $0.address == 0x20_00_20_00 }
     #expect(gainData?.data == [70])
 
-    let typeData = writeData.first { $0.address == 0x00_00_20_0C }
+    let typeData = writeData.first { $0.address == 0x20_00_20_0C }
     #expect(typeData?.data == [0x04])  // .brown is 0x04
 
-    let variationData = writeData.first { $0.address == 0x00_00_20_0D }
+    let variationData = writeData.first { $0.address == 0x20_00_20_0D }
     #expect(variationData?.data == [1])  // true is 1
   }
 }

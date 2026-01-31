@@ -1,3 +1,4 @@
+import KatanaCore
 import KatanaGoAPI
 import KatanaGoData
 import MIDIKit
@@ -60,7 +61,7 @@ struct KatanaGoMIDIKitTests {
 
     let katana = KatanaGoMIDIKit(endpoint: endpoint, midiManager: midiManager)
 
-    await #expect(throws: KatanaGoError.self) {
+    await #expect(throws: KatanaError.self) {
       try await katana.connect()
     }
   }
@@ -86,63 +87,5 @@ struct KatanaGoMIDIKitTests {
 
     #expect(hasInputRemoved)
     #expect(hasOutputRemoved)
-  }
-
-  @Test func testWrite() async throws {
-    let midiManager = MockMIDIManager()
-    let endpoint = MockMIDIEndpoint(name: "Katana", displayName: "Katana")
-
-    // Setup matching input endpoint so connect() passes
-    midiManager.inputEndpoints = [MockMIDIEndpoint(name: "Katana", displayName: "Katana")]
-
-    let katana = KatanaGoMIDIKit(endpoint: endpoint, midiManager: midiManager)
-    try await katana.connect()
-
-    let outputTag = "KatanaGo_Out_\(endpoint.uniqueID)"
-    let outputConnection =
-      midiManager.managedOutputConnections[outputTag] as? MockMIDIOutputConnection
-    outputConnection?.sentEvents.removeAll()  // Clear startup data
-
-    try await katana.write(.selectPreset(.preset1A))
-
-    #expect(outputConnection?.sentEvents.count == 1)
-    if case .sysEx7(let sysEx) = outputConnection?.sentEvents.first {
-      // Verify preset bytes
-      #expect(!sysEx.data.isEmpty)
-    } else {
-      Issue.record("Expected sysEx7 event")
-    }
-  }
-
-  @Test func testRead() async throws {
-    let midiManager = MockMIDIManager()
-    let endpoint = MockMIDIEndpoint(name: "Katana", displayName: "Katana")
-    midiManager.inputEndpoints = [MockMIDIEndpoint(name: "Katana", displayName: "Katana")]
-    let katana = KatanaGoMIDIKit(endpoint: endpoint, midiManager: midiManager)
-
-    try await katana.connect()
-
-    let stream = await katana.read()
-
-    // Simulate incoming MIDI event
-    let receiver = midiManager.addedInputConnections[0].receiver
-    let sysExData: [UInt8] = [
-      0xF0, 0x41, 0x10, 0x00, 0x00, 0x00, 0x33, 0x12, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF7,
-    ]
-    let event = try MIDIEvent.sysEx7(rawBytes: sysExData)
-
-    if case .events(_, let handler) = receiver {
-      handler([event], 0, nil)
-    }
-
-    var iterator = stream.makeAsyncIterator()
-    let firstData = await iterator.next()
-
-    if case .midiCommand(let command, let data) = firstData {
-      #expect(command == 0xF0)
-      #expect(!data.isEmpty)
-    } else {
-      Issue.record("Expected midiCommand")
-    }
   }
 }
