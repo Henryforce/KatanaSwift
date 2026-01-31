@@ -1,4 +1,4 @@
-import KatanaBank
+import KatanaCore
 import KatanaGoAPI
 import KatanaGoData
 import MIDIKit
@@ -18,9 +18,20 @@ final class KatanaGoScannerMIDIKitTests: XCTestCase {
     func connect() async throws {}
     func disconnect() async {}
     func connectionStatus() async -> ConnectionStatus { .disconnected }
-    func write(_ command: KatanaGoWriteData) async throws {}
-    func writeBank(_ bank: WritableBank) async throws {}
-    func read() -> AsyncStream<KatanaGoReadData> { AsyncStream { $0.finish() } }
+    func writeBank<T: WritableBank>(_ bank: T) async throws {}
+    func writeFxBank<T: KatanaGoFxBank>(_ bank: T, channel: KatanaGoFxChannel) async throws {}
+    func enableFx(_ enabled: Bool, channel: KatanaGoFxChannel) async throws {}
+    func selectFxType(_ type: KatanaGoData.ModFxType, channel: KatanaGoData.KatanaGoFxChannel)
+      async throws
+    {}
+    func readBank<T: WritableBank>(_ type: T.Type) async throws -> T {
+      return T.buildFromByteArray([])
+    }
+    func readFxBank<T: KatanaGoFxBank>(_ type: T.Type, channel: KatanaGoFxChannel) async throws -> T
+    { return T.buildFromByteArray([]) }
+    func read() -> AsyncStream<KatanaGoDataBank> {
+      AsyncStream { $0.finish() }
+    }
   }
 
   func testScanFindsKatana() async throws {

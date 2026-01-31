@@ -312,6 +312,43 @@ extension HarmonistVoice {
   }
 }
 
+extension HarmonistHarmony {
+  var name: String {
+    switch self {
+    case .minus2oct: return "-2 Oct"
+    case .minus14th: return "-14th"
+    case .minus13th: return "-13th"
+    case .minus12th: return "-12th"
+    case .minus11th: return "-11th"
+    case .minus10th: return "-10th"
+    case .minus9th: return "-9th"
+    case .minus8th: return "-8th"
+    case .minus7th: return "-7th"
+    case .minus6th: return "-6th"
+    case .minus5th: return "-5th"
+    case .minus4th: return "-4th"
+    case .minus3rd: return "-3rd"
+    case .minus2nd: return "-2nd"
+    case .unison: return "Unison"
+    case .plus2nd: return "+2nd"
+    case .plus3rd: return "+3rd"
+    case .plus4th: return "+4th"
+    case .plus5th: return "+5th"
+    case .plus6th: return "+6th"
+    case .plus7th: return "+7th"
+    case .plus8th: return "+8th"
+    case .plus9th: return "+9th"
+    case .plus10th: return "+10th"
+    case .plus11th: return "+11th"
+    case .plus12th: return "+12th"
+    case .plus13th: return "+13th"
+    case .plus14th: return "+14th"
+    case .plus2oct: return "+2 Oct"
+    case .user: return "User"
+    }
+  }
+}
+
 extension HumanizerMode {
   var name: String {
     switch self {

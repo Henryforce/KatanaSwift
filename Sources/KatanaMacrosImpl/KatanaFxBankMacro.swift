@@ -86,7 +86,12 @@ public struct KatanaFxBankMacro: MemberMacro, ExtensionMacro {
     let writeLines = propertyData.map { data in
       """
       if self.$\(data.name).updated {
-          writeData.append(WriteData(address: baseAddress + self.$\(data.name).address, data: self.$\(data.name).value.bytes))
+          var address = baseAddress + self.$\(data.name).address
+          if (address & 0x80) != 0 { address += 0x80 }
+          if (address & 0x8000) != 0 { address += 0x8000 }
+          if (address & 0x800000) != 0 { address += 0x800000 }
+
+          writeData.append(WriteData(address: address, data: self.$\(data.name).value.bytes))
       }
       """
     }.joined(separator: "\n")

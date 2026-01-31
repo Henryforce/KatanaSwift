@@ -4,7 +4,7 @@ import KatanaGoData
 import SwiftUI
 
 struct ChorusView: View {
-  @State private var crossoverFrequency: Double = 50
+  @State private var crossoverFrequency: ChorusCrossoverFrequency = .freq250Hz
   @State private var lowRate: Double = 50
   @State private var lowDepth: Double = 50
   @State private var lowPreDelay: Double = 0
@@ -19,8 +19,13 @@ struct ChorusView: View {
 
   var body: some View {
     Section("Chorus Parameters") {
-      ParameterSlider(title: "Crossover Frequency", value: $crossoverFrequency, range: 0...100) {
-        onUpdate(ChorusBank(crossoverFrequency: UInt8($0)))
+      Picker("Crossover frequency", selection: $crossoverFrequency) {
+        ForEach(ChorusCrossoverFrequency.allCases, id: \.self) { type in
+          Text("\(type.name)").tag(type)
+        }
+      }
+      .onChange(of: crossoverFrequency) { _, newValue in
+        onUpdate(ChorusBank(crossoverFrequency: newValue))
       }
       ParameterSlider(title: "Low Rate", value: $lowRate, range: 0...100) {
         onUpdate(ChorusBank(lowRate: UInt8($0)))
@@ -262,6 +267,30 @@ struct RingModView: View {
       ParameterSlider(title: "Direct Mix", value: $directMix, range: 0...100) {
         onUpdate(RingModBank(directMix: UInt8($0)))
       }
+    }
+  }
+}
+
+extension ChorusCrossoverFrequency {
+  var name: String {
+    switch self {
+    case .freq100Hz: "100 Hz"
+    case .freq125Hz: "125 Hz"
+    case .freq160Hz: "160 Hz"
+    case .freq200Hz: "200 Hz"
+    case .freq250Hz: "250 Hz"
+    case .freq315Hz: "315 Hz"
+    case .freq400Hz: "400 Hz"
+    case .freq500Hz: "500 Hz"
+    case .freq630Hz: "630 Hz"
+    case .freq800Hz: "800 Hz"
+    case .freq1kHz: "1 kHz"
+    case .freq1k250Hz: "1.25 kHz"
+    case .freq1k600Hz: "1.6 kHz"
+    case .freq2kHz: "2 kHz"
+    case .freq2k500Hz: "2.5 kHz"
+    case .freq3k150Hz: "3.15 kHz"
+    case .freq4kHz: "4 kHz"
     }
   }
 }

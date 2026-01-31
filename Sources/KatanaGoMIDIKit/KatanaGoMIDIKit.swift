@@ -94,7 +94,8 @@ public actor KatanaGoMIDIKit: KatanaGo {
   }
 
   public func writeFxBank<T: KatanaGoFxBank>(_ bank: T, channel: KatanaGoFxChannel) async throws {
-    let address: UInt32 = T.address + (channel == .fx ? 0x00_00_10_00 : 0x00)
+    // let address: UInt32 = T.address + (channel == .fx ? 0x00_00_10_00 : 0x00)
+    let address: UInt32 = channel == .fx ? 0x20_00_10_00 : 0x20_00_00_00
     try await writeBank(bank, addressModifiers: address)
   }
 
@@ -131,6 +132,18 @@ public actor KatanaGoMIDIKit: KatanaGo {
   // TODO: add method to write KatanaGoDataBank enum cases.
   // Note that preset write is different than read. Preset write is on address 0x7f000104 and
   // is of two bytes size (first byte is 00 and second one has the preset's raw value).
+
+  public func readBank<T: WritableBank>(_ type: T.Type) async throws -> T {
+    // TODO: implement.
+    return T.buildFromByteArray([])
+  }
+
+  public func readFxBank<T: KatanaGoFxBank>(_ type: T.Type, channel: KatanaGoFxChannel) async throws
+    -> T
+  {
+    // TODO: implement.
+    return T.buildFromByteArray([])
+  }
 
   public func read() -> AsyncStream<KatanaGoDataBank> {
     AsyncStream { continuation in

@@ -51,7 +51,8 @@ struct Flanger117EView: View {
 struct DC30View: View {
   @State private var type = DC30Type.chorus
   @State private var inputVolume: Double = 50
-  @State private var intensity: Double = 50
+  @State private var chorusIntensity: Double = 50
+  @State private var echoIntensity: Double = 50
   @State private var repeatTime: Double = 300
   @State private var volume: Double = 50
   @State private var tone: Double = 50
@@ -72,17 +73,17 @@ struct DC30View: View {
       ParameterSlider(title: "Input Volume", value: $inputVolume, range: 0...100) {
         onUpdate(DC30Bank(inputVolume: UInt8($0)))
       }
-      ParameterSlider(title: "Chorus Intensity", value: $intensity, range: 0...100) {
+      ParameterSlider(title: "Chorus Intensity", value: $chorusIntensity, range: 0...100) {
         onUpdate(DC30Bank(chorusIntensity: UInt8($0)))
       }
-      ParameterSlider(title: "Repeat Time", value: $repeatTime, range: 0...1000) {
-        onUpdate(DC30Bank(repeatTime: UInt16($0)))
+      ParameterSlider(title: "Repeat Time", value: $repeatTime, range: 40...600) {
+        onUpdate(DC30Bank(echoRepeatTime: UInt16($0)))
       }
-      ParameterSlider(title: "Echo Intensity", value: $intensity, range: 0...100) {
+      ParameterSlider(title: "Echo Intensity", value: $echoIntensity, range: 0...100) {
         onUpdate(DC30Bank(echoIntensity: UInt8($0)))
       }
       ParameterSlider(title: "Volume", value: $volume, range: 0...100) {
-        onUpdate(DC30Bank(volume: UInt8($0)))
+        onUpdate(DC30Bank(echoVolume: UInt8($0)))
       }
       ParameterSlider(title: "Tone", value: $tone, range: 0...100) {
         onUpdate(DC30Bank(tone: UInt8($0)))

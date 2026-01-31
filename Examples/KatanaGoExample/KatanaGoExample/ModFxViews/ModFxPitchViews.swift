@@ -142,10 +142,10 @@ struct PitchShifterView: View {
 
 struct HarmonistView: View {
   @State private var voice = HarmonistVoice.oneVoice
-  @State private var h1Harmony: Double = 50
+  @State private var h1Harmony = HarmonistHarmony.unison
   @State private var h1PreDelay: Double = 0
   @State private var h1Level: Double = 50
-  @State private var h2Harmony: Double = 50
+  @State private var h2Harmony = HarmonistHarmony.unison
   @State private var h2PreDelay: Double = 0
   @State private var h2Level: Double = 50
   @State private var h1Feedback: Double = 0
@@ -166,10 +166,14 @@ struct HarmonistView: View {
 
       Group {
         Text("H1")
-        // TODO: fix and uncomment slider.
-        //        ParameterSlider(title: "Harmony", value: $h1Harmony, range: 0...100) {
-        //          onUpdate(HarmonistBank(h1Harmony: UInt8($0)))
-        //        }
+        Picker("Harmony", selection: $h1Harmony) {
+          ForEach(HarmonistHarmony.allCases, id: \.self) { harmony in
+            Text("\(harmony.name)").tag(harmony)
+          }
+        }
+        .onChange(of: h1Harmony) { _, newValue in
+          onUpdate(HarmonistBank(h1Harmony: newValue))
+        }
         ParameterSlider(title: "Pre-Delay", value: $h1PreDelay, range: 0...300) {
           onUpdate(HarmonistBank(h1PreDelay: UInt16($0)))
         }
@@ -184,10 +188,14 @@ struct HarmonistView: View {
       if voice == .twoVoice {
         Group {
           Text("H2")
-          // TODO: fix and uncomment slider.
-          //          ParameterSlider(title: "Harmony", value: $h2Harmony, range: 0...100) {
-          //            onUpdate(HarmonistBank(h2Harmony: UInt8($0)))
-          //          }
+          Picker("Harmony", selection: $h2Harmony) {
+            ForEach(HarmonistHarmony.allCases, id: \.self) { harmony in
+              Text("\(harmony.name)").tag(harmony)
+            }
+          }
+          .onChange(of: h2Harmony) { _, newValue in
+            onUpdate(HarmonistBank(h2Harmony: newValue))
+          }
           ParameterSlider(title: "Pre-Delay", value: $h2PreDelay, range: 0...300) {
             onUpdate(HarmonistBank(h2PreDelay: UInt16($0)))
           }
