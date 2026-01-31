@@ -94,7 +94,8 @@ public actor KatanaGoMIDIKit: KatanaGo {
   }
 
   public func writeFxBank<T: KatanaGoFxBank>(_ bank: T, channel: KatanaGoFxChannel) async throws {
-    let address: UInt32 = T.address + (channel == .fx ? 0x00_00_10_00 : 0x00)
+    // let address: UInt32 = T.address + (channel == .fx ? 0x00_00_10_00 : 0x00)
+    let address: UInt32 = channel == .fx ? 0x20_00_10_00 : 0x20_00_00_00
     try await writeBank(bank, addressModifiers: address)
   }
 

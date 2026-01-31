@@ -25,7 +25,7 @@ extension DataBank {
 
   func buildChorusBank(bank: [UInt8]) -> ChorusBank {
     return ChorusBank(
-      crossoverFrequency: bank[0x00],
+      crossoverFrequency: ChorusCrossoverFrequency(rawValue: bank[0x00]) ?? .freq250Hz,
       lowRate: bank[0x01],
       lowDepth: bank[0x02],
       lowPreDelay: bank[0x03],
@@ -326,9 +326,9 @@ extension DataBank {
       type: DC30Type(rawValue: bank[199]) ?? .chorus,
       inputVolume: bank[200],
       chorusIntensity: bank[201],
-      repeatTime: UInt16.decodeFromByteArray([bank[202], bank[203], bank[204], bank[205]]),
+      echoRepeatTime: UInt16.decodeFromByteArray([bank[202], bank[203], bank[204], bank[205]]),
       echoIntensity: bank[206],
-      volume: bank[207],
+      echoVolume: bank[207],
       tone: bank[208],
       outputType: DC30OutputType(rawValue: bank[209]) ?? .dPlusE
     )

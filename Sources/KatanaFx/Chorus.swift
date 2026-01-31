@@ -6,8 +6,8 @@ import KatanaMacros
 /// The data bank representing the chorus parameters.
 @KatanaFxBank
 public struct ChorusBank: Sendable, Hashable {
-  @IntegerParameter(at: 0x00_00_00_00, range: 0...100)
-  public var crossoverFrequency: UInt8 = 50
+  @Parameter(at: 0x00_00_00_00)
+  public var crossoverFrequency: ChorusCrossoverFrequency = .freq250Hz
 
   @IntegerParameter(at: 0x00_00_00_01, range: 0...100)
   public var lowRate: UInt8 = 50
@@ -53,14 +53,14 @@ public struct DC30Bank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_00_00_02, range: 0...100)
   public var chorusIntensity: UInt8 = 50
 
-  @IntegerParameter(at: 0x00_00_00_03, range: 0...600)
-  public var repeatTime: UInt16 = 300
+  @IntegerParameter(at: 0x00_00_00_03, range: 40...600)
+  public var echoRepeatTime: UInt16 = 300
 
   @IntegerParameter(at: 0x00_00_00_07, range: 0...100)
   public var echoIntensity: UInt8 = 50
 
   @IntegerParameter(at: 0x00_00_00_08, range: 0...100)
-  public var volume: UInt8 = 50
+  public var echoVolume: UInt8 = 50
 
   @IntegerParameter(at: 0x00_00_00_09, range: 0...100)
   public var tone: UInt8 = 50
@@ -69,6 +69,27 @@ public struct DC30Bank: Sendable, Hashable {
   public var outputType: DC30OutputType = .dPlusE
 
   public static let size: UInt32 = 11
+}
+
+@KatanaUInt8RawBytes
+public enum ChorusCrossoverFrequency: UInt8, Sendable, Hashable, CaseIterable {
+  case freq100Hz = 0x00
+  case freq125Hz = 0x01
+  case freq160Hz = 0x02
+  case freq200Hz = 0x03
+  case freq250Hz = 0x04
+  case freq315Hz = 0x05
+  case freq400Hz = 0x06
+  case freq500Hz = 0x07
+  case freq630Hz = 0x08
+  case freq800Hz = 0x09
+  case freq1kHz = 0x0A
+  case freq1k250Hz = 0x0B
+  case freq1k600Hz = 0x0C
+  case freq2kHz = 0x0D
+  case freq2k500Hz = 0x0E
+  case freq3k150Hz = 0x0F
+  case freq4kHz = 0x10
 }
 
 @KatanaUInt8RawBytes
