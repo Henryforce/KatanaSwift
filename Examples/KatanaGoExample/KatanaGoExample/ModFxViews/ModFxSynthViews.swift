@@ -11,7 +11,7 @@ struct GuitarSimView: View {
   @State private var bodyVal: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Guitar Sim Parameters") {
@@ -45,7 +45,7 @@ struct ACSimView: View {
   @State private var low: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("AC Sim Parameters") {
@@ -74,7 +74,7 @@ struct AcousticProView: View {
   @State private var presence: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Acoustic Pro Parameters") {
@@ -123,7 +123,7 @@ struct WaveSynthView: View {
   @State private var synthLevel: Double = 50
   @State private var directMix: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Wave Synth Parameters") {

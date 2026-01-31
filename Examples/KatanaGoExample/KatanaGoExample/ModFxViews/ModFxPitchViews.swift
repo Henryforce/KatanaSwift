@@ -8,7 +8,7 @@ struct OctaverView: View {
   @State private var level: Double = 50
   @State private var directLevel: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Octaver Parameters") {
@@ -35,7 +35,7 @@ struct HeavyOctaveView: View {
   @State private var octaveMinus2: Double = 50
   @State private var directMix: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Heavy Octave Parameters") {
@@ -67,7 +67,7 @@ struct PitchShifterView: View {
   @State private var ps1Feedback: Double = 0
   @State private var directLevel: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Pitch Shifter Parameters") {
@@ -151,7 +151,7 @@ struct HarmonistView: View {
   @State private var h1Feedback: Double = 0
   @State private var directLevel: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Harmonist Parameters") {

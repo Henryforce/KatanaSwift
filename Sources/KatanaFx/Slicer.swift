@@ -6,18 +6,20 @@ import KatanaMacros
 /// The data bank representing the slicer parameters.
 @KatanaFxBank
 public struct SlicerBank: Sendable, Hashable {
-  @FxIntegerParameter(id: .slicerPattern, range: 0...19)
+  @IntegerParameter(at: 0x00_00_00_00, range: 0...19)
   public var pattern: UInt8 = 0
 
-  @FxIntegerParameter(id: .slicerRate, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_01, range: 0...100)
   public var rate: UInt8 = 50
 
-  @FxIntegerParameter(id: .slicerTriggerSens, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_02, range: 0...100)
   public var triggerSens: UInt8 = 50
 
-  @FxIntegerParameter(id: .slicerEffectLevel, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_03, range: 0...100)
   public var effectLevel: UInt8 = 100
 
-  @FxIntegerParameter(id: .slicerDirectMix, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_04, range: 0...100)
   public var directMix: UInt8 = 0
+
+  public static let size: UInt32 = 5
 }

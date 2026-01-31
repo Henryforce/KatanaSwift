@@ -14,7 +14,12 @@ public struct KatanaFxBankMacro: MemberMacro, ExtensionMacro {
     // 1. Find all properties (variables) in the struct
     let members = declaration.memberBlock.members
     let variables = members.compactMap { member -> VariableDeclSyntax? in
-      member.decl.as(VariableDeclSyntax.self)
+      guard let varDecl = member.decl.as(VariableDeclSyntax.self) else { return nil }
+      // Filter out static or class properties
+      let isStatic = varDecl.modifiers.contains { modifier in
+        modifier.name.tokenKind == .keyword(.static) || modifier.name.tokenKind == .keyword(.class)
+      }
+      return isStatic ? nil : varDecl
     }
 
     // 2. Extract names and types
@@ -55,38 +60,61 @@ public struct KatanaFxBankMacro: MemberMacro, ExtensionMacro {
     conformingTo protocols: [TypeSyntax],
     in context: some MacroExpansionContext
   ) throws -> [ExtensionDeclSyntax] {
-    // 1. Extract all variable names from the declaration
+    // 1. Extract all variable names and types from the declaration
     let memberList = declaration.memberBlock.members
-    let variableNames = memberList.compactMap { member -> String? in
-      guard let varDecl = member.decl.as(VariableDeclSyntax.self),
-        let identifier = varDecl.bindings.first?.pattern.as(IdentifierPatternSyntax.self)
-      else {
-        return nil
+    let variables = memberList.compactMap { member -> VariableDeclSyntax? in
+      guard let varDecl = member.decl.as(VariableDeclSyntax.self) else { return nil }
+      // Filter out static or class properties
+      let isStatic = varDecl.modifiers.contains { modifier in
+        modifier.name.tokenKind == .keyword(.static) || modifier.name.tokenKind == .keyword(.class)
       }
-      return identifier.identifier.text
+      return isStatic ? nil : varDecl
     }
 
-    // 2. Build the function body strings
-    let lines = variableNames.map { name in
+    let propertyData = variables.flatMap { v -> [(name: String, type: String)] in
+      v.bindings.compactMap { binding in
+        guard let name = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text,
+          let type = binding.typeAnnotation?.type.description.trimmingCharacters(in: .whitespaces)
+        else {
+          return nil
+        }
+        return (name, type)
+      }
+    }
+
+    // 2. Build the loadWriteData function body strings
+    let writeLines = propertyData.map { data in
       """
-      if self.$\(name).updated {
-          writeData.append(FxWriteData(id: self.$\(name).id, data: self.$\(name).value.bytes))
+      if self.$\(data.name).updated {
+          writeData.append(WriteData(address: baseAddress + self.$\(data.name).address, data: self.$\(data.name).value.bytes))
       }
       """
     }.joined(separator: "\n")
 
-    // 3. Construct the final method
-    let writableBankExtension: DeclSyntax = """
-      extension \(type.trimmed): WritableFxBank {
-        public func loadWriteData() -> [FxWriteData] {
-            var writeData = [FxWriteData]()
-            \(raw: lines)
+    // 3. Build the buildFromByteArray function arguments
+    let buildArguments = propertyData.map { data in
+      "\(data.name): \(data.type).decodeFromByteArray(array, offset: Int(template.$\(data.name).address))"
+    }.joined(separator: ",\n        ")
+
+    // 4. Construct the final method
+    let fxBankExtension: DeclSyntax = """
+      extension \(type.trimmed) {
+        public func loadWriteData(baseAddress: UInt32) -> [WriteData] {
+            var writeData = [WriteData]()
+            \(raw: writeLines)
             return writeData
+        }
+
+        public static func buildFromByteArray(_ array: [UInt8]) -> Self {
+            let template = Self()
+            return Self(
+                \(raw: buildArguments)
+            )
         }
       }
       """
 
-    guard let extensionDecl = writableBankExtension.as(ExtensionDeclSyntax.self) else {
+    guard let extensionDecl = fxBankExtension.as(ExtensionDeclSyntax.self) else {
       throw WritableBankExtensionError.invalidSyntax
     }
 

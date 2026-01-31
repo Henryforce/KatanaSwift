@@ -6,32 +6,36 @@ import KatanaMacros
 /// The data bank representing the harmonist parameters.
 @KatanaFxBank
 public struct HarmonistBank: Sendable, Hashable {
-  @FxParameter(id: .harmonistVoice)
+  @Parameter(at: 0x00_00_00_00)
   public var voice: HarmonistVoice = .oneVoice
 
-  @FxParameter(id: .harmonistH1Harmony)
+  @Parameter(at: 0x00_00_00_01)
   public var h1Harmony: HarmonistHarmony = .unison
 
-  @FxIntegerParameter(id: .harmonistH1PreDelay, range: 0...300)
+  @IntegerParameter(at: 0x00_00_00_02, range: 0...300)
   public var h1PreDelay: UInt16 = 0
 
-  @FxIntegerParameter(id: .harmonistH1Level, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_06, range: 0...100)
   public var h1Level: UInt8 = 100
 
-  @FxParameter(id: .harmonistH2Harmony)
+  @Parameter(at: 0x00_00_00_07)
   public var h2Harmony: HarmonistHarmony = .unison
 
-  @FxIntegerParameter(id: .harmonistH2PreDelay, range: 0...300)
+  @IntegerParameter(at: 0x00_00_00_08, range: 0...300)
   public var h2PreDelay: UInt16 = 0
 
-  @FxIntegerParameter(id: .harmonistH2Level, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_0C, range: 0...100)
   public var h2Level: UInt8 = 100
 
-  @FxIntegerParameter(id: .harmonistH1Feedback, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_0D, range: 0...100)
   public var h1Feedback: UInt8 = 0
 
-  @FxIntegerParameter(id: .harmonistDirectLevel, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_0E, range: 0...100)
   public var directLevel: UInt8 = 0
+
+  // TODO: Add remaining parameters
+
+  public static let size: UInt32 = 39
 }
 
 @KatanaUInt8RawBytes

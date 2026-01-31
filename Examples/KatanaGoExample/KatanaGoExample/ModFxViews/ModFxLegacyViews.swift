@@ -7,7 +7,7 @@ struct Phaser90EView: View {
   @State private var scriptEnable = false
   @State private var speed: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Phaser 90E Parameters") {
@@ -28,7 +28,7 @@ struct Flanger117EView: View {
   @State private var speed: Double = 50
   @State private var regen: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Flanger 117E Parameters") {
@@ -57,7 +57,7 @@ struct DC30View: View {
   @State private var tone: Double = 50
   @State private var outputType = DC30OutputType.dPlusE
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("DC-30 Parameters") {

@@ -6,20 +6,22 @@ import KatanaMacros
 /// The data bank representing the guitar simulation parameters.
 @KatanaFxBank
 public struct GuitarSimBank: Sendable, Hashable {
-  @FxParameter(id: .guitarSimType)
+  @Parameter(at: 0x00_00_00_00)
   public var type: GuitarSimType = .sToH
 
-  @FxIntegerParameter(id: .guitarSimLow, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_01, range: 0...100)
   public var low: UInt8 = 50
 
-  @FxIntegerParameter(id: .guitarSimHigh, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_02, range: 0...100)
   public var high: UInt8 = 50
 
-  @FxIntegerParameter(id: .guitarSimBody, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_03, range: 0...100)
   public var body: UInt8 = 50
 
-  @FxIntegerParameter(id: .guitarSimLevel, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_04, range: 0...100)
   public var level: UInt8 = 100
+
+  public static let size: UInt32 = 5
 }
 
 @KatanaUInt8RawBytes

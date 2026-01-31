@@ -6,23 +6,25 @@ import KatanaMacros
 /// The data bank representing the limiter parameters.
 @KatanaFxBank
 public struct LimiterBank: Sendable, Hashable {
-  @FxParameter(id: .limiterType)
+  @Parameter(at: 0x00_00_00_00)
   public var type: LimiterType = .boss
 
-  @FxIntegerParameter(id: .limiterAttack, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_01, range: 0...100)
   public var attack: UInt8 = 50
 
-  @FxIntegerParameter(id: .limiterThreshold, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_02, range: 0...100)
   public var threshold: UInt8 = 50
 
-  @FxParameter(id: .limiterRatio)
+  @Parameter(at: 0x00_00_00_03)
   public var ratio: LimiterRatio = .twoToOne
 
-  @FxIntegerParameter(id: .limiterRelease, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_04, range: 0...100)
   public var release: UInt8 = 50
 
-  @FxIntegerParameter(id: .limiterLevel, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_05, range: 0...100)
   public var level: UInt8 = 100
+
+  public static let size: UInt32 = 6
 }
 
 @KatanaUInt8RawBytes

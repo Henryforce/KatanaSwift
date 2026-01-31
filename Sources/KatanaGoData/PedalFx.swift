@@ -56,13 +56,23 @@ public struct PedalFxBank: WritableBank, Sendable, Hashable {
 
   public static func buildFromByteArray(_ array: [UInt8]) -> Self {
     let template = Self()
+
+    let wahArrayOffset = Int(PedalFxWahBank.address - Self.address)
+    let wahArray = Array(array[wahArrayOffset..<wahArrayOffset + Int(PedalFxWahBank.size)])
+
+    let bendArrayOffset = Int(PedalFxBendBank.address - Self.address)
+    let bendArray = Array(array[bendArrayOffset..<bendArrayOffset + Int(PedalFxBendBank.size)])
+
+    let wah95ArrayOffset = Int(PedalFxWah95Bank.address - Self.address)
+    let wah95Array = Array(array[wah95ArrayOffset..<wah95ArrayOffset + Int(PedalFxWah95Bank.size)])
+
     return Self(
       position: Bool.decodeFromByteArray(array, offset: Int(template.$position.address)),
       status: Bool.decodeFromByteArray(array, offset: Int(template.$status.address)),
       type: PedalFxType.decodeFromByteArray(array, offset: Int(template.$type.address)),
-      wah: PedalFxWahBank.buildFromByteArray(array),
-      bend: PedalFxBendBank.buildFromByteArray(array),
-      wah95: PedalFxWah95Bank.buildFromByteArray(array)
+      wah: PedalFxWahBank.buildFromByteArray(wahArray),
+      bend: PedalFxBendBank.buildFromByteArray(bendArray),
+      wah95: PedalFxWah95Bank.buildFromByteArray(wah95Array)
     )
   }
 }

@@ -15,7 +15,7 @@ struct ChorusView: View {
   @State private var highLevel: Double = 50
   @State private var directMix: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Chorus Parameters") {
@@ -62,7 +62,7 @@ struct FlangerView: View {
   @State private var effectLevel: Double = 50
   @State private var directLevel: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Flanger Parameters") {
@@ -106,7 +106,7 @@ struct PhaserView: View {
   @State private var effectLevel: Double = 50
   @State private var directLevel: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Phaser Parameters") {
@@ -148,7 +148,7 @@ struct UniVibeView: View {
   @State private var depth: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Uni-Vibe Parameters") {
@@ -171,7 +171,7 @@ struct TremoloView: View {
   @State private var depth: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Tremolo Parameters") {
@@ -196,7 +196,7 @@ struct VibratoView: View {
   @State private var depth: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Vibrato Parameters") {
@@ -218,7 +218,7 @@ struct RotaryView: View {
   @State private var depth: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Rotary Parameters") {
@@ -241,7 +241,7 @@ struct RingModView: View {
   @State private var effectLevel: Double = 50
   @State private var directMix: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Ring Mod Parameters") {

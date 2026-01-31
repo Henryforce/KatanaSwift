@@ -7,26 +7,28 @@ import KatanaMacros
 /// The data bank representing the acoustic pro parameters.
 @KatanaFxBank
 public struct AcousticProBank: Sendable, Hashable {
-  @FxParameter(id: .acousticProType)
+  @Parameter(at: 0x00_00_00_00)
   public var type: AcousticProType = .small
 
-  @FxIntegerParameter(id: .acousticProBass, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_01, range: 0...100)
   public var bass: UInt8 = 50
 
-  @FxIntegerParameter(id: .acousticProMiddle, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_02, range: 0...100)
   public var middle: UInt8 = 50
 
-  @FxParameter(id: .acousticProMidFrequency)
+  @Parameter(at: 0x00_00_00_03)
   public var midFrequency: EQFrequency = .freq500Hz
 
-  @FxIntegerParameter(id: .acousticProTreble, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_04, range: 0...100)
   public var treble: UInt8 = 50
 
-  @FxIntegerParameter(id: .acousticProPresence, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_05, range: 0...100)
   public var presence: UInt8 = 50
 
-  @FxIntegerParameter(id: .acousticProLevel, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_06, range: 0...100)
   public var level: UInt8 = 100
+
+  public static let size: UInt32 = 7
 }
 
 @KatanaUInt8RawBytes

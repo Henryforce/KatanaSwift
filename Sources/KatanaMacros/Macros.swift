@@ -9,7 +9,8 @@ public macro KatanaBank() =
     type: "KatanaBankMacro"
   )
 
-@attached(extension, conformances: WritableFxBank, names: named(loadWriteData))
+@attached(
+  extension, names: named(loadWriteData), named(buildFromByteArray))
 @attached(member, names: named(init))
 public macro KatanaFxBank() =
   #externalMacro(

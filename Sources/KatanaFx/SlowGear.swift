@@ -6,12 +6,14 @@ import KatanaMacros
 /// The data bank representing the slow gear parameters.
 @KatanaFxBank
 public struct SlowGearBank: Sendable, Hashable {
-  @FxIntegerParameter(id: .slowGearSens, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_00, range: 0...100)
   public var sens: UInt8 = 50
 
-  @FxIntegerParameter(id: .slowGearRiseTime, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_01, range: 0...100)
   public var riseTime: UInt8 = 50
 
-  @FxIntegerParameter(id: .slowGearLevel, range: 0...100)
+  @IntegerParameter(at: 0x00_00_00_02, range: 0...100)
   public var level: UInt8 = 100
+
+  public static let size: UInt32 = 3
 }

@@ -13,7 +13,7 @@ struct TWahView: View {
   @State private var effectLevel: Double = 50
   @State private var directLevel: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("T-Wah Parameters") {
@@ -61,7 +61,7 @@ struct AutoWahView: View {
   @State private var effectLevel: Double = 50
   @State private var directLevel: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Auto Wah Parameters") {
@@ -243,7 +243,7 @@ struct HumanizerView: View {
   @State private var manual: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (WritableFxBank) -> Void
+  let onUpdate: (KatanaGoFxBank) -> Void
 
   var body: some View {
     Section("Humanizer Parameters") {
