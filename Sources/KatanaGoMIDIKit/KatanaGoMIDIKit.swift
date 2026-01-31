@@ -15,6 +15,8 @@ public actor KatanaGoMIDIKit: KatanaGo {
 
   private var continuation: AsyncStream<KatanaGoDataBank>.Continuation?
 
+  private var pendingReads: [UInt32: CheckedContinuation<[UInt8], Error>] = [:]
+
   private var dataBank = DataBank()
 
   public init(endpoint: MIDIEndpointProtocol, midiManager: MIDIManagerProtocol) {
@@ -67,17 +69,32 @@ public actor KatanaGoMIDIKit: KatanaGo {
   }
 
   private func handleMIDIEvents(_ events: [MIDIEvent]) {
-    print("-----------------")
     for event in events {
-      if case .sysEx7(let sysEx) = event {
-        // Uncomment to print messages.
-        print("SysEx: \(sysEx.data)")
+      guard case .sysEx7(let sysEx) = event else {
+        continue
+      }
 
-        let banks = KatanaGoMIDIParser.parse(sysEx.data, into: &dataBank)
-        for bank in banks {
-          print("Bank: \(bank)")
-          continuation?.yield(bank)
+      print("SysEx: \(sysEx.data)")
+
+      // TODO: clean up this method to early check if it is a valid read response.
+
+      let message = sysEx.data
+      // Check if this is a valid read response.
+      if message.count >= 10, message[4] == 18 {
+        let address = Array(message[5...8]).address
+        if let continuation = pendingReads.removeValue(forKey: address) {
+          let data = Array(message[9..<(message.count - 1)])
+          continuation.resume(returning: data)
+
+          // Skip further processing as there was a pending read for this address.
+          continue
         }
+      }
+
+      let banks = KatanaGoMIDIParser.parse(message, into: &dataBank)
+      for bank in banks {
+        print("Bank: \(bank)")
+        continuation?.yield(bank)
       }
     }
   }
@@ -113,6 +130,7 @@ public actor KatanaGoMIDIKit: KatanaGo {
     try writeRawBytes(bytes)
   }
 
+  // TODO: remove once writefxbank supports a method with a channel input.
   public func writeEQBank(_ bank: EQSelectionBank, id: BankID) async throws {
     let idModifier = id.eqOffset
     try await writeBank(bank, addressModifiers: 0x20_00_00_00 | idModifier)
@@ -134,15 +152,38 @@ public actor KatanaGoMIDIKit: KatanaGo {
   // is of two bytes size (first byte is 00 and second one has the preset's raw value).
 
   public func readBank<T: WritableBank>(_ type: T.Type) async throws -> T {
-    // TODO: implement.
-    return T.buildFromByteArray([])
+    try await readBank(type, addressModifiers: 0)
   }
 
   public func readFxBank<T: KatanaGoFxBank>(_ type: T.Type, channel: KatanaGoFxChannel) async throws
     -> T
   {
-    // TODO: implement.
-    return T.buildFromByteArray([])
+    let modifier: UInt32 = channel == .fx ? 0x20_00_10_00 : 0x20_00_00_00
+    return try await readBank(type, addressModifiers: modifier)
+  }
+
+  private func readBank<T: WritableBank>(_ type: T.Type, addressModifiers: UInt32) async throws -> T
+  {
+    let address = T.address | addressModifiers
+    let size = T.size
+
+    let bytes = finalizeReadSysex(addressBytes: address.addressBytes, bytesToRead: UInt16(size))
+
+    let data = try await withCheckedThrowingContinuation { continuation in
+      // TODO: consider cancelling a previous read for this address if it was not completed
+      // or adding an array of continuations.
+
+      // Store the continuation for this address
+      pendingReads[address] = continuation
+      do {
+        try writeRawBytes(bytes)
+      } catch {
+        pendingReads.removeValue(forKey: address)
+        continuation.resume(throwing: error)
+      }
+    }
+
+    return T.buildFromByteArray(data)
   }
 
   public func read() -> AsyncStream<KatanaGoDataBank> {
@@ -150,17 +191,6 @@ public actor KatanaGoMIDIKit: KatanaGo {
       self.continuation = continuation
     }
   }
-
-  // Example of how to build a bank from raw data:
-  // public func deleteMe() {
-  //   let rawData: [UInt8] = [0, 0, 0, 0, 0, 1, 0]
-  //   let bank = EffectStatusBank.buildFromByteArray(rawData)
-  //   print(bank)
-  // }
-
-  // Use like this:
-  // Read preset name
-  // let bytes = finalizeReadSysex(addressBytes: [0x20, 0x00, 0x00, 0x00], data: [0x00, 0x00, 0x00, 10])
 
   private func finalizeReadSysex(addressBytes: [UInt8], data: [UInt8]) -> [UInt8] {
     let prefix: [UInt8] = [0xf0, 0x41, 0x10, 0x01, 0x05, 0x0d, 0x11]
@@ -179,11 +209,7 @@ public actor KatanaGoMIDIKit: KatanaGo {
 
   private func finalizeSysex(address: UInt32, data: [UInt8]) -> [UInt8] {
     let prefix: [UInt8] = [0xf0, 0x41, 0x10, 0x01, 0x05, 0x0d, 0x12]
-    let addressBytes = [
-      UInt8((address >> 24) & 0xFF), UInt8((address >> 16) & 0xFF), UInt8((address >> 8) & 0xFF),
-      UInt8(address & 0xFF),
-    ]
-    let body = addressBytes + data
+    let body = address.addressBytes + data
     let checksum = calculateChecksum(for: body)
     return prefix + body + [checksum, 0xf7]
   }
@@ -191,6 +217,16 @@ public actor KatanaGoMIDIKit: KatanaGo {
   private func finalizeSysex(addressBytes: [UInt8], data: [UInt8]) -> [UInt8] {
     let prefix: [UInt8] = [0xf0, 0x41, 0x10, 0x01, 0x05, 0x0d, 0x12]
     let body = addressBytes + data
+    let checksum = calculateChecksum(for: body)
+    return prefix + body + [checksum, 0xf7]
+  }
+
+  private func finalizeReadSysex(addressBytes: [UInt8], bytesToRead: UInt16) -> [UInt8] {
+    // Use like this:
+    // Read preset name example (16 bytes -> 0x10)
+    // let bytes = finalizeReadSysex(addressBytes: [0x20, 0x00, 0x00, 0x00], bytesToRead: 0x10)
+    let prefix: [UInt8] = [0xf0, 0x41, 0x10, 0x01, 0x05, 0x0d, 0x11]
+    let body = addressBytes + bytesToRead.bytes
     let checksum = calculateChecksum(for: body)
     return prefix + body + [checksum, 0xf7]
   }
@@ -205,14 +241,26 @@ public actor KatanaGoMIDIKit: KatanaGo {
 }
 
 extension BankID {
-  var eqOffset: UInt32 {
+  fileprivate var eqOffset: UInt32 {
     switch self {
-    case .id1:
-      return 0x00_02_60_00
-    case .id2:
-      return 0x00_02_70_00
-    default:
-      return 0x00_00_00_00
+    case .id1: return 0x00_02_60_00
+    case .id2: return 0x00_02_70_00
+    default: return 0x00_00_00_00
     }
+  }
+}
+
+extension Array where Element == UInt8 {
+  fileprivate var address: UInt32 {
+    return reduce(0) { ($0 << 8) | UInt32($1) }
+  }
+}
+
+extension UInt32 {
+  fileprivate var addressBytes: [UInt8] {
+    return [
+      UInt8((self >> 24) & 0xFF), UInt8((self >> 16) & 0xFF), UInt8((self >> 8) & 0xFF),
+      UInt8(self & 0xFF),
+    ]
   }
 }

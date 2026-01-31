@@ -1,4 +1,5 @@
 import KatanaCore
+import KatanaFx
 import KatanaGoAPI
 import KatanaGoData
 import MIDIKit
@@ -87,5 +88,143 @@ struct KatanaGoMIDIKitTests {
 
     #expect(hasInputRemoved)
     #expect(hasOutputRemoved)
+  }
+
+  @Test func testReadBank() async throws {
+    let (katana, midiManager, endpoint) = try await setupConnectedKatana()
+
+    // Start reading in a separate Task
+    let readTask = Task {
+      try await katana.readBank(CompBank.self)
+    }
+
+    // Give it a moment to send the request and register the continuation
+    try await Task.sleep(nanoseconds: 100_000_000)
+
+    // Verify RQ1 request was sent
+    let outputConnection =
+      midiManager.managedOutputConnections["KatanaGo_Out_\(endpoint.uniqueID)"]
+      as! MockMIDIOutputConnection
+    // Last event should be the RQ1
+    guard let lastEvent = outputConnection.sentEvents.last,
+      case .sysEx7(let sysEx) = lastEvent
+    else {
+      Issue.record("Expected SysEx7 event for RQ1")
+      return
+    }
+
+    // RQ1 should have address 0x20010032 and size 5
+    // Header (F0, 41, 10, 01, 05, 0d, 11) + Address (20, 01, 00, 32) + Size (00, 00, 00, 05)
+    let body = sysEx.data  // Should contain 10, 01, 05, 0d, 11, ...
+    #expect(body.count >= 13)
+    #expect(body[4] == 0x11)  // RQ1 command
+    #expect(Array(body[5...8]) == [0x20, 0x01, 0x00, 0x32])  // Address
+    #expect(Array(body[9...12]) == [0x00, 0x00, 0x00, 0x05])  // Size
+
+    // Now simulate response (DT1)
+    // Preamble (10, 01, 05, 0d, 12) + Address (20, 01, 00, 32) + Data (5 bytes) + Checksum
+    let responseBody: [UInt8] = [
+      0x10, 0x01, 0x05, 0x0d, 0x12, 0x20, 0x01, 0x00, 0x32, 0x01, 0x10, 0x20, 0x30, 0x40, 0x00,
+    ]
+    let responseEvent = try MIDIEvent.sysEx7(manufacturer: .oneByte(0x41), data: responseBody)
+    midiManager.simulate(event: responseEvent)
+
+    let bank = try await readTask.value
+    #expect(bank.type == .hiBand)  // 0x01
+    #expect(bank.sustain == 16)  // 0x10
+    #expect(bank.attack == 32)  // 0x20
+    #expect(bank.tone == 48)  // 0x30
+    #expect(bank.level == 64)  // 0x40
+  }
+
+  @Test func testReadFxBank() async throws {
+    let (katana, midiManager, _) = try await setupConnectedKatana()
+
+    // Read CompBank on FX channel
+    let readTask = Task {
+      try await katana.readFxBank(CompBank.self, channel: .fx)
+    }
+
+    try await Task.sleep(nanoseconds: 100_000_000)
+
+    // Simulate response with offset address 0x20011032
+    let responseBody: [UInt8] = [
+      0x10, 0x01, 0x05, 0x0d, 0x12, 0x20, 0x01, 0x10, 0x32, 0x02, 0x05, 0x05, 0x05, 0x05, 0x00,
+    ]
+    let responseEvent = try MIDIEvent.sysEx7(manufacturer: .oneByte(0x41), data: responseBody)
+    midiManager.simulate(event: responseEvent)
+
+    let bank = try await readTask.value
+    #expect(bank.type == .light)  // 0x02
+  }
+
+  @Test func testWriteFxBank() async throws {
+    let (katana, midiManager, endpoint) = try await setupConnectedKatana()
+
+    var dc30 = DC30Bank()
+    dc30.type = .echo
+    dc30.inputVolume = 75
+    dc30.echoRepeatTime = 450
+
+    try await katana.writeFxBank(dc30, channel: .fx)
+
+    let outputConnection =
+      midiManager.managedOutputConnections["KatanaGo_Out_\(endpoint.uniqueID)"]
+      as! MockMIDIOutputConnection
+
+    let bodies = outputConnection.sentEvents.compactMap { event -> [UInt8]? in
+      if case .sysEx7(let sysEx) = event {
+        return sysEx.data
+      }
+      return nil
+    }
+
+    // DC30Bank base address is 0x20010147.
+    // FX channel modifier 0x20001000 makes it 0x20011147.
+
+    // Find the write for 'type' (offset 0)
+    let typeWrite = bodies.first { body in
+      body.count >= 10 && Array(body[5...8]) == [0x20, 0x01, 0x11, 0x47]
+    }
+    #expect(typeWrite != nil)
+    #expect(typeWrite?[9] == 0x01)  // DC30Type.echo
+
+    // Find the write for 'inputVolume' (offset 1)
+    let volumeWrite = bodies.first { body in
+      body.count >= 10 && Array(body[5...8]) == [0x20, 0x01, 0x11, 0x48]
+    }
+    #expect(volumeWrite != nil)
+    #expect(volumeWrite?[9] == 75)
+
+    // Find the write for 'echoRepeatTime' (offset 3, UInt16)
+    let echoWrite = bodies.first { body in
+      body.count >= 13 && Array(body[5...8]) == [0x20, 0x01, 0x11, 0x4A]
+    }
+    #expect(echoWrite != nil)
+    // 450 decimal is encoded as [0, 1, 28, 2] in this implementation
+    #expect(Array(echoWrite![9...12]) == [0, 1, 28, 2])
+  }
+
+  private func setupConnectedKatana() async throws -> (
+    KatanaGoMIDIKit, MockMIDIManager, MockMIDIEndpoint
+  ) {
+    let midiManager = MockMIDIManager()
+    let endpoint = MockMIDIEndpoint(name: "Katana", displayName: "Katana")
+    let inputEndpoint = MockMIDIEndpoint(name: "Katana", displayName: "Katana", uniqueID: 54321)
+    midiManager.inputEndpoints = [inputEndpoint]
+
+    let katana = KatanaGoMIDIKit(endpoint: endpoint, midiManager: midiManager)
+    try await katana.connect()
+    return (katana, midiManager, endpoint)
+  }
+}
+
+extension MockMIDIManager {
+  func simulate(event: MIDIEvent) {
+    for connection in addedInputConnections {
+      if case .events(_, let handler) = connection.receiver {
+        handler([event], 0, nil)
+      }
+    }
   }
 }
