@@ -163,4 +163,14 @@ final class ContentViewModel {
     }
   }
 
+  func readFxBank<T: KatanaGoFxBank>(type: T.Type, channel: KatanaGoFxChannel) async -> T? {
+    guard let device else { return nil }
+    do {
+      return try await device.readFxBank(type, channel: channel)
+    } catch {
+      print("❌ Error: \(error)")
+      return nil
+    }
+  }
+
 }

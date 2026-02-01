@@ -4,41 +4,89 @@ import KatanaGoData
 import SwiftUI
 
 struct CompressorView: View {
+  var viewModel: ContentViewModel
+  var channel: KatanaGoFxChannel
+
   @State private var type = CompType.boss
   @State private var sustain: Double = 50
   @State private var attack: Double = 50
   @State private var tone: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (KatanaGoFxBank) -> Void
-
   var body: some View {
     Section("Compressor Parameters") {
-      Picker("Type", selection: $type) {
+      Picker(
+        "Type",
+        selection: Binding(
+          get: { type },
+          set: {
+            type = $0
+            viewModel.updateWritableBank(CompBank(type: $0), channel: channel)
+          }
+        )
+      ) {
         ForEach(CompType.allCases, id: \.self) { type in
           Text("\(type.name)").tag(type)
         }
       }
-      .onChange(of: type) { _, newValue in
-        onUpdate(CompBank(type: newValue))
-      }
-      ParameterSlider(title: "Sustain", value: $sustain, range: 0...100) {
-        onUpdate(CompBank(sustain: UInt8($0)))
-      }
-      ParameterSlider(title: "Attack", value: $attack, range: 0...100) {
-        onUpdate(CompBank(attack: UInt8($0)))
-      }
-      ParameterSlider(title: "Tone", value: $tone, range: 0...100) {
-        onUpdate(CompBank(tone: UInt8($0)))
-      }
-      ParameterSlider(title: "Level", value: $level, range: 0...100) {
-        onUpdate(CompBank(level: UInt8($0)))
-      }
+      ParameterSlider(
+        title: "Sustain",
+        value: Binding(
+          get: { sustain },
+          set: {
+            sustain = $0
+            viewModel.updateWritableBank(CompBank(sustain: UInt8($0)), channel: channel)
+          }
+        ), range: 0...100)
+      ParameterSlider(
+        title: "Attack",
+        value: Binding(
+          get: { attack },
+          set: {
+            attack = $0
+            viewModel.updateWritableBank(CompBank(attack: UInt8($0)), channel: channel)
+          }
+        ), range: 0...100)
+      ParameterSlider(
+        title: "Tone",
+        value: Binding(
+          get: { tone },
+          set: {
+            tone = $0
+            viewModel.updateWritableBank(CompBank(tone: UInt8($0)), channel: channel)
+          }
+        ), range: 0...100)
+      ParameterSlider(
+        title: "Level",
+        value: Binding(
+          get: { level },
+          set: {
+            level = $0
+            viewModel.updateWritableBank(CompBank(level: UInt8($0)), channel: channel)
+          }
+        ), range: 0...100)
     }
+    .task {
+      await loadData()
+    }
+  }
+
+  private func loadData() async {
+    guard let bank = await viewModel.readFxBank(type: CompBank.self, channel: channel) else {
+      return
+    }
+    type = bank.type
+    sustain = Double(bank.sustain)
+    attack = Double(bank.attack)
+    tone = Double(bank.tone)
+    level = Double(bank.level)
   }
 }
 
 struct LimiterView: View {
+  var viewModel: ContentViewModel
+  var channel: KatanaGoFxChannel
+
   @State private var type = LimiterType.boss
   @State private var attack: Double = 50
   @State private var threshold: Double = 50
@@ -46,90 +94,215 @@ struct LimiterView: View {
   @State private var release: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (KatanaGoFxBank) -> Void
-
   var body: some View {
     Section("Limiter Parameters") {
-      Picker("Type", selection: $type) {
+      Picker(
+        "Type",
+        selection: Binding(
+          get: { type },
+          set: {
+            type = $0
+            viewModel.updateWritableBank(LimiterBank(type: $0), channel: channel)
+          }
+        )
+      ) {
         ForEach(LimiterType.allCases, id: \.self) { type in
           Text("\(type.name)").tag(type)
         }
       }
-      .onChange(of: type) { _, newValue in
-        onUpdate(LimiterBank(type: newValue))
-      }
-      ParameterSlider(title: "Attack", value: $attack, range: 0...100) {
-        onUpdate(LimiterBank(attack: UInt8($0)))
-      }
-      ParameterSlider(title: "Threshold", value: $threshold, range: 0...100) {
-        onUpdate(LimiterBank(threshold: UInt8($0)))
-      }
-      Picker("Ratio", selection: $ratio) {
+      ParameterSlider(
+        title: "Attack",
+        value: Binding(
+          get: { attack },
+          set: {
+            attack = $0
+            viewModel.updateWritableBank(LimiterBank(attack: UInt8($0)), channel: channel)
+          }
+        ), range: 0...100)
+      ParameterSlider(
+        title: "Threshold",
+        value: Binding(
+          get: { threshold },
+          set: {
+            threshold = $0
+            viewModel.updateWritableBank(LimiterBank(threshold: UInt8($0)), channel: channel)
+          }
+        ), range: 0...100)
+      Picker(
+        "Ratio",
+        selection: Binding(
+          get: { ratio },
+          set: {
+            ratio = $0
+            viewModel.updateWritableBank(LimiterBank(ratio: $0), channel: channel)
+          }
+        )
+      ) {
         ForEach(LimiterRatio.allCases, id: \.self) { type in
           Text("\(type.name)").tag(type)
         }
       }
-      .onChange(of: ratio) { _, newValue in
-        onUpdate(LimiterBank(ratio: newValue))
-      }
-      ParameterSlider(title: "Release", value: $release, range: 0...100) {
-        onUpdate(LimiterBank(release: UInt8($0)))
-      }
-      ParameterSlider(title: "Level", value: $level, range: 0...100) {
-        onUpdate(LimiterBank(level: UInt8($0)))
-      }
+      ParameterSlider(
+        title: "Release",
+        value: Binding(
+          get: { release },
+          set: {
+            release = $0
+            viewModel.updateWritableBank(LimiterBank(release: UInt8($0)), channel: channel)
+          }
+        ), range: 0...100)
+      ParameterSlider(
+        title: "Level",
+        value: Binding(
+          get: { level },
+          set: {
+            level = $0
+            viewModel.updateWritableBank(LimiterBank(level: UInt8($0)), channel: channel)
+          }
+        ), range: 0...100)
     }
+    .task {
+      await loadData()
+    }
+  }
+
+  private func loadData() async {
+    guard let bank = await viewModel.readFxBank(type: LimiterBank.self, channel: channel) else {
+      return
+    }
+    type = bank.type
+    attack = Double(bank.attack)
+    threshold = Double(bank.threshold)
+    ratio = bank.ratio
+    release = Double(bank.release)
+    level = Double(bank.level)
   }
 }
 
 struct SlowGearView: View {
+  var viewModel: ContentViewModel
+  var channel: KatanaGoFxChannel
+
   @State private var sens: Double = 50
   @State private var riseTime: Double = 50
   @State private var level: Double = 50
 
-  let onUpdate: (KatanaGoFxBank) -> Void
-
   var body: some View {
     Section("Slow Gear Parameters") {
-      ParameterSlider(title: "Sens", value: $sens, range: 0...100) {
-        onUpdate(SlowGearBank(sens: UInt8($0)))
-      }
-      ParameterSlider(title: "Rise Time", value: $riseTime, range: 0...100) {
-        onUpdate(SlowGearBank(riseTime: UInt8($0)))
-      }
-      ParameterSlider(title: "Level", value: $level, range: 0...100) {
-        onUpdate(SlowGearBank(level: UInt8($0)))
-      }
+      ParameterSlider(
+        title: "Sens",
+        value: Binding(
+          get: { sens },
+          set: {
+            sens = $0
+            viewModel.updateWritableBank(SlowGearBank(sens: UInt8($0)), channel: channel)
+          }
+        ), range: 0...100)
+      ParameterSlider(
+        title: "Rise Time",
+        value: Binding(
+          get: { riseTime },
+          set: {
+            riseTime = $0
+            viewModel.updateWritableBank(SlowGearBank(riseTime: UInt8($0)), channel: channel)
+          }
+        ), range: 0...100)
+      ParameterSlider(
+        title: "Level",
+        value: Binding(
+          get: { level },
+          set: {
+            level = $0
+            viewModel.updateWritableBank(SlowGearBank(level: UInt8($0)), channel: channel)
+          }
+        ), range: 0...100)
     }
+    .task {
+      await loadData()
+    }
+  }
+
+  private func loadData() async {
+    guard let bank = await viewModel.readFxBank(type: SlowGearBank.self, channel: channel) else {
+      return
+    }
+    sens = Double(bank.sens)
+    riseTime = Double(bank.riseTime)
+    level = Double(bank.level)
   }
 }
 
 struct SlicerView: View {
+  var viewModel: ContentViewModel
+  var channel: KatanaGoFxChannel
+
   @State private var pattern: Double = 0
   @State private var rate: Double = 50
   @State private var triggerSens: Double = 50
   @State private var effectLevel: Double = 50
   @State private var directMix: Double = 50
 
-  let onUpdate: (KatanaGoFxBank) -> Void
-
   var body: some View {
     Section("Slicer Parameters") {
-      ParameterSlider(title: "Pattern", value: $pattern, range: 0...19) {
-        onUpdate(SlicerBank(pattern: UInt8($0)))
-      }
-      ParameterSlider(title: "Rate", value: $rate, range: 0...100) {
-        onUpdate(SlicerBank(rate: UInt8($0)))
-      }
-      ParameterSlider(title: "Trigger Sens", value: $triggerSens, range: 0...100) {
-        onUpdate(SlicerBank(triggerSens: UInt8($0)))
-      }
-      ParameterSlider(title: "Effect Level", value: $effectLevel, range: 0...100) {
-        onUpdate(SlicerBank(effectLevel: UInt8($0)))
-      }
-      ParameterSlider(title: "Direct Mix", value: $directMix, range: 0...100) {
-        onUpdate(SlicerBank(directMix: UInt8($0)))
-      }
+      ParameterSlider(
+        title: "Pattern",
+        value: Binding(
+          get: { pattern },
+          set: {
+            pattern = $0
+            viewModel.updateWritableBank(SlicerBank(pattern: UInt8($0)), channel: channel)
+          }
+        ), range: 0...19)
+      ParameterSlider(
+        title: "Rate",
+        value: Binding(
+          get: { rate },
+          set: {
+            rate = $0
+            viewModel.updateWritableBank(SlicerBank(rate: UInt8($0)), channel: channel)
+          }
+        ), range: 0...100)
+      ParameterSlider(
+        title: "Trigger Sens",
+        value: Binding(
+          get: { triggerSens },
+          set: {
+            triggerSens = $0
+            viewModel.updateWritableBank(SlicerBank(triggerSens: UInt8($0)), channel: channel)
+          }
+        ), range: 0...100)
+      ParameterSlider(
+        title: "Effect Level",
+        value: Binding(
+          get: { effectLevel },
+          set: {
+            effectLevel = $0
+            viewModel.updateWritableBank(SlicerBank(effectLevel: UInt8($0)), channel: channel)
+          }
+        ), range: 0...100)
+      ParameterSlider(
+        title: "Direct Mix",
+        value: Binding(
+          get: { directMix },
+          set: {
+            directMix = $0
+            viewModel.updateWritableBank(SlicerBank(directMix: UInt8($0)), channel: channel)
+          }
+        ), range: 0...100)
     }
+    .task {
+      await loadData()
+    }
+  }
+
+  private func loadData() async {
+    guard let bank = await viewModel.readFxBank(type: SlicerBank.self, channel: channel) else {
+      return
+    }
+    pattern = Double(bank.pattern)
+    rate = Double(bank.rate)
+    triggerSens = Double(bank.triggerSens)
+    effectLevel = Double(bank.effectLevel)
+    directMix = Double(bank.directMix)
   }
 }

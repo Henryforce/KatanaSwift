@@ -33,4 +33,9 @@ public enum CabinetResonance: UInt8, Sendable, Hashable, CaseIterable {
   case vintage = 0x00
   case modern = 0x01
   case deep = 0x02
+  // For some reason, there appear to be 3 undefined values so these cases are added
+  // to prevent a crash in case any of these happen to be set.
+  case undefined1 = 0x03
+  case undefined2 = 0x04
+  case undefined3 = 0x05
 }

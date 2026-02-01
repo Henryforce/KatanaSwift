@@ -34,18 +34,29 @@ struct ReverbView: View {
     NavigationView {
       Form {
         Section("Reverb Type") {
-          Toggle("Enabled", isOn: $isEnabled)
-            .onChange(of: isEnabled) { _, newValue in
-              viewModel.updateWritableBank(EffectStatusBank(reverb: newValue))
-            }
+          Toggle(
+            "Enabled",
+            isOn: Binding(
+              get: { isEnabled },
+              set: {
+                isEnabled = $0
+                viewModel.updateWritableBank(EffectStatusBank(reverb: $0))
+              }
+            ))
 
-          Picker("Type", selection: $type) {
+          Picker(
+            "Type",
+            selection: Binding(
+              get: { type },
+              set: {
+                type = $0
+                viewModel.updateWritableBank(ReverbBank(type: $0))
+              }
+            )
+          ) {
             ForEach(ReverbType.allCases, id: \.self) { type in
               Text("\(type.name)").tag(type)
             }
-          }
-          .onChange(of: type) { _, newValue in
-            viewModel.updateWritableBank(ReverbBank(type: newValue))
           }
         }
 
@@ -58,22 +69,34 @@ struct ReverbView: View {
             viewModel.updateWritableBank(ReverbBank(preDelay: UInt16($0)))
           }
 
-          Picker("Low Cut", selection: $lowCut) {
+          Picker(
+            "Low Cut",
+            selection: Binding(
+              get: { lowCut },
+              set: {
+                lowCut = $0
+                viewModel.updateWritableBank(ReverbBank(lowCut: $0))
+              }
+            )
+          ) {
             ForEach(EQLowCut.allCases, id: \.self) { cut in
               Text("\(cut.name)").tag(cut)
             }
           }
-          .onChange(of: lowCut) { _, newValue in
-            viewModel.updateWritableBank(ReverbBank(lowCut: newValue))
-          }
 
-          Picker("High Cut", selection: $highCut) {
+          Picker(
+            "High Cut",
+            selection: Binding(
+              get: { highCut },
+              set: {
+                highCut = $0
+                viewModel.updateWritableBank(ReverbBank(highCut: $0))
+              }
+            )
+          ) {
             ForEach(EQHighCut.allCases, id: \.self) { cut in
               Text("\(cut.name)").tag(cut)
             }
-          }
-          .onChange(of: highCut) { _, newValue in
-            viewModel.updateWritableBank(ReverbBank(highCut: newValue))
           }
 
           parameterSlider(title: "Density", value: $density, range: densityRange) {
@@ -98,6 +121,9 @@ struct ReverbView: View {
         }
       }
       .navigationTitle("Reverb Settings")
+      .task {
+        await loadReverbData()
+      }
       .toolbar {
         ToolbarItem(placement: .confirmationAction) {
           Button("Done") {
@@ -128,10 +154,35 @@ struct ReverbView: View {
             .foregroundColor(.secondary)
         }
       }
-      Slider(value: value, in: range)
-        .onChange(of: value.wrappedValue) { _, newValue in
-          onUpdate(newValue)
-        }
+      Slider(
+        value: Binding(
+          get: { value.wrappedValue },
+          set: {
+            value.wrappedValue = $0
+            onUpdate($0)
+          }
+        ), in: range)
+    }
+  }
+
+  private func loadReverbData() async {
+    let statusBank = await viewModel.readBank(type: EffectStatusBank.self)
+    let reverbBank = await viewModel.readBank(type: ReverbBank.self)
+
+    if let statusBank {
+      isEnabled = statusBank.reverb
+    }
+
+    if let reverbBank {
+      type = reverbBank.type
+      time = Double(reverbBank.time)
+      preDelay = Double(reverbBank.preDelay)
+      lowCut = reverbBank.lowCut
+      highCut = reverbBank.highCut
+      density = Double(reverbBank.density)
+      effectLevel = Double(reverbBank.effectLevel)
+      directMix = Double(reverbBank.directMix)
+      springSensitivity = Double(reverbBank.springSensitivity)
     }
   }
 }

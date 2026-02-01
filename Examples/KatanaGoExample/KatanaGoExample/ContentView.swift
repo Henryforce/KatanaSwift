@@ -46,20 +46,28 @@ struct ContentView: View {
         }
 
         VStack {
-          Text("Volume: \(Int(volume))")
-          Slider(value: $volume, in: 0...100)
-            .onChange(of: volume) { oldValue, newValue in
-              viewModel.updateWritableBank(AmpBank(volume: UInt8(newValue)))
-            }
+          ParameterSlider(
+            title: "Volume",
+            value: Binding(
+              get: { volume },
+              set: {
+                volume = $0
+                viewModel.updateWritableBank(AmpBank(volume: UInt8($0)))
+              }
+            ), range: 0...100)
         }
         .padding()
 
         VStack {
-          Text("Gain: \(Int(gain))")
-          Slider(value: $gain, in: 0...100)
-            .onChange(of: volume) { oldValue, newValue in
-              viewModel.updateWritableBank(AmpBank(gain: UInt8(newValue)))
-            }
+          ParameterSlider(
+            title: "Gain",
+            value: Binding(
+              get: { gain },
+              set: {
+                gain = $0
+                viewModel.updateWritableBank(AmpBank(gain: UInt8($0)))
+              }
+            ), range: 0...100)
         }
         .padding()
 
@@ -145,6 +153,15 @@ struct ContentView: View {
         ReverbView(viewModel: viewModel)
       }
     }
+    .task {
+      await loadData()
+    }
+  }
+
+  private func loadData() async {
+    guard let bank = await viewModel.readBank(type: AmpBank.self) else { return }
+    volume = Double(bank.volume)
+    gain = Double(bank.gain)
   }
 }
 
