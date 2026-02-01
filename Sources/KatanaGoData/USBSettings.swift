@@ -2,7 +2,7 @@ import KatanaCore
 import KatanaMacros
 
 @KatanaBank
-public struct USBSettingsBank: Sendable, Hashable {
+public struct USBSettingsBank: KatanaGoBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00, range: 0...100)
   public var inputLevel: UInt8 = 50
 

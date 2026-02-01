@@ -3,7 +3,7 @@ import KatanaMacros
 
 /// The data bank representing the noise gate parameters.
 @KatanaBank
-public struct NoiseGateBank: Sendable, Hashable {
+public struct NoiseGateBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var status: Bool = false
 

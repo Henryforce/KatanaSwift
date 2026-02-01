@@ -3,7 +3,7 @@ import KatanaMacros
 
 /// The data bank representing the booster parameters.
 @KatanaBank
-public struct BoostBank: Sendable, Hashable {
+public struct BoostBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var type: BoostType = .midBoost
 

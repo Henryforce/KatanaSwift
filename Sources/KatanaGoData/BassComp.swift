@@ -4,7 +4,7 @@ import KatanaMacros
 
 /// The data bank representing the booster parameters.
 @KatanaBank
-public struct BassCompLimBank: Sendable, Hashable {
+public struct BassCompLimBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var mode: BassCompLimMode = .comp
 

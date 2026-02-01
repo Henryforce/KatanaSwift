@@ -2,7 +2,7 @@ import KatanaCore
 import KatanaMacros
 
 @KatanaBank
-public struct BassAmpBank: Sendable, Hashable {
+public struct BassAmpBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x0C)
   public var type: BassAmpType = .vintage
 

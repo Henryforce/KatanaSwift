@@ -2,7 +2,7 @@ import KatanaCore
 import KatanaMacros
 
 @KatanaBank
-public struct ContourBank: Sendable, Hashable {
+public struct ContourBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var type: ContourType = .off
 

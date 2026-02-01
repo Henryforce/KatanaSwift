@@ -2,7 +2,7 @@ import KatanaCore
 import KatanaMacros
 
 @KatanaBank
-public struct EffectStatusBank: Sendable, Hashable {
+public struct EffectStatusBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var booster: Bool = false
 

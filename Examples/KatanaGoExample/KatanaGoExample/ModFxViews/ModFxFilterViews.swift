@@ -108,7 +108,7 @@ struct GraphicEQView: View {
   @State private var band16kHz: Double = 20
   @State private var level: Double = 20
 
-  let onUpdate: (WritableBank) -> Void
+  let onUpdate: (KatanaGoBank) -> Void
 
   var body: some View {
     Section("Graphic EQ Parameters") {
@@ -162,7 +162,7 @@ struct ParametricEQView: View {
   @State private var highCut = EQHighCut.flat
   @State private var level: Double = 20
 
-  let onUpdate: (WritableBank) -> Void
+  let onUpdate: (KatanaGoBank) -> Void
 
   var body: some View {
     Section("Parametric EQ Parameters") {

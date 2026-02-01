@@ -105,7 +105,7 @@ final class ContentViewModel {
     }
   }
 
-  func updateWritableBank<T: WritableBank>(_ bank: T) {
+  func updateWritableBank<T: KatanaGoBank>(_ bank: T) {
     guard let device else { return }
     Task {
       do {
@@ -152,5 +152,15 @@ final class ContentViewModel {
   //      }
   //    }
   //  }
+
+  func readBank<T: KatanaGoBank>(type: T.Type) async -> T? {
+    guard let device else { return nil }
+    do {
+      return try await device.readBank(type)
+    } catch {
+      print("❌ Error: \(error)")
+      return nil
+    }
+  }
 
 }

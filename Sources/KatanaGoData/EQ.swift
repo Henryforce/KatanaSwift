@@ -6,7 +6,7 @@ import KatanaMacros
 
 /// The data bank representing the equalizer parameters.
 @KatanaBank
-public struct EQSelectionBank: Sendable, Hashable {
+public struct EQSelectionBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x01)
   public var status: Bool = false
 
@@ -23,7 +23,7 @@ public struct EQSelectionBank: Sendable, Hashable {
 
 /// The data bank representing the parametric equalizer parameters.
 @KatanaBank
-public struct ParametricEQBank: Sendable, Hashable {
+public struct ParametricEQBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var lowCut: EQLowCut = .flat
 
@@ -69,7 +69,7 @@ public struct ParametricEQBank: Sendable, Hashable {
 
 /// The data bank representing the graphic equalizer parameters.
 @KatanaBank
-public struct GraphicEQBank: Sendable, Hashable {
+public struct GraphicEQBank: KatanaGoBank, Sendable, Hashable {
   /// Range is from -12dB to 12dB mapped to 0..24..48 with steps of 0.5dB.
   @IntegerParameter(at: 0x00, range: 0...48)
   public var band31Hz: UInt8 = 24

@@ -4,21 +4,21 @@ import KatanaFx
 import KatanaMacros
 
 @KatanaBank
-public struct SoloSwitchLevelBank: Sendable, Hashable {
+public struct SoloSwitchLevelBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var status: Bool = false
 
   @IntegerParameter(at: 0x01, range: 0...100)
   public var level: UInt8 = 50
 
-  public static let address: UInt32 = 0x20_01_50_00
+  public static let katanaGoAddress: UInt32 = 0x20_01_50_00
 
   public static let size: UInt32 = 2
 }
 
 /// The data bank representing the solo parameters.
 @KatanaBank
-public struct SoloBank: Sendable, Hashable {
+public struct SoloBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var eqPosition: EQPosition = .ampIn
 

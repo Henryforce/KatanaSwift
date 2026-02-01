@@ -4,21 +4,21 @@ import KatanaFx
 import KatanaMacros
 
 @KatanaBank
-public struct ModSelectionBank: Sendable, Hashable {
+public struct ModSelectionBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var type: ModFxType = .chorus
 
-  public static let address: UInt32 = 0x20_00_60_00
+  public static let katanaGoAddress: UInt32 = 0x20_00_60_00
 
   public static let size: UInt32 = 1
 }
 
 @KatanaBank
-public struct FxSelectionBank: Sendable, Hashable {
+public struct FxSelectionBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var type: ModFxType = .chorus
 
-  public static let address: UInt32 = 0x20_00_70_00
+  public static let katanaGoAddress: UInt32 = 0x20_00_70_00
 
   public static let size: UInt32 = 1
 }

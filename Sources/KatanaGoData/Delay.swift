@@ -3,7 +3,7 @@ import KatanaMacros
 
 /// The data bank representing the delay parameters.
 @KatanaBank
-public struct DelayBank: Sendable, Hashable {
+public struct DelayBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var type: DelayType = .digital
 

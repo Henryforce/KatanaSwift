@@ -26,7 +26,7 @@ struct DataBank: Sendable, Hashable {
   var countour1Bank = [UInt8](repeating: 0x00, count: 2)
   var countour2Bank = [UInt8](repeating: 0x00, count: 2)
   var countour3Bank = [UInt8](repeating: 0x00, count: 2)
-  var signalChainPedalFXBank = [UInt8](repeating: 0x00, count: 7)
+  var signalChainPedalFXBank = [UInt8](repeating: 0x00, count: 3)
   var pfxWahBank = [UInt8](repeating: 0x00, count: 15)
   var eq1SelectionBank = [UInt8](repeating: 0x00, count: 3)
   var eq2SelectionBank = [UInt8](repeating: 0x00, count: 3)
@@ -210,14 +210,14 @@ struct DataBank: Sendable, Hashable {
       &signalChainPedalFXBank, bankBase: [32, 2, 64, 0], incomingData: data,
       incomingStart: incomingStart)
     {
-      // TODO: implement
-      // banks.append(buildSignalChainPedalFXBank()) // TODO update
+      let signalChainPedalFX = SignalChainPedalFxBank.buildFromByteArray(signalChainPedalFXBank)
+      banks.append(.signalChainPedalFxBank(signalChainPedalFX))
     }
     // Bank base address: 20025000
     if DataBank.applyUpdate(
       &pfxWahBank, bankBase: [32, 2, 80, 0], incomingData: data, incomingStart: incomingStart)
     {
-      let pedalFx = PedalFxBank.buildFromByteArray(pfxWahBank)
+      let pedalFx = PedalFxBanks.buildFromByteArray(pfxWahBank)
       banks.append(.pedalFxBank(pedalFx))
     }
     // Bank base address: 20026000
