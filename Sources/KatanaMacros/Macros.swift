@@ -9,15 +9,6 @@ public macro KatanaBank() =
     type: "KatanaBankMacro"
   )
 
-@attached(
-  extension, names: named(loadWriteData), named(buildFromByteArray))
-@attached(member, names: named(init))
-public macro KatanaFxBank() =
-  #externalMacro(
-    module: "KatanaMacrosImpl",
-    type: "KatanaFxBankMacro"
-  )
-
 @attached(member, names: named(bytes), named(decodeFromByteArray))
 public macro KatanaUInt8RawBytes() =
   #externalMacro(

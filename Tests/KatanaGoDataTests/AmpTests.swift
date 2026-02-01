@@ -56,16 +56,17 @@ struct AmpTests {
 
   @Test func testLoadWriteData() {
     var bank = AmpBank()
+    let baseAddress = AmpBank.katanaGoAddress
 
     // Initially empty because nothing was updated
-    #expect(bank.loadWriteData().isEmpty)
+    #expect(bank.loadWriteData(baseAddress: baseAddress).isEmpty)
 
     // Update some parameters
     bank.gain = 70
     bank.type = .brown
     bank.variation = true
 
-    let writeData = bank.loadWriteData()
+    let writeData = bank.loadWriteData(baseAddress: baseAddress)
 
     #expect(writeData.count == 3)
 

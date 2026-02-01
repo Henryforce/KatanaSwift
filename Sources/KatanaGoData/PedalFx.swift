@@ -1,7 +1,7 @@
 import KatanaCore
 import KatanaMacros
 
-public struct PedalFxBank: WritableBank, Sendable, Hashable {
+public struct PedalFxBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var position: Bool = false  // TODO: This could be a different type
 
@@ -17,7 +17,7 @@ public struct PedalFxBank: WritableBank, Sendable, Hashable {
 
   public var wah95 = PedalFxWah95Bank()
 
-  public static let address: UInt32 = 0x20_02_40_00
+  public static let katanaGoAddress: UInt32 = 0x20_02_40_00
 
   public static let size: UInt32 =
     3 + PedalFxWahBank.size + PedalFxBendBank.size + PedalFxWah95Bank.size
@@ -35,35 +35,35 @@ public struct PedalFxBank: WritableBank, Sendable, Hashable {
     if let wah95 { self.wah95 = wah95 }
   }
 
-  public func loadWriteData() -> [WriteData] {
+  public func loadWriteData(baseAddress: UInt32) -> [WriteData] {
     var writeData = [WriteData]()
     if self.$position.updated {
       writeData.append(
-        WriteData(address: Self.address + self.$position.address, data: self.position.bytes))
+        WriteData(address: baseAddress + self.$position.address, data: self.position.bytes))
     }
     if self.$status.updated {
       writeData.append(
-        WriteData(address: Self.address + self.$status.address, data: self.status.bytes))
+        WriteData(address: baseAddress + self.$status.address, data: self.status.bytes))
     }
     if self.$type.updated {
-      writeData.append(WriteData(address: Self.address + self.$type.address, data: self.type.bytes))
+      writeData.append(WriteData(address: baseAddress + self.$type.address, data: self.type.bytes))
     }
-    writeData.append(contentsOf: wah.loadWriteData())
-    writeData.append(contentsOf: bend.loadWriteData())
-    writeData.append(contentsOf: wah95.loadWriteData())
+    writeData.append(contentsOf: wah.loadWriteData(baseAddress: baseAddress))
+    writeData.append(contentsOf: bend.loadWriteData(baseAddress: baseAddress))
+    writeData.append(contentsOf: wah95.loadWriteData(baseAddress: baseAddress))
     return writeData
   }
 
   public static func buildFromByteArray(_ array: [UInt8]) -> Self {
     let template = Self()
 
-    let wahArrayOffset = Int(PedalFxWahBank.address - Self.address)
+    let wahArrayOffset = Int(PedalFxWahBank.address - Self.katanaGoAddress)
     let wahArray = Array(array[wahArrayOffset..<wahArrayOffset + Int(PedalFxWahBank.size)])
 
-    let bendArrayOffset = Int(PedalFxBendBank.address - Self.address)
+    let bendArrayOffset = Int(PedalFxBendBank.address - Self.katanaGoAddress)
     let bendArray = Array(array[bendArrayOffset..<bendArrayOffset + Int(PedalFxBendBank.size)])
 
-    let wah95ArrayOffset = Int(PedalFxWah95Bank.address - Self.address)
+    let wah95ArrayOffset = Int(PedalFxWah95Bank.address - Self.katanaGoAddress)
     let wah95Array = Array(array[wah95ArrayOffset..<wah95ArrayOffset + Int(PedalFxWah95Bank.size)])
 
     return Self(

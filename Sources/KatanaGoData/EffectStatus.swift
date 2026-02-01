@@ -24,7 +24,7 @@ public struct EffectStatusBank: Sendable, Hashable {
   @Parameter(at: 0x06)
   public var bassComp: Bool = false
 
-  public static let address: UInt32 = 0x20_00_30_00
+  public static let katanaGoAddress: UInt32 = 0x20_00_30_00
 
   public static let size: UInt32 = 7
 }

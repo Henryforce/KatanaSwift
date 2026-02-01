@@ -16,7 +16,7 @@ public struct EQSelectionBank: Sendable, Hashable {
   @Parameter(at: 0x02)
   public var type: EQType = .parametric
 
-  public static let address: UInt32 = 0x20_02_60_00
+  public static let katanaGoAddress: UInt32 = 0x20_02_60_00
 
   public static let size: UInt32 = 3
 }
@@ -62,7 +62,7 @@ public struct ParametricEQBank: Sendable, Hashable {
   @IntegerParameter(at: 0x0A, range: 0...40)
   public var level: UInt8 = 20
 
-  public static let address: UInt32 = 0x20_03_00_00
+  public static let katanaGoAddress: UInt32 = 0x20_03_00_00
 
   public static let size: UInt32 = 11
 }
@@ -104,7 +104,7 @@ public struct GraphicEQBank: Sendable, Hashable {
   @IntegerParameter(at: 0x0A, range: 0...48)
   public var level: UInt8 = 24
 
-  public static let address: UInt32 = 0x20_03_20_00
+  public static let katanaGoAddress: UInt32 = 0x20_03_20_00
 
   public static let size: UInt32 = 11
 }

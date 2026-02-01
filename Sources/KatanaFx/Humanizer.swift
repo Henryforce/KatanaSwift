@@ -4,7 +4,7 @@ import KatanaMacros
 // MARK: - Humanizer
 
 /// The data bank representing the humanizer parameters.
-@KatanaFxBank
+@KatanaBank
 public struct HumanizerBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_00_00)
   public var mode: HumanizerMode = .picking

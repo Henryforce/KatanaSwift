@@ -4,7 +4,7 @@ import KatanaMacros
 // MARK: - Rotary
 
 /// The data bank representing the rotary parameters.
-@KatanaFxBank
+@KatanaBank
 public struct RotaryBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_00_00_00, range: 0...100)
   public var rate: UInt8 = 50

@@ -4,7 +4,7 @@ import KatanaMacros
 // MARK: - Phaser
 
 /// The data bank representing the phaser parameters.
-@KatanaFxBank
+@KatanaBank
 public struct PhaserBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_00_00)
   public var type: PhaserType = .fourStage
@@ -49,7 +49,7 @@ public enum Phaser90EParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the phaser 90E parameters.
-@KatanaFxBank
+@KatanaBank
 public struct Phaser90EBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_00_00)
   public var scriptStatus: Bool = false

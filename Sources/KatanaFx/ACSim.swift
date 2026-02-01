@@ -4,7 +4,7 @@ import KatanaMacros
 // MARK: - ACSim
 
 /// The data bank representing the acoustic simulation parameters.
-@KatanaFxBank
+@KatanaBank
 public struct ACSimBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_00_00_00, range: 0...100)
   public var high: UInt8 = 50

@@ -26,7 +26,7 @@ public protocol KatanaGo: Actor {
 
   /// Write a bank of parameters to the device.
   /// - Parameter bank: The bank of parameters to send to the device.
-  func writeBank<T: WritableBank>(_ bank: T) async throws
+  func writeBank<T: KatanaGoBank>(_ bank: T) async throws
 
   /// Write a bank of parameters to the device.
   /// - Parameter bank: The bank of parameters to send to the device.
@@ -44,7 +44,7 @@ public protocol KatanaGo: Actor {
 
   /// Read a bank of parameters from the device.
   /// - Parameter type: The type of bank to read.
-  func readBank<T: WritableBank>(_ type: T.Type) async throws -> T
+  func readBank<T: KatanaGoBank>(_ type: T.Type) async throws -> T
 
   /// Read a bank of parameters from the device.
   /// - Parameter type: The type of bank to read.

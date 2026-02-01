@@ -28,7 +28,7 @@ public struct BoostBank: Sendable, Hashable {
   @IntegerParameter(at: 0x07, range: 0...100)
   public var directMix: UInt8 = 0
 
-  public static let address: UInt32 = 0x20_00_40_00
+  public static let katanaGoAddress: UInt32 = 0x20_00_40_00
 
   public static let size: UInt32 = 8
 }

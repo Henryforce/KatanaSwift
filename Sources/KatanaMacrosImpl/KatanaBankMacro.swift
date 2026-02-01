@@ -86,7 +86,7 @@ public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
     let writeLines = propertyData.map { data in
       """
       if self.$\(data.name).updated {
-          var address = Self.address + self.$\(data.name).address
+          var address = baseAddress + self.$\(data.name).address
           if (address & 0x80) != 0 { address += 0x80 }
           if (address & 0x8000) != 0 { address += 0x8000 }
           if (address & 0x800000) != 0 { address += 0x800000 }
@@ -104,7 +104,7 @@ public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
     // 4. Construct the final method
     let writableBankExtension: DeclSyntax = """
       extension \(type.trimmed): WritableBank {
-        public func loadWriteData() -> [WriteData] {
+        public func loadWriteData(baseAddress: UInt32) -> [WriteData] {
             var writeData = [WriteData]()
             \(raw: writeLines)
             return writeData
@@ -125,4 +125,8 @@ public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
 
     return [extensionDecl]
   }
+}
+
+enum WritableBankExtensionError: Error {
+  case invalidSyntax
 }

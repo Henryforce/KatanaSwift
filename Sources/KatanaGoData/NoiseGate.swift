@@ -13,7 +13,7 @@ public struct NoiseGateBank: Sendable, Hashable {
   @IntegerParameter(at: 0x02, range: 0...100)
   public var release: UInt8 = 50
 
-  public static let address: UInt32 = 0x20_03_40_00
+  public static let katanaGoAddress: UInt32 = 0x20_03_40_00
 
   public static let size: UInt32 = 3
 }

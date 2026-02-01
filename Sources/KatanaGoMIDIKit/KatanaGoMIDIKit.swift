@@ -106,13 +106,13 @@ public actor KatanaGoMIDIKit: KatanaGo {
     continuation = nil
   }
 
-  public func writeBank<T: WritableBank>(_ bank: T) async throws {
-    try await writeBank(bank, addressModifiers: 0)
+  public func writeBank<T: KatanaGoBank>(_ bank: T) async throws {
+    try await writeBank(bank, addressModifiers: T.katanaGoAddress)
   }
 
   public func writeFxBank<T: KatanaGoFxBank>(_ bank: T, channel: KatanaGoFxChannel) async throws {
-    // let address: UInt32 = T.address + (channel == .fx ? 0x00_00_10_00 : 0x00)
-    let address: UInt32 = channel == .fx ? 0x20_00_10_00 : 0x20_00_00_00
+    let address: UInt32 = T.katanaGoAddress | (channel == .fx ? 0x00_00_10_00 : 0x00)
+    // let address: UInt32 = channel == .fx ? 0x20_00_10_00 : 0x20_00_00_00
     try await writeBank(bank, addressModifiers: address)
   }
 
@@ -137,11 +137,12 @@ public actor KatanaGoMIDIKit: KatanaGo {
   }
 
   private func writeBank(_ bank: WritableBank, addressModifiers: UInt32) async throws {
-    for writeData in bank.loadWriteData() {
-      let address = writeData.address | addressModifiers
+    for writeData in bank.loadWriteData(baseAddress: addressModifiers) {
+      // let address = writeData.address | addressModifiers
       let data = writeData.data
 
-      let bytes = finalizeSysex(address: address, data: data)
+      // let bytes = finalizeSysex(address: address, data: data)
+      let bytes = finalizeSysex(address: writeData.address, data: data)
       print("Writing bytes: \(bytes)")
       try writeRawBytes(bytes)
     }
@@ -151,20 +152,22 @@ public actor KatanaGoMIDIKit: KatanaGo {
   // Note that preset write is different than read. Preset write is on address 0x7f000104 and
   // is of two bytes size (first byte is 00 and second one has the preset's raw value).
 
-  public func readBank<T: WritableBank>(_ type: T.Type) async throws -> T {
-    try await readBank(type, addressModifiers: 0)
+  public func readBank<T: KatanaGoBank>(_ type: T.Type) async throws -> T {
+    try await readBank(type, addressModifiers: T.katanaGoAddress)
   }
 
   public func readFxBank<T: KatanaGoFxBank>(_ type: T.Type, channel: KatanaGoFxChannel) async throws
     -> T
   {
-    let modifier: UInt32 = channel == .fx ? 0x20_00_10_00 : 0x20_00_00_00
+    // let modifier: UInt32 = channel == .fx ? 0x20_00_10_00 : 0x20_00_00_00
+    let modifier = T.katanaGoAddress | (channel == .fx ? 0x20_00_10_00 : 0x20_00_00_00)
     return try await readBank(type, addressModifiers: modifier)
   }
 
   private func readBank<T: WritableBank>(_ type: T.Type, addressModifiers: UInt32) async throws -> T
   {
-    let address = T.address | addressModifiers
+    // let address = T.address | addressModifiers
+    let address = addressModifiers
     let size = T.size
 
     let bytes = finalizeReadSysex(addressBytes: address.addressBytes, bytesToRead: UInt16(size))

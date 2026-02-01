@@ -10,7 +10,7 @@ public struct SignalChainBank: Sendable, Hashable {
   @Parameter(at: 0x01)
   public var resonance: CabinetResonance = .vintage
 
-  public static let address: UInt32 = 0x20_00_10_00
+  public static let katanaGoAddress: UInt32 = 0x20_00_10_00
 
   public static let size: UInt32 = 2
 }

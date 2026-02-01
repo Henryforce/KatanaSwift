@@ -4,7 +4,7 @@ import KatanaMacros
 // MARK: - Limiter
 
 /// The data bank representing the limiter parameters.
-@KatanaFxBank
+@KatanaBank
 public struct LimiterBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_00_00)
   public var type: LimiterType = .boss

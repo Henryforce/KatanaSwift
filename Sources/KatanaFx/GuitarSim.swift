@@ -4,7 +4,7 @@ import KatanaMacros
 // MARK: - GuitarSim
 
 /// The data bank representing the guitar simulation parameters.
-@KatanaFxBank
+@KatanaBank
 public struct GuitarSimBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_00_00)
   public var type: GuitarSimType = .sToH

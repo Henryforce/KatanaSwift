@@ -4,7 +4,7 @@ import KatanaMacros
 // MARK: - Slicer
 
 /// The data bank representing the slicer parameters.
-@KatanaFxBank
+@KatanaBank
 public struct SlicerBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_00_00_00, range: 0...19)
   public var pattern: UInt8 = 0

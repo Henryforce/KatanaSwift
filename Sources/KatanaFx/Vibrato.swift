@@ -4,7 +4,7 @@ import KatanaMacros
 // MARK: - Vibrato
 
 /// The data bank representing the vibrato parameters.
-@KatanaFxBank
+@KatanaBank
 public struct VibratoBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_00_00_00, range: 0...100)
   public var rate: UInt8 = 50

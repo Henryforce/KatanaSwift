@@ -49,7 +49,7 @@ public struct SoloBank: Sendable, Hashable {
   @IntegerParameter(at: 0x09, range: 0...24)
   public var eqLevel: UInt8 = 12
 
-  public static let address: UInt32 = 0x20_01_60_00
+  public static let katanaGoAddress: UInt32 = 0x20_01_60_00
 
   public static let size: UInt32 = 10
 }

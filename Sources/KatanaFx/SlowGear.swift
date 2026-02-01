@@ -4,7 +4,7 @@ import KatanaMacros
 // MARK: - SlowGear
 
 /// The data bank representing the slow gear parameters.
-@KatanaFxBank
+@KatanaBank
 public struct SlowGearBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_00_00_00, range: 0...100)
   public var sens: UInt8 = 50

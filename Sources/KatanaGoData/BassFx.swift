@@ -22,7 +22,7 @@ public struct BassEnhancerBank: Sendable, Hashable {
   @Parameter(at: 0x04)
   public var highFreq: BassHighFrequency = .freq5kHz
 
-  public static let address: UInt32 = 0x20_01_01_52
+  public static let katanaGoAddress: UInt32 = 0x20_01_01_52
 
   public static let size: UInt32 = 5
 }
@@ -46,7 +46,7 @@ public struct BassSimulatorBank: Sendable, Hashable {
   @IntegerParameter(at: 0x04, range: 0...100)
   public var body: UInt8 = 50
 
-  public static let address: UInt32 = 0x20_01_01_57
+  public static let katanaGoAddress: UInt32 = 0x20_01_01_57
 
   public static let size: UInt32 = 5
 }
@@ -70,7 +70,7 @@ public struct BassDeFretterBank: Sendable, Hashable {
   @IntegerParameter(at: 0x06, range: 0...100)
   public var directMix: UInt8 = 100
 
-  public static let address: UInt32 = 0x20_01_01_5C
+  public static let katanaGoAddress: UInt32 = 0x20_01_01_5C
 
   public static let size: UInt32 = 7
 }
@@ -88,7 +88,7 @@ public struct BassOctaveBank: Sendable, Hashable {
   @IntegerParameter(at: 0x02, range: 0...100)
   public var directMix: UInt8 = 100
 
-  public static let address: UInt32 = 0x20_01_01_63
+  public static let katanaGoAddress: UInt32 = 0x20_01_01_63
 
   public static let size: UInt32 = 3
 }
@@ -118,7 +118,7 @@ public struct BassTWahBank: Sendable, Hashable {
   @IntegerParameter(at: 0x06, range: 0...100)
   public var directLevel: UInt8 = 0
 
-  public static let address: UInt32 = 0x20_01_01_66
+  public static let katanaGoAddress: UInt32 = 0x20_01_01_66
 
   public static let size: UInt32 = 7
 }
@@ -153,7 +153,7 @@ public struct BassSynthBank: Sendable, Hashable {
   @IntegerParameter(at: 0x07, range: 0...100)
   public var directMix: UInt8 = 0
 
-  public static let address: UInt32 = 0x20_01_01_6D
+  public static let katanaGoAddress: UInt32 = 0x20_01_01_6D
 
   public static let size: UInt32 = 8
 }
@@ -208,7 +208,7 @@ public struct BassCompressorBank: Sendable, Hashable {
   @IntegerParameter(at: 0x05, range: 0...100)
   public var blend: UInt8 = 50
 
-  public static let address: UInt32 = 0x20_01_01_75
+  public static let katanaGoAddress: UInt32 = 0x20_01_01_75
 
   public static let size: UInt32 = 6
 }

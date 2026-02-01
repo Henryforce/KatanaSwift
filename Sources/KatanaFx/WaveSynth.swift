@@ -4,7 +4,7 @@ import KatanaMacros
 // MARK: - WaveSynth
 
 /// The data bank representing the wave synth parameters.
-@KatanaFxBank
+@KatanaBank
 public struct WaveSynthBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_00_00)
   public var type: WaveSynthType = .saw
