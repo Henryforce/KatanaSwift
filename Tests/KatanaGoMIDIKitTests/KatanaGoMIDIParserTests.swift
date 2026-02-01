@@ -1,4 +1,5 @@
-import Foundation
+import KatanaCore
+import KatanaGoData
 import Testing
 
 @testable import KatanaGoMIDIKit
@@ -82,5 +83,73 @@ struct KatanaGoMIDIParserTests {
     } else {
       Issue.record("Unexpected command, boostBank was expected")
     }
+  }
+
+  @Test func testDelayChannelAddressable() throws {
+    var delayBank = DelayBank()
+    delayBank.type = .analog
+    delayBank.time = 500
+    delayBank.feedback = 40
+    delayBank.highCut = .freq4kHz
+    delayBank.effectLevel = 60
+    delayBank.directMix = 10
+    delayBank.tapTimePercentage = 80
+    delayBank.modulationRate = 30
+    delayBank.modulationDepth = 20
+    delayBank.filterStatus = true
+    delayBank.filter = .freq17kHz
+    delayBank.feedbackPhase = .inverted
+    delayBank.delayPhase = .inverted
+    delayBank.modulationSwitchStatus = true
+
+    // Test Delay 1
+    // address: 20 01 20 00
+    let channel1Address: UInt32 = DelayBank.katanaGoAddress + DelayBankChannel.one.rawValue
+    let writeData1 = delayBank.loadWriteData(baseAddress: channel1Address)
+
+    var dataBank = DataBank()
+    for write in writeData1 {
+      let message = finalizeSysex(address: write.address, data: write.data)
+      _ = KatanaGoMIDIParser.parse(message, into: &dataBank)
+    }
+
+    // Verify Delay 1 was updated
+    let parsedDelay1 = DelayBank.buildFromByteArray(dataBank.delay1Bank)
+    #expect(parsedDelay1 == delayBank)
+    #expect(parsedDelay1.type == .analog)
+    #expect(parsedDelay1.time == 500)
+
+    // Test Delay 2
+    // address: 20 01 30 00
+    let channel2Address: UInt32 = DelayBank.katanaGoAddress + DelayBankChannel.two.rawValue
+    let writeData2 = delayBank.loadWriteData(baseAddress: channel2Address)
+
+    for write in writeData2 {
+      let message = finalizeSysex(address: write.address, data: write.data)
+      _ = KatanaGoMIDIParser.parse(message, into: &dataBank)
+    }
+
+    // Verify Delay 2 was updated
+    let parsedDelay2 = DelayBank.buildFromByteArray(dataBank.delay2Bank)
+    #expect(parsedDelay2 == delayBank)
+    #expect(parsedDelay2.type == .analog)
+    #expect(parsedDelay2.time == 500)
+  }
+
+  private func finalizeSysex(address: UInt32, data: [UInt8]) -> [UInt8] {
+    let addressBytes = [
+      UInt8((address >> 24) & 0xFF),
+      UInt8((address >> 16) & 0xFF),
+      UInt8((address >> 8) & 0xFF),
+      UInt8(address & 0xFF),
+    ]
+    let prefix: [UInt8] = [16, 1, 5, 13, 18]  // Roland Header (5 bytes) + DT1 command
+    let body = addressBytes + data
+    var sum: Int = 0
+    for byte in body {
+      sum += Int(byte)
+    }
+    let checksum = UInt8((128 - (sum % 128)) % 128)
+    return prefix + body + [checksum]
   }
 }

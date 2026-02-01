@@ -2,13 +2,6 @@ import Foundation
 import KatanaCore
 import KatanaGoData
 
-// TODO: move to KatanaCore
-public protocol WritableChannelBank: WritableBank {
-  associatedtype BankChannel: RawRepresentable where BankChannel.RawValue == UInt8
-
-  static var channelType: BankChannel.Type { get }
-}
-
 // TODO: think about moving some methods as extensions and instead have simple methods
 // that perform write and read with raw bytes.
 
@@ -32,6 +25,12 @@ public protocol KatanaGo: Actor {
   /// - Parameter bank: The bank of parameters to send to the device.
   /// - Parameter channel: The channel to send the bank to.
   func writeFxBank<T: KatanaGoFxBank>(_ bank: T, channel: KatanaGoFxChannel) async throws
+
+  /// Write a bank of parameters to the device.
+  /// - Parameter bank: The bank of parameters to send to the device.
+  /// - Parameter channel: The channel to send the bank to.
+  func writeChannelAddressableBank<T: KatanaGoChannelAddressableBank>(
+    _ bank: T, channel: T.BankChannel) async throws
 
   /// Enable or disable the FX bank.
   /// - Parameter enabled: The bank of parameters to send to the device.

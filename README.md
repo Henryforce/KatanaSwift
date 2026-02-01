@@ -1,4 +1,4 @@
-# KatanaGoSwift
+# KatanaSwift
 
 A Swift library for interacting with the **BOSS Katana GO** guitar headphone amp over Bluetooth Low Energy (BLE).
 

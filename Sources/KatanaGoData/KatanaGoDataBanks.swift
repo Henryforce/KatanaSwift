@@ -1,4 +1,5 @@
 import Foundation
+import KatanaCore
 import KatanaFx
 
 /// Data received/sent from the Katana GO device.
