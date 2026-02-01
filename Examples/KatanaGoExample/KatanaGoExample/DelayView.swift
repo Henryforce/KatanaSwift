@@ -39,18 +39,29 @@ struct DelayView: View {
     NavigationView {
       Form {
         Section("Delay Type") {
-          Toggle("Enabled", isOn: $isEnabled)
-            .onChange(of: isEnabled) { _, newValue in
-              viewModel.updateWritableBank(EffectStatusBank(delay1: newValue))
-            }
+          Toggle(
+            "Enabled",
+            isOn: Binding(
+              get: { isEnabled },
+              set: {
+                isEnabled = $0
+                viewModel.updateWritableBank(EffectStatusBank(delay1: $0))
+              }
+            ))
 
-          Picker("Type", selection: $type) {
+          Picker(
+            "Type",
+            selection: Binding(
+              get: { type },
+              set: {
+                type = $0
+                viewModel.updateWritableBank(DelayBank(type: $0))
+              }
+            )
+          ) {
             ForEach(DelayType.allCases, id: \.self) { type in
               Text("\(type.name)").tag(type)
             }
-          }
-          .onChange(of: type) { _, newValue in
-            viewModel.updateWritableBank(DelayBank(type: newValue))
           }
         }
 
@@ -63,13 +74,19 @@ struct DelayView: View {
             viewModel.updateWritableBank(DelayBank(feedback: UInt8($0)))
           }
 
-          Picker("High Cut", selection: $highCut) {
+          Picker(
+            "High Cut",
+            selection: Binding(
+              get: { highCut },
+              set: {
+                highCut = $0
+                viewModel.updateWritableBank(DelayBank(highCut: $0))
+              }
+            )
+          ) {
             ForEach(DelayHighCutFrequency.allCases, id: \.self) { cut in
               Text("\(cut.name)").tag(cut)
             }
-          }
-          .onChange(of: highCut) { _, newValue in
-            viewModel.updateWritableBank(DelayBank(highCut: newValue))
           }
 
           parameterSlider(title: "Effect Level", value: $effectLevel, range: effectLevelRange) {
@@ -82,10 +99,15 @@ struct DelayView: View {
         }
 
         Section("Modulation") {
-          Toggle("Modulation Switch", isOn: $modulationSwitchStatus)
-            .onChange(of: modulationSwitchStatus) { _, newValue in
-              viewModel.updateWritableBank(DelayBank(modulationSwitchStatus: newValue))
-            }
+          Toggle(
+            "Modulation Switch",
+            isOn: Binding(
+              get: { modulationSwitchStatus },
+              set: {
+                modulationSwitchStatus = $0
+                viewModel.updateWritableBank(DelayBank(modulationSwitchStatus: $0))
+              }
+            ))
 
           parameterSlider(
             title: "Modulation Rate", value: $modulationRate, range: modulationRateRange
@@ -101,18 +123,29 @@ struct DelayView: View {
         }
 
         Section("Advanced") {
-          Toggle("Filter Status", isOn: $filterStatus)
-            .onChange(of: filterStatus) { _, newValue in
-              viewModel.updateWritableBank(DelayBank(filterStatus: newValue))
-            }
+          Toggle(
+            "Filter Status",
+            isOn: Binding(
+              get: { filterStatus },
+              set: {
+                filterStatus = $0
+                viewModel.updateWritableBank(DelayBank(filterStatus: $0))
+              }
+            ))
 
-          Picker("Filter", selection: $filter) {
+          Picker(
+            "Filter",
+            selection: Binding(
+              get: { filter },
+              set: {
+                filter = $0
+                viewModel.updateWritableBank(DelayBank(filter: $0))
+              }
+            )
+          ) {
             ForEach(DelayFilterRange.allCases, id: \.self) { range in
               Text("\(range.name)").tag(range)
             }
-          }
-          .onChange(of: filter) { _, newValue in
-            viewModel.updateWritableBank(DelayBank(filter: newValue))
           }
 
           parameterSlider(
@@ -121,26 +154,41 @@ struct DelayView: View {
             viewModel.updateWritableBank(DelayBank(tapTimePercentage: UInt8($0)))
           }
 
-          Picker("Delay Phase", selection: $delayPhase) {
+          Picker(
+            "Delay Phase",
+            selection: Binding(
+              get: { delayPhase },
+              set: {
+                delayPhase = $0
+                viewModel.updateWritableBank(DelayBank(delayPhase: $0))
+              }
+            )
+          ) {
             ForEach(DelayPhase.allCases, id: \.self) { phase in
               Text("\(phase.name)").tag(phase)
             }
-          }
-          .onChange(of: delayPhase) { _, newValue in
-            viewModel.updateWritableBank(DelayBank(delayPhase: newValue))
           }
 
-          Picker("Feedback Phase", selection: $feedbackPhase) {
+          Picker(
+            "Feedback Phase",
+            selection: Binding(
+              get: { feedbackPhase },
+              set: {
+                feedbackPhase = $0
+                viewModel.updateWritableBank(DelayBank(feedbackPhase: $0))
+              }
+            )
+          ) {
             ForEach(DelayPhase.allCases, id: \.self) { phase in
               Text("\(phase.name)").tag(phase)
             }
-          }
-          .onChange(of: feedbackPhase) { _, newValue in
-            viewModel.updateWritableBank(DelayBank(feedbackPhase: newValue))
           }
         }
       }
       .navigationTitle("Delay Settings")
+      .task {
+        await loadDelayData()
+      }
       .toolbar {
         ToolbarItem(placement: .confirmationAction) {
           Button("Done") {
@@ -171,10 +219,40 @@ struct DelayView: View {
             .foregroundColor(.secondary)
         }
       }
-      Slider(value: value, in: range)
-        .onChange(of: value.wrappedValue) { _, newValue in
-          onUpdate(newValue)
-        }
+      Slider(
+        value: Binding(
+          get: { value.wrappedValue },
+          set: {
+            value.wrappedValue = $0
+            onUpdate($0)
+          }
+        ), in: range)
+    }
+  }
+
+  private func loadDelayData() async {
+    let statusBank = await viewModel.readBank(type: EffectStatusBank.self)
+    let delayBank = await viewModel.readBank(type: DelayBank.self)
+
+    if let statusBank {
+      isEnabled = statusBank.delay1
+    }
+
+    if let delayBank {
+      type = delayBank.type
+      time = Double(delayBank.time)
+      feedback = Double(delayBank.feedback)
+      highCut = delayBank.highCut
+      effectLevel = Double(delayBank.effectLevel)
+      directMix = Double(delayBank.directMix)
+      modulationSwitchStatus = delayBank.modulationSwitchStatus
+      modulationRate = Double(delayBank.modulationRate)
+      modulationDepth = Double(delayBank.modulationDepth)
+      filterStatus = delayBank.filterStatus
+      filter = delayBank.filter
+      tapTimePercentage = Double(delayBank.tapTimePercentage)
+      delayPhase = delayBank.delayPhase
+      feedbackPhase = delayBank.feedbackPhase
     }
   }
 }

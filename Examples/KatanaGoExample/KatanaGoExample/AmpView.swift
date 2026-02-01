@@ -32,19 +32,30 @@ struct AmpView: View {
     NavigationView {
       Form {
         Section("Amp Selection") {
-          Picker("Amp Type", selection: $ampType) {
+          Picker(
+            "Amp Type",
+            selection: Binding(
+              get: { ampType },
+              set: {
+                ampType = $0
+                viewModel.updateAmpBank(AmpBank(type: $0))
+              }
+            )
+          ) {
             ForEach(AmpType.allCases, id: \.self) { type in
               Text("\(type.name)").tag(type)
             }
           }
-          .onChange(of: ampType) { _, newValue in
-            viewModel.updateAmpBank(AmpBank(type: newValue))
-          }
 
-          Toggle("Variation", isOn: $variationEnable)
-            .onChange(of: variationEnable) { _, newValue in
-              viewModel.updateAmpBank(AmpBank(variation: newValue))
-            }
+          Toggle(
+            "Variation",
+            isOn: Binding(
+              get: { variationEnable },
+              set: {
+                variationEnable = $0
+                viewModel.updateAmpBank(AmpBank(variation: $0))
+              }
+            ))
         }
 
         Section("Tone Controls") {
@@ -74,6 +85,9 @@ struct AmpView: View {
         }
       }
       .navigationTitle("Amp Settings")
+      .task {
+        await loadAmpData()
+      }
       .toolbar {
         ToolbarItem(placement: .confirmationAction) {
           Button("Done") {
@@ -99,11 +113,28 @@ struct AmpView: View {
         Text("\(Int(value.wrappedValue))")
           .foregroundColor(.secondary)
       }
-      Slider(value: value, in: range)
-        .onChange(of: value.wrappedValue) { _, newValue in
-          onUpdate(newValue)
-        }
+      Slider(
+        value: Binding(
+          get: { value.wrappedValue },
+          set: {
+            value.wrappedValue = $0
+            onUpdate($0)
+          }
+        ), in: range)
     }
+  }
+
+  private func loadAmpData() async {
+    guard let bank = await viewModel.readBank(type: AmpBank.self) else { return }
+
+    ampType = bank.type
+    gain = Double(bank.gain)
+    volume = Double(bank.volume)
+    bass = Double(bank.bass)
+    middle = Double(bank.middle)
+    treble = Double(bank.treble)
+    presence = Double(bank.presence)
+    variationEnable = bank.variation
   }
 }
 

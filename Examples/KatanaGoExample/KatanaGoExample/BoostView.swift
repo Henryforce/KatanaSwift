@@ -33,18 +33,29 @@ struct BoostView: View {
     NavigationView {
       Form {
         Section("General") {
-          Toggle("Enabled", isOn: $isEnabled)
-            .onChange(of: isEnabled) { _, newValue in
-              viewModel.updateWritableBank(EffectStatusBank(booster: newValue))
-            }
+          Toggle(
+            "Enabled",
+            isOn: Binding(
+              get: { isEnabled },
+              set: {
+                isEnabled = $0
+                viewModel.updateWritableBank(EffectStatusBank(booster: $0))
+              }
+            ))
 
-          Picker("Type", selection: $type) {
+          Picker(
+            "Type",
+            selection: Binding(
+              get: { type },
+              set: {
+                type = $0
+                viewModel.updateWritableBank(BoostBank(type: $0))
+              }
+            )
+          ) {
             ForEach(BoostType.allCases, id: \.self) { type in
               Text("\(type.title)").tag(type)
             }
-          }
-          .onChange(of: type) { _, newValue in
-            viewModel.updateWritableBank(BoostBank(type: newValue))
           }
         }
 
@@ -71,10 +82,15 @@ struct BoostView: View {
         }
 
         Section("Solo") {
-          Toggle("Solo Switch", isOn: $soloSwitchEnable)
-            .onChange(of: soloSwitchEnable) { _, newValue in
-              viewModel.updateWritableBank(BoostBank(soloSwitchStatus: newValue))
-            }
+          Toggle(
+            "Solo Switch",
+            isOn: Binding(
+              get: { soloSwitchEnable },
+              set: {
+                soloSwitchEnable = $0
+                viewModel.updateWritableBank(BoostBank(soloSwitchStatus: $0))
+              }
+            ))
 
           parameterSlider(title: "Solo Level", value: $soloLevel, range: soloLevelRange) {
             viewModel.updateWritableBank(BoostBank(soloLevel: UInt8($0)))
@@ -82,6 +98,9 @@ struct BoostView: View {
         }
       }
       .navigationTitle("Boost Settings")
+      .task {
+        await loadBoostData()
+      }
       .toolbar {
         ToolbarItem(placement: .confirmationAction) {
           Button("Done") {
@@ -103,10 +122,34 @@ struct BoostView: View {
   ) -> some View {
     VStack(alignment: .leading) {
       Text("\(title): \(Int(value.wrappedValue))")
-      Slider(value: value, in: range)
-        .onChange(of: value.wrappedValue) { _, newValue in
-          onUpdate(newValue)
-        }
+      Slider(
+        value: Binding(
+          get: { value.wrappedValue },
+          set: {
+            value.wrappedValue = $0
+            onUpdate($0)
+          }
+        ), in: range)
+    }
+  }
+
+  private func loadBoostData() async {
+    let statusBank = await viewModel.readBank(type: EffectStatusBank.self)
+    let boostBank = await viewModel.readBank(type: BoostBank.self)
+
+    if let statusBank {
+      isEnabled = statusBank.booster
+    }
+
+    if let boostBank {
+      type = boostBank.type
+      drive = Double(boostBank.drive)
+      bottom = Double(boostBank.bottom)
+      tone = Double(boostBank.tone)
+      soloSwitchEnable = boostBank.soloSwitchStatus
+      soloLevel = Double(boostBank.soloLevel)
+      effectLevel = Double(boostBank.effectLevel)
+      directMix = Double(boostBank.directMix)
     }
   }
 }
