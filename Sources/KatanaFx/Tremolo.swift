@@ -4,7 +4,7 @@ import KatanaMacros
 // MARK: - Tremolo
 
 /// The data bank representing the tremolo parameters.
-@KatanaFxBank
+@KatanaBank
 public struct TremoloBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_00_00_00, range: 0...100)
   public var waveShape: UInt8 = 0

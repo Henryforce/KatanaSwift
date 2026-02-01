@@ -90,7 +90,7 @@ struct ModFxView: View {
     viewModel.updateWritableBank(bank, channel: channel)
   }
 
-  private func updateNormalBank(_ bank: WritableBank) {
+  private func updateNormalBank(_ bank: KatanaGoBank) {
     viewModel.updateWritableBank(bank)
   }
 }

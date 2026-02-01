@@ -4,7 +4,7 @@ import KatanaMacros
 // MARK: - Comp
 
 /// The data bank representing the compressor parameters.
-@KatanaFxBank
+@KatanaBank
 public struct CompBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_00_00)
   public var type: CompType = .boss

@@ -4,7 +4,7 @@ import KatanaMacros
 // MARK: - Octaver
 
 /// The data bank representing the octaver parameters.
-@KatanaFxBank
+@KatanaBank
 public struct OctaverBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_00_00)
   public var range: OctaverRange = .range1
@@ -35,7 +35,7 @@ public enum HeavyOctaveParameter: Sendable, Hashable {
 }
 
 /// The data bank representing the heavy octave parameters.
-@KatanaFxBank
+@KatanaBank
 public struct HeavyOctaveBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_00_00_00, range: 0...100)
   public var octaveMinus1: UInt8 = 50

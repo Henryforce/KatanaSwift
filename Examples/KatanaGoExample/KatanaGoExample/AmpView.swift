@@ -38,45 +38,37 @@ struct AmpView: View {
             }
           }
           .onChange(of: ampType) { _, newValue in
-            //             viewModel.updateAmp(.ampType(newValue))
             viewModel.updateAmpBank(AmpBank(type: newValue))
           }
 
           Toggle("Variation", isOn: $variationEnable)
             .onChange(of: variationEnable) { _, newValue in
-              //              viewModel.updateAmp(.variation(newValue))
               viewModel.updateAmpBank(AmpBank(variation: newValue))
             }
         }
 
         Section("Tone Controls") {
           parameterSlider(title: "Gain", value: $gain, range: gainRange) {
-            //            viewModel.updateAmp(.gain(UInt8($0)))
             viewModel.updateAmpBank(AmpBank(gain: UInt8($0)))
           }
 
           parameterSlider(title: "Volume", value: $volume, range: volumeRange) {
-            //            viewModel.updateAmp(.volume(UInt8($0)))
             viewModel.updateAmpBank(AmpBank(volume: UInt8($0)))
           }
 
           parameterSlider(title: "Bass", value: $bass, range: bassRange) {
-            //            viewModel.updateAmp(.bass(UInt8($0)))
             viewModel.updateAmpBank(AmpBank(bass: UInt8($0)))
           }
 
           parameterSlider(title: "Middle", value: $middle, range: middleRange) {
-            //            viewModel.updateAmp(.middle(UInt8($0)))
             viewModel.updateAmpBank(AmpBank(middle: UInt8($0)))
           }
 
           parameterSlider(title: "Treble", value: $treble, range: trebleRange) {
-            //            viewModel.updateAmp(.treble(UInt8($0)))
             viewModel.updateAmpBank(AmpBank(treble: UInt8($0)))
           }
 
           parameterSlider(title: "Presence", value: $presence, range: presenceRange) {
-            //            viewModel.updateAmp(.presence(UInt8($0)))
             viewModel.updateAmpBank(AmpBank(presence: UInt8($0)))
           }
         }

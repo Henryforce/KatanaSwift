@@ -2,7 +2,7 @@ import KatanaCore
 import KatanaMacros
 
 @KatanaBank
-public struct AmpBank: Sendable, Hashable {
+public struct AmpBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x0C)
   public var type: AmpType = .clean
 
@@ -27,10 +27,14 @@ public struct AmpBank: Sendable, Hashable {
   @Parameter(at: 0x0D)
   public var variation: Bool = false
 
-  public static let address: UInt32 = 0x20_00_20_00
+  public static let katanaGoAddress: UInt32 = 0x20_00_20_00
 
   public static let size: UInt32 = 14
 }
+
+//extension AmpBank: KatanaGoBank {
+//  public static let katanaGoAddress: UInt32 = 0x20_00_20_00
+//}
 
 /// Available amplifier types.
 @KatanaUInt8RawBytes

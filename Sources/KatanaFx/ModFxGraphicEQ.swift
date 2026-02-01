@@ -5,7 +5,7 @@ import KatanaMacros
 // MARK: - ModFxGraphicEQ
 
 /// The data bank representing the MOD/FX graphic equalizer parameters.
-@KatanaFxBank
+@KatanaBank
 public struct ModFxGraphicEQBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_00_00_00, range: 0...40)
   public var band31Hz: UInt8 = 20

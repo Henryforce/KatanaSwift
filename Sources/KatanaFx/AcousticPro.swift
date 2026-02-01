@@ -5,7 +5,7 @@ import KatanaMacros
 // MARK: - AcousticPro
 
 /// The data bank representing the acoustic pro parameters.
-@KatanaFxBank
+@KatanaBank
 public struct AcousticProBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_00_00)
   public var type: AcousticProType = .small

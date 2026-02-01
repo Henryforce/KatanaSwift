@@ -4,7 +4,7 @@ import KatanaMacros
 
 /// The data bank representing the booster parameters.
 @KatanaBank
-public struct BassCompLimBank: Sendable, Hashable {
+public struct BassCompLimBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var mode: BassCompLimMode = .comp
 
@@ -41,7 +41,7 @@ public struct BassCompLimBank: Sendable, Hashable {
   @IntegerParameter(at: 0x0B, range: 0...100)
   public var limiterEffect: UInt8 = 50
 
-  public static let address: UInt32 = 0x20_00_50_00
+  public static let katanaGoAddress: UInt32 = 0x20_00_50_00
 
   public static let size: UInt32 = 12
 }

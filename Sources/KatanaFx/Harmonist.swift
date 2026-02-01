@@ -4,7 +4,7 @@ import KatanaMacros
 // MARK: - Harmonist
 
 /// The data bank representing the harmonist parameters.
-@KatanaFxBank
+@KatanaBank
 public struct HarmonistBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_00_00)
   public var voice: HarmonistVoice = .oneVoice

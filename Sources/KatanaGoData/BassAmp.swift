@@ -2,7 +2,7 @@ import KatanaCore
 import KatanaMacros
 
 @KatanaBank
-public struct BassAmpBank: Sendable, Hashable {
+public struct BassAmpBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x0C)
   public var type: BassAmpType = .vintage
 
@@ -42,7 +42,7 @@ public struct BassAmpBank: Sendable, Hashable {
   @Parameter(at: 0x0D)
   public var variation: Bool = false
 
-  public static let address: UInt32 = 0x20_00_20_00
+  public static let katanaGoAddress: UInt32 = 0x20_00_20_00
 
   public static let size: UInt32 = 14
 }

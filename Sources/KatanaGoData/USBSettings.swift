@@ -2,7 +2,7 @@ import KatanaCore
 import KatanaMacros
 
 @KatanaBank
-public struct USBSettingsBank: Sendable, Hashable {
+public struct USBSettingsBank: KatanaGoBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00, range: 0...100)
   public var inputLevel: UInt8 = 50
 
@@ -12,7 +12,7 @@ public struct USBSettingsBank: Sendable, Hashable {
   @Parameter(at: 0x02)
   public var loopback: Bool = false
 
-  public static let address: UInt32 = 0x10_01_70_00
+  public static let katanaGoAddress: UInt32 = 0x10_01_70_00
 
   public static let size: UInt32 = 3
 }

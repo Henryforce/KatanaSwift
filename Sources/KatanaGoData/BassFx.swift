@@ -6,7 +6,7 @@ import KatanaMacros
 // MARK: - BASS ENHANCER
 
 @KatanaBank
-public struct BassEnhancerBank: Sendable, Hashable {
+public struct BassEnhancerBank: KatanaGoBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00, range: 0...100)
   public var sense: UInt8 = 50
 
@@ -22,7 +22,7 @@ public struct BassEnhancerBank: Sendable, Hashable {
   @Parameter(at: 0x04)
   public var highFreq: BassHighFrequency = .freq5kHz
 
-  public static let address: UInt32 = 0x20_01_01_52
+  public static let katanaGoAddress: UInt32 = 0x20_01_01_52
 
   public static let size: UInt32 = 5
 }
@@ -30,7 +30,7 @@ public struct BassEnhancerBank: Sendable, Hashable {
 // MARK: - BASS SIMULATOR
 
 @KatanaBank
-public struct BassSimulatorBank: Sendable, Hashable {
+public struct BassSimulatorBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var type: BassSimType = .pasToAct
 
@@ -46,7 +46,7 @@ public struct BassSimulatorBank: Sendable, Hashable {
   @IntegerParameter(at: 0x04, range: 0...100)
   public var body: UInt8 = 50
 
-  public static let address: UInt32 = 0x20_01_01_57
+  public static let katanaGoAddress: UInt32 = 0x20_01_01_57
 
   public static let size: UInt32 = 5
 }
@@ -54,7 +54,7 @@ public struct BassSimulatorBank: Sendable, Hashable {
 // MARK: - MOD BASS DE-FR
 
 @KatanaBank
-public struct BassDeFretterBank: Sendable, Hashable {
+public struct BassDeFretterBank: KatanaGoBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00, range: 0...100)
   public var sense: UInt8 = 50
 
@@ -70,7 +70,7 @@ public struct BassDeFretterBank: Sendable, Hashable {
   @IntegerParameter(at: 0x06, range: 0...100)
   public var directMix: UInt8 = 100
 
-  public static let address: UInt32 = 0x20_01_01_5C
+  public static let katanaGoAddress: UInt32 = 0x20_01_01_5C
 
   public static let size: UInt32 = 7
 }
@@ -78,7 +78,7 @@ public struct BassDeFretterBank: Sendable, Hashable {
 // MARK: - MOD BASS OCT
 
 @KatanaBank
-public struct BassOctaveBank: Sendable, Hashable {
+public struct BassOctaveBank: KatanaGoBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00, range: 0...100)
   public var tenCTLevel: UInt8 = 50
 
@@ -88,7 +88,7 @@ public struct BassOctaveBank: Sendable, Hashable {
   @IntegerParameter(at: 0x02, range: 0...100)
   public var directMix: UInt8 = 100
 
-  public static let address: UInt32 = 0x20_01_01_63
+  public static let katanaGoAddress: UInt32 = 0x20_01_01_63
 
   public static let size: UInt32 = 3
 }
@@ -96,7 +96,7 @@ public struct BassOctaveBank: Sendable, Hashable {
 // MARK: - MOD BASS T-Wah
 
 @KatanaBank
-public struct BassTWahBank: Sendable, Hashable {
+public struct BassTWahBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var mode: WahMode = .lowPassFilter
 
@@ -118,7 +118,7 @@ public struct BassTWahBank: Sendable, Hashable {
   @IntegerParameter(at: 0x06, range: 0...100)
   public var directLevel: UInt8 = 0
 
-  public static let address: UInt32 = 0x20_01_01_66
+  public static let katanaGoAddress: UInt32 = 0x20_01_01_66
 
   public static let size: UInt32 = 7
 }
@@ -127,7 +127,7 @@ public struct BassTWahBank: Sendable, Hashable {
 
 /// The data bank representing the BASS MOD/FX parameters.
 @KatanaBank
-public struct BassSynthBank: Sendable, Hashable {
+public struct BassSynthBank: KatanaGoBank, Sendable, Hashable {
 
   @Parameter(at: 0x00)
   public var wave: WaveSynthType = .saw
@@ -153,7 +153,7 @@ public struct BassSynthBank: Sendable, Hashable {
   @IntegerParameter(at: 0x07, range: 0...100)
   public var directMix: UInt8 = 0
 
-  public static let address: UInt32 = 0x20_01_01_6D
+  public static let katanaGoAddress: UInt32 = 0x20_01_01_6D
 
   public static let size: UInt32 = 8
 }
@@ -189,7 +189,7 @@ public enum BassModFXType: UInt8, Sendable, Hashable, CaseIterable {
 }
 
 @KatanaBank
-public struct BassCompressorBank: Sendable, Hashable {
+public struct BassCompressorBank: KatanaGoBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00, range: 0...100)
   public var threshold: UInt8 = 50
 
@@ -208,7 +208,7 @@ public struct BassCompressorBank: Sendable, Hashable {
   @IntegerParameter(at: 0x05, range: 0...100)
   public var blend: UInt8 = 50
 
-  public static let address: UInt32 = 0x20_01_01_75
+  public static let katanaGoAddress: UInt32 = 0x20_01_01_75
 
   public static let size: UInt32 = 6
 }

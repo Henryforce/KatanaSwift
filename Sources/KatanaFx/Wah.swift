@@ -12,7 +12,7 @@ public enum WahMode: UInt8, Sendable, Hashable, CaseIterable {
 // MARK: - TWah
 
 /// The data bank representing the T-Wah parameters.
-@KatanaFxBank
+@KatanaBank
 public struct TWahBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_00_00)
   public var mode: WahMode = .lowPassFilter
@@ -47,7 +47,7 @@ public enum TWahPolarity: UInt8, Sendable, Hashable, CaseIterable {
 // MARK: - AutoWah
 
 /// The data bank representing the auto wah parameters.
-@KatanaFxBank
+@KatanaBank
 public struct AutoWahBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_00_00)
   public var mode: WahMode = .lowPassFilter

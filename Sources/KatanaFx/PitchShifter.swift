@@ -4,7 +4,7 @@ import KatanaMacros
 // MARK: - PitchShifter
 
 /// The data bank representing the pitch shifter parameters.
-@KatanaFxBank
+@KatanaBank
 public struct PitchShifterBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_00_00)
   public var voice: PitchShifterVoice = .oneVoice

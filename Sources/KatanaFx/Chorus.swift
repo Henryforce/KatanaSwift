@@ -4,7 +4,7 @@ import KatanaMacros
 // MARK - TwoByTwoChorus
 
 /// The data bank representing the chorus parameters.
-@KatanaFxBank
+@KatanaBank
 public struct ChorusBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_00_00)
   public var crossoverFrequency: ChorusCrossoverFrequency = .freq250Hz
@@ -42,7 +42,7 @@ public struct ChorusBank: Sendable, Hashable {
 // MARK: - DC30
 
 /// The data bank representing the DC-30 parameters.
-@KatanaFxBank
+@KatanaBank
 public struct DC30Bank: Sendable, Hashable {
   @Parameter(at: 0x00_00_00_00)
   public var type: DC30Type = .chorus

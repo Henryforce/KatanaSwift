@@ -3,7 +3,7 @@ import KatanaEQ
 import KatanaMacros
 
 /// The data bank representing the MOD/FX parametric equalizer parameters.
-@KatanaFxBank
+@KatanaBank
 public struct ModFxParametricEQBank: Sendable, Hashable {
   @Parameter(at: 0x00_00_00_00)
   public var lowCut: EQLowCut = .flat

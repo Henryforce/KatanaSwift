@@ -3,7 +3,7 @@ import KatanaMacros
 
 // MARK: - Flanger
 
-@KatanaFxBank
+@KatanaBank
 public struct FlangerBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_00_00_00, range: 0...100)
   public var rate: UInt8 = 50
@@ -47,7 +47,7 @@ public enum FlangerLowCut: UInt8, Sendable, Hashable, CaseIterable {
 // MARK: - Flanger117E
 
 /// The data bank representing the flanger 117E parameters.
-@KatanaFxBank
+@KatanaBank
 public struct Flanger117EBank: Sendable, Hashable {
   @IntegerParameter(at: 0x00_00_00_00, range: 0...100)
   public var manual: UInt8 = 50
