@@ -5,7 +5,7 @@
 //  Created by Henry Javier Serrano Echeverria on 2026/01/14.
 //
 
-import KatanaGoSwift
+import KatanaSwift
 import Observation
 import SwiftUI
 

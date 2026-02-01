@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		392C6DE62F13BA9700B29028 /* KatanaGoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 392C6DE52F13BA9700B29028 /* KatanaGoSwift */; };
+		397C1DE32F2F1204003F5308 /* KatanaSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 397C1DE22F2F1204003F5308 /* KatanaSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				392C6DE62F13BA9700B29028 /* KatanaGoSwift in Frameworks */,
+				397C1DE32F2F1204003F5308 /* KatanaSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,7 +70,7 @@
 			);
 			name = KatanaGoExample;
 			packageProductDependencies = (
-				392C6DE52F13BA9700B29028 /* KatanaGoSwift */,
+				397C1DE22F2F1204003F5308 /* KatanaSwift */,
 			);
 			productName = KatanaGoExample;
 			productReference = 392C6DD62F13BA2700B29028 /* KatanaGoExample.app */;
@@ -101,7 +101,7 @@
 			mainGroup = 392C6DCD2F13BA2700B29028;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				392C6DE42F13BA9700B29028 /* XCLocalSwiftPackageReference "../../../KatanaGoSwift" */,
+				397C1DE12F2F1204003F5308 /* XCLocalSwiftPackageReference "../../../KatanaGoSwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 392C6DD72F13BA2700B29028 /* Products */;
@@ -347,16 +347,16 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		392C6DE42F13BA9700B29028 /* XCLocalSwiftPackageReference "../../../KatanaGoSwift" */ = {
+		397C1DE12F2F1204003F5308 /* XCLocalSwiftPackageReference "../../../KatanaGoSwift" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../../KatanaGoSwift;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		392C6DE52F13BA9700B29028 /* KatanaGoSwift */ = {
+		397C1DE22F2F1204003F5308 /* KatanaSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = KatanaGoSwift;
+			productName = KatanaSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

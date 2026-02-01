@@ -116,6 +116,13 @@ public actor KatanaGoMIDIKit: KatanaGo {
     try await writeBank(bank, addressModifiers: address)
   }
 
+  public func writeChannelAddressableBank<T: KatanaGoChannelAddressableBank>(
+    _ bank: T, channel: T.BankChannel
+  ) async throws {
+    let address: UInt32 = T.katanaGoAddress + channel.rawValue
+    try await writeBank(bank, addressModifiers: address)
+  }
+
   /// Enable or disable the FX bank.
   /// - Parameter enabled: The bank of parameters to send to the device.
   public func enableFx(_ enabled: Bool, channel: KatanaGoFxChannel) async throws {

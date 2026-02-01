@@ -5,7 +5,7 @@ import CompilerPluginSupport
 import PackageDescription
 
 let package = Package(
-  name: "KatanaGoSwift",
+  name: "KatanaSwift",
   platforms: [
     .macOS(.v12),
     .iOS(.v15),
@@ -13,8 +13,8 @@ let package = Package(
   products: [
     // Products define the executables and libraries a package produces, making them visible to other packages.
     .library(
-      name: "KatanaGoSwift",
-      targets: ["KatanaGoSwift"]
+      name: "KatanaSwift",
+      targets: ["KatanaSwift"]
     )
 
   ],
@@ -70,7 +70,7 @@ let package = Package(
       ]
     ),
     .target(
-      name: "KatanaGoSwift",
+      name: "KatanaSwift",
       dependencies: [
         "KatanaGoAPI", "KatanaGoData", "KatanaGoMIDIKit", "KatanaCore", "KatanaFx", "KatanaEQ",
       ]

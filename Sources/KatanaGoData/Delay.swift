@@ -1,9 +1,15 @@
 import KatanaCore
 import KatanaMacros
 
+/// The bank ID for the bank index.
+public enum DelayBankChannel: UInt32, Sendable, Hashable {
+  case one = 0x0000
+  case two = 0x1000
+}
+
 /// The data bank representing the delay parameters.
 @KatanaBank
-public struct DelayBank: KatanaGoBank, Sendable, Hashable {
+public struct DelayBank: KatanaGoChannelAddressableBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var type: DelayType = .digital
 
@@ -49,6 +55,8 @@ public struct DelayBank: KatanaGoBank, Sendable, Hashable {
   public static let katanaGoAddress: UInt32 = 0x20_01_20_00
 
   public static let size: UInt32 = 17
+
+  public static let channelType = DelayBankChannel.self
 }
 
 /// Available delay types for the Katana GO.

@@ -1,6 +1,6 @@
-# KatanaGoSwift Examples
+# KatanaSwift Examples
 
-This directory contains example projects demonstrating how to use the `KatanaGoSwift` library.
+This directory contains example projects demonstrating how to use the `KatanaSwift` library.
 
 ## KatanaGoExample (SwiftUI)
 
@@ -19,11 +19,11 @@ This is a modern SwiftUI application that demonstrates:
 
 ### Linking to the local library
 
-The example project is configured to use the `KatanaGoSwift` package from the parent directory:
+The example project is configured to use the `KatanaSwift` package from the parent directory:
 
 ```swift
 dependencies: [
-    .package(name: "KatanaGoSwift", path: "../../")
+    .package(name: "KatanaSwift", path: "../../")
 ]
 ```
 

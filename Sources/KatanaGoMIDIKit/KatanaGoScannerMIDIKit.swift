@@ -12,8 +12,8 @@ public final class KatanaGoScannerMIDIKit: KatanaGoScanner {
 
   public init() {
     let manager = MIDIManager(
-      clientName: "KatanaGoSwift",
-      model: "KatanaGoScanner",
+      clientName: "KatanaSwift",
+      model: "KatanaScanner",
       manufacturer: "Henryforce"
     )
     self.midiManager = manager

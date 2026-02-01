@@ -46,8 +46,6 @@ public struct PedalFxBanks: KatanaGoBank, Sendable, Hashable {
   }
 
   public static func buildFromByteArray(_ array: [UInt8]) -> Self {
-    let template = Self()
-
     let wahArrayOffset = Int(PedalFxWahBank.katanaGoAddress - Self.katanaGoAddress)
     let wahArray = Array(array[wahArrayOffset..<wahArrayOffset + Int(PedalFxWahBank.size)])
 

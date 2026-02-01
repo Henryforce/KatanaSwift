@@ -5,7 +5,7 @@ import KatanaMacros
 
 /// The data bank representing the reverb parameters.
 @KatanaBank
-public struct ReverbBank: KatanaGoBank, Sendable, Hashable {
+public struct ReverbBank: Sendable, Hashable {
   @Parameter(at: 0x00)
   public var type: ReverbType = .room
 

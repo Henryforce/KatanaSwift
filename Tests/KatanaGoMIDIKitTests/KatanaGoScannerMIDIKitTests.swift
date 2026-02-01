@@ -20,6 +20,9 @@ final class KatanaGoScannerMIDIKitTests: XCTestCase {
     func connectionStatus() async -> ConnectionStatus { .disconnected }
     func writeBank<T: WritableBank>(_ bank: T) async throws {}
     func writeFxBank<T: KatanaGoFxBank>(_ bank: T, channel: KatanaGoFxChannel) async throws {}
+    func writeChannelAddressableBank<T: KatanaGoChannelAddressableBank>(
+      _ bank: T, channel: T.BankChannel
+    ) async throws {}
     func enableFx(_ enabled: Bool, channel: KatanaGoFxChannel) async throws {}
     func selectFxType(_ type: KatanaGoData.ModFxType, channel: KatanaGoData.KatanaGoFxChannel)
       async throws
