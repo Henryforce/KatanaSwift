@@ -12,7 +12,7 @@ public struct USBSettingsBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x02)
   public var loopback: Bool = false
 
-  public static let katanaGoAddress: UInt32 = 0x10_01_70_00
+  public static let katanaGoAddress: UInt32 = 0x10_00_70_00
 
   public static let size: UInt32 = 3
 }

@@ -33,6 +33,12 @@ public enum KatanaGoDataBank: Sendable {
   case eq2ParametricBank(ParametricEQBank)
   case eq2GraphicBank(GraphicEQBank)
   case noiseGateBank(NoiseGateBank)
+  case tunerBank(TunerBank)
+  case globalEQSwitchBank(GlobalEQSwitchBank)
+  case globalEQBank(GlobalEQBank)
+  case stageFeelBank(StageFeelBank)
+  case stageFeelCustomBank(StageFeelCustomBank)
+  case usbSettingsBank(USBSettingsBank)
 }
 
 public enum KatanaGoFxReadData: Sendable, Hashable {

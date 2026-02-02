@@ -12,9 +12,12 @@ public struct SignalChainPedalFxBank: KatanaGoBank, Sendable, Hashable {
   @Parameter(at: 0x02)
   public var type: PedalFxType = .wah
 
+  @IntegerParameter(at: 0x03, range: 0...100)
+  public var footVolume: UInt8 = 100
+
   public static let katanaGoAddress: UInt32 = 0x20_02_40_00
 
-  public static let size: UInt32 = 3
+  public static let size: UInt32 = 4
 }
 
 public struct PedalFxBanks: KatanaGoBank, Sendable, Hashable {
