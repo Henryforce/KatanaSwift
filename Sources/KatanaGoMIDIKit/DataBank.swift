@@ -6,7 +6,7 @@ struct DataBank: Sendable, Hashable {
   var modeBank = [UInt8](repeating: 0x00, count: 1)
   var presetBank = [UInt8](repeating: 0x00, count: 2)
   var presetNameBank = [UInt8](repeating: 0x00, count: 20)
-  var signalChainBank = [UInt8](repeating: 0x00, count: 3)
+  var signalChainBank = [UInt8](repeating: 0x00, count: 4)
   var ampBank = [UInt8](repeating: 0x00, count: 14)
   /// The bank of data for the effects on/off switch.
   /// The order is: BOOSTER, MOD, FX, DELAY1, DELAY2, REVERB, BASS
@@ -26,7 +26,7 @@ struct DataBank: Sendable, Hashable {
   var countour1Bank = [UInt8](repeating: 0x00, count: 2)
   var countour2Bank = [UInt8](repeating: 0x00, count: 2)
   var countour3Bank = [UInt8](repeating: 0x00, count: 2)
-  var signalChainPedalFXBank = [UInt8](repeating: 0x00, count: 3)
+  var signalChainPedalFXBank = [UInt8](repeating: 0x00, count: 4)
   var pfxWahBank = [UInt8](repeating: 0x00, count: 15)
   var eq1SelectionBank = [UInt8](repeating: 0x00, count: 3)
   var eq2SelectionBank = [UInt8](repeating: 0x00, count: 3)
@@ -35,6 +35,12 @@ struct DataBank: Sendable, Hashable {
   var geq1Bank = [UInt8](repeating: 0x00, count: 11)
   var geq2Bank = [UInt8](repeating: 0x00, count: 11)
   var nsBank = [UInt8](repeating: 0x00, count: 3)
+  var tunerBank = [UInt8](repeating: 0x00, count: 1)
+  var globalEQSwitchBank = [UInt8](repeating: 0x00, count: 1)
+  var globalEQBank = [UInt8](repeating: 0x00, count: 11)
+  var stageFeelBank = [UInt8](repeating: 0x00, count: 1)
+  var stageFeelCustomBank = [UInt8](repeating: 0x00, count: 4)
+  var usbSettingsBank = [UInt8](repeating: 0x00, count: 3)
 
   init() {
   }
@@ -268,6 +274,60 @@ struct DataBank: Sendable, Hashable {
     {
       let noiseGate = NoiseGateBank.buildFromByteArray(nsBank)
       banks.append(.noiseGateBank(noiseGate))
+    }
+
+    // Bank base address: 10000000
+    if DataBank.applyUpdate(
+      &tunerBank, bankBase: [0x10, 0x00, 0x00, 0x00], incomingData: data,
+      incomingStart: incomingStart)
+    {
+      let tuner = TunerBank.buildFromByteArray(tunerBank)
+      banks.append(.tunerBank(tuner))
+    }
+
+    // Bank base address: 10001000
+    if DataBank.applyUpdate(
+      &globalEQSwitchBank, bankBase: [0x10, 0x00, 0x10, 0x00], incomingData: data,
+      incomingStart: incomingStart)
+    {
+      let switchBank = GlobalEQSwitchBank.buildFromByteArray(globalEQSwitchBank)
+      banks.append(.globalEQSwitchBank(switchBank))
+    }
+
+    // Bank base address: 10002000
+    if DataBank.applyUpdate(
+      &globalEQBank, bankBase: [0x10, 0x00, 0x20, 0x00], incomingData: data,
+      incomingStart: incomingStart)
+    {
+      let globalEQ = GlobalEQBank.buildFromByteArray(globalEQBank)
+      banks.append(.globalEQBank(globalEQ))
+    }
+
+    // Bank base address: 10003000
+    if DataBank.applyUpdate(
+      &stageFeelBank, bankBase: [0x10, 0x00, 0x30, 0x00], incomingData: data,
+      incomingStart: incomingStart)
+    {
+      let stageFeel = StageFeelBank.buildFromByteArray(stageFeelBank)
+      banks.append(.stageFeelBank(stageFeel))
+    }
+
+    // Bank base address: 10006000
+    if DataBank.applyUpdate(
+      &stageFeelCustomBank, bankBase: [0x10, 0x00, 0x60, 0x00], incomingData: data,
+      incomingStart: incomingStart)
+    {
+      let custom = StageFeelCustomBank.buildFromByteArray(stageFeelCustomBank)
+      banks.append(.stageFeelCustomBank(custom))
+    }
+
+    // Bank base address: 10007000
+    if DataBank.applyUpdate(
+      &usbSettingsBank, bankBase: [0x10, 0x00, 0x70, 0x00], incomingData: data,
+      incomingStart: incomingStart)
+    {
+      let usb = USBSettingsBank.buildFromByteArray(usbSettingsBank)
+      banks.append(.usbSettingsBank(usb))
     }
 
     return banks
