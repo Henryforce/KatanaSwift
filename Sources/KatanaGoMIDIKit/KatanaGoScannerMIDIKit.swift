@@ -7,6 +7,7 @@ import MIDIKit
 public final class KatanaGoScannerMIDIKit: KatanaGoScanner {
   private let midiManager: MIDIManagerProtocol
   private let retryInterval: UInt64
+  // TODO: Add support for other Katana devices.
   private let katanaGoFactory:
     @Sendable (any MIDIEndpointProtocol, MIDIManagerProtocol) -> KatanaGo?
 
@@ -22,7 +23,8 @@ public final class KatanaGoScannerMIDIKit: KatanaGoScanner {
       guard let manager = midiManager as? MIDIManager,
         let realEndpoint = endpoint as? MIDIOutputEndpoint
       else { return nil }
-      return KatanaGoMIDIKit(endpoint: realEndpoint, midiManager: manager)
+      // TODO: Add support for other Katana devices.
+      return KatanaGoMIDIKit(deviceType: .go, endpoint: realEndpoint, midiManager: manager)
     }
   }
 

@@ -19,7 +19,10 @@ public actor KatanaGoMIDIKit: KatanaGo {
 
   private var dataBank = DataBank()
 
-  public init(endpoint: MIDIEndpointProtocol, midiManager: MIDIManagerProtocol) {
+  private let deviceType: KatanaDeviceType
+
+  public init(deviceType: KatanaDeviceType, endpoint: MIDIEndpointProtocol, midiManager: MIDIManagerProtocol) {
+    self.deviceType = deviceType
     self.endpoint = endpoint
     self.midiManager = midiManager
   }
@@ -106,6 +109,10 @@ public actor KatanaGoMIDIKit: KatanaGo {
     continuation = nil
   }
 
+  public func readDeviceType() async -> KatanaDeviceType {
+    return deviceType
+  }
+
   public func writeBank<T: KatanaGoBank>(_ bank: T) async throws {
     try await writeBank(bank, addressModifiers: T.katanaGoAddress)
   }
@@ -166,24 +173,21 @@ public actor KatanaGoMIDIKit: KatanaGo {
   public func readFxBank<T: KatanaGoFxBank>(_ type: T.Type, channel: KatanaGoFxChannel) async throws
     -> T
   {
-    // let modifier: UInt32 = channel == .fx ? 0x20_00_10_00 : 0x20_00_00_00
     let modifier = T.katanaGoAddress | (channel == .fx ? 0x20_00_10_00 : 0x20_00_00_00)
     return try await readBank(type, addressModifiers: modifier)
   }
 
   private func readBank<T: WritableBank>(_ type: T.Type, addressModifiers: UInt32) async throws -> T
   {
-    // let address = T.address | addressModifiers
     let address = addressModifiers
     let size = T.size
+    let data = try await readData(at: address, length: UInt16(size))
+    return T.buildFromByteArray(data)
+  }
 
-    let bytes = finalizeReadSysex(addressBytes: address.addressBytes, bytesToRead: UInt16(size))
-
-    let data = try await withCheckedThrowingContinuation { continuation in
-      // TODO: consider cancelling a previous read for this address if it was not completed
-      // or adding an array of continuations.
-
-      // Store the continuation for this address
+  public func readData(at address: UInt32, length: UInt16) async throws -> [UInt8] {
+    let bytes = finalizeReadSysex(addressBytes: address.addressBytes, bytesToRead: length)
+    return try await withCheckedThrowingContinuation { continuation in
       pendingReads[address] = continuation
       do {
         try writeRawBytes(bytes)
@@ -192,8 +196,6 @@ public actor KatanaGoMIDIKit: KatanaGo {
         continuation.resume(throwing: error)
       }
     }
-
-    return T.buildFromByteArray(data)
   }
 
   public func read() -> AsyncStream<KatanaGoDataBank> {
@@ -203,7 +205,7 @@ public actor KatanaGoMIDIKit: KatanaGo {
   }
 
   private func finalizeReadSysex(addressBytes: [UInt8], data: [UInt8]) -> [UInt8] {
-    let prefix: [UInt8] = [0xf0, 0x41, 0x10, 0x01, 0x05, 0x0d, 0x11]
+    let prefix: [UInt8] = [0xf0, 0x41, 0x10] + deviceType.modelIDBytes + [0x11]
     let body = addressBytes + data
     let checksum = calculateChecksum(for: body)
     return prefix + body + [checksum, 0xf7]
@@ -218,14 +220,14 @@ public actor KatanaGoMIDIKit: KatanaGo {
   }
 
   private func finalizeSysex(address: UInt32, data: [UInt8]) -> [UInt8] {
-    let prefix: [UInt8] = [0xf0, 0x41, 0x10, 0x01, 0x05, 0x0d, 0x12]
+    let prefix: [UInt8] = [0xf0, 0x41, 0x10] + deviceType.modelIDBytes + [0x12]
     let body = address.addressBytes + data
     let checksum = calculateChecksum(for: body)
     return prefix + body + [checksum, 0xf7]
   }
 
   private func finalizeSysex(addressBytes: [UInt8], data: [UInt8]) -> [UInt8] {
-    let prefix: [UInt8] = [0xf0, 0x41, 0x10, 0x01, 0x05, 0x0d, 0x12]
+    let prefix: [UInt8] = [0xf0, 0x41, 0x10] + deviceType.modelIDBytes + [0x12]
     let body = addressBytes + data
     let checksum = calculateChecksum(for: body)
     return prefix + body + [checksum, 0xf7]
@@ -235,7 +237,7 @@ public actor KatanaGoMIDIKit: KatanaGo {
     // Use like this:
     // Read preset name example (16 bytes -> 0x10)
     // let bytes = finalizeReadSysex(addressBytes: [0x20, 0x00, 0x00, 0x00], bytesToRead: 0x10)
-    let prefix: [UInt8] = [0xf0, 0x41, 0x10, 0x01, 0x05, 0x0d, 0x11]
+    let prefix: [UInt8] = [0xf0, 0x41, 0x10] + deviceType.modelIDBytes + [0x11]
     let body = addressBytes + bytesToRead.bytes
     let checksum = calculateChecksum(for: body)
     return prefix + body + [checksum, 0xf7]
@@ -256,6 +258,14 @@ extension BankID {
     case .id1: return 0x00_02_60_00
     case .id2: return 0x00_02_70_00
     default: return 0x00_00_00_00
+    }
+  }
+}
+
+extension KatanaDeviceType {
+  fileprivate var modelIDBytes: [UInt8] {
+    switch self {
+    case .go: return [0x01, 0x05, 0x0D]
     }
   }
 }
