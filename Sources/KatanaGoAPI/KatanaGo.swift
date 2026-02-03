@@ -17,6 +17,9 @@ public protocol KatanaGo: Actor {
   /// Disconnect from the device.
   func disconnect() async
 
+  /// Read the device type from the device.
+  func readDeviceType() async -> KatanaDeviceType
+
   /// Write a bank of parameters to the device.
   /// - Parameter bank: The bank of parameters to send to the device.
   func writeBank<T: KatanaGoBank>(_ bank: T) async throws

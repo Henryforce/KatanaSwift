@@ -18,6 +18,7 @@ final class KatanaGoScannerMIDIKitTests: XCTestCase {
     func connect() async throws {}
     func disconnect() async {}
     func connectionStatus() async -> ConnectionStatus { .disconnected }
+    func readDeviceType() async -> KatanaDeviceType { .go }
     func writeBank<T: WritableBank>(_ bank: T) async throws {}
     func writeFxBank<T: KatanaGoFxBank>(_ bank: T, channel: KatanaGoFxChannel) async throws {}
     func writeChannelAddressableBank<T: KatanaGoChannelAddressableBank>(
