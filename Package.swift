@@ -50,35 +50,29 @@ let package = Package(
       ]
     ),
     .target(
-      name: "KatanaGoAPI",
+      name: "KatanaGo",
       dependencies: [
-        "KatanaGoData",
         "KatanaCore",
-        "KatanaFx",
-        "KatanaEQ",
+        "KatanaGoData",
       ]
     ),
     .target(
       name: "KatanaDeviceImpl",
       dependencies: [
-        "KatanaGoAPI",
-        "KatanaGoData",
         "KatanaCore",
-        "KatanaFx",
-        "KatanaEQ",
         .product(name: "MIDIKit", package: "MIDIKit"),
       ]
     ),
     .target(
       name: "KatanaSwift",
       dependencies: [
-        "KatanaGoAPI", "KatanaGoData", "KatanaDeviceImpl", "KatanaCore", "KatanaFx", "KatanaEQ",
+        "KatanaDeviceImpl", "KatanaCore",
       ]
     ),
     .testTarget(
       name: "KatanaDeviceImplTests",
       dependencies: [
-        "KatanaGoAPI", "KatanaGoData", "KatanaDeviceImpl", "KatanaCore", "KatanaFx", "KatanaEQ",
+        "KatanaGo", "KatanaGoData", "KatanaDeviceImpl", "KatanaCore", "KatanaFx", "KatanaEQ",
       ]
     ),
     .testTarget(

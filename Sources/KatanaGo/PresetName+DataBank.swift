@@ -1,5 +1,4 @@
 import Foundation
-import KatanaGoData
 
 extension KatanaGoRawDataBank {
   func buildPresetName() -> String {

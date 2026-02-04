@@ -1,7 +1,7 @@
 import KatanaGoData
 
 /// The bank of data received from the Katana GO device.
-struct KatanaGoRawDataBank: Sendable, Hashable {
+public struct KatanaGoRawDataBank: Sendable, Hashable {
 
   var modeBank = [UInt8](repeating: 0x00, count: 1)
   var presetBank = [UInt8](repeating: 0x00, count: 2)
@@ -42,7 +42,8 @@ struct KatanaGoRawDataBank: Sendable, Hashable {
   var stageFeelCustomBank = [UInt8](repeating: 0x00, count: 4)
   var usbSettingsBank = [UInt8](repeating: 0x00, count: 3)
 
-  init() {
+  public init() {
+
   }
 
   /// Updates the data bank with the given data.

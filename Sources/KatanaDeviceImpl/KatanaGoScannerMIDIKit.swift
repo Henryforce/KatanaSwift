@@ -1,9 +1,9 @@
 import Foundation
-import KatanaGoAPI
+import KatanaCore
 import MIDIKit
 
 /// MIDI implementation of the KatanaGoScanner protocol.
-public final class KatanaGoScannerMIDIKit: KatanaGoScanner {
+public final class KatanaGoScannerMIDIKit: KatanaScanner {
   private let midiManager: MIDIManagerProtocol
   private let retryInterval: UInt64
   // TODO: Add support for other Katana devices.

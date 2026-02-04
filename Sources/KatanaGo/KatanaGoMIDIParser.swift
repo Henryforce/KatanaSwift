@@ -10,7 +10,7 @@ enum DataBankParseStatus {
 }
 
 /// A parser for Katana Go MIDI messages.
-enum KatanaGoMIDIParser {
+public enum KatanaGoMIDIParser {
   /// Parses a raw MIDI SysEx message and updates the DataBank with extracted data.
   ///
   /// The expected message format follows the Roland DT1 protocol observed in Katana Go sessions:
@@ -19,7 +19,7 @@ enum KatanaGoMIDIParser {
   /// - Parameters:
   ///   - message: The raw bytes received from the MIDI device.
   ///   - dataBank: The bank to be updated with the parsed data.
-  static func parse(_ message: [UInt8], into dataBank: inout KatanaGoRawDataBank)
+  public static func parse(_ message: [UInt8], into dataBank: inout KatanaGoRawDataBank)
     -> [KatanaGoDataBank]
   {
     // Minimum valid message length: Header(5) + Address(4) + Checksum(1) = 10 bytes

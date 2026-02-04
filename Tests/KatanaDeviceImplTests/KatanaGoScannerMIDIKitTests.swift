@@ -22,22 +22,10 @@ final class KatanaGoScannerMIDIKitTests: XCTestCase {
     func readData(at address: UInt32, length: UInt16) async throws -> [UInt8] { return [] }
     func write(at address: UInt32, data: [UInt8]) async throws {}
     func writeBank<T: WritableBank>(_ bank: T) async throws {}
-    func writeFxBank<T: KatanaGoFxBank>(_ bank: T, channel: KatanaGoFxChannel) async throws {}
-    func writeChannelAddressableBank<T: KatanaGoChannelAddressableBank>(
-      _ bank: T, channel: T.BankChannel
-    ) async throws {}
-    func enableFx(_ enabled: Bool, channel: KatanaGoFxChannel) async throws {}
-    func selectFxType(_ type: KatanaGoData.ModFxType, channel: KatanaGoData.KatanaGoFxChannel)
-      async throws
-    {}
     func readBank<T: WritableBank>(_ type: T.Type) async throws -> T {
       return T.buildFromByteArray([])
     }
-    func readFxBank<T: KatanaGoFxBank>(_ type: T.Type, channel: KatanaGoFxChannel) async throws -> T
-    { return T.buildFromByteArray([]) }
-    func read() -> AsyncStream<KatanaGoDataBank> {
-      AsyncStream { $0.finish() }
-    }
+    func subscribeToData() -> AsyncStream<[UInt8]> { AsyncStream { $0.finish() } }
   }
 
   func testScanFindsKatana() async throws {

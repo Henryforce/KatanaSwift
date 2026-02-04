@@ -1,8 +1,8 @@
 import Foundation
 import KatanaCore
-import KatanaFx
-import KatanaGoAPI
-import KatanaGoData
+// import KatanaFx
+// import KatanaGo
+// import KatanaGoData
 import MIDIKit
 
 /// MIDI implementation of the KatanaDevice protocol.
@@ -13,11 +13,12 @@ public actor KatanaGoMIDIKit: KatanaDevice {
   private var inputTag: String { "KatanaGo_In_\(endpoint.uniqueID)" }
   private var outputTag: String { "KatanaGo_Out_\(endpoint.uniqueID)" }
 
-  private var continuation: AsyncStream<KatanaGoDataBank>.Continuation?
+  // private var continuation: AsyncStream<KatanaGoDataBank>.Continuation?
+  private var continuation: AsyncStream<[UInt8]>.Continuation?
 
   private var pendingReads: [UInt32: CheckedContinuation<[UInt8], Error>] = [:]
 
-  private var katanaGoRawDataBank = KatanaGoRawDataBank()
+  // private var katanaGoRawDataBank = KatanaGoRawDataBank()
 
   private let deviceType: KatanaDeviceType
 
@@ -96,11 +97,13 @@ public actor KatanaGoMIDIKit: KatanaDevice {
         }
       }
 
-      let banks = KatanaGoMIDIParser.parse(message, into: &katanaGoRawDataBank)
-      for bank in banks {
-        print("Bank: \(bank)")
-        continuation?.yield(bank)
-      }
+      continuation?.yield(message)
+
+      // let banks = KatanaGoMIDIParser.parse(message, into: &katanaGoRawDataBank)
+      // for bank in banks {
+      //   print("Bank: \(bank)")
+      //   continuation?.yield(bank)
+      // }
     }
   }
 
@@ -115,49 +118,49 @@ public actor KatanaGoMIDIKit: KatanaDevice {
     return deviceType
   }
 
-  public func writeBank<T: KatanaGoBank>(_ bank: T) async throws {
-    try await writeBank(bank, addressModifiers: T.katanaGoAddress)
-  }
+  // public func writeBank<T: KatanaGoBank>(_ bank: T) async throws {
+  //   try await writeBank(bank, addressModifiers: T.katanaGoAddress)
+  // }
 
-  public func writeFxBank<T: KatanaGoFxBank>(_ bank: T, channel: KatanaGoFxChannel) async throws {
-    let address: UInt32 = T.katanaGoAddress | (channel == .fx ? 0x00_00_10_00 : 0x00)
-    // let address: UInt32 = channel == .fx ? 0x20_00_10_00 : 0x20_00_00_00
-    try await writeBank(bank, addressModifiers: address)
-  }
+  // public func writeFxBank<T: KatanaGoFxBank>(_ bank: T, channel: KatanaGoFxChannel) async throws {
+  //   let address: UInt32 = T.katanaGoAddress | (channel == .fx ? 0x00_00_10_00 : 0x00)
+  //   // let address: UInt32 = channel == .fx ? 0x20_00_10_00 : 0x20_00_00_00
+  //   try await writeBank(bank, addressModifiers: address)
+  // }
 
-  public func writeChannelAddressableBank<T: KatanaGoChannelAddressableBank>(
-    _ bank: T, channel: T.BankChannel
-  ) async throws {
-    let address: UInt32 = T.katanaGoAddress + channel.rawValue
-    try await writeBank(bank, addressModifiers: address)
-  }
+  // public func writeChannelAddressableBank<T: KatanaGoChannelAddressableBank>(
+  //   _ bank: T, channel: T.BankChannel
+  // ) async throws {
+  //   let address: UInt32 = T.katanaGoAddress + channel.rawValue
+  //   try await writeBank(bank, addressModifiers: address)
+  // }
 
   /// Enable or disable the FX bank.
   /// - Parameter enabled: The bank of parameters to send to the device.
-  public func enableFx(_ enabled: Bool, channel: KatanaGoFxChannel) async throws {
-    let address: UInt32 = channel == .fx ? 0x20_00_30_02 : 0x20_00_30_01
-    let bytes = finalizeSysex(address: address, data: [enabled ? 0x01 : 0x00])
-    try writeRawBytes(bytes)
-  }
+  // public func enableFx(_ enabled: Bool, channel: KatanaGoFxChannel) async throws {
+  //   let address: UInt32 = channel == .fx ? 0x20_00_30_02 : 0x20_00_30_01
+  //   let bytes = finalizeSysex(address: address, data: [enabled ? 0x01 : 0x00])
+  //   try writeRawBytes(bytes)
+  // }
 
-  public func selectFxType(_ type: ModFxType, channel: KatanaGoFxChannel) async throws {
-    let address: UInt32 = channel == .fx ? 0x20_00_70_00 : 0x20_00_60_00
-    let bytes = finalizeSysex(address: address, data: [type.rawValue])
-    try writeRawBytes(bytes)
-  }
+  // public func selectFxType(_ type: ModFxType, channel: KatanaGoFxChannel) async throws {
+  //   let address: UInt32 = channel == .fx ? 0x20_00_70_00 : 0x20_00_60_00
+  //   let bytes = finalizeSysex(address: address, data: [type.rawValue])
+  //   try writeRawBytes(bytes)
+  // }
 
   // TODO: remove once writefxbank supports a method with a channel input.
-  public func writeEQBank(_ bank: EQSelectionBank, id: BankID) async throws {
-    let idModifier = id.eqOffset
-    try await writeBank(bank, addressModifiers: 0x20_00_00_00 | idModifier)
-  }
+  // public func writeEQBank(_ bank: EQSelectionBank, id: BankID) async throws {
+  //   let idModifier = id.eqOffset
+  //   try await writeBank(bank, addressModifiers: 0x20_00_00_00 | idModifier)
+  // }
 
-  private func writeBank(_ bank: WritableBank, addressModifiers: UInt32) async throws {
-    for writeData in bank.loadWriteData(baseAddress: addressModifiers) {
-      let data = writeData.data
-      try await write(at: writeData.address, data: data)
-    }
-  }
+  // private func writeBank(_ bank: WritableBank, addressModifiers: UInt32) async throws {
+  //   for writeData in bank.loadWriteData(baseAddress: addressModifiers) {
+  //     let data = writeData.data
+  //     try await write(at: writeData.address, data: data)
+  //   }
+  // }
 
   public func write(at address: UInt32, data: [UInt8]) async throws {
     let bytes = finalizeSysex(address: address, data: data)
@@ -169,16 +172,16 @@ public actor KatanaGoMIDIKit: KatanaDevice {
   // Note that preset write is different than read. Preset write is on address 0x7f000104 and
   // is of two bytes size (first byte is 00 and second one has the preset's raw value).
 
-  public func readBank<T: KatanaGoBank>(_ type: T.Type) async throws -> T {
-    try await readBank(type, addressModifiers: T.katanaGoAddress)
-  }
+  // public func readBank<T: KatanaGoBank>(_ type: T.Type) async throws -> T {
+  //   try await readBank(type, addressModifiers: T.katanaGoAddress)
+  // }
 
-  public func readFxBank<T: KatanaGoFxBank>(_ type: T.Type, channel: KatanaGoFxChannel) async throws
-    -> T
-  {
-    let modifier = T.katanaGoAddress | (channel == .fx ? 0x20_00_10_00 : 0x20_00_00_00)
-    return try await readBank(type, addressModifiers: modifier)
-  }
+  // public func readFxBank<T: KatanaGoFxBank>(_ type: T.Type, channel: KatanaGoFxChannel) async throws
+  //   -> T
+  // {
+  //   let modifier = T.katanaGoAddress | (channel == .fx ? 0x20_00_10_00 : 0x20_00_00_00)
+  //   return try await readBank(type, addressModifiers: modifier)
+  // }
 
   private func readBank<T: WritableBank>(_ type: T.Type, addressModifiers: UInt32) async throws -> T
   {
@@ -201,11 +204,17 @@ public actor KatanaGoMIDIKit: KatanaDevice {
     }
   }
 
-  public func read() -> AsyncStream<KatanaGoDataBank> {
+  public func subscribeToData() -> AsyncStream<[UInt8]> {
     AsyncStream { continuation in
       self.continuation = continuation
     }
   }
+
+  // public func read() -> AsyncStream<KatanaGoDataBank> {
+  //   AsyncStream { continuation in
+  //     self.continuation = continuation
+  //   }
+  // }
 
   private func finalizeReadSysex(addressBytes: [UInt8], data: [UInt8]) -> [UInt8] {
     let prefix: [UInt8] = [0xf0, 0x41, 0x10] + deviceType.modelIDBytes + [0x11]
@@ -255,15 +264,15 @@ public actor KatanaGoMIDIKit: KatanaDevice {
   }
 }
 
-extension BankID {
-  fileprivate var eqOffset: UInt32 {
-    switch self {
-    case .id1: return 0x00_02_60_00
-    case .id2: return 0x00_02_70_00
-    default: return 0x00_00_00_00
-    }
-  }
-}
+// extension BankID {
+//   fileprivate var eqOffset: UInt32 {
+//     switch self {
+//     case .id1: return 0x00_02_60_00
+//     case .id2: return 0x00_02_70_00
+//     default: return 0x00_00_00_00
+//     }
+//   }
+// }
 
 extension KatanaDeviceType {
   fileprivate var modelIDBytes: [UInt8] {
