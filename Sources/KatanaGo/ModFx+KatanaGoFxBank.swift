@@ -1,6 +1,5 @@
 import KatanaCore
 import KatanaFx
-import KatanaGoAPI
 import KatanaGoData
 
 extension AcousticProBank: KatanaGoFxBank {

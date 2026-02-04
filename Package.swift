@@ -15,8 +15,11 @@ let package = Package(
     .library(
       name: "KatanaSwift",
       targets: ["KatanaSwift"]
-    )
-
+    ),
+    .library(
+      name: "KatanaGo",
+      targets: ["KatanaGo"]
+    ),
   ],
   dependencies: [
     .package(url: "https://github.com/orchetect/MIDIKit", from: "0.10.7"),
@@ -50,35 +53,29 @@ let package = Package(
       ]
     ),
     .target(
-      name: "KatanaGoAPI",
+      name: "KatanaGo",
       dependencies: [
-        "KatanaGoData",
         "KatanaCore",
-        "KatanaFx",
-        "KatanaEQ",
+        "KatanaGoData",
       ]
     ),
     .target(
-      name: "KatanaGoMIDIKit",
+      name: "KatanaDeviceImpl",
       dependencies: [
-        "KatanaGoAPI",
-        "KatanaGoData",
         "KatanaCore",
-        "KatanaFx",
-        "KatanaEQ",
         .product(name: "MIDIKit", package: "MIDIKit"),
       ]
     ),
     .target(
       name: "KatanaSwift",
       dependencies: [
-        "KatanaGoAPI", "KatanaGoData", "KatanaGoMIDIKit", "KatanaCore", "KatanaFx", "KatanaEQ",
+        "KatanaDeviceImpl", "KatanaCore",
       ]
     ),
     .testTarget(
-      name: "KatanaGoMIDIKitTests",
+      name: "KatanaDeviceImplTests",
       dependencies: [
-        "KatanaGoMIDIKit", "KatanaGoAPI", "KatanaGoData", "KatanaCore", "KatanaFx", "KatanaEQ",
+        "KatanaGo", "KatanaGoData", "KatanaDeviceImpl", "KatanaCore", "KatanaFx", "KatanaEQ",
       ]
     ),
     .testTarget(

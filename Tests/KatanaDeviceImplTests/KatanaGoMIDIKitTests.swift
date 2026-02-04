@@ -1,11 +1,11 @@
 import KatanaCore
 import KatanaFx
-import KatanaGoAPI
+import KatanaGo
 import KatanaGoData
 import MIDIKit
 import Testing
 
-@testable import KatanaGoMIDIKit
+@testable import KatanaDeviceImpl
 
 struct KatanaGoMIDIKitTests {
 

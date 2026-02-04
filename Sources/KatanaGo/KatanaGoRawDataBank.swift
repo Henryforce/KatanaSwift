@@ -1,7 +1,7 @@
 import KatanaGoData
 
 /// The bank of data received from the Katana GO device.
-struct DataBank: Sendable, Hashable {
+public struct KatanaGoRawDataBank: Sendable, Hashable {
 
   var modeBank = [UInt8](repeating: 0x00, count: 1)
   var presetBank = [UInt8](repeating: 0x00, count: 2)
@@ -42,7 +42,8 @@ struct DataBank: Sendable, Hashable {
   var stageFeelCustomBank = [UInt8](repeating: 0x00, count: 4)
   var usbSettingsBank = [UInt8](repeating: 0x00, count: 3)
 
-  init() {
+  public init() {
+
   }
 
   /// Updates the data bank with the given data.
@@ -52,7 +53,7 @@ struct DataBank: Sendable, Hashable {
   mutating func update(using data: [UInt8], startingAt address: [UInt8]) -> [KatanaGoDataBank] {
     var banks: [KatanaGoDataBank] = []
 
-    let incomingStart = DataBank.staticAddressToInt(address)
+    let incomingStart = Self.staticAddressToInt(address)
 
     // The following parsing is simple but it basically goes through all available banks and
     // tries to update them only if there is any overlap. It makes no assumptions on whether
@@ -73,7 +74,7 @@ struct DataBank: Sendable, Hashable {
     //   return .end
     // }
 
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &modeBank, bankBase: [0x7F, 0x01, 0x00, 0x04], incomingData: data,
       incomingStart: incomingStart)
     {
@@ -81,7 +82,7 @@ struct DataBank: Sendable, Hashable {
       banks.append(.modeBank(mode))
     }
 
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &presetBank, bankBase: [0x7F, 0x00, 0x01, 0x00], incomingData: data,
       incomingStart: incomingStart),
       let preset = Preset(rawValue: presetBank[0x01])
@@ -90,55 +91,55 @@ struct DataBank: Sendable, Hashable {
     }
 
     // Bank base address: 20000000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &presetNameBank, bankBase: [32, 0, 0, 0], incomingData: data, incomingStart: incomingStart)
     {
       banks.append(.presetName(buildPresetName()))
     }
     // Bank base address: 20001000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &signalChainBank, bankBase: [32, 0, 16, 0], incomingData: data, incomingStart: incomingStart)
     {
       let signalChain = SignalChainBank.buildFromByteArray(signalChainBank)
       banks.append(.signalChainBank(signalChain))
     }
     // Bank base address: 20002000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &ampBank, bankBase: [32, 0, 32, 0], incomingData: data, incomingStart: incomingStart)
     {
       let amp = AmpBank.buildFromByteArray(ampBank)
       banks.append(.ampBank(amp))
     }
     // Bank base address: 20003000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &effectsOnOffBank, bankBase: [32, 0, 48, 0], incomingData: data, incomingStart: incomingStart)
     {
       let effectStatus = EffectStatusBank.buildFromByteArray(effectsOnOffBank)
       banks.append(.effectStatusBank(effectStatus))
     }
     // Bank base address: 20004000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &boosterBank, bankBase: [32, 0, 64, 0], incomingData: data, incomingStart: incomingStart)
     {
       let boost = BoostBank.buildFromByteArray(boosterBank)
       banks.append(.boostBank(boost))
     }
     // Bank base address: 20005000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &bassCompBank, bankBase: [32, 0, 80, 0], incomingData: data, incomingStart: incomingStart)
     {
       let bassComp = BassCompLimBank.buildFromByteArray(bassCompBank)
       banks.append(.bassBank(bassComp))
     }
     // Bank base address: 20006000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &modTypeBank, bankBase: [32, 0, 96, 0], incomingData: data, incomingStart: incomingStart)
     {
       let modType = ModSelectionBank.buildFromByteArray(modTypeBank)
       banks.append(.modSelectionBank(modType))
     }
     // Bank base address: 20007000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &fxTypeBank, bankBase: [32, 0, 112, 0], incomingData: data, incomingStart: incomingStart)
     {
       let fxType = FxSelectionBank.buildFromByteArray(fxTypeBank)
@@ -157,28 +158,28 @@ struct DataBank: Sendable, Hashable {
     //   banks.append(.fxAllEffects(buildFxBank()))
     // }
     // Bank base address: 20012000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &delay1Bank, bankBase: [32, 1, 32, 0], incomingData: data, incomingStart: incomingStart)
     {
       let delay1 = DelayBank.buildFromByteArray(delay1Bank)
       banks.append(.delay1Bank(delay1))
     }
     // Bank base address: 20013000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &delay2Bank, bankBase: [32, 1, 48, 0], incomingData: data, incomingStart: incomingStart)
     {
       let delay2 = DelayBank.buildFromByteArray(delay2Bank)
       banks.append(.delay2Bank(delay2))
     }
     // Bank base address: 20014000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &reverbBank, bankBase: [32, 1, 64, 0], incomingData: data, incomingStart: incomingStart)
     {
       let reverb = ReverbBank.buildFromByteArray(reverbBank)
       banks.append(.reverbBank(reverb))
     }
     // Bank base address: 20015000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &soloSwitchLevelBank, bankBase: [32, 1, 80, 0], incomingData: data,
       incomingStart: incomingStart)
     {
@@ -186,14 +187,14 @@ struct DataBank: Sendable, Hashable {
       banks.append(.soloSwitchLevelBank(soloSwitchLevel))
     }
     // Bank base address: 20016000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &soloBank, bankBase: [32, 1, 96, 0], incomingData: data, incomingStart: incomingStart)
     {
       let solo = SoloBank.buildFromByteArray(soloBank)
       banks.append(.soloBank(solo))
     }
     // Bank base address: 20020000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &contourBank, bankBase: [32, 2, 0, 0], incomingData: data, incomingStart: incomingStart)
     {
       let contour = ContourBank.buildFromByteArray(contourBank)
@@ -212,7 +213,7 @@ struct DataBank: Sendable, Hashable {
     //   options.insert(.contour3)
     // }
     // Bank base address: 20024000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &signalChainPedalFXBank, bankBase: [32, 2, 64, 0], incomingData: data,
       incomingStart: incomingStart)
     {
@@ -220,56 +221,56 @@ struct DataBank: Sendable, Hashable {
       banks.append(.signalChainPedalFxBank(signalChainPedalFX))
     }
     // Bank base address: 20025000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &pfxWahBank, bankBase: [32, 2, 80, 0], incomingData: data, incomingStart: incomingStart)
     {
       let pedalFx = PedalFxBanks.buildFromByteArray(pfxWahBank)
       banks.append(.pedalFxBank(pedalFx))
     }
     // Bank base address: 20026000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &eq1SelectionBank, bankBase: [32, 2, 96, 0], incomingData: data, incomingStart: incomingStart)
     {
       let eq1Selection = EQSelectionBank.buildFromByteArray(eq1SelectionBank)
       banks.append(.eq1SelectionBank(eq1Selection))
     }
     // Bank base address: 20027000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &eq2SelectionBank, bankBase: [32, 2, 112, 0], incomingData: data, incomingStart: incomingStart
     ) {
       let eq2Selection = EQSelectionBank.buildFromByteArray(eq2SelectionBank)
       banks.append(.eq2SelectionBank(eq2Selection))
     }
     // Bank base address: 20030000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &peq1Bank, bankBase: [32, 3, 0, 0], incomingData: data, incomingStart: incomingStart)
     {
       let eq1Parametric = ParametricEQBank.buildFromByteArray(peq1Bank)
       banks.append(.eq1ParametricBank(eq1Parametric))
     }
     // Bank base address: 20031000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &peq2Bank, bankBase: [32, 3, 16, 0], incomingData: data, incomingStart: incomingStart)
     {
       let eq2Parametric = ParametricEQBank.buildFromByteArray(peq2Bank)
       banks.append(.eq2ParametricBank(eq2Parametric))
     }
     // Bank base address: 20032000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &geq1Bank, bankBase: [32, 3, 32, 0], incomingData: data, incomingStart: incomingStart)
     {
       let eq1Graphic = GraphicEQBank.buildFromByteArray(geq1Bank)
       banks.append(.eq1GraphicBank(eq1Graphic))
     }
     // Bank base address: 20033000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &geq2Bank, bankBase: [32, 3, 48, 0], incomingData: data, incomingStart: incomingStart)
     {
       let eq2Graphic = GraphicEQBank.buildFromByteArray(geq2Bank)
       banks.append(.eq2GraphicBank(eq2Graphic))
     }
     // Bank base address: 20034000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &nsBank, bankBase: [32, 3, 64, 0], incomingData: data, incomingStart: incomingStart)
     {
       let noiseGate = NoiseGateBank.buildFromByteArray(nsBank)
@@ -277,7 +278,7 @@ struct DataBank: Sendable, Hashable {
     }
 
     // Bank base address: 10000000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &tunerBank, bankBase: [0x10, 0x00, 0x00, 0x00], incomingData: data,
       incomingStart: incomingStart)
     {
@@ -286,7 +287,7 @@ struct DataBank: Sendable, Hashable {
     }
 
     // Bank base address: 10001000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &globalEQSwitchBank, bankBase: [0x10, 0x00, 0x10, 0x00], incomingData: data,
       incomingStart: incomingStart)
     {
@@ -295,7 +296,7 @@ struct DataBank: Sendable, Hashable {
     }
 
     // Bank base address: 10002000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &globalEQBank, bankBase: [0x10, 0x00, 0x20, 0x00], incomingData: data,
       incomingStart: incomingStart)
     {
@@ -304,7 +305,7 @@ struct DataBank: Sendable, Hashable {
     }
 
     // Bank base address: 10003000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &stageFeelBank, bankBase: [0x10, 0x00, 0x30, 0x00], incomingData: data,
       incomingStart: incomingStart)
     {
@@ -313,7 +314,7 @@ struct DataBank: Sendable, Hashable {
     }
 
     // Bank base address: 10006000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &stageFeelCustomBank, bankBase: [0x10, 0x00, 0x60, 0x00], incomingData: data,
       incomingStart: incomingStart)
     {
@@ -322,7 +323,7 @@ struct DataBank: Sendable, Hashable {
     }
 
     // Bank base address: 10007000
-    if DataBank.applyUpdate(
+    if Self.applyUpdate(
       &usbSettingsBank, bankBase: [0x10, 0x00, 0x70, 0x00], incomingData: data,
       incomingStart: incomingStart)
     {

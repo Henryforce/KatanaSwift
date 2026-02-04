@@ -2,7 +2,7 @@ import KatanaCore
 import KatanaGoData
 import Testing
 
-@testable import KatanaGoMIDIKit
+@testable import KatanaGo
 
 struct KatanaGoMIDIParserTests {
 
@@ -16,7 +16,7 @@ struct KatanaGoMIDIParserTests {
       115,  // Checksum
     ]
 
-    var dataBank = DataBank()
+    var dataBank = KatanaGoRawDataBank()
     let commands = KatanaGoMIDIParser.parse(message, into: &dataBank)
     #expect(commands.count == 1)
     if let firstCommand = commands.first, case .presetName(let name) = firstCommand {
@@ -36,7 +36,7 @@ struct KatanaGoMIDIParserTests {
       5,  // Checksum
     ]
 
-    var dataBank = DataBank()
+    var dataBank = KatanaGoRawDataBank()
     let commands = KatanaGoMIDIParser.parse(message, into: &dataBank)
 
     let expectedPreamp: [UInt8] = [100, 100, 0, 70, 61, 49, 50, 11, 50, 16, 60, 0, 4, 0]
@@ -65,7 +65,7 @@ struct KatanaGoMIDIParserTests {
       29,  // Checksum
     ]
 
-    var dataBank = DataBank()
+    var dataBank = KatanaGoRawDataBank()
     let commands = KatanaGoMIDIParser.parse(message, into: &dataBank)
 
     let expectedBooster: [UInt8] = [9, 50, 60, 50, 0, 50, 40, 0]
@@ -107,7 +107,7 @@ struct KatanaGoMIDIParserTests {
     let channel1Address: UInt32 = DelayBank.katanaGoAddress + DelayBankChannel.one.rawValue
     let writeData1 = delayBank.loadWriteData(baseAddress: channel1Address)
 
-    var dataBank = DataBank()
+    var dataBank = KatanaGoRawDataBank()
     for write in writeData1 {
       let message = finalizeSysex(address: write.address, data: write.data)
       _ = KatanaGoMIDIParser.parse(message, into: &dataBank)
