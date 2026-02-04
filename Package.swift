@@ -15,8 +15,11 @@ let package = Package(
     .library(
       name: "KatanaSwift",
       targets: ["KatanaSwift"]
-    )
-
+    ),
+    .library(
+      name: "KatanaGo",
+      targets: ["KatanaGo"]
+    ),
   ],
   dependencies: [
     .package(url: "https://github.com/orchetect/MIDIKit", from: "0.10.7"),

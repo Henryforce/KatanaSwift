@@ -5,6 +5,7 @@
 //  Created by Henry Javier Serrano Echeverria on 2026/01/14.
 //
 
+import KatanaGo
 import KatanaGoData
 import KatanaSwift
 import Observation
@@ -14,8 +15,8 @@ import SwiftUI
 @MainActor
 final class ContentViewModel {
 
-  var scanner: KatanaGoScanner?
-  var device: KatanaGo?
+  var scanner: KatanaScanner?
+  var device: KatanaDevice?
 
   func connect() {
     Task {
@@ -38,6 +39,11 @@ final class ContentViewModel {
 
         do {
           try await device.connect()
+
+          let stream = await device.subscribeToKatanaGoBanks()
+          for await bank in stream {
+            print("Bank \(bank)")
+          }
           print("🔗 Connected!")
         } catch {
           print("❌ Error: \(error)")

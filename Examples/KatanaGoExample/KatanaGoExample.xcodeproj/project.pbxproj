@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		390B7EC92F33640F00641E02 /* KatanaGo in Frameworks */ = {isa = PBXBuildFile; productRef = 390B7EC82F33640F00641E02 /* KatanaGo */; };
 		397C1DE32F2F1204003F5308 /* KatanaSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 397C1DE22F2F1204003F5308 /* KatanaSwift */; };
-		39A34CFE2F333E9A002A5003 /* KatanaSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 39A34CFD2F333E9A002A5003 /* KatanaSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,18 +28,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				39A34CFE2F333E9A002A5003 /* KatanaSwift in Frameworks */,
 				397C1DE32F2F1204003F5308 /* KatanaSwift in Frameworks */,
+				390B7EC92F33640F00641E02 /* KatanaGo in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		390B7EC72F33640F00641E02 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		392C6DCD2F13BA2700B29028 = {
 			isa = PBXGroup;
 			children = (
 				392C6DD82F13BA2700B29028 /* KatanaGoExample */,
+				390B7EC72F33640F00641E02 /* Frameworks */,
 				392C6DD72F13BA2700B29028 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -74,6 +82,7 @@
 			packageProductDependencies = (
 				397C1DE22F2F1204003F5308 /* KatanaSwift */,
 				39A34CFD2F333E9A002A5003 /* KatanaSwift */,
+				390B7EC82F33640F00641E02 /* KatanaGo */,
 			);
 			productName = KatanaGoExample;
 			productReference = 392C6DD62F13BA2700B29028 /* KatanaGoExample.app */;
@@ -357,6 +366,11 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		390B7EC82F33640F00641E02 /* KatanaGo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39A34CFC2F333E9A002A5003 /* XCLocalSwiftPackageReference "../../../KatanaSwift" */;
+			productName = KatanaGo;
+		};
 		397C1DE22F2F1204003F5308 /* KatanaSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = KatanaSwift;

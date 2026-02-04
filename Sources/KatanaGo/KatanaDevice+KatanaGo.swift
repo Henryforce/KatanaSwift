@@ -76,7 +76,7 @@ extension KatanaDevice {
 
   /// Provides a stream of data received from the device.
   /// - Returns: An AsyncStream of KatanaGoDataBank.
-  func subscribeToKatanaGoBanks() -> AsyncStream<KatanaGoDataBank> {
+  public func subscribeToKatanaGoBanks() -> AsyncStream<KatanaGoDataBank> {
     return AsyncStream { continuation in
       let stream = subscribeToData()
       Task {

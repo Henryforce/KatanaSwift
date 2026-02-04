@@ -1,3 +1,5 @@
+// TODO: migrate to KatanaGo target.
+
 enum KatanaGoStartupData: Sendable {
   /// This is the startup sequence for the Katana GO in order to enable edit mode.
   static let data: [[UInt8]] = [
