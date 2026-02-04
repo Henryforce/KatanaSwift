@@ -8,7 +8,7 @@ public final class KatanaGoScannerMIDIKit: KatanaGoScanner {
   private let retryInterval: UInt64
   // TODO: Add support for other Katana devices.
   private let katanaGoFactory:
-    @Sendable (any MIDIEndpointProtocol, MIDIManagerProtocol) -> KatanaGo?
+    @Sendable (any MIDIEndpointProtocol, MIDIManagerProtocol) -> KatanaDevice?
 
   public init() {
     let manager = MIDIManager(
@@ -32,7 +32,8 @@ public final class KatanaGoScannerMIDIKit: KatanaGoScanner {
     midiManager: MIDIManagerProtocol,
     retryInterval: UInt64 = 1_500_000_000,
     katanaGoFactory:
-      @Sendable @escaping (any MIDIEndpointProtocol, MIDIManagerProtocol) -> KatanaGo? = { _, _ in
+      @Sendable @escaping (any MIDIEndpointProtocol, MIDIManagerProtocol) -> KatanaDevice? = {
+        _, _ in
         nil
       }
   ) {
@@ -41,7 +42,7 @@ public final class KatanaGoScannerMIDIKit: KatanaGoScanner {
     self.katanaGoFactory = katanaGoFactory
   }
 
-  public func scan() -> AsyncStream<KatanaGo> {
+  public func scan() -> AsyncStream<KatanaDevice> {
     AsyncStream { continuation in
       let taskReference = Task {
         do {

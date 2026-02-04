@@ -5,8 +5,8 @@ import KatanaGoAPI
 import KatanaGoData
 import MIDIKit
 
-/// MIDI implementation of the KatanaGo protocol.
-public actor KatanaGoMIDIKit: KatanaGo {
+/// MIDI implementation of the KatanaDevice protocol.
+public actor KatanaGoMIDIKit: KatanaDevice {
   private let endpoint: MIDIEndpointProtocol
   private let midiManager: MIDIManagerProtocol
 
@@ -154,14 +154,15 @@ public actor KatanaGoMIDIKit: KatanaGo {
 
   private func writeBank(_ bank: WritableBank, addressModifiers: UInt32) async throws {
     for writeData in bank.loadWriteData(baseAddress: addressModifiers) {
-      // let address = writeData.address | addressModifiers
       let data = writeData.data
-
-      // let bytes = finalizeSysex(address: address, data: data)
-      let bytes = finalizeSysex(address: writeData.address, data: data)
-      print("Writing bytes: \(bytes)")
-      try writeRawBytes(bytes)
+      try await write(at: writeData.address, data: data)
     }
+  }
+
+  public func write(at address: UInt32, data: [UInt8]) async throws {
+    let bytes = finalizeSysex(address: address, data: data)
+    print("Writing bytes: \(bytes)")
+    try writeRawBytes(bytes)
   }
 
   // TODO: add method to write KatanaGoDataBank enum cases.

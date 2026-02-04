@@ -5,5 +5,5 @@ import KatanaGoData
 public protocol KatanaGoScanner: Sendable {
   /// Scans for available Katana GO devices.
   /// Returns an AsyncStream of discovered devices.
-  func scan() -> AsyncStream<KatanaGo>
+  func scan() -> AsyncStream<KatanaDevice>
 }
