@@ -5,6 +5,7 @@
 //  Created by Henry Javier Serrano Echeverria on 2026/01/14.
 //
 
+import KatanaGoData
 import KatanaSwift
 import Observation
 import SwiftUI
@@ -13,14 +14,14 @@ import SwiftUI
 @MainActor
 final class ContentViewModel {
 
-  var scanner: KatanaGoScannerMIDIKit?
+  var scanner: KatanaGoScanner?
   var device: KatanaGo?
 
   func connect() {
     Task {
       try await Task.sleep(for: .seconds(2))
 
-      let scanner = KatanaGoScannerMIDIKit()
+      let scanner = await KatanaSwift.buildScanner()
       self.scanner = scanner
 
       print("Waiting for powered state")

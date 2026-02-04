@@ -1,4 +1,9 @@
 @_exported import KatanaCore
+import KatanaDeviceImpl
 @_exported import KatanaGoAPI
-@_exported import KatanaGoData
-@_exported import KatanaGoMIDIKit
+
+public enum KatanaSwift {
+  public static func buildScanner() async -> KatanaGoScanner {
+    return KatanaGoScannerMIDIKit()
+  }
+}

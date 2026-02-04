@@ -1,6 +1,5 @@
 import Foundation
 import KatanaGoAPI
-import KatanaGoData
 import MIDIKit
 
 /// MIDI implementation of the KatanaGoScanner protocol.

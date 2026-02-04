@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		397C1DE32F2F1204003F5308 /* KatanaSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 397C1DE22F2F1204003F5308 /* KatanaSwift */; };
+		39A34CFE2F333E9A002A5003 /* KatanaSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 39A34CFD2F333E9A002A5003 /* KatanaSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39A34CFE2F333E9A002A5003 /* KatanaSwift in Frameworks */,
 				397C1DE32F2F1204003F5308 /* KatanaSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -71,6 +73,7 @@
 			name = KatanaGoExample;
 			packageProductDependencies = (
 				397C1DE22F2F1204003F5308 /* KatanaSwift */,
+				39A34CFD2F333E9A002A5003 /* KatanaSwift */,
 			);
 			productName = KatanaGoExample;
 			productReference = 392C6DD62F13BA2700B29028 /* KatanaGoExample.app */;
@@ -101,7 +104,7 @@
 			mainGroup = 392C6DCD2F13BA2700B29028;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				397C1DE12F2F1204003F5308 /* XCLocalSwiftPackageReference "../../../KatanaGoSwift" */,
+				39A34CFC2F333E9A002A5003 /* XCLocalSwiftPackageReference "../../../KatanaSwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 392C6DD72F13BA2700B29028 /* Products */;
@@ -347,14 +350,18 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		397C1DE12F2F1204003F5308 /* XCLocalSwiftPackageReference "../../../KatanaGoSwift" */ = {
+		39A34CFC2F333E9A002A5003 /* XCLocalSwiftPackageReference "../../../KatanaSwift" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../KatanaGoSwift;
+			relativePath = ../../../KatanaSwift;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		397C1DE22F2F1204003F5308 /* KatanaSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = KatanaSwift;
+		};
+		39A34CFD2F333E9A002A5003 /* KatanaSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = KatanaSwift;
 		};

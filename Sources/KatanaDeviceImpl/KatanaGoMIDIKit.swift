@@ -17,11 +17,13 @@ public actor KatanaGoMIDIKit: KatanaGo {
 
   private var pendingReads: [UInt32: CheckedContinuation<[UInt8], Error>] = [:]
 
-  private var dataBank = DataBank()
+  private var katanaGoRawDataBank = KatanaGoRawDataBank()
 
   private let deviceType: KatanaDeviceType
 
-  public init(deviceType: KatanaDeviceType, endpoint: MIDIEndpointProtocol, midiManager: MIDIManagerProtocol) {
+  public init(
+    deviceType: KatanaDeviceType, endpoint: MIDIEndpointProtocol, midiManager: MIDIManagerProtocol
+  ) {
     self.deviceType = deviceType
     self.endpoint = endpoint
     self.midiManager = midiManager
@@ -94,7 +96,7 @@ public actor KatanaGoMIDIKit: KatanaGo {
         }
       }
 
-      let banks = KatanaGoMIDIParser.parse(message, into: &dataBank)
+      let banks = KatanaGoMIDIParser.parse(message, into: &katanaGoRawDataBank)
       for bank in banks {
         print("Bank: \(bank)")
         continuation?.yield(bank)

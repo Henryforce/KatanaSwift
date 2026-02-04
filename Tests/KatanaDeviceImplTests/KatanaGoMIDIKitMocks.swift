@@ -1,7 +1,7 @@
 import Foundation
 import MIDIKit
 
-@testable import KatanaGoMIDIKit
+@testable import KatanaDeviceImpl
 
 final class MockMIDIEndpoint: MIDIEndpointProtocol, @unchecked Sendable {
   var name: String

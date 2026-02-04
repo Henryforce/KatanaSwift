@@ -4,7 +4,7 @@ import KatanaGoData
 import MIDIKit
 import XCTest
 
-@testable import KatanaGoMIDIKit
+@testable import KatanaDeviceImpl
 
 final class KatanaGoScannerMIDIKitTests: XCTestCase {
 

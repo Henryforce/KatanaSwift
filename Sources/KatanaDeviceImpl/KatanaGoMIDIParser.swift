@@ -19,7 +19,9 @@ enum KatanaGoMIDIParser {
   /// - Parameters:
   ///   - message: The raw bytes received from the MIDI device.
   ///   - dataBank: The bank to be updated with the parsed data.
-  static func parse(_ message: [UInt8], into dataBank: inout DataBank) -> [KatanaGoDataBank] {
+  static func parse(_ message: [UInt8], into dataBank: inout KatanaGoRawDataBank)
+    -> [KatanaGoDataBank]
+  {
     // Minimum valid message length: Header(5) + Address(4) + Checksum(1) = 10 bytes
     guard message.count >= 10 else {
       return []

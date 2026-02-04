@@ -59,7 +59,7 @@ let package = Package(
       ]
     ),
     .target(
-      name: "KatanaGoMIDIKit",
+      name: "KatanaDeviceImpl",
       dependencies: [
         "KatanaGoAPI",
         "KatanaGoData",
@@ -72,13 +72,13 @@ let package = Package(
     .target(
       name: "KatanaSwift",
       dependencies: [
-        "KatanaGoAPI", "KatanaGoData", "KatanaGoMIDIKit", "KatanaCore", "KatanaFx", "KatanaEQ",
+        "KatanaGoAPI", "KatanaGoData", "KatanaDeviceImpl", "KatanaCore", "KatanaFx", "KatanaEQ",
       ]
     ),
     .testTarget(
-      name: "KatanaGoMIDIKitTests",
+      name: "KatanaDeviceImplTests",
       dependencies: [
-        "KatanaGoMIDIKit", "KatanaGoAPI", "KatanaGoData", "KatanaCore", "KatanaFx", "KatanaEQ",
+        "KatanaGoAPI", "KatanaGoData", "KatanaDeviceImpl", "KatanaCore", "KatanaFx", "KatanaEQ",
       ]
     ),
     .testTarget(
