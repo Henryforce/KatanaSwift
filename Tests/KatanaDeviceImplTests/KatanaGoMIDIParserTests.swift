@@ -2,7 +2,7 @@ import KatanaCore
 import KatanaGoData
 import Testing
 
-@testable import KatanaGoAPI
+@testable import KatanaGo
 
 struct KatanaGoMIDIParserTests {
 

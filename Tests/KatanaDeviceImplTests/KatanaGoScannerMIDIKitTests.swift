@@ -1,5 +1,5 @@
 import KatanaCore
-import KatanaGoAPI
+import KatanaGo
 import KatanaGoData
 import MIDIKit
 import XCTest

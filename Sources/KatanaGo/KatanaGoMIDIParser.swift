@@ -1,14 +1,6 @@
 import Foundation
 import KatanaGoData
 
-enum DataBankParseStatus {
-  case invalidMessageLength
-  case invalidMessageCommand
-  case start
-  case processed
-  case end
-}
-
 /// A parser for Katana Go MIDI messages.
 public enum KatanaGoMIDIParser {
   /// Parses a raw MIDI SysEx message and updates the DataBank with extracted data.
