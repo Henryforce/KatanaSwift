@@ -81,8 +81,8 @@ extension KatanaDevice {
       let stream = subscribeToData()
       Task {
         var katanaGoRawDataBank = KatanaGoRawDataBank()
-        for await data in stream {
-          let banks = KatanaGoMIDIParser.parse(data, into: &katanaGoRawDataBank)
+        for await streamData in stream {
+          let banks = KatanaGoMIDIParser.parse(streamData.data, into: &katanaGoRawDataBank)
           for bank in banks {
             continuation.yield(bank)
           }

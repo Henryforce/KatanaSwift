@@ -25,7 +25,7 @@ final class KatanaGoScannerMIDIKitTests: XCTestCase {
     func readBank<T: WritableBank>(_ type: T.Type) async throws -> T {
       return T.buildFromByteArray([])
     }
-    func subscribeToData() -> AsyncStream<[UInt8]> { AsyncStream { $0.finish() } }
+    func subscribeToData() -> AsyncStream<StreamData> { AsyncStream { $0.finish() } }
   }
 
   func testScanFindsKatana() async throws {

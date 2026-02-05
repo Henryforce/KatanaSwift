@@ -10,11 +10,13 @@ public actor KatanaGoMIDIKit: KatanaDevice {
   private var inputTag: String { "KatanaGo_In_\(endpoint.uniqueID)" }
   private var outputTag: String { "KatanaGo_Out_\(endpoint.uniqueID)" }
 
-  private var continuation: AsyncStream<[UInt8]>.Continuation?
+  private var continuation: AsyncStream<StreamData>.Continuation?
 
   private var pendingReads: [UInt32: CheckedContinuation<[UInt8], Error>] = [:]
 
   private let deviceType: KatanaDeviceType
+
+  private var memoryBankCache = MemoryBankCache()
 
   public init(
     deviceType: KatanaDeviceType, endpoint: MIDIEndpointProtocol, midiManager: MIDIManagerProtocol
@@ -76,22 +78,23 @@ public actor KatanaGoMIDIKit: KatanaDevice {
 
       print("SysEx: \(sysEx.data)")
 
-      // TODO: clean up this method to early check if it is a valid read response.
-
       let message = sysEx.data
       // Check if this is a valid read response.
       if message.count >= 10, message[4] == 18 {
         let address = Array(message[5...8]).address
-        if let continuation = pendingReads.removeValue(forKey: address) {
-          let data = Array(message[9..<(message.count - 1)])
-          continuation.resume(returning: data)
+        let data = Array(message[9..<(message.count - 1)])
 
+        // Update cache with received data
+        memoryBankCache.update(address: address, data: data)
+
+        if let continuation = pendingReads.removeValue(forKey: address) {
+          continuation.resume(returning: data)
           // Skip further processing as there was a pending read for this address.
           continue
         }
-      }
 
-      continuation?.yield(message)
+        continuation?.yield((address, data))
+      }
     }
   }
 
@@ -109,6 +112,10 @@ public actor KatanaGoMIDIKit: KatanaDevice {
   public func write(at address: UInt32, data: [UInt8]) async throws {
     let bytes = finalizeSysex(address: address, data: data)
     print("Writing bytes: \(bytes)")
+
+    // Update cache with written data
+    memoryBankCache.update(address: address, data: data)
+
     try writeRawBytes(bytes)
   }
 
@@ -133,10 +140,15 @@ public actor KatanaGoMIDIKit: KatanaDevice {
     }
   }
 
-  public func subscribeToData() -> AsyncStream<[UInt8]> {
+  public func subscribeToData() -> AsyncStream<StreamData> {
     AsyncStream { continuation in
       self.continuation = continuation
     }
+  }
+
+  /// Returns cached data if available for the given address and length.
+  public func cachedData(at address: UInt32, length: Int) -> [UInt8]? {
+    return memoryBankCache.get(address: address, length: length)
   }
 
   private func finalizeReadSysex(addressBytes: [UInt8], data: [UInt8]) -> [UInt8] {
