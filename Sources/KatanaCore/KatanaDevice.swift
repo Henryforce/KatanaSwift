@@ -5,6 +5,9 @@ import Foundation
 
 /// Represents a connected Katana GO device.
 public protocol KatanaDevice: Actor {
+  /// Represents the streamed data received from the device.
+  typealias StreamData = (address: UInt32, data: [UInt8])
+
   /// Checks the current connection status.
   /// - Returns: The current connection status.
   func connectionStatus() async -> ConnectionStatus
@@ -24,13 +27,9 @@ public protocol KatanaDevice: Actor {
   ///   - data: The bytes to write to the device.
   func write(at address: UInt32, data: [UInt8]) async throws
 
-  /// Write a bank of parameters to the device.
-  /// - Parameter bank: The bank of parameters to send to the device.
-  // func writeBank<T: KatanaGoBank>(_ bank: T) async throws
-
   /// Subscribe to data from the device.
   /// - Returns: An AsyncStream of bytes read from the device.
-  func subscribeToData() -> AsyncStream<[UInt8]>
+  func subscribeToData() -> AsyncStream<StreamData>
 
   /// Read data from the device at a specific address.
   /// - Parameters:
