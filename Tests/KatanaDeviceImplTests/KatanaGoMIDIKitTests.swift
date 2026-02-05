@@ -205,6 +205,70 @@ struct KatanaGoMIDIKitTests {
     #expect(Array(echoWrite![9...12]) == [0, 1, 28, 2])
   }
 
+  @Test func testDataCaching() async throws {
+    let (katana, midiManager, _) = try await setupConnectedKatana()
+
+    // 1. Test caching via write
+    let address: UInt32 = 0x2000_2000
+    let data: [UInt8] = [0x01, 0x02, 0x03, 0x04, 0x05]
+    try await katana.write(at: address, data: data)
+
+    let cached = await katana.cachedData(at: address, length: 5)
+    #expect(cached == data)
+
+    // 2. Test caching via incoming SysEx (DT1)
+    // Address 0x2000207F (near boundary)
+    let boundaryAddress: UInt32 = 0x2000_207F
+    let boundaryData: [UInt8] = [0x0A, 0x0B]
+    // Preamble (10, 01, 05, 0d, 12) + Address (20, 00, 20, 7F) + Data (0A, 0B) + Checksum
+    let responseBody: [UInt8] = [
+      0x10, 0x01, 0x05, 0x0d, 0x12, 0x20, 0x00, 0x20, 0x7F, 0x0A, 0x0B, 0x00,
+    ]
+    let responseEvent = try MIDIEvent.sysEx7(manufacturer: .oneByte(0x41), data: responseBody)
+    midiManager.simulate(event: responseEvent)
+
+    // Give it a moment to process the event
+    try await Task.sleep(nanoseconds: 10_000_000)
+
+    let cachedBoundary = await katana.cachedData(at: boundaryAddress, length: 2)
+    #expect(cachedBoundary == boundaryData)
+
+    // Verify boundary crossing:
+    // First byte (0x0A) should be at (20, 00, 20) offset 7F
+    let firstByte = await katana.cachedData(at: 0x2000_207F, length: 1)
+    #expect(firstByte == [0x0A])
+    // Second byte (0x0B) should be at (20, 00, 21) offset 00
+    let secondByte = await katana.cachedData(at: 0x2000_2100, length: 1)
+    #expect(secondByte == [0x0B])
+  }
+
+  @Test func testLongDataCrossingBoundary() async throws {
+    let (katana, _, _) = try await setupConnectedKatana()
+
+    // 150 bytes starting at 0x20002000
+    // This should fill all 128 bytes of bank (20, 00, 20) and 22 bytes of bank (20, 00, 21)
+    let address: UInt32 = 0x2000_2000
+    let data = (0..<150).map { UInt8($0 % 128) }
+
+    try await katana.write(at: address, data: data)
+
+    let cached = await katana.cachedData(at: address, length: 150)
+    #expect(cached == data)
+
+    // Verify specifically the crossover point
+    // Byte at index 127 (last byte of first bank)
+    let lastByteFirstBank = await katana.cachedData(at: 0x2000_207F, length: 1)
+    #expect(lastByteFirstBank == [data[127]])
+
+    // Byte at index 128 (first byte of second bank)
+    let firstByteSecondBank = await katana.cachedData(at: 0x2000_2100, length: 1)
+    #expect(firstByteSecondBank == [data[128]])
+
+    // Verify we can read a chunk spanning the boundary
+    let crossChunk = await katana.cachedData(at: 0x2000_207E, length: 4)
+    #expect(crossChunk == Array(data[126...129]))
+  }
+
   private func setupConnectedKatana() async throws -> (
     KatanaGoMIDIKit, MockMIDIManager, MockMIDIEndpoint
   ) {
