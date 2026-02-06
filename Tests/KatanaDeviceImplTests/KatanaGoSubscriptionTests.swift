@@ -49,17 +49,24 @@ struct KatanaGoSubscriptionTests {
   }
 
   @Test func testSubscribeModFxPartialRead() async throws {
-    let (katana, midiManager, endpoint) = try await setupConnectedKatana()
+    let (katana, midiManager, _) = try await setupConnectedKatana()
 
     let bankStream = await katana.subscribeToKatanaGoBanks()
 
-    // 1. Send partial MOD data (address 0x20010000, size 5)
-    let partialBody: [UInt8] = [
-      0x10, 0x01, 0x05, 0x0d, 0x12, 0x20, 0x01, 0x00, 0x00,
-      0x01, 0x02, 0x03, 0x04, 0x05,
-      0x00,  // Checksum
-    ]
-    let partialEvent = try MIDIEvent.sysEx7(manufacturer: .oneByte(0x41), data: partialBody)
+    // 1. Send partial MOD data Part 1 (address 0x20010000, size 128)
+    // In Roland/Boss, 128 bytes fills up 0x20010000 to 0x2001007F.
+    var part1Data = [UInt8](repeating: 0, count: 128)
+    part1Data[0] = 0x01  // Chorus type
+    let part1Body: [UInt8] =
+      [0x10, 0x01, 0x05, 0x0D, 0x12, 0x20, 0x01, 0x00, 0x00] + part1Data + [0x00]
+    let part1Event = try MIDIEvent.sysEx7(manufacturer: .oneByte(0x41), data: part1Body)
+
+    // 2. Send partial MOD data Part 2 (address 0x20010100, size 117)
+    // This completes the 245 bytes (128 + 117).
+    let part2Data = [UInt8](repeating: 0, count: 117)
+    let part2Body: [UInt8] =
+      [0x10, 0x01, 0x05, 0x0D, 0x12, 0x20, 0x01, 0x01, 0x00] + part2Data + [0x00]
+    let part2Event = try MIDIEvent.sysEx7(manufacturer: .oneByte(0x41), data: part2Body)
 
     let expectation = Task {
       var banks: [KatanaGoDataBank] = []
@@ -73,42 +80,25 @@ struct KatanaGoSubscriptionTests {
     // Give some time for the internal subscription tasks to start
     try await Task.sleep(nanoseconds: 50_000_000)
 
-    midiManager.simulate(event: partialEvent)
+    // Simulate Part 1 - Should not trigger bank yet as cache is incomplete
+    midiManager.simulate(event: part1Event)
 
-    // 2. The code should now perform a manual read of 244 bytes at 0x20010000.
-    // Give it a moment to send the request
-    try await Task.sleep(nanoseconds: 100_000_000)
+    // Briefly wait to ensure it's processed
+    try await Task.sleep(nanoseconds: 50_000_000)
 
-    let outputConnection =
-      midiManager.managedOutputConnections["KatanaGo_Out_\(endpoint.uniqueID)"]
-      as! MockMIDIOutputConnection
-
-    // Find the RQ1 for 0x20010000 with size 244
-    let rq1 = outputConnection.sentEvents.compactMap { event -> [UInt8]? in
-      if case .sysEx7(let sysEx) = event { return sysEx.data }
-      return nil
-    }.first { body in
-      body.count >= 13 && body[4] == 0x11 && Array(body[5...8]) == [0x20, 0x01, 0x00, 0x00]
-        && Array(body[9...12]) == [0x00, 0x00, 0x0F, 0x04]
-    }
-
-    #expect(rq1 != nil, "Expected RQ1 for base address 0x20010000 with size 244")
-
-    // 3. Simulate response to that manual read
-    var fullData = [UInt8](repeating: 0, count: 244)
-    fullData[0] = 0x01  // Chorus type or something
-
-    let responseBody: [UInt8] =
-      [0x10, 0x01, 0x05, 0x0D, 0x12, 0x20, 0x01, 0x00, 0x00] + fullData + [0x00]
-    let responseEvent = try MIDIEvent.sysEx7(manufacturer: .oneByte(0x41), data: responseBody)
-
-    midiManager.simulate(event: responseEvent)
+    // Simulate Part 2 - Now cache has all 245 bytes, should trigger bank
+    midiManager.simulate(event: part2Event)
 
     let receivedBanks = try await timeout(after: 2_000_000_000) {
       await expectation.value
     }
 
     #expect(receivedBanks.count >= 1)
+    if case .modSingleEffect(let effect) = receivedBanks[0], case .chorus = effect {
+      // Success
+    } else {
+      Issue.record("Expected chorus bank, got \(receivedBanks[0])")
+    }
   }
 
   @Test func testSubscribeModFxFullRead() async throws {
@@ -116,8 +106,8 @@ struct KatanaGoSubscriptionTests {
 
     let bankStream = await katana.subscribeToKatanaGoBanks()
 
-    // Send full MOD data (244 bytes)
-    var fullData = [UInt8](repeating: 0, count: 244)
+    // Send full MOD data (245 bytes)
+    var fullData = [UInt8](repeating: 0, count: 245)
     fullData[0] = 0x05  // Some value
 
     let responseBody: [UInt8] =

@@ -191,9 +191,8 @@ struct KatanaGoMIDIParserTests {
 
     // Test in MOD section (offset 0)
     let modAddress: UInt32 = 0x20_01_00_00
-    // let modMessage = finalizeSysex(address: modAddress, data: inputArray)
-    // let modCommands = KatanaGoMIDIParser.parse(modMessage)
-    let modCommands = KatanaGoMIDIParser.parse(address: modAddress, data: inputArray)
+    let modMessage = finalizeSysex(address: modAddress, data: inputArray)
+    let modCommands = KatanaGoMIDIParser.parse(modMessage)
 
     #expect(modCommands.count == 32)
     if let last = modCommands.last, case .modSingleEffect(.bassSynth(let bank)) = last {
@@ -206,9 +205,8 @@ struct KatanaGoMIDIParserTests {
 
     // Test in FX section (offset 0x1000)
     let fxAddress: UInt32 = 0x20_01_10_00
-    // let fxMessage = finalizeSysex(address: fxAddress, data: bassSynthData)
-    // let fxCommands = KatanaGoMIDIParser.parse(fxMessage)
-    let fxCommands = KatanaGoMIDIParser.parse(address: fxAddress, data: bassSynthData)
+    let fxMessage = finalizeSysex(address: fxAddress, data: inputArray)
+    let fxCommands = KatanaGoMIDIParser.parse(fxMessage)
 
     #expect(fxCommands.count == 32)
     if let last = fxCommands.last, case .fxSingleEffect(.bassSynth(let bank)) = last {
