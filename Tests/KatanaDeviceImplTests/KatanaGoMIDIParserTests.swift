@@ -175,6 +175,48 @@ struct KatanaGoMIDIParserTests {
     #expect(hasFlanger)
   }
 
+  @Test func testParseBassSynth() throws {
+    let bassSynthData: [UInt8] = [
+      0,  // wave: saw
+      40,  // cutoff
+      30,  // resonance
+      40,  // filterSens
+      50,  // filterDecay
+      50,  // filterDepth
+      25,  // synthLevel
+      0,  // directMix
+    ]
+    let inputArray = [UInt8](repeating: 0, count: 236) + bassSynthData
+
+    // Test in MOD section (offset 0)
+    let modAddress: UInt32 = 0x20_01_00_00
+    let modMessage = finalizeSysex(address: modAddress, data: inputArray)
+    let modCommands = KatanaGoMIDIParser.parse(modMessage)
+
+    #expect(modCommands.count == 32)
+    if let first = modCommands.last, case .modSingleEffect(.bassSynth(let bank)) = first {
+      #expect(bank.cutoff == 40)
+      #expect(bank.resonance == 30)
+      #expect(bank.wave == .saw)
+    } else {
+      Issue.record("Expected mod bassSynth")
+    }
+
+    // Test in FX section (offset 0x1000)
+    let fxAddress: UInt32 = 0x20_01_10_00
+    let fxMessage = finalizeSysex(address: fxAddress, data: bassSynthData)
+    let fxCommands = KatanaGoMIDIParser.parse(fxMessage)
+
+    #expect(fxCommands.count == 32)
+    if let first = fxCommands.last, case .fxSingleEffect(.bassSynth(let bank)) = first {
+      #expect(bank.cutoff == 40)
+      #expect(bank.resonance == 30)
+      #expect(bank.wave == .saw)
+    } else {
+      Issue.record("Expected fx bassSynth")
+    }
+  }
+
   private func finalizeSysex(address: UInt32, data: [UInt8]) -> [UInt8] {
     let addressBytes = [
       UInt8((address >> 24) & 0xFF),

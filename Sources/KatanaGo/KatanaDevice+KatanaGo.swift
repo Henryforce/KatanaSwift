@@ -86,8 +86,9 @@ extension KatanaDevice {
           var dataToParse = streamData.data
           var addressToParse = streamData.address
 
-          let isModRange = streamData.address >= 0x20_01_00_00 && streamData.address < 0x20_01_01_74
-          let isFxRange = streamData.address >= 0x20_01_10_00 && streamData.address < 0x20_01_11_74
+          let isModRange =
+            streamData.address >= 0x20_01_00_00 && streamData.address <= 0x20_01_01_74
+          let isFxRange = streamData.address >= 0x20_01_10_00 && streamData.address <= 0x20_01_11_74
 
           if (isModRange || isFxRange) && streamData.data.count != 244 {
             let baseAddress: UInt32 = isModRange ? 0x20_01_00_00 : 0x20_01_10_00
