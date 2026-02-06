@@ -1,4 +1,5 @@
 import KatanaCore
+import KatanaFx
 import KatanaGoData
 import Testing
 
@@ -16,8 +17,7 @@ struct KatanaGoMIDIParserTests {
       115,  // Checksum
     ]
 
-    var dataBank = KatanaGoRawDataBank()
-    let commands = KatanaGoMIDIParser.parse(message, into: &dataBank)
+    let commands = KatanaGoMIDIParser.parse(message)
     #expect(commands.count == 1)
     if let firstCommand = commands.first, case .presetName(let name) = firstCommand {
       #expect(name == "MODERN BROWN")
@@ -36,11 +36,8 @@ struct KatanaGoMIDIParserTests {
       5,  // Checksum
     ]
 
-    var dataBank = KatanaGoRawDataBank()
-    let commands = KatanaGoMIDIParser.parse(message, into: &dataBank)
+    let commands = KatanaGoMIDIParser.parse(message)
 
-    let expectedPreamp: [UInt8] = [100, 100, 0, 70, 61, 49, 50, 11, 50, 16, 60, 0, 4, 0]
-    #expect(dataBank.ampBank == expectedPreamp)
     #expect(commands.count == 1)
     if let firstCommand = commands.first, case .ampBank(let ampBank) = firstCommand {
       #expect(ampBank.bass == 70)
@@ -65,11 +62,8 @@ struct KatanaGoMIDIParserTests {
       29,  // Checksum
     ]
 
-    var dataBank = KatanaGoRawDataBank()
-    let commands = KatanaGoMIDIParser.parse(message, into: &dataBank)
+    let commands = KatanaGoMIDIParser.parse(message)
 
-    let expectedBooster: [UInt8] = [9, 50, 60, 50, 0, 50, 40, 0]
-    #expect(dataBank.boosterBank == expectedBooster)
     #expect(commands.count == 1)
     if let firstCommand = commands.first, case .boostBank(let boostBank) = firstCommand {
       #expect(boostBank.bottom == 60)
@@ -105,35 +99,80 @@ struct KatanaGoMIDIParserTests {
     // Test Delay 1
     // address: 20 01 20 00
     let channel1Address: UInt32 = DelayBank.katanaGoAddress + DelayBankChannel.one.rawValue
-    let writeData1 = delayBank.loadWriteData(baseAddress: channel1Address)
-
-    var dataBank = KatanaGoRawDataBank()
-    for write in writeData1 {
-      let message = finalizeSysex(address: write.address, data: write.data)
-      _ = KatanaGoMIDIParser.parse(message, into: &dataBank)
+    // Simulate a full block update (all 17 bytes)
+    let fullData1 = delayBank.loadWriteData(baseAddress: channel1Address).reduce(
+      into: [UInt8](repeating: 0, count: Int(DelayBank.size))
+    ) { result, write in
+      let offset: Int = Int(write.address) - Int(channel1Address)
+      for (i, byte) in write.data.enumerated() {
+        let index: Int = offset + i
+        if index >= 0 && index < result.count {
+          result[index] = byte
+        }
+      }
     }
 
-    // Verify Delay 1 was updated
-    let parsedDelay1 = DelayBank.buildFromByteArray(dataBank.delay1Bank)
-    #expect(parsedDelay1 == delayBank)
-    #expect(parsedDelay1.type == .analog)
-    #expect(parsedDelay1.time == 500)
+    let message1 = finalizeSysex(address: channel1Address, data: fullData1)
+    let commands1 = KatanaGoMIDIParser.parse(message1)
+    if let firstCommand = commands1.first, case .delay1Bank(let parsedDelay1) = firstCommand {
+      #expect(parsedDelay1 == delayBank)
+      #expect(parsedDelay1.type == DelayType.analog)
+      #expect(parsedDelay1.time == 500)
+    }
 
     // Test Delay 2
     // address: 20 01 30 00
     let channel2Address: UInt32 = DelayBank.katanaGoAddress + DelayBankChannel.two.rawValue
-    let writeData2 = delayBank.loadWriteData(baseAddress: channel2Address)
-
-    for write in writeData2 {
-      let message = finalizeSysex(address: write.address, data: write.data)
-      _ = KatanaGoMIDIParser.parse(message, into: &dataBank)
+    let fullData2 = delayBank.loadWriteData(baseAddress: channel2Address).reduce(
+      into: [UInt8](repeating: 0, count: Int(DelayBank.size))
+    ) { result, write in
+      let offset: Int = Int(write.address) - Int(channel2Address)
+      for (i, byte) in write.data.enumerated() {
+        let index: Int = offset + i
+        if index >= 0 && index < result.count {
+          result[index] = byte
+        }
+      }
     }
 
-    // Verify Delay 2 was updated
-    let parsedDelay2 = DelayBank.buildFromByteArray(dataBank.delay2Bank)
-    #expect(parsedDelay2 == delayBank)
-    #expect(parsedDelay2.type == .analog)
-    #expect(parsedDelay2.time == 500)
+    let message2 = finalizeSysex(address: channel2Address, data: fullData2)
+    let commands2 = KatanaGoMIDIParser.parse(message2)
+    if let firstCommand = commands2.first, case .delay2Bank(let parsedDelay2) = firstCommand {
+      #expect(parsedDelay2 == delayBank)
+      #expect(parsedDelay2.type == DelayType.analog)
+      #expect(parsedDelay2.time == 500)
+    }
+  }
+
+  @Test func testContiguousFxBanks() throws {
+    // Chorus at 0x20010000 (size 10)
+    // Flanger at 0x2001000A (size 7)
+    // Combined data: 10 bytes for Chorus + 7 bytes for Flanger
+    let chorusData: [UInt8] = [4, 43, 46, 3, 75, 33, 48, 3, 65, 80]
+    let flangerData: [UInt8] = [31, 40, 82, 50, 0, 60, 0]
+    let combinedData = chorusData + flangerData
+
+    let message = finalizeSysex(address: 0x2001_0000, data: combinedData)
+    let commands = KatanaGoMIDIParser.parse(message)
+
+    #expect(commands.count == 2)
+
+    let hasChorus = commands.contains {
+      if case .modSingleEffect(.chorus(let bank)) = $0 {
+        return bank.lowRate == 43
+      }
+      return false
+    }
+
+    let hasFlanger = commands.contains {
+      if case .modSingleEffect(.flanger(let bank)) = $0 {
+        return bank.rate == 31
+      }
+      return false
+    }
+
+    #expect(hasChorus)
+    #expect(hasFlanger)
   }
 
   private func finalizeSysex(address: UInt32, data: [UInt8]) -> [UInt8] {
