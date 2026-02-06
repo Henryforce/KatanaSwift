@@ -179,25 +179,37 @@ public enum KatanaGoMIDIParser {
   }
 
   /// Slices a large data block if it covers the target bank's address range.
+  /// This method correctly handles Roland/Boss 7-bit address carry-overs.
   private static func sliceData(
     bankAddress: UInt32,
     bankSize: Int,
     incomingAddress: UInt32,
     incomingData: [UInt8]
   ) -> [UInt8]? {
-    let incomingEnd = incomingAddress + UInt32(incomingData.count)
-    let bankEnd = bankAddress + UInt32(bankSize)
+    let bankStart = rolandLinear(bankAddress)
+    let bankEnd = bankStart + bankSize
+    let incomingStart = rolandLinear(incomingAddress)
+    let incomingEnd = incomingStart + incomingData.count
 
-    let overlapStart = max(bankAddress, incomingAddress)
+    let overlapStart = max(bankStart, incomingStart)
     let overlapEnd = min(bankEnd, incomingEnd)
 
     // We only return a slice if it covers the WHOLE bank.
     // This assumes contiguous blocks in a single MIDI response are complete.
-    if overlapStart < overlapEnd && (overlapEnd - overlapStart) == UInt32(bankSize) {
-      let offsetInIncoming = Int(overlapStart - incomingAddress)
+    if overlapStart < overlapEnd && (overlapEnd - overlapStart) == bankSize {
+      let offsetInIncoming = overlapStart - incomingStart
       return Array(incomingData[offsetInIncoming..<(offsetInIncoming + bankSize)])
     }
     return nil
+  }
+
+  /// Converts a Roland 7-bit address (where each byte is 0-127) to a linear integer.
+  private static func rolandLinear(_ address: UInt32) -> Int {
+    let b1 = (address >> 24) & 0x7F
+    let b2 = (address >> 16) & 0x7F
+    let b3 = (address >> 8) & 0x7F
+    let b4 = address & 0x7F
+    return Int(b1) << 21 | Int(b2) << 14 | Int(b3) << 7 | Int(b4)
   }
 
   private static func buildPresetName(from data: [UInt8]) -> String {

@@ -92,11 +92,13 @@ extension KatanaDevice {
           if (isModRange || isFxRange) && streamData.data.count != 244 {
             let baseAddress: UInt32 = isModRange ? 0x20_01_00_00 : 0x20_01_10_00
             if let readData = try? await self.readData(
-              at: baseAddress, length: 244, options: .cacheOnly)
+              at: baseAddress, length: 244, options: .cacheOnly), readData.count == 244
             {
               dataToParse = readData
               addressToParse = baseAddress
+              print("HENRYFORCE fxBank readData \(isModRange ? "Mod" : "Fx")")
             } else {
+              print("HENRYFORCE fxBank continuing \(isModRange ? "Mod" : "Fx")")
               continue
             }
           }

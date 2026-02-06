@@ -76,12 +76,13 @@ public actor KatanaGoMIDIKit: KatanaDevice {
         continue
       }
 
-      print("SysEx: \(sysEx.data)")
+      print("SysEx: \(sysEx.data), count: \(sysEx.data.count)")
 
       let message = sysEx.data
       // Check if this is a valid read response.
       if message.count >= 10, message[4] == 18 {
         let address = Array(message[5...8]).address
+        // Remove checksum byte, hence the < count - 1
         let data = Array(message[9..<(message.count - 1)])
 
         // Update cache with received data
