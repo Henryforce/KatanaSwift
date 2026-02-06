@@ -68,6 +68,12 @@ public enum KatanaGoFxReadData: Sendable, Hashable {
   case phase90(Phaser90EBank)
   case flanger117E(Flanger117EBank)
   case dc30(DC30Bank)
+  case bassEnhancer(BassEnhancerBank)
+  case bassSimulator(BassSimulatorBank)
+  case bassDeFretter(BassDeFretterBank)
+  case bassOctave(BassOctaveBank)
+  case bassTWah(BassTWahBank)
+  case bassSynth(BassSynthBank)
 }
 
 public enum PedalFxReadData: Sendable, Hashable {

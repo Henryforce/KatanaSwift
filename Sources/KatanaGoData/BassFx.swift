@@ -6,7 +6,7 @@ import KatanaMacros
 // MARK: - BASS ENHANCER
 
 @KatanaBank
-public struct BassEnhancerBank: KatanaGoBank, Sendable, Hashable {
+public struct BassEnhancerBank: KatanaGoFxBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00, range: 0...100)
   public var sense: UInt8 = 50
 
@@ -30,7 +30,7 @@ public struct BassEnhancerBank: KatanaGoBank, Sendable, Hashable {
 // MARK: - BASS SIMULATOR
 
 @KatanaBank
-public struct BassSimulatorBank: KatanaGoBank, Sendable, Hashable {
+public struct BassSimulatorBank: KatanaGoFxBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var type: BassSimType = .pasToAct
 
@@ -54,7 +54,7 @@ public struct BassSimulatorBank: KatanaGoBank, Sendable, Hashable {
 // MARK: - MOD BASS DE-FR
 
 @KatanaBank
-public struct BassDeFretterBank: KatanaGoBank, Sendable, Hashable {
+public struct BassDeFretterBank: KatanaGoFxBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00, range: 0...100)
   public var sense: UInt8 = 50
 
@@ -78,7 +78,7 @@ public struct BassDeFretterBank: KatanaGoBank, Sendable, Hashable {
 // MARK: - MOD BASS OCT
 
 @KatanaBank
-public struct BassOctaveBank: KatanaGoBank, Sendable, Hashable {
+public struct BassOctaveBank: KatanaGoFxBank, Sendable, Hashable {
   @IntegerParameter(at: 0x00, range: 0...100)
   public var tenCTLevel: UInt8 = 50
 
@@ -96,7 +96,7 @@ public struct BassOctaveBank: KatanaGoBank, Sendable, Hashable {
 // MARK: - MOD BASS T-Wah
 
 @KatanaBank
-public struct BassTWahBank: KatanaGoBank, Sendable, Hashable {
+public struct BassTWahBank: KatanaGoFxBank, Sendable, Hashable {
   @Parameter(at: 0x00)
   public var mode: WahMode = .lowPassFilter
 
@@ -127,7 +127,7 @@ public struct BassTWahBank: KatanaGoBank, Sendable, Hashable {
 
 /// The data bank representing the BASS MOD/FX parameters.
 @KatanaBank
-public struct BassSynthBank: KatanaGoBank, Sendable, Hashable {
+public struct BassSynthBank: KatanaGoFxBank, Sendable, Hashable {
 
   @Parameter(at: 0x00)
   public var wave: WaveSynthType = .saw

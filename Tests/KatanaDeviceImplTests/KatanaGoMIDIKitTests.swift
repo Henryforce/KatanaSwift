@@ -269,6 +269,63 @@ struct KatanaGoMIDIKitTests {
     #expect(crossChunk == Array(data[126...129]))
   }
 
+  @Test func testComplexDataCaching() async throws {
+    let (katana, midiManager, _) = try await setupConnectedKatana()
+
+    let address: UInt32 = 0x2001_0000
+    let data: [UInt8] = [
+      4, 43, 46, 3, 75, 33, 48, 3, 65, 80, 31, 40, 82, 50, 0, 60, 0, 0, 70, 40, 55, 0, 0, 100, 0,
+      70,
+      60, 100, 70, 85, 65, 50, 80, 45, 50, 85, 60, 50, 0, 50, 100, 100, 45, 50, 60, 0, 50, 50, 50,
+      0,
+      0, 50, 50, 50, 50, 0, 0, 30, 11, 10, 30, 1, 1, 50, 35, 35, 0, 50, 1, 35, 50, 50, 60, 0, 50,
+      20,
+      20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 0, 20, 13, 1, 20, 23, 1, 20, 20, 14, 20, 0, 50, 50,
+      50,
+      50, 50, 50, 50, 50, 1, 50, 50, 16, 50, 50, 50, 0, 40, 30, 40, 50, 50, 25, 0, 0, 62, 100, 50,
+      0,
+      100, 0, 1, 24, 50, 0, 0, 0, 0, 70, 1, 24, 50, 0, 0, 0, 0, 70, 0, 100, 1, 12, 0, 0, 0, 0, 70,
+      7,
+      0, 0, 0, 0, 80, 0, 100, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
+      24,
+      24, 24, 24, 24, 24, 24, 1, 0, 2, 50, 80, 100, 50, 100, 1, 50, 45, 50, 50, 80, 0, 50, 50, 0, 1,
+      9, 0, 50, 100, 50, 0, 50, 50, 3, 50, 8, 0, 50, 50, 50, 50, 50, 70, 0, 50, 50, 50, 100, 50, 0,
+      100, 1, 1, 50, 35, 35, 0, 50, 0, 40, 30, 40, 49, 69,
+    ]
+
+    // Simulate incoming DT1 message
+    // Preamble (10, 01, 05, 0d, 12) + Address (20, 01, 00, 00) + Data + Checksum
+    var responseBody: [UInt8] = [0x10, 0x01, 0x05, 0x0D, 0x12, 0x20, 0x01, 0x00, 0x00]
+    responseBody.append(contentsOf: data)
+    responseBody.append(0x00)  // Mock checksum
+
+    let responseEvent = try MIDIEvent.sysEx7(manufacturer: .oneByte(0x41), data: responseBody)
+    midiManager.simulate(event: responseEvent)
+
+    // Give it a moment to process the event
+    try await Task.sleep(nanoseconds: 50_000_000)
+
+    let cached = await katana.cachedData(at: address, length: data.count)
+    #expect(cached == data)
+
+    // Verify boundary crossing:
+    // First byte at 0x20010000
+    let firstByte = await katana.cachedData(at: 0x2001_0000, length: 1)
+    #expect(firstByte == [data[0]])
+
+    // 128th byte at 0x2001007F
+    let byte127 = await katana.cachedData(at: 0x2001_007F, length: 1)
+    #expect(byte127 == [data[127]])
+
+    // 129th byte at 0x20010100
+    let byte128 = await katana.cachedData(at: 0x2001_0100, length: 1)
+    #expect(byte128 == [data[128]])
+
+    // Final byte
+    let lastByte = await katana.cachedData(at: 0x2001_0172, length: 1)  // 0x20010000 + 242 in Roland spacing
+    #expect(lastByte == [data.last!])
+  }
+
   private func setupConnectedKatana() async throws -> (
     KatanaGoMIDIKit, MockMIDIManager, MockMIDIEndpoint
   ) {

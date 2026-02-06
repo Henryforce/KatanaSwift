@@ -39,7 +39,10 @@ let package = Package(
     ),
     .target(
       name: "KatanaMacros",
-      dependencies: ["KatanaMacrosImpl"]
+      dependencies: [
+        "KatanaMacrosImpl",
+        "KatanaCore",
+      ]
     ),
     .target(name: "KatanaEQ", dependencies: ["KatanaCore", "KatanaMacros"]),
     .target(name: "KatanaFx", dependencies: ["KatanaCore", "KatanaMacros", "KatanaEQ"]),

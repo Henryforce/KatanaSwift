@@ -76,12 +76,13 @@ public actor KatanaGoMIDIKit: KatanaDevice {
         continue
       }
 
-      print("SysEx: \(sysEx.data)")
+      print("SysEx: \(sysEx.data), count: \(sysEx.data.count)")
 
       let message = sysEx.data
       // Check if this is a valid read response.
       if message.count >= 10, message[4] == 18 {
         let address = Array(message[5...8]).address
+        // Remove checksum byte, hence the < count - 1
         let data = Array(message[9..<(message.count - 1)])
 
         // Update cache with received data
@@ -119,15 +120,47 @@ public actor KatanaGoMIDIKit: KatanaDevice {
     try writeRawBytes(bytes)
   }
 
-  private func readBank<T: WritableBank>(_ type: T.Type, addressModifiers: UInt32) async throws -> T
-  {
+  private func readBank<T: WritableBank>(
+    _ type: T.Type, addressModifiers: UInt32, options: ReadDataOptions = .deviceOnly
+  ) async throws -> T {
     let address = addressModifiers
     let size = T.size
-    let data = try await readData(at: address, length: UInt16(size))
+    let data = try await readData(at: address, length: UInt16(size), options: options)
     return T.buildFromByteArray(data)
   }
 
-  public func readData(at address: UInt32, length: UInt16) async throws -> [UInt8] {
+  public func readData(at address: UInt32, length: UInt16, options: ReadDataOptions) async throws
+    -> [UInt8]
+  {
+    switch options {
+    case .deviceOnly:
+      return try await readFromDevice(at: address, length: length)
+
+    case .deviceFirstCacheSecond:
+      do {
+        return try await readFromDevice(at: address, length: length)
+      } catch {
+        if let cached = cachedData(at: address, length: Int(length)) {
+          return cached
+        }
+        throw error
+      }
+
+    case .cacheOnly:
+      if let cached = cachedData(at: address, length: Int(length)) {
+        return cached
+      }
+      throw KatanaError.cacheMissing
+
+    case .cacheFirstDeviceSecond:
+      if let cached = cachedData(at: address, length: Int(length)) {
+        return cached
+      }
+      return try await readFromDevice(at: address, length: length)
+    }
+  }
+
+  private func readFromDevice(at address: UInt32, length: UInt16) async throws -> [UInt8] {
     let bytes = finalizeReadSysex(addressBytes: address.addressBytes, bytesToRead: length)
     return try await withCheckedThrowingContinuation { continuation in
       pendingReads[address] = continuation
@@ -147,7 +180,7 @@ public actor KatanaGoMIDIKit: KatanaDevice {
   }
 
   /// Returns cached data if available for the given address and length.
-  public func cachedData(at address: UInt32, length: Int) -> [UInt8]? {
+  func cachedData(at address: UInt32, length: Int) -> [UInt8]? {
     return memoryBankCache.get(address: address, length: length)
   }
 

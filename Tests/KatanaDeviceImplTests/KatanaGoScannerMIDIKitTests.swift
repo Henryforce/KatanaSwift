@@ -19,7 +19,9 @@ final class KatanaGoScannerMIDIKitTests: XCTestCase {
     func disconnect() async {}
     func connectionStatus() async -> ConnectionStatus { .disconnected }
     func readDeviceType() async -> KatanaDeviceType { .go }
-    func readData(at address: UInt32, length: UInt16) async throws -> [UInt8] { return [] }
+    func readData(at address: UInt32, length: UInt16, options: ReadDataOptions) async throws
+      -> [UInt8]
+    { return [] }
     func write(at address: UInt32, data: [UInt8]) async throws {}
     func writeBank<T: WritableBank>(_ bank: T) async throws {}
     func readBank<T: WritableBank>(_ type: T.Type) async throws -> T {
