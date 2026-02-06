@@ -136,6 +136,8 @@ public enum KatanaGoMIDIParser {
         }
       }
 
+      // TODO: we might be able to do an early return here if we find that the address belongs to the either fx or mod bank.
+
       addIfOverlap(ChorusBank.self) { .chorus($0) }
       addIfOverlap(FlangerBank.self) { .flanger($0) }
       addIfOverlap(PhaserBank.self) { .phaser($0) }

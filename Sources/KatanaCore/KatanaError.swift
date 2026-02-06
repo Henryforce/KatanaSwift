@@ -5,4 +5,5 @@ public enum KatanaError: Error, Sendable {
   case connectionFailed(String)
   case encodingFailed
   case decodingFailed
+  case cacheMissing
 }

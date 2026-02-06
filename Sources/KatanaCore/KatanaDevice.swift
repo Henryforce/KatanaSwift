@@ -1,7 +1,19 @@
 import Foundation
 
-// TODO: think about moving some methods as extensions and instead have simple methods
-// that perform write and read with raw bytes.
+/// Options for reading data from the device.
+public enum ReadDataOptions: Hashable, Sendable {
+  /// Read data from the device only.
+  case deviceOnly
+
+  /// Read data from the device first, then from the cache if not available.
+  case deviceFirstCacheSecond
+
+  /// Read data from the cache only.
+  case cacheOnly
+
+  /// Read data from the cache first, then from the device if not available.
+  case cacheFirstDeviceSecond
+}
 
 /// Represents a connected Katana GO device.
 public protocol KatanaDevice: Actor {
@@ -36,5 +48,6 @@ public protocol KatanaDevice: Actor {
   ///   - address: The starting address to read from.
   ///   - length: The number of bytes to read.
   /// - Returns: An array of bytes read from the device.
-  func readData(at address: UInt32, length: UInt16) async throws -> [UInt8]
+  func readData(at address: UInt32, length: UInt16, options: ReadDataOptions) async throws
+    -> [UInt8]
 }

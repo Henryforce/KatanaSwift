@@ -57,20 +57,22 @@ extension KatanaDevice {
 
   /// Read a bank of parameters from the device.
   /// - Parameter type: The type of bank to read.
-  public func readBank<T: KatanaGoBank>(_ type: T.Type) async throws -> T {
+  public func readBank<T: KatanaGoBank>(_ type: T.Type, options: ReadDataOptions = .deviceOnly)
+    async throws -> T
+  {
     let baseAddress = T.katanaGoAddress
-    let data = try await readData(at: baseAddress, length: UInt16(T.size))
+    let data = try await readData(at: baseAddress, length: UInt16(T.size), options: options)
     return T.buildFromByteArray(data)
   }
 
   /// Read a bank of parameters from the device.
   /// - Parameter type: The type of bank to read.
   /// - Parameter channel: The channel to read the bank from.
-  public func readFxBank<T: KatanaGoFxBank>(_ type: T.Type, channel: KatanaGoFxChannel) async throws
-    -> T
-  {
+  public func readFxBank<T: KatanaGoFxBank>(
+    _ type: T.Type, channel: KatanaGoFxChannel, options: ReadDataOptions = .deviceOnly
+  ) async throws -> T {
     let baseAddress = T.katanaGoAddress | (channel == .fx ? 0x00_00_10_00 : 0x00)
-    let data = try await readData(at: baseAddress, length: UInt16(T.size))
+    let data = try await readData(at: baseAddress, length: UInt16(T.size), options: options)
     return T.buildFromByteArray(data)
   }
 
@@ -81,7 +83,25 @@ extension KatanaDevice {
       let stream = subscribeToData()
       Task {
         for await streamData in stream {
-          let banks = KatanaGoMIDIParser.parse(address: streamData.address, data: streamData.data)
+          var dataToParse = streamData.data
+          var addressToParse = streamData.address
+
+          let isModRange = streamData.address >= 0x20_01_00_00 && streamData.address < 0x20_01_01_74
+          let isFxRange = streamData.address >= 0x20_01_10_00 && streamData.address < 0x20_01_11_74
+
+          if (isModRange || isFxRange) && streamData.data.count != 244 {
+            let baseAddress: UInt32 = isModRange ? 0x20_01_00_00 : 0x20_01_10_00
+            if let readData = try? await self.readData(
+              at: baseAddress, length: 244, options: .deviceOnly)
+            {
+              dataToParse = readData
+              addressToParse = baseAddress
+            } else {
+              continue
+            }
+          }
+
+          let banks = KatanaGoMIDIParser.parse(address: addressToParse, data: dataToParse)
           for bank in banks {
             continuation.yield(bank)
           }
