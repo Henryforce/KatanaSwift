@@ -92,7 +92,7 @@ extension KatanaDevice {
           if (isModRange || isFxRange) && streamData.data.count != 244 {
             let baseAddress: UInt32 = isModRange ? 0x20_01_00_00 : 0x20_01_10_00
             if let readData = try? await self.readData(
-              at: baseAddress, length: 244, options: .deviceOnly)
+              at: baseAddress, length: 244, options: .cacheOnly)
             {
               dataToParse = readData
               addressToParse = baseAddress
