@@ -20,8 +20,6 @@ final class ContentViewModel {
 
   func connect() {
     Task {
-      try await Task.sleep(for: .seconds(2))
-
       let scanner = await KatanaSwift.buildScanner()
       self.scanner = scanner
 

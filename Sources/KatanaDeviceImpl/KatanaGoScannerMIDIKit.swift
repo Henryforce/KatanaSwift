@@ -48,33 +48,21 @@ public final class KatanaGoScannerMIDIKit: KatanaScanner {
         do {
           try midiManager.start()
 
-          for _ in 0...5 {
-            try Task.checkCancellation()
-            try await Task.sleep(nanoseconds: retryInterval)
-            try Task.checkCancellation()
+          let endpoints = midiManager.outputEndpoints
 
-            var katanaFound = false
-            let endpoints = midiManager.outputEndpoints
-
-            for endpoint in endpoints {
-              guard
-                (endpoint.displayName ?? "").localizedCaseInsensitiveContains("KATANA:GO MIDI")
-                  || endpoint.name.localizedCaseInsensitiveContains("KATANA:GO MIDI")
-              else {
-                continue
-              }
-
-              print(
-                "Found KATANA with name: \(endpoint.displayName ?? endpoint.name), \(endpoint.name)"
-              )
-              if let device = katanaGoFactory(endpoint, midiManager) {
-                continuation.yield(device)
-                katanaFound = true
-                break
-              }
+          for endpoint in endpoints {
+            guard
+              (endpoint.displayName ?? "").localizedCaseInsensitiveContains("KATANA:GO MIDI")
+                || endpoint.name.localizedCaseInsensitiveContains("KATANA:GO MIDI")
+            else {
+              continue
             }
-            if katanaFound {
-              break
+
+            print(
+              "Found KATANA with name: \(endpoint.displayName ?? endpoint.name), \(endpoint.name)"
+            )
+            if let device = katanaGoFactory(endpoint, midiManager) {
+              continuation.yield(device)
             }
           }
 

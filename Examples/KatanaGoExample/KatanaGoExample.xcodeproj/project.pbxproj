@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3904C6512F36F3AC009A34AB /* KatanaSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 39A34CFD2F333E9A002A5003 /* KatanaSwift */; };
 		390B7EC92F33640F00641E02 /* KatanaGo in Frameworks */ = {isa = PBXBuildFile; productRef = 390B7EC82F33640F00641E02 /* KatanaGo */; };
 		397C1DE32F2F1204003F5308 /* KatanaSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 397C1DE22F2F1204003F5308 /* KatanaSwift */; };
 /* End PBXBuildFile section */
@@ -28,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3904C6512F36F3AC009A34AB /* KatanaSwift in Frameworks */,
 				397C1DE32F2F1204003F5308 /* KatanaSwift in Frameworks */,
 				390B7EC92F33640F00641E02 /* KatanaGo in Frameworks */,
 			);

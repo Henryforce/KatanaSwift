@@ -12,6 +12,7 @@ struct ContentView: View {
   @State var viewModel = ContentViewModel()
   @State private var volume: Double = 50
   @State private var gain: Double = 50
+  @State private var showBLEDevices = false
   @State private var showBoostSettings = false
   @State private var showAmpSettings = false
   @State private var showModSettings = false
@@ -22,15 +23,16 @@ struct ContentView: View {
   var body: some View {
     ScrollView {
       VStack(spacing: 20) {
-        Image(systemName: "globe")
-          .imageScale(.large)
-          .foregroundStyle(.tint)
-        Text("Hello, world!")
+        Button {
+          showBLEDevices = true
+        } label: {
+          Text("Check BLE devices")
+        }
 
         Button {
           viewModel.connect()
         } label: {
-          Text("Connect")
+          Text("Connect to first Katana device")
         }
 
         Button {
@@ -134,6 +136,9 @@ struct ContentView: View {
 
       }
       .padding()
+      .sheet(isPresented: $showBLEDevices) {
+        BluetoothMIDIView()
+      }
       .sheet(isPresented: $showBoostSettings) {
         BoostView(viewModel: viewModel)
       }
