@@ -2,8 +2,8 @@ import Foundation
 import KatanaCore
 import MIDIKit
 
-/// MIDI implementation of the KatanaDevice protocol.
-public actor KatanaGoMIDIKit: KatanaDevice {
+/// MIDI-based implementation of the KatanaDevice protocol.
+public actor KatanaDeviceImpl: KatanaDevice {
   private let endpoint: MIDIEndpointProtocol
   private let midiManager: MIDIManagerProtocol
 

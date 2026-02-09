@@ -3,12 +3,15 @@ import KatanaCore
 import MIDIKit
 
 /// MIDI implementation of the KatanaGoScanner protocol.
-public final class KatanaGoScannerMIDIKit: KatanaScanner {
+public actor KatanaScannerImpl: KatanaScanner {
   private let midiManager: MIDIManagerProtocol
   private let retryInterval: UInt64
   // TODO: Add support for other Katana devices.
   private let katanaGoFactory:
     @Sendable (any MIDIEndpointProtocol, MIDIManagerProtocol) -> KatanaDevice?
+
+  /// Flag to prevent starting the MIDI manager more than once.
+  private var isMIDIManagerStarted: Bool = false
 
   public init() {
     let manager = MIDIManager(
@@ -23,7 +26,7 @@ public final class KatanaGoScannerMIDIKit: KatanaScanner {
         let realEndpoint = endpoint as? MIDIOutputEndpoint
       else { return nil }
       // TODO: Add support for other Katana devices.
-      return KatanaGoMIDIKit(deviceType: .go, endpoint: realEndpoint, midiManager: manager)
+      return KatanaDeviceImpl(deviceType: .go, endpoint: realEndpoint, midiManager: manager)
     }
   }
 
@@ -42,18 +45,18 @@ public final class KatanaGoScannerMIDIKit: KatanaScanner {
     self.katanaGoFactory = katanaGoFactory
   }
 
-  public func scan() -> AsyncStream<KatanaDevice> {
+  public func scan() async -> AsyncStream<KatanaDevice> {
     AsyncStream { continuation in
       let taskReference = Task {
         do {
-          try midiManager.start()
+          try await startMIDIManagerIfNeeded()
 
           let endpoints = midiManager.outputEndpoints
 
           for endpoint in endpoints {
             guard
-              (endpoint.displayName ?? "").localizedCaseInsensitiveContains("KATANA:GO MIDI")
-                || endpoint.name.localizedCaseInsensitiveContains("KATANA:GO MIDI")
+              (endpoint.displayName ?? "").localizedCaseInsensitiveContains("KATANA")
+                || endpoint.name.localizedCaseInsensitiveContains("KATANA")
             else {
               continue
             }
@@ -80,5 +83,17 @@ public final class KatanaGoScannerMIDIKit: KatanaScanner {
         taskReference.cancel()
       }
     }
+  }
+
+  /// Starts the MIDI manager if it is not already started.
+  private func startMIDIManagerIfNeeded() async throws {
+    guard !isMIDIManagerStarted else { return }
+    let startTask = Task { @MainActor in
+      // Starting the MIDI manager must be done on the main thread to make sure that the MIDI
+      // notifications are correctly received.
+      try midiManager.start()
+    }
+    try await startTask.value
+    isMIDIManagerStarted = true
   }
 }

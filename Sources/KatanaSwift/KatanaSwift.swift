@@ -3,6 +3,6 @@ import KatanaDeviceImpl
 
 public enum KatanaSwift {
   public static func buildScanner() async -> KatanaScanner {
-    return KatanaGoScannerMIDIKit()
+    return KatanaScannerImpl()
   }
 }

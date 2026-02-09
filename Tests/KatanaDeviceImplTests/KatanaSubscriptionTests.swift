@@ -143,14 +143,14 @@ struct KatanaGoSubscriptionTests {
   }
 
   private func setupConnectedKatana() async throws -> (
-    KatanaGoMIDIKit, MockMIDIManager, MockMIDIEndpoint
+    KatanaDeviceImpl, MockMIDIManager, MockMIDIEndpoint
   ) {
     let midiManager = MockMIDIManager()
     let endpoint = MockMIDIEndpoint(name: "Katana", displayName: "Katana")
     let inputEndpoint = MockMIDIEndpoint(name: "Katana", displayName: "Katana", uniqueID: 54321)
     midiManager.inputEndpoints = [inputEndpoint]
 
-    let katana = KatanaGoMIDIKit(deviceType: .go, endpoint: endpoint, midiManager: midiManager)
+    let katana = KatanaDeviceImpl(deviceType: .go, endpoint: endpoint, midiManager: midiManager)
     try await katana.connect()
     return (katana, midiManager, endpoint)
   }

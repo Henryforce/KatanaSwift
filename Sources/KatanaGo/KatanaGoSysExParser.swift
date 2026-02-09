@@ -3,8 +3,8 @@ import KatanaCore
 import KatanaFx
 import KatanaGoData
 
-/// A parser for Katana Go MIDI messages.
-public enum KatanaGoMIDIParser {
+/// A parser for Katana Go SysEx messages.
+public enum KatanaGoSysExParser {
 
   /// Parses an address and data and returns the corresponding bank updates.
   /// - Parameters:
