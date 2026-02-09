@@ -5,7 +5,7 @@ import Testing
 
 @testable import KatanaGo
 
-struct KatanaGoMIDIParserTests {
+struct KatanaGoSysExParserTests {
 
   @Test func testParsePresetName() throws {
     // Data from Preset2A.txt line 10
@@ -17,7 +17,7 @@ struct KatanaGoMIDIParserTests {
       115,  // Checksum
     ]
 
-    let commands = KatanaGoMIDIParser.parse(message)
+    let commands = KatanaGoSysExParser.parse(message)
     #expect(commands.count == 1)
     if let firstCommand = commands.first, case .presetName(let name) = firstCommand {
       #expect(name == "MODERN BROWN")
@@ -36,7 +36,7 @@ struct KatanaGoMIDIParserTests {
       5,  // Checksum
     ]
 
-    let commands = KatanaGoMIDIParser.parse(message)
+    let commands = KatanaGoSysExParser.parse(message)
 
     #expect(commands.count == 1)
     if let firstCommand = commands.first, case .ampBank(let ampBank) = firstCommand {
@@ -62,7 +62,7 @@ struct KatanaGoMIDIParserTests {
       29,  // Checksum
     ]
 
-    let commands = KatanaGoMIDIParser.parse(message)
+    let commands = KatanaGoSysExParser.parse(message)
 
     #expect(commands.count == 1)
     if let firstCommand = commands.first, case .boostBank(let boostBank) = firstCommand {
@@ -113,7 +113,7 @@ struct KatanaGoMIDIParserTests {
     }
 
     let message1 = finalizeSysex(address: channel1Address, data: fullData1)
-    let commands1 = KatanaGoMIDIParser.parse(message1)
+    let commands1 = KatanaGoSysExParser.parse(message1)
     if let firstCommand = commands1.first, case .delay1Bank(let parsedDelay1) = firstCommand {
       #expect(parsedDelay1 == delayBank)
       #expect(parsedDelay1.type == DelayType.analog)
@@ -136,7 +136,7 @@ struct KatanaGoMIDIParserTests {
     }
 
     let message2 = finalizeSysex(address: channel2Address, data: fullData2)
-    let commands2 = KatanaGoMIDIParser.parse(message2)
+    let commands2 = KatanaGoSysExParser.parse(message2)
     if let firstCommand = commands2.first, case .delay2Bank(let parsedDelay2) = firstCommand {
       #expect(parsedDelay2 == delayBank)
       #expect(parsedDelay2.type == DelayType.analog)
@@ -153,7 +153,7 @@ struct KatanaGoMIDIParserTests {
     let combinedData = chorusData + flangerData
 
     let message = finalizeSysex(address: 0x2001_0000, data: combinedData)
-    let commands = KatanaGoMIDIParser.parse(message)
+    let commands = KatanaGoSysExParser.parse(message)
 
     #expect(commands.count == 2)
 
@@ -192,7 +192,7 @@ struct KatanaGoMIDIParserTests {
     // Test in MOD section (offset 0)
     let modAddress: UInt32 = 0x20_01_00_00
     let modMessage = finalizeSysex(address: modAddress, data: inputArray)
-    let modCommands = KatanaGoMIDIParser.parse(modMessage)
+    let modCommands = KatanaGoSysExParser.parse(modMessage)
 
     #expect(modCommands.count == 32)
     if let last = modCommands.last, case .modSingleEffect(.bassSynth(let bank)) = last {
@@ -206,7 +206,7 @@ struct KatanaGoMIDIParserTests {
     // Test in FX section (offset 0x1000)
     let fxAddress: UInt32 = 0x20_01_10_00
     let fxMessage = finalizeSysex(address: fxAddress, data: inputArray)
-    let fxCommands = KatanaGoMIDIParser.parse(fxMessage)
+    let fxCommands = KatanaGoSysExParser.parse(fxMessage)
 
     #expect(fxCommands.count == 32)
     if let last = fxCommands.last, case .fxSingleEffect(.bassSynth(let bank)) = last {

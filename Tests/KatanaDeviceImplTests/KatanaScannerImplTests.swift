@@ -37,13 +37,13 @@ final class KatanaGoScannerMIDIKitTests: XCTestCase {
       MockEndpoint(name: "KATANA:GO MIDI", displayName: "KATANA:GO MIDI"),
     ]
 
-    let scanner = KatanaGoScannerMIDIKit(
+    let scanner = KatanaScannerImpl(
       midiManager: mockManager,
       retryInterval: 10_000,
       katanaGoFactory: { _, _ in MockKatanaGo() }
     )
 
-    let scanStream = scanner.scan()
+    let scanStream = await scanner.scan()
 
     let collectionTask = Task {
       var found: KatanaDevice?
@@ -67,9 +67,9 @@ final class KatanaGoScannerMIDIKitTests: XCTestCase {
       MockEndpoint(name: "Other Device", displayName: "Other Device")
     ]
 
-    let scanner = KatanaGoScannerMIDIKit(midiManager: mockManager, retryInterval: 10_000)
+    let scanner = KatanaScannerImpl(midiManager: mockManager, retryInterval: 10_000)
 
-    let scanStream = scanner.scan()
+    let scanStream = await scanner.scan()
 
     let collectionTask = Task {
       var count = 0

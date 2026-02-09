@@ -29,7 +29,7 @@ final class ContentViewModel {
 
       var count = 0
 
-      for await device in scanner.scan() {
+      for await device in await scanner.scan() {
         guard count == 0 else { break }
         count += 1
         print("✅ Found Katana GO!")

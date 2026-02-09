@@ -104,7 +104,7 @@ extension KatanaDevice {
             }
           }
 
-          let banks = KatanaGoMIDIParser.parse(address: addressToParse, data: dataToParse)
+          let banks = KatanaGoSysExParser.parse(address: addressToParse, data: dataToParse)
           for bank in banks {
             continuation.yield(bank)
           }

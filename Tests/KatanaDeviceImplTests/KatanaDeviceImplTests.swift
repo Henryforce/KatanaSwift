@@ -12,7 +12,7 @@ struct KatanaGoMIDIKitTests {
   @Test func testConnectionStatus() async throws {
     let midiManager = MockMIDIManager()
     let endpoint = MockMIDIEndpoint(name: "Katana", displayName: "Katana")
-    let katana = KatanaGoMIDIKit(deviceType: .go, endpoint: endpoint, midiManager: midiManager)
+    let katana = KatanaDeviceImpl(deviceType: .go, endpoint: endpoint, midiManager: midiManager)
 
     // Initially disconnected
     let status = await katana.connectionStatus()
@@ -32,7 +32,7 @@ struct KatanaGoMIDIKitTests {
     let inputEndpoint = MockMIDIEndpoint(name: "Katana", displayName: "Katana", uniqueID: 54321)
     midiManager.inputEndpoints = [inputEndpoint]
 
-    let katana = KatanaGoMIDIKit(deviceType: .go, endpoint: endpoint, midiManager: midiManager)
+    let katana = KatanaDeviceImpl(deviceType: .go, endpoint: endpoint, midiManager: midiManager)
 
     try await katana.connect()
 
@@ -60,7 +60,7 @@ struct KatanaGoMIDIKitTests {
     // No matching input endpoints
     midiManager.inputEndpoints = []
 
-    let katana = KatanaGoMIDIKit(deviceType: .go, endpoint: endpoint, midiManager: midiManager)
+    let katana = KatanaDeviceImpl(deviceType: .go, endpoint: endpoint, midiManager: midiManager)
 
     await #expect(throws: KatanaError.self) {
       try await katana.connect()
@@ -70,7 +70,7 @@ struct KatanaGoMIDIKitTests {
   @Test func testDisconnect() async throws {
     let midiManager = MockMIDIManager()
     let endpoint = MockMIDIEndpoint(name: "Katana", displayName: "Katana")
-    let katana = KatanaGoMIDIKit(deviceType: .go, endpoint: endpoint, midiManager: midiManager)
+    let katana = KatanaDeviceImpl(deviceType: .go, endpoint: endpoint, midiManager: midiManager)
 
     await katana.disconnect()
 
@@ -327,14 +327,14 @@ struct KatanaGoMIDIKitTests {
   }
 
   private func setupConnectedKatana() async throws -> (
-    KatanaGoMIDIKit, MockMIDIManager, MockMIDIEndpoint
+    KatanaDeviceImpl, MockMIDIManager, MockMIDIEndpoint
   ) {
     let midiManager = MockMIDIManager()
     let endpoint = MockMIDIEndpoint(name: "Katana", displayName: "Katana")
     let inputEndpoint = MockMIDIEndpoint(name: "Katana", displayName: "Katana", uniqueID: 54321)
     midiManager.inputEndpoints = [inputEndpoint]
 
-    let katana = KatanaGoMIDIKit(deviceType: .go, endpoint: endpoint, midiManager: midiManager)
+    let katana = KatanaDeviceImpl(deviceType: .go, endpoint: endpoint, midiManager: midiManager)
     try await katana.connect()
     return (katana, midiManager, endpoint)
   }
