@@ -1,7 +1,7 @@
 import KatanaCore
 import KatanaMacros
 
-/// The bank ID for the bank index.
+/// The bank ID address modifier for the bank index.
 public enum DelayBankChannel: UInt32, Sendable, Hashable {
   case one = 0x0000
   case two = 0x1000

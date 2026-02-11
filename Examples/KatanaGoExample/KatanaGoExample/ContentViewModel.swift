@@ -178,4 +178,30 @@ final class ContentViewModel {
     }
   }
 
+  func updateChannelAddressableBank<T: KatanaGoChannelAddressableBank>(
+    _ bank: T, channel: T.BankChannel
+  ) {
+    guard let device else { return }
+    Task {
+      do {
+        print("🎸 Updating bank \(bank)...")
+        try await device.writeChannelAddressableBank(bank, channel: channel)
+      } catch {
+        print("❌ Error: \(error)")
+      }
+    }
+  }
+
+  func readChannelAddressableBank<T: KatanaGoChannelAddressableBank>(
+    type: T.Type, channel: T.BankChannel
+  ) async -> T? {
+    guard let device else { return nil }
+    do {
+      return try await device.readChannelAddressableBank(type, channel: channel)
+    } catch {
+      print("❌ Error: \(error)")
+      return nil
+    }
+  }
+
 }

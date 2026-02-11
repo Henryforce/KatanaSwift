@@ -10,6 +10,7 @@ import SwiftUI
 
 struct DelayView: View {
   var viewModel: ContentViewModel
+  let channel: DelayBankChannel
 
   @State private var isEnabled = false
   @State private var type = DelayType.digital
@@ -45,7 +46,10 @@ struct DelayView: View {
               get: { isEnabled },
               set: {
                 isEnabled = $0
-                viewModel.updateWritableBank(EffectStatusBank(delay1: $0))
+                viewModel.updateWritableBank(
+                  EffectStatusBank(
+                    delay1: channel == .one ? $0 : isEnabled,
+                    delay2: channel == .two ? $0 : isEnabled))
               }
             ))
 
@@ -55,7 +59,7 @@ struct DelayView: View {
               get: { type },
               set: {
                 type = $0
-                viewModel.updateWritableBank(DelayBank(type: $0))
+                viewModel.updateChannelAddressableBank(DelayBank(type: $0), channel: channel)
               }
             )
           ) {
@@ -67,11 +71,11 @@ struct DelayView: View {
 
         Section("Parameters") {
           parameterSlider(title: "Time", value: $time, range: timeRange) {
-            viewModel.updateWritableBank(DelayBank(time: UInt16($0)))
+            viewModel.updateChannelAddressableBank(DelayBank(time: UInt16($0)), channel: channel)
           }
 
           parameterSlider(title: "Feedback", value: $feedback, range: feedbackRange) {
-            viewModel.updateWritableBank(DelayBank(feedback: UInt8($0)))
+            viewModel.updateChannelAddressableBank(DelayBank(feedback: UInt8($0)), channel: channel)
           }
 
           Picker(
@@ -80,7 +84,7 @@ struct DelayView: View {
               get: { highCut },
               set: {
                 highCut = $0
-                viewModel.updateWritableBank(DelayBank(highCut: $0))
+                viewModel.updateChannelAddressableBank(DelayBank(highCut: $0), channel: channel)
               }
             )
           ) {
@@ -90,11 +94,13 @@ struct DelayView: View {
           }
 
           parameterSlider(title: "Effect Level", value: $effectLevel, range: effectLevelRange) {
-            viewModel.updateWritableBank(DelayBank(effectLevel: UInt8($0)))
+            viewModel.updateChannelAddressableBank(
+              DelayBank(effectLevel: UInt8($0)), channel: channel)
           }
 
           parameterSlider(title: "Direct Mix", value: $directMix, range: directMixRange) {
-            viewModel.updateWritableBank(DelayBank(directMix: UInt8($0)))
+            viewModel.updateChannelAddressableBank(
+              DelayBank(directMix: UInt8($0)), channel: channel)
           }
         }
 
@@ -105,20 +111,23 @@ struct DelayView: View {
               get: { modulationSwitchStatus },
               set: {
                 modulationSwitchStatus = $0
-                viewModel.updateWritableBank(DelayBank(modulationSwitchStatus: $0))
+                viewModel.updateChannelAddressableBank(
+                  DelayBank(modulationSwitchStatus: $0), channel: channel)
               }
             ))
 
           parameterSlider(
             title: "Modulation Rate", value: $modulationRate, range: modulationRateRange
           ) {
-            viewModel.updateWritableBank(DelayBank(modulationRate: UInt8($0)))
+            viewModel.updateChannelAddressableBank(
+              DelayBank(modulationRate: UInt8($0)), channel: channel)
           }
 
           parameterSlider(
             title: "Modulation Depth", value: $modulationDepth, range: modulationDepthRange
           ) {
-            viewModel.updateWritableBank(DelayBank(modulationDepth: UInt8($0)))
+            viewModel.updateChannelAddressableBank(
+              DelayBank(modulationDepth: UInt8($0)), channel: channel)
           }
         }
 
@@ -129,7 +138,8 @@ struct DelayView: View {
               get: { filterStatus },
               set: {
                 filterStatus = $0
-                viewModel.updateWritableBank(DelayBank(filterStatus: $0))
+                viewModel.updateChannelAddressableBank(
+                  DelayBank(filterStatus: $0), channel: channel)
               }
             ))
 
@@ -139,7 +149,7 @@ struct DelayView: View {
               get: { filter },
               set: {
                 filter = $0
-                viewModel.updateWritableBank(DelayBank(filter: $0))
+                viewModel.updateChannelAddressableBank(DelayBank(filter: $0), channel: channel)
               }
             )
           ) {
@@ -151,7 +161,8 @@ struct DelayView: View {
           parameterSlider(
             title: "Tap Time %", value: $tapTimePercentage, range: tapTimePercentageRange
           ) {
-            viewModel.updateWritableBank(DelayBank(tapTimePercentage: UInt8($0)))
+            viewModel.updateChannelAddressableBank(
+              DelayBank(tapTimePercentage: UInt8($0)), channel: channel)
           }
 
           Picker(
@@ -160,7 +171,7 @@ struct DelayView: View {
               get: { delayPhase },
               set: {
                 delayPhase = $0
-                viewModel.updateWritableBank(DelayBank(delayPhase: $0))
+                viewModel.updateChannelAddressableBank(DelayBank(delayPhase: $0), channel: channel)
               }
             )
           ) {
@@ -175,7 +186,8 @@ struct DelayView: View {
               get: { feedbackPhase },
               set: {
                 feedbackPhase = $0
-                viewModel.updateWritableBank(DelayBank(feedbackPhase: $0))
+                viewModel.updateChannelAddressableBank(
+                  DelayBank(feedbackPhase: $0), channel: channel)
               }
             )
           ) {
@@ -232,10 +244,11 @@ struct DelayView: View {
 
   private func loadDelayData() async {
     let statusBank = await viewModel.readBank(type: EffectStatusBank.self)
-    let delayBank = await viewModel.readBank(type: DelayBank.self)
+    let delayBank = await viewModel.readChannelAddressableBank(
+      type: DelayBank.self, channel: channel)
 
     if let statusBank {
-      isEnabled = statusBank.delay1
+      isEnabled = channel == .one ? statusBank.delay1 : statusBank.delay2
     }
 
     if let delayBank {
