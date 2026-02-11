@@ -199,16 +199,16 @@ extension ReverbType {
   }
 }
 
-extension EQLowCut {
-  var name: String {
-    "\(self)".replacingOccurrences(of: "freq", with: "").replacingOccurrences(of: "Hz", with: " Hz")
-      .capitalized
-  }
-}
-
-extension EQHighCut {
-  var name: String {
-    "\(self)".replacingOccurrences(of: "freq", with: "").replacingOccurrences(of: "Hz", with: " Hz")
-      .capitalized
-  }
-}
+//extension EQLowCut {
+//  var name: String {
+//    "\(self)".replacingOccurrences(of: "freq", with: "").replacingOccurrences(of: "Hz", with: " Hz")
+//      .capitalized
+//  }
+//}
+//
+//extension EQHighCut {
+//  var name: String {
+//    "\(self)".replacingOccurrences(of: "freq", with: "").replacingOccurrences(of: "Hz", with: " Hz")
+//      .capitalized
+//  }
+//}

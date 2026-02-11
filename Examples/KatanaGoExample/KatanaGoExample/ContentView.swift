@@ -17,7 +17,10 @@ struct ContentView: View {
   @State private var showAmpSettings = false
   @State private var showModSettings = false
   @State private var showFxSettings = false
-  @State private var showDelaySettings = false
+  @State private var showDelay1Settings = false
+  @State private var showDelay2Settings = false
+  @State private var showEQ1Settings = false
+  @State private var showEQ2Settings = false
   @State private var showReverbSettings = false
 
   var body: some View {
@@ -46,32 +49,6 @@ struct ContentView: View {
         } label: {
           Text("Preset 3A")
         }
-
-        VStack {
-          ParameterSlider(
-            title: "Volume",
-            value: Binding(
-              get: { volume },
-              set: {
-                volume = $0
-                viewModel.updateWritableBank(AmpBank(volume: UInt8($0)))
-              }
-            ), range: 0...100)
-        }
-        .padding()
-
-        VStack {
-          ParameterSlider(
-            title: "Gain",
-            value: Binding(
-              get: { gain },
-              set: {
-                gain = $0
-                viewModel.updateWritableBank(AmpBank(gain: UInt8($0)))
-              }
-            ), range: 0...100)
-        }
-        .padding()
 
         Button {
           showBoostSettings = true
@@ -114,12 +91,42 @@ struct ContentView: View {
             .cornerRadius(10)
         }
         Button {
-          showDelaySettings = true
+          showDelay1Settings = true
         } label: {
-          Text("Delay Settings")
+          Text("Delay 1 Settings")
             .frame(maxWidth: .infinity)
             .padding()
             .background(Color.cyan)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+        }
+        Button {
+          showDelay2Settings = true
+        } label: {
+          Text("Delay 2 Settings")
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.cyan)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+        }
+        Button {
+          showEQ1Settings = true
+        } label: {
+          Text("EQ 1 Settings")
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.gray)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+        }
+        Button {
+          showEQ2Settings = true
+        } label: {
+          Text("EQ 2 Settings")
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.gray)
             .foregroundColor(.white)
             .cornerRadius(10)
         }
@@ -151,8 +158,17 @@ struct ContentView: View {
       .sheet(isPresented: $showFxSettings) {
         ModFxView(viewModel: viewModel, channel: .fx)
       }
-      .sheet(isPresented: $showDelaySettings) {
-        DelayView(viewModel: viewModel)
+      .sheet(isPresented: $showDelay1Settings) {
+        DelayView(viewModel: viewModel, channel: .one)
+      }
+      .sheet(isPresented: $showDelay2Settings) {
+        DelayView(viewModel: viewModel, channel: .two)
+      }
+      .sheet(isPresented: $showEQ1Settings) {
+        EQView(viewModel: viewModel, channel: .one)
+      }
+      .sheet(isPresented: $showEQ2Settings) {
+        EQView(viewModel: viewModel, channel: .two)
       }
       .sheet(isPresented: $showReverbSettings) {
         ReverbView(viewModel: viewModel)

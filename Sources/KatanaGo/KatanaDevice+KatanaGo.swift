@@ -76,6 +76,17 @@ extension KatanaDevice {
     return T.buildFromByteArray(data)
   }
 
+  /// Read a bank of parameters from the device.
+  /// - Parameter type: The type of bank to read.
+  /// - Parameter channel: The channel to read the bank from.
+  public func readChannelAddressableBank<T: KatanaGoChannelAddressableBank>(
+    _ type: T.Type, channel: T.BankChannel, options: ReadDataOptions = .deviceOnly
+  ) async throws -> T {
+    let baseAddress: UInt32 = T.katanaGoAddress + channel.rawValue
+    let data = try await readData(at: baseAddress, length: UInt16(T.size), options: options)
+    return T.buildFromByteArray(data)
+  }
+
   /// Provides a stream of data received from the device.
   /// - Returns: An AsyncStream of KatanaGoDataBank.
   public func subscribeToKatanaGoBanks() -> AsyncStream<KatanaGoDataBank> {
