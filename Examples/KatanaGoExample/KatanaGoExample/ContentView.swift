@@ -22,6 +22,7 @@ struct ContentView: View {
   @State private var showEQ1Settings = false
   @State private var showEQ2Settings = false
   @State private var showReverbSettings = false
+  @State private var showBatterySettings = false
 
   var body: some View {
     ScrollView {
@@ -50,6 +51,16 @@ struct ContentView: View {
           Text("Preset 3A")
         }
 
+        Button {
+          showBatterySettings = true
+        } label: {
+          Text("Battery Status")
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.red)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+        }
         Button {
           showBoostSettings = true
         } label: {
@@ -172,6 +183,9 @@ struct ContentView: View {
       }
       .sheet(isPresented: $showReverbSettings) {
         ReverbView(viewModel: viewModel)
+      }
+      .sheet(isPresented: $showBatterySettings) {
+        BatteryView(viewModel: viewModel)
       }
     }
     .task {

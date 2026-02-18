@@ -39,6 +39,7 @@ public enum KatanaGoDataBank: Sendable {
   case stageFeelBank(StageFeelBank)
   case stageFeelCustomBank(StageFeelCustomBank)
   case usbSettingsBank(USBSettingsBank)
+  case batteryBank(BatteryBank)
 }
 
 public enum KatanaGoFxReadData: Sendable, Hashable {

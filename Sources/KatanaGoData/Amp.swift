@@ -32,10 +32,6 @@ public struct AmpBank: KatanaGoBank, Sendable, Hashable {
   public static let size: UInt32 = 14
 }
 
-//extension AmpBank: KatanaGoBank {
-//  public static let katanaGoAddress: UInt32 = 0x20_00_20_00
-//}
-
 /// Available amplifier types.
 @KatanaUInt8RawBytes
 public enum AmpType: UInt8, Sendable, Hashable, CaseIterable {
