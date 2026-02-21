@@ -11,6 +11,7 @@ struct BatteryView: View {
 
   @State private var batteryLevel: Int = 0
 
+  // TODO: update battery display to cover only 4 levels: full, 2/3, 1/3 and empty.
   var body: some View {
     NavigationView {
       Form {
@@ -18,12 +19,12 @@ struct BatteryView: View {
           HStack {
             Text("Battery Level")
             Spacer()
-            Text("\(batteryLevel)%")
+            Text("\(batteryLevel)")
               .foregroundColor(batteryColor)
               .bold()
           }
 
-          ProgressView(value: Double(batteryLevel), total: 100)
+          ProgressView(value: Double(batteryLevel), total: 3)
             .tint(batteryColor)
         }
         
@@ -58,9 +59,11 @@ struct BatteryView: View {
   @Environment(\.dismiss) private var dismissAction
 
   private var batteryColor: Color {
-    if batteryLevel > 50 {
+    if batteryLevel >= 3 {
       return .green
-    } else if batteryLevel > 20 {
+    } else if batteryLevel >= 2 {
+      return .yellow
+    } else if batteryLevel >= 1 {
       return .orange
     } else {
       return .red

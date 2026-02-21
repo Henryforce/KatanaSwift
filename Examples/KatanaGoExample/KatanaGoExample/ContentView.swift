@@ -23,6 +23,7 @@ struct ContentView: View {
   @State private var showEQ2Settings = false
   @State private var showReverbSettings = false
   @State private var showBatterySettings = false
+  @State private var showUSBSettings = false
 
   var body: some View {
     ScrollView {
@@ -151,6 +152,16 @@ struct ContentView: View {
             .foregroundColor(.white)
             .cornerRadius(10)
         }
+        Button {
+          showUSBSettings = true
+        } label: {
+          Text("USB Settings")
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.indigo)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+        }
 
       }
       .padding()
@@ -186,6 +197,9 @@ struct ContentView: View {
       }
       .sheet(isPresented: $showBatterySettings) {
         BatteryView(viewModel: viewModel)
+      }
+      .sheet(isPresented: $showUSBSettings) {
+        USBSettingsView(viewModel: viewModel)
       }
     }
     .task {
