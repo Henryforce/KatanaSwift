@@ -3,7 +3,7 @@ import KatanaMacros
 
 @KatanaBank
 public struct BatteryBank: KatanaGoBank, Sendable, Hashable {
-  @IntegerParameter(at: 0x00, range: 0...100)
+  @IntegerParameter(at: 0x00, range: 0...3)
   public var level: UInt8 = 0
 
   public static let katanaGoAddress: UInt32 = 0x7F_00_05_02
