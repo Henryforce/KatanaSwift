@@ -1,10 +1,3 @@
-//
-//  BluetoothMidiView.swift
-//  KatanaGoExample
-//
-//  Created by Henry Javier Serrano Echeverria on 2026/02/07.
-//
-
 #if os(iOS)
 
   import CoreAudioKit

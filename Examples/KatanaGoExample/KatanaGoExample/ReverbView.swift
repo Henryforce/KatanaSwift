@@ -1,10 +1,3 @@
-//
-//  ReverbView.swift
-//  KatanaGoExample
-//
-//  Created by Henry Javier Serrano Echeverria on 2026/01/27.
-//
-
 import KatanaEQ
 import KatanaGoData
 import SwiftUI

@@ -1,10 +1,3 @@
-//
-//  EQView.swift
-//  KatanaGoExample
-//
-//  Created by Henry Javier Serrano Echeverria on 2026/02/10.
-//
-
 import KatanaEQ
 import KatanaGoData
 import SwiftUI
