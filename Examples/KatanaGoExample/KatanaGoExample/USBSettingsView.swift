@@ -1,8 +1,3 @@
-//
-//  USBSettingsView.swift
-//  KatanaGoExample
-//
-
 import KatanaGoData
 import SwiftUI
 

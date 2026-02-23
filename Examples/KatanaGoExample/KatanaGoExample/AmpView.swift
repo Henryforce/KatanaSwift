@@ -1,10 +1,3 @@
-//
-//  AmpView.swift
-//  KatanaGoExample
-//
-//  Created by Henry Javier Serrano Echeverria on 2026/01/17.
-//
-
 import KatanaGoData
 import SwiftUI
 

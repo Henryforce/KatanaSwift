@@ -1,10 +1,3 @@
-//
-//  BoostView.swift
-//  KatanaGoExample
-//
-//  Created by Henry Javier Serrano Echeverria on 2026/01/16.
-//
-
 import KatanaGoData
 import SwiftUI
 
