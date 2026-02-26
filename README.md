@@ -27,9 +27,9 @@ Or add it via Xcode: **File > Add Packages...** and enter the repository URL.
 ### 1. Scan for Devices
 
 ```swift
-import KatanaGoSwift
+import KatanaSwift
 
-let scanner = KatanaGoScannerBLE()
+let scanner = KatanaSwift.buildScanner()
 
 for await device in scanner.scan() {
     print("Found Katana GO!")
@@ -42,22 +42,22 @@ for await device in scanner.scan() {
 ### 2. Control the Device
 
 ```swift
-// Change to a specific preset
-try await device.write(.changePreset(.preset1A))
+// Write raw bytes to the device.
+try await device.write(at: 0x1F000000, data: [0x01])
+```
 
-// Toggle the tuner
-try await device.write(.setTuner(on: true))
+```swift
+import KatanaGo
 
-// Toggle an effect
-try await device.write(.setEffect(.delay, on: false))
+// Write data banks
+try await device.writeBank(AmpBank(type: .clean))
 ```
 
 ### 3. Read Data
 
 ```swift
-for await data in device.read() {
-    print("Received data from Katana: \(data)")
-}
+// Read data from the device at a specific address.
+let data = try await device.readData(at: 0x1F000000, length: 1, options: .deviceOnly)
 ```
 
 ## Running the Example Project
