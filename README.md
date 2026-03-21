@@ -1,13 +1,12 @@
 # KatanaSwift
 
-A Swift library for interacting with the **BOSS Katana GO** guitar headphone amp over Bluetooth Low Energy (BLE).
+A Swift library for interacting with the **BOSS Katana GO** guitar headphone amp over MIDI / SysEx.
 
 This library provides a clean, async/await interface to scan for, connect to, and control your Katana GO device.
 
 ## Features
 
-- 🔍 **Device Scanning**: Easily discover Katana GO devices.
-- 🔗 **BLE Connectivity**: Reliable connection management using `BLECombineKit`.
+- 🔍 **Device Scanning**: Easily discover connected Katana GO devices.
 - ⚡ **Async/Await API**: Modern Swift Concurrency support for all operations.
 - 🎸 **Command Support**: Write CC and SysEx commands to toggle effects, change presets, and switch the tuner.
 - 📥 **Real-time Updates**: Stream data back from the device using `AsyncStream`.
@@ -79,8 +78,14 @@ Since this library uses Bluetooth, you **must** add the following key to your ap
 
 ## Disclaimer
 
-This project is not affiliated with, authorized, or endorsed by BOSS or Roland Corporation. "BOSS" and "Katana" are trademarks of Roland Corporation.
+This project is not affiliated with or endorsed by BOSS or Roland Corporation. "BOSS" and "Katana" are trademarks of Roland Corporation.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+A lot of the definitions and addresses were reverse engineered from sniffing the raw SysEx data and some of the tricky definitions were referenced from the [Fx Floorboard](https://sourceforge.net/projects/fxfloorboard/) project based on the work of the following people:
+- [gumtownbassman](https://sourceforge.net/u/gumtownbassman/profile/)
+- [ucomesdag](https://sourceforge.net/u/ucomesdag/profile/)
