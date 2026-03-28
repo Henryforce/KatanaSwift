@@ -22,9 +22,13 @@ public protocol WritableBank {
   /// The size of the bank in bytes.
   static var size: UInt32 { get }
 
-  /// Loads the write data for the bank.
+  /// Generates the necessary write operations to update this bank on the device.
+  /// - Parameter baseAddress: The starting memory address for this bank.
+  /// - Returns: An array of `WriteData` objects representing the split-up memory writes.
   func loadWriteData(baseAddress: UInt32) -> [WriteData]
 
-  /// Builds a bank from a byte array.
+  /// Construct a new bank instance by decoding data received from the device.
+  /// - Parameter array: The raw bytes received from the device's memory.
+  /// - Returns: A hydrated bank instance.
   static func buildFromByteArray(_ array: [UInt8]) -> Self
 }

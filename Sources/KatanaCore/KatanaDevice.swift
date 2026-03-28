@@ -24,30 +24,35 @@ public protocol KatanaDevice: Actor {
   /// - Returns: The current connection status.
   func connectionStatus() async -> ConnectionStatus
 
-  /// Connect to the device.
+  /// Establishes a connection to the physical device.
+  /// - Throws: `KatanaError.connectionFailed` if the device cannot be reached.
   func connect() async throws
 
-  /// Disconnect from the device.
+  /// Closes the connection to the device.
   func disconnect() async
 
-  /// Read the device type from the device.
+  /// Read the hardware device type.
+  /// - Returns: The `KatanaDeviceType` (e.g., `.go`).
   func readDeviceType() async -> KatanaDeviceType
 
-  /// Write raw bytes to the device.
+  /// Write raw bytes to the device's memory at a specific address.
   /// - Parameters:
-  ///   - address: The starting address to write to.
-  ///   - data: The bytes to write to the device.
+  ///   - address: The target memory address (MIDI/Roland style).
+  ///   - data: The raw bytes to write.
+  /// - Throws: `KatanaError` if the write operation fails.
   func write(at address: UInt32, data: [UInt8]) async throws
 
-  /// Subscribe to data from the device.
-  /// - Returns: An AsyncStream of bytes read from the device.
+  /// Subscribe to all incoming memory data from the device.
+  /// - Returns: An `AsyncStream` that yields address-data pairs.
   func subscribeToData() -> AsyncStream<StreamData>
 
-  /// Read data from the device at a specific address.
+  /// Read a block of data from the device's memory.
   /// - Parameters:
-  ///   - address: The starting address to read from.
-  ///   - length: The number of bytes to read.
-  /// - Returns: An array of bytes read from the device.
+  ///   - address: The starting memory address.
+  ///   - length: The number of bytes to retrieve.
+  ///   - options: Strategy for using the internal cache vs. hardware read.
+  /// - Returns: The retrieved byte array.
+  /// - Throws: `KatanaError` if the read fails or is missing from cache.
   func readData(at address: UInt32, length: UInt16, options: ReadDataOptions) async throws
     -> [UInt8]
 }

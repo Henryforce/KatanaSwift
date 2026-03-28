@@ -9,7 +9,7 @@ struct BatteryView: View {
   var body: some View {
     NavigationView {
       VStack(spacing: 0) {
-        
+
         // Creative Battery Display Header
         ZStack {
           LinearGradient(
@@ -18,7 +18,7 @@ struct BatteryView: View {
             endPoint: .bottom
           )
           .ignoresSafeArea()
-          
+
           VStack(spacing: 32) {
             // visual Battery Icon
             ZStack {
@@ -27,7 +27,7 @@ struct BatteryView: View {
                 .fill(batteryColor.opacity(0.1))
                 .frame(width: 240, height: 240)
                 .blur(radius: 30)
-              
+
               VStack(spacing: 20) {
                 // Battery Shape
                 HStack(spacing: 6) {
@@ -36,21 +36,29 @@ struct BatteryView: View {
                     RoundedRectangle(cornerRadius: 18)
                       .stroke(Color.primary.opacity(0.15), lineWidth: 4)
                       .frame(width: 150, height: 80)
-                    
+
                     // Segments
                     HStack(spacing: 6) {
                       ForEach(0..<3) { index in
                         RoundedRectangle(cornerRadius: 12)
-                          .fill(index < batteryLevel ? 
-                                LinearGradient(colors: [batteryColor, batteryColor.opacity(0.8)], startPoint: .top, endPoint: .bottom) : 
-                                LinearGradient(colors: [Color.primary.opacity(0.05)], startPoint: .top, endPoint: .bottom))
+                          .fill(
+                            index < batteryLevel
+                              ? LinearGradient(
+                                colors: [batteryColor, batteryColor.opacity(0.8)], startPoint: .top,
+                                endPoint: .bottom)
+                              : LinearGradient(
+                                colors: [Color.primary.opacity(0.05)], startPoint: .top,
+                                endPoint: .bottom)
+                          )
                           .frame(width: 42, height: 62)
-                          .animation(.spring(response: 0.4, dampingFraction: 0.6).delay(Double(index) * 0.05), value: batteryLevel)
+                          .animation(
+                            .spring(response: 0.4, dampingFraction: 0.6).delay(
+                              Double(index) * 0.05), value: batteryLevel)
                       }
                     }
                     .padding(.horizontal, 7)
                   }
-                  
+
                   // Battery Tip
                   RoundedRectangle(cornerRadius: 6)
                     .fill(Color.primary.opacity(0.15))
@@ -59,12 +67,12 @@ struct BatteryView: View {
               }
             }
             .padding(.top, 20)
-            
+
             VStack(spacing: 8) {
               Text(levelDescription)
                 .font(.system(size: 38, weight: .bold, design: .rounded))
                 .foregroundColor(batteryColor)
-              
+
               Text("Power Level")
                 .font(.footnote)
                 .fontWeight(.black)
@@ -75,7 +83,7 @@ struct BatteryView: View {
           }
         }
         .frame(height: 380)
-        
+
         // Information and Actions
         List {
           Section {
@@ -86,7 +94,7 @@ struct BatteryView: View {
                 .foregroundColor(.green)
                 .fontWeight(.medium)
             }
-            
+
             HStack {
               Label("Level Index", systemImage: "number.circle")
               Spacer()
@@ -95,7 +103,7 @@ struct BatteryView: View {
                 .monospaced()
             }
           }
-          
+
           Section {
             Button {
               Task {
@@ -145,7 +153,7 @@ struct BatteryView: View {
   }
 
   private var levelDescription: String {
-    // Mapping the 4 levels (0-3) to the requested states: 
+    // Mapping the 4 levels (0-3) to the requested states:
     // empty, two third, three thirds and full
     switch batteryLevel {
     case 3: return "Full"
