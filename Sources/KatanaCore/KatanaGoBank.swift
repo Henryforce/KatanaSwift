@@ -4,5 +4,5 @@ public protocol KatanaGoBank: WritableBank {
   static var katanaGoAddress: UInt32 { get }
 }
 
-/// A bank of parameters for the MOD/FX section.
+/// A bank representing the MOD or FX section of the device, which also includes EQ settings.
 public protocol KatanaGoFxBank: KatanaGoBank {}

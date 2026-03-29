@@ -14,9 +14,10 @@ extension KatanaDevice {
     }
   }
 
-  /// Write a bank of parameters to the device.
-  /// - Parameter bank: The bank of parameters to send to the device.
-  /// - Parameter channel: The channel to send the bank to.
+  /// Write a bank of parameters to the device's MOD or FX channel.
+  /// - Parameters:
+  ///   - bank: The bank of parameters to send.
+  ///   - channel: The target section (MOD or FX).
   public func writeFxBank<T: KatanaGoFxBank>(_ bank: T, channel: KatanaGoFxChannel) async throws {
     let baseAddress = T.katanaGoAddress | (channel == .fx ? 0x00_00_10_00 : 0x00)
     for writeData in bank.loadWriteData(baseAddress: baseAddress) {
@@ -26,9 +27,10 @@ extension KatanaDevice {
     }
   }
 
-  /// Write a bank of parameters to the device.
-  /// - Parameter bank: The bank of parameters to send to the device.
-  /// - Parameter channel: The channel to send the bank to.
+  /// Write a bank that can be directed to a specific device-defined channel.
+  /// - Parameters:
+  ///   - bank: The bank of parameters to send.
+  ///   - channel: The target channel.
   public func writeChannelAddressableBank<T: KatanaGoChannelAddressableBank>(
     _ bank: T, channel: T.BankChannel
   ) async throws {
@@ -40,23 +42,29 @@ extension KatanaDevice {
     }
   }
 
-  /// Enable or disable the FX bank.
-  /// - Parameter enabled: The bank of parameters to send to the device.
+  /// Enable or disable an effect section (MOD or FX).
+  /// - Parameters:
+  ///   - enabled: Whether to turn the section on.
+  ///   - channel: The target section (MOD or FX).
   public func enableFx(_ enabled: Bool, channel: KatanaGoFxChannel) async throws {
     let address: UInt32 = channel == .fx ? 0x20_00_30_02 : 0x20_00_30_01
     try await write(at: address, data: [enabled ? 0x01 : 0x00])
   }
 
-  /// Select the FX type.
-  /// - Parameter type: The FX type to select.
-  /// - Parameter channel: The channel to send the bank to.
+  /// Select the active effect type for a MOD or FX section.
+  /// - Parameters:
+  ///   - type: The effect model to use.
+  ///   - channel: The target section (MOD or FX).
   public func selectFxType(_ type: ModFxType, channel: KatanaGoFxChannel) async throws {
     let address: UInt32 = channel == .fx ? 0x20_00_70_00 : 0x20_00_60_00
     try await write(at: address, data: [type.rawValue])
   }
 
   /// Read a bank of parameters from the device.
-  /// - Parameter type: The type of bank to read.
+  /// - Parameters:
+  ///   - type: The bank model to read into.
+  ///   - options: Cache vs. Device read priority.
+  /// - Returns: A hydrated bank instance.
   public func readBank<T: KatanaGoBank>(_ type: T.Type, options: ReadDataOptions = .deviceOnly)
     async throws -> T
   {
@@ -65,9 +73,12 @@ extension KatanaDevice {
     return T.buildFromByteArray(data)
   }
 
-  /// Read a bank of parameters from the device.
-  /// - Parameter type: The type of bank to read.
-  /// - Parameter channel: The channel to read the bank from.
+  /// Read a MOD or FX section bank from the device.
+  /// - Parameters:
+  ///   - type: The bank model to read into.
+  ///   - channel: The target section (MOD or FX).
+  ///   - options: Cache vs. Device read priority.
+  /// - Returns: A hydrated bank instance.
   public func readFxBank<T: KatanaGoFxBank>(
     _ type: T.Type, channel: KatanaGoFxChannel, options: ReadDataOptions = .deviceOnly
   ) async throws -> T {
@@ -76,9 +87,12 @@ extension KatanaDevice {
     return T.buildFromByteArray(data)
   }
 
-  /// Read a bank of parameters from the device.
-  /// - Parameter type: The type of bank to read.
-  /// - Parameter channel: The channel to read the bank from.
+  /// Read a bank from a specific device-defined channel.
+  /// - Parameters:
+  ///   - type: The bank model to read into.
+  ///   - channel: The target channel.
+  ///   - options: Cache vs. Device read priority.
+  /// - Returns: A hydrated bank instance.
   public func readChannelAddressableBank<T: KatanaGoChannelAddressableBank>(
     _ type: T.Type, channel: T.BankChannel, options: ReadDataOptions = .deviceOnly
   ) async throws -> T {
@@ -108,9 +122,7 @@ extension KatanaDevice {
             {
               dataToParse = readData
               addressToParse = baseAddress
-              print("HENRYFORCE fxBank readData \(isModRange ? "Mod" : "Fx")")
             } else {
-              print("HENRYFORCE fxBank continuing \(isModRange ? "Mod" : "Fx")")
               continue
             }
           }

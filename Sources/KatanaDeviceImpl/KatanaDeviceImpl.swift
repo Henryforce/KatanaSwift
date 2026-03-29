@@ -76,8 +76,6 @@ public actor KatanaDeviceImpl: KatanaDevice {
         continue
       }
 
-      print("SysEx: \(sysEx.data), count: \(sysEx.data.count)")
-
       let message = sysEx.data
       // Check if this is a valid read response.
       if message.count >= 10, message[4] == 18 {
@@ -112,7 +110,6 @@ public actor KatanaDeviceImpl: KatanaDevice {
 
   public func write(at address: UInt32, data: [UInt8]) async throws {
     let bytes = finalizeSysex(address: address, data: data)
-    print("Writing bytes: \(bytes)")
 
     // Update cache with written data
     memoryBankCache.update(address: address, data: data)

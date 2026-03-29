@@ -1,6 +1,8 @@
 # KatanaSwift
 
-A Swift library for interacting with the **BOSS Katana GO** guitar headphone amp over MIDI / SysEx.
+A Swift library for interacting with the [BOSS Katana GO](https://www.boss.info/global/products/katana-go/) guitar headphone amp over MIDI / SysEx
+
+**_NOTE:_** Future support for other Katana models might be added in the future.
 
 This library provides a clean, async/await interface to scan for, connect to, and control your Katana GO device.
 
@@ -13,17 +15,24 @@ This library provides a clean, async/await interface to scan for, connect to, an
 
 ## Installation
 
-Add this package to your `Package.swift`:
+Add this package to your `Package.swift` dependencies:
 
 ```swift
-.package(url: "https://github.com/Henryforce/KatanaGoSwift.git", branch: "main")
+.package(url: "https://github.com/Henryforce/KatanaSwift.git", from: "0.1.0")
 ```
 
-Or add it via Xcode: **File > Add Packages...** and enter the repository URL.
+Or add it via Xcode: **File > Add Packages...** and use the repository URL.
 
 ## Quick Start
 
-### 1. Scan for Devices
+### 1. Connect to Katana Go
+
+Either connect manually from your phone's bluetooth settings or use:
+
+- [CABTMIDIViewController](https://developer.apple.com/documentation/coreaudiokit/cabtmidicentralviewcontroller) in iOS
+- [CABTLCentralViewController](https://developer.apple.com/documentation/coreaudiokit/cabtlemidiwindowcontroller) in macOS
+
+### 2. Scan for Katana Go Devices
 
 ```swift
 import KatanaSwift
@@ -38,7 +47,7 @@ for await device in scanner.scan() {
 }
 ```
 
-### 2. Control the Device
+### 3. Control the Device
 
 ```swift
 // Write raw bytes to the device.
@@ -52,7 +61,7 @@ import KatanaGo
 try await device.writeBank(AmpBank(type: .clean))
 ```
 
-### 3. Read Data
+### 4. Read Data
 
 ```swift
 // Read data from the device at a specific address.

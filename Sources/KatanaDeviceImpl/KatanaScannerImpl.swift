@@ -60,10 +60,6 @@ public actor KatanaScannerImpl: KatanaScanner {
             else {
               continue
             }
-
-            print(
-              "Found KATANA with name: \(endpoint.displayName ?? endpoint.name), \(endpoint.name)"
-            )
             if let device = katanaGoFactory(endpoint, midiManager) {
               continuation.yield(device)
             }
@@ -74,7 +70,6 @@ public actor KatanaScannerImpl: KatanaScanner {
           // In the future, we could observe MIDI changes.
           continuation.finish()
         } catch {
-          print("Failed to start MIDIManager: \(error)")
           continuation.finish()
         }
       }
