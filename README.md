@@ -12,6 +12,14 @@ This library provides a clean, async/await interface to scan for, connect to, an
 - ⚡ **Async/Await API**: Modern Swift Concurrency support for all operations.
 - 🎸 **Command Support**: Write CC and SysEx commands to toggle effects, change presets, and switch the tuner.
 - 📥 **Real-time Updates**: Stream data back from the device using `AsyncStream`.
+- 🏦 **Bank Management**: Easy access to over 60 different guitar effect and device parameter banks.
+
+## Documentation
+
+Detailed documentation for the various effect and data bank definitions can be found here:
+
+- [**KatanaFx**](Sources/KatanaFx/README.md): Documentation for the core guitar effect banks (Chorus, Wah, Phaser, etc.).
+- [**KatanaGoData**](Sources/KatanaGoData/README.md): Katana:GO specific settings and banks (Amp, Speaker, Signal Chain, etc.).
 
 ## Installation
 
