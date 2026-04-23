@@ -44,13 +44,12 @@ public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
     }.joined(separator: "\n")
 
     // 5. Return the generated init
-    return [
-      """
+    let initDecl: DeclSyntax = """
       public init(\(raw: parameters)) {
         \(raw: body)
       }
       """
-    ]
+    return [initDecl]
   }
 
   public static func expansion(
