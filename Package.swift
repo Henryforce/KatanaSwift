@@ -85,5 +85,13 @@ let package = Package(
       name: "KatanaGoDataTests",
       dependencies: ["KatanaGoData", "KatanaCore", "KatanaFx", "KatanaEQ"]
     ),
+    .testTarget(
+      name: "KatanaMacrosTests",
+      dependencies: [
+        "KatanaMacrosImpl",
+        "KatanaCore",
+        .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
+      ]
+    ),
   ]
 )

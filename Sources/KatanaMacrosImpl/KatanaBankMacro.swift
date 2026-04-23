@@ -44,13 +44,12 @@ public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
     }.joined(separator: "\n")
 
     // 5. Return the generated init
-    return [
-      """
+    let initDecl: DeclSyntax = """
       public init(\(raw: parameters)) {
         \(raw: body)
       }
       """
-    ]
+    return [initDecl]
   }
 
   public static func expansion(
@@ -86,12 +85,11 @@ public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
     let writeLines = propertyData.map { data in
       """
       if self.$\(data.name).updated {
-          var address = baseAddress + self.$\(data.name).address
-          if (address & 0x80) != 0 { address += 0x80 }
-          if (address & 0x8000) != 0 { address += 0x8000 }
-          if (address & 0x800000) != 0 { address += 0x800000 }
-
-          writeData.append(WriteData(address: address, data: self.$\(data.name).value.bytes))
+        var address = baseAddress + self.$\(data.name).address
+        if (address & 0x80) != 0 { address += 0x80 }
+        if (address & 0x8000) != 0 { address += 0x8000 }
+        if (address & 0x800000) != 0 { address += 0x800000 }
+        writeData.append(WriteData(address: address, data: self.$\(data.name).value.bytes))
       }
       """
     }.joined(separator: "\n")
@@ -99,22 +97,22 @@ public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
     // 3. Build the buildFromByteArray function arguments
     let buildArguments = propertyData.map { data in
       "\(data.name): \(data.type).decodeFromByteArray(array, offset: Int(template.$\(data.name).address))"
-    }.joined(separator: ",\n        ")
+    }.joined(separator: ",\n")
 
     // 4. Construct the final method
     let writableBankExtension: DeclSyntax = """
       extension \(type.trimmed): WritableBank {
         public func loadWriteData(baseAddress: UInt32) -> [WriteData] {
-            var writeData = [WriteData]()
-            \(raw: writeLines)
-            return writeData
+          var writeData = [WriteData]()
+          \(raw: writeLines)
+          return writeData
         }
 
         public static func buildFromByteArray(_ array: [UInt8]) -> Self {
-            let template = Self()
-            return Self(
-                \(raw: buildArguments)
-            )
+          let template = Self()
+          return Self(
+            \(raw: buildArguments)
+          )
         }
       }
       """
