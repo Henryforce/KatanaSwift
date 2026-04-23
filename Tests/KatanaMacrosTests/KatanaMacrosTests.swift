@@ -3,12 +3,12 @@ import SwiftSyntaxMacros
 import SwiftSyntaxMacrosTestSupport
 import XCTest
 
-let testMacros: [String: Macro.Type] = [
-    "KatanaBank": KatanaBankMacro.self,
-    "KatanaUInt8RawBytes": KatanaUInt8RawBytesMacro.self,
-]
-
 final class KatanaMacrosTests: XCTestCase {
+    static let testMacros: [String: Macro.Type] = [
+        "KatanaBank": KatanaBankMacro.self,
+        "KatanaUInt8RawBytes": KatanaUInt8RawBytesMacro.self,
+    ]
+
     func testKatanaBankMacro() {
         assertMacroExpansion(
             """
@@ -30,8 +30,12 @@ final class KatanaMacrosTests: XCTestCase {
                 public var enabled: Bool = true
 
                 public init(volume: UInt8? = nil, enabled: Bool? = nil) {
-                  if let volume { self.volume = volume }
-                  if let enabled { self.enabled = enabled }
+                    if let volume {
+                        self.volume = volume
+                    }
+                    if let enabled {
+                        self.enabled = enabled
+                    }
                 }
             }
 
@@ -78,7 +82,7 @@ final class KatanaMacrosTests: XCTestCase {
                 }
             }
             """,
-            macros: testMacros
+            macros: Self.testMacros
         )
     }
 
@@ -97,15 +101,15 @@ final class KatanaMacrosTests: XCTestCase {
                 case on = 0x01
 
                 public var bytes: [UInt8] {
-                  return [self.rawValue]
+                    return [self.rawValue]
                 }
 
                 package static func decodeFromByteArray(_ array: [UInt8], offset: Int = 0) -> Self {
-                  return Self(rawValue: array[offset])!
+                    return Self(rawValue: array[offset])!
                 }
             }
             """,
-            macros: testMacros
+            macros: Self.testMacros
         )
     }
 }
