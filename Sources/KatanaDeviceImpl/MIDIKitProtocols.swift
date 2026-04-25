@@ -1,5 +1,5 @@
 import Foundation
-import MIDIKit
+import SwiftMIDIIO
 
 /// A protocol abstraction for MIDI endpoints (both input and output).
 /// This allows for mocking MIDI endpoints in unit tests.
@@ -7,8 +7,8 @@ public protocol MIDIEndpointProtocol: Sendable {
   /// The name of the endpoint.
   var name: String { get }
 
-  /// The display name of the endpoint, if available.
-  var displayName: String? { get }
+  /// The display name of the endpoint.
+  var displayName: String { get }
 
   /// The unique identifier for the endpoint.
   var uniqueID: MIDIIdentifier { get }

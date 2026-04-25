@@ -1,7 +1,7 @@
 import KatanaCore
 import KatanaGo
 import KatanaGoData
-import MIDIKit
+import SwiftMIDIIO
 import XCTest
 
 @testable import KatanaDeviceImpl
@@ -10,7 +10,7 @@ final class KatanaGoScannerMIDIKitTests: XCTestCase {
 
   struct MockEndpoint: MIDIEndpointProtocol {
     var name: String
-    var displayName: String?
+    var displayName: String
     var uniqueID: MIDIIdentifier = 0
   }
 
@@ -40,6 +40,7 @@ final class KatanaGoScannerMIDIKitTests: XCTestCase {
     let scanner = KatanaScannerImpl(
       midiManager: mockManager,
       retryInterval: 10_000,
+      bleScanEnabled: false,
       katanaGoFactory: { _, _ in MockKatanaGo() }
     )
 
@@ -67,7 +68,7 @@ final class KatanaGoScannerMIDIKitTests: XCTestCase {
       MockEndpoint(name: "Other Device", displayName: "Other Device")
     ]
 
-    let scanner = KatanaScannerImpl(midiManager: mockManager, retryInterval: 10_000)
+    let scanner = KatanaScannerImpl(midiManager: mockManager, retryInterval: 10_000, bleScanEnabled: false)
 
     let scanStream = await scanner.scan()
 

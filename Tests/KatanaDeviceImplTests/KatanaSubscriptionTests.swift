@@ -2,7 +2,7 @@ import KatanaCore
 import KatanaFx
 import KatanaGo
 import KatanaGoData
-import MIDIKit
+import SwiftMIDIIO
 import Testing
 
 @testable import KatanaDeviceImpl

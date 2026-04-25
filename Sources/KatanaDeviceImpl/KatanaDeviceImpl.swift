@@ -1,6 +1,6 @@
 import Foundation
 import KatanaCore
-import MIDIKit
+import SwiftMIDIIO
 
 /// MIDI-based implementation of the KatanaDevice protocol.
 public actor KatanaDeviceImpl: KatanaDevice {

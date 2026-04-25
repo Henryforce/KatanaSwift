@@ -7,8 +7,8 @@ import PackageDescription
 let package = Package(
   name: "KatanaSwift",
   platforms: [
-    .macOS(.v12),
-    .iOS(.v15),
+    .macOS(.v13),
+    .iOS(.v16),
   ],
   products: [
     // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -22,7 +22,7 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(url: "https://github.com/orchetect/MIDIKit", from: "0.11.0"),
+    .package(url: "https://github.com/orchetect/swift-midi-io", from: "0.0.0"),
     .package(url: "https://github.com/apple/swift-syntax", from: "600.0.0"),
   ],
   targets: [
@@ -66,7 +66,7 @@ let package = Package(
       name: "KatanaDeviceImpl",
       dependencies: [
         "KatanaCore",
-        .product(name: "MIDIKit", package: "MIDIKit"),
+        .product(name: "SwiftMIDIIO", package: "swift-midi-io"),
       ]
     ),
     .target(
