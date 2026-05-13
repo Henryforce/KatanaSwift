@@ -8,7 +8,7 @@ public protocol MIDIEndpointProtocol: Sendable {
   var name: String { get }
 
   /// The display name of the endpoint, if available.
-  var displayName: String? { get }
+  var displayName: String { get }
 
   /// The unique identifier for the endpoint.
   var uniqueID: MIDIIdentifier { get }

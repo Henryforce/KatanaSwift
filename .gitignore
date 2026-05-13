@@ -6,6 +6,9 @@
 .DS_Store
 *.DS_Store
 
+# Agents
+.agents/
+
 ## User settings
 xcuserdata/
 

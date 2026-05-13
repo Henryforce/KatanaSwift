@@ -5,10 +5,10 @@ import MIDIKit
 
 final class MockMIDIEndpoint: MIDIEndpointProtocol, @unchecked Sendable {
   var name: String
-  var displayName: String?
+  var displayName: String
   var uniqueID: MIDIIdentifier
 
-  init(name: String, displayName: String?, uniqueID: MIDIIdentifier = 12345) {
+  init(name: String, displayName: String, uniqueID: MIDIIdentifier = 12345) {
     self.name = name
     self.displayName = displayName
     self.uniqueID = uniqueID

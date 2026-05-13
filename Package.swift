@@ -22,7 +22,7 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(url: "https://github.com/orchetect/MIDIKit", from: "0.11.0"),
+    .package(url: "https://github.com/orchetect/MIDIKit", exact: "0.12.0"),
     .package(url: "https://github.com/apple/swift-syntax", from: "600.0.0"),
   ],
   targets: [
