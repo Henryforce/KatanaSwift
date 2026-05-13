@@ -55,7 +55,7 @@ public actor KatanaScannerImpl: KatanaScanner {
 
           for endpoint in endpoints {
             guard
-              (endpoint.displayName ?? "").localizedCaseInsensitiveContains("KATANA")
+              endpoint.displayName.localizedCaseInsensitiveContains("KATANA")
                 || endpoint.name.localizedCaseInsensitiveContains("KATANA")
             else {
               continue

@@ -10,7 +10,7 @@ final class KatanaGoScannerMIDIKitTests: XCTestCase {
 
   struct MockEndpoint: MIDIEndpointProtocol {
     var name: String
-    var displayName: String?
+    var displayName: String
     var uniqueID: MIDIIdentifier = 0
   }
 

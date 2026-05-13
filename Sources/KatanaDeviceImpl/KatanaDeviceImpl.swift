@@ -41,7 +41,7 @@ public actor KatanaDeviceImpl: KatanaDevice {
         $0.displayName == endpoint.displayName || $0.name == endpoint.name
       })
     else {
-      let displayName = endpoint.displayName ?? endpoint.name
+      let displayName = endpoint.displayName
       throw KatanaError.connectionFailed(
         "Could not find matching MIDI input endpoint (destination) for \(displayName)")
     }
