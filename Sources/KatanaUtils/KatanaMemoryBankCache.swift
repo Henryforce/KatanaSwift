@@ -1,14 +1,16 @@
 /// A dynamic cache for MIDI memory banks that mimics the 4-byte address structure of Katana devices.
 /// It stores data in a hierarchical manner based on the first 3 bytes of the address, with the
 /// 4th byte serving as an offset within a sparse `MemoryBank`.
-struct MemoryBankCache {
+public struct KatanaMemoryBankCache {
   /// Hierarchical storage: [Byte1: [Byte2: [Byte3: MemoryBank]]]
   private var hierarchy: [UInt8: [UInt8: [UInt8: MemoryBank]]] = [:]
+
+  public init() {}
 
   /// Updates the cache with data starting at the specified address.
   /// This method iterates through the data byte-by-byte and correctly handles
   /// Roland-style address increments (7-bit carry-over) when crossing bank boundaries.
-  mutating func update(address: UInt32, data: [UInt8]) {
+  public mutating func update(address: UInt32, data: [UInt8]) {
     var currentAddress = address
     for value in data {
       // Decompose address into 4 bytes for indexing
@@ -30,7 +32,7 @@ struct MemoryBankCache {
   /// Retrieves a contiguous block of data from the cache.
   /// - Returns: The data starting from the given address up to the point where data is no longer
   ///   available in the cache or until the requested length is reached.
-  func get(address: UInt32, length: Int) -> [UInt8] {
+  public func get(address: UInt32, length: Int) -> [UInt8] {
     var currentAddress = address
     var result: [UInt8] = []
     result.reserveCapacity(length)

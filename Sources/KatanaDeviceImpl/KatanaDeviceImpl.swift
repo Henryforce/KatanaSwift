@@ -1,5 +1,6 @@
 import Foundation
 import KatanaCore
+import KatanaUtils
 import MIDIKit
 
 /// MIDI-based implementation of the KatanaDevice protocol.
@@ -16,7 +17,7 @@ public actor KatanaDeviceImpl: KatanaDevice {
 
   private let deviceType: KatanaDeviceType
 
-  private var memoryBankCache = MemoryBankCache()
+  private var memoryBankCache = KatanaMemoryBankCache()
 
   public init(
     deviceType: KatanaDeviceType, endpoint: MIDIEndpointProtocol, midiManager: MIDIManagerProtocol
