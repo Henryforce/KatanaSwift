@@ -1,12 +1,12 @@
 import KatanaCore
 import KatanaGo
 import KatanaGoData
-import MIDIKit
+import SwiftMIDIIO
 import XCTest
 
 @testable import KatanaDeviceImpl
 
-final class KatanaGoScannerMIDIKitTests: XCTestCase {
+final class KatanaGoScannerMIDITests: XCTestCase {
 
   struct MockEndpoint: MIDIEndpointProtocol {
     var name: String

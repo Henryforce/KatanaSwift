@@ -1,5 +1,5 @@
 import Foundation
-import MIDIKit
+import SwiftMIDIIO
 
 /// A protocol abstraction for MIDI endpoints (both input and output).
 /// This allows for mocking MIDI endpoints in unit tests.

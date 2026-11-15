@@ -1,7 +1,7 @@
 import Foundation
 import KatanaCore
 import KatanaUtils
-import MIDIKit
+import SwiftMIDIIO
 
 /// MIDI-based implementation of the KatanaDevice protocol.
 public actor KatanaDeviceImpl: KatanaDevice {
@@ -35,7 +35,7 @@ public actor KatanaDeviceImpl: KatanaDevice {
 
   public func connect() async throws {
     // 1. Find matching input endpoint (the device's destination port)
-    // In MIDIKit, MIDIInputEndpoint represents a system destination (where we send TO).
+    // In SwiftMIDI, MIDIInputEndpoint represents a system destination (where we send TO).
     // MIDIOutputEndpoint represents a system source (where we receive FROM).
     guard
       let destinationEndpoint = midiManager.inputEndpoints.first(where: {

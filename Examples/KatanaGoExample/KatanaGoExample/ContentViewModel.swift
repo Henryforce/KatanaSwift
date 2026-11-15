@@ -44,27 +44,27 @@ final class ContentViewModel {
   }
 
   func changePreset1A() {
-    //    guard let device else { return }
-    //    Task {
-    //      do {
-    //        print("🎸 Switching to Preset 1A...")
-    //        //        try await device.write(.selectPreset(.preset1A))
-    //      } catch {
-    //        print("❌ Error: \(error)")
-    //      }
-    //    }
+    guard let device else { return }
+    Task {
+      do {
+        print("🎸 Switching to Preset 1A...")
+        try await device.selectPreset(.preset1A)
+      } catch {
+        print("❌ Error: \(error)")
+      }
+    }
   }
 
   func changePreset3A() {
-    //    guard let device else { return }
-    //    Task {
-    //      do {
-    //        print("🎸 Switching to Preset 3A...")
-    //        //        try await device.write(.selectPreset(.preset3A))
-    //      } catch {
-    //        print("❌ Error: \(error)")
-    //      }
-    //    }
+    guard let device else { return }
+    Task {
+      do {
+        print("🎸 Switching to Preset 3A...")
+        try await device.selectPreset(.preset3A)
+      } catch {
+        print("❌ Error: \(error)")
+      }
+    }
   }
 
   func updateAmpBank(_ bank: AmpBank) {
