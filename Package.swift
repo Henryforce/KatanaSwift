@@ -30,7 +30,7 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(url: "https://github.com/orchetect/MIDIKit", exact: "0.12.0"),
+    .package(url: "https://github.com/orchetect/swift-midi-io", exact: "1.1.0"),
     .package(url: "https://github.com/apple/swift-syntax", from: "600.0.0"),
   ],
   targets: [
@@ -84,7 +84,7 @@ let package = Package(
       dependencies: [
         "KatanaCore",
         "KatanaUtils",
-        .product(name: "MIDIKit", package: "MIDIKit"),
+        .product(name: "SwiftMIDIIO", package: "swift-midi-io"),
       ]
     ),
     .target(

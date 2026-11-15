@@ -1,5 +1,5 @@
 import Foundation
-import MIDIKit
+import SwiftMIDIIO
 
 @testable import KatanaDeviceImpl
 

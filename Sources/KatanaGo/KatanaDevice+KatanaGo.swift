@@ -60,6 +60,20 @@ extension KatanaDevice {
     try await write(at: address, data: [type.rawValue])
   }
 
+  /// Select the active preset on the Katana GO device.
+  /// - Parameter preset: The preset to switch to.
+  public func selectPreset(_ preset: Preset) async throws {
+    let address: UInt32 = 0x7F_00_01_00
+    try await write(at: address, data: [0x00, preset.rawValue])
+  }
+
+  /// Write the current sound settings to a specific preset slot on the device.
+  /// - Parameter preset: The target preset slot to save to.
+  public func writePreset(_ preset: Preset) async throws {
+    let address: UInt32 = 0x7F_00_01_04
+    try await write(at: address, data: [0x00, preset.rawValue, 0x00])
+  }
+
   /// Read a bank of parameters from the device.
   /// - Parameters:
   ///   - type: The bank model to read into.

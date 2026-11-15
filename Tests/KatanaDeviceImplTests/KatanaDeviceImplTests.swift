@@ -2,12 +2,12 @@ import KatanaCore
 import KatanaFx
 import KatanaGo
 import KatanaGoData
-import MIDIKit
+import SwiftMIDIIO
 import Testing
 
 @testable import KatanaDeviceImpl
 
-struct KatanaGoMIDIKitTests {
+struct KatanaGoMIDITests {
 
   @Test func testConnectionStatus() async throws {
     let midiManager = MockMIDIManager()
@@ -203,6 +203,57 @@ struct KatanaGoMIDIKitTests {
     #expect(echoWrite != nil)
     // 450 decimal is encoded as [0, 1, 28, 2] in this implementation
     #expect(Array(echoWrite![9...12]) == [0, 1, 28, 2])
+  }
+
+  @Test func testSelectPreset() async throws {
+    let (katana, midiManager, endpoint) = try await setupConnectedKatana()
+
+    try await katana.selectPreset(.preset3A)
+
+    let outputConnection =
+      midiManager.managedOutputConnections["KatanaGo_Out_\(endpoint.uniqueID)"]
+      as! MockMIDIOutputConnection
+
+    let bodies = outputConnection.sentEvents.compactMap { event -> [UInt8]? in
+      if case .sysEx7(let sysEx) = event {
+        return sysEx.data
+      }
+      return nil
+    }
+
+    // Address 0x7F_00_01_00 with data [0x00, preset3A.rawValue (0x06)]
+    let presetWrite = bodies.first { body in
+      body.count >= 11 && Array(body[5...8]) == [0x7F, 0x00, 0x01, 0x00]
+    }
+    #expect(presetWrite != nil)
+    #expect(presetWrite?[9] == 0x00)
+    #expect(presetWrite?[10] == Preset.preset3A.rawValue)
+  }
+
+  @Test func testWritePreset() async throws {
+    let (katana, midiManager, endpoint) = try await setupConnectedKatana()
+
+    try await katana.writePreset(.preset2B)
+
+    let outputConnection =
+      midiManager.managedOutputConnections["KatanaGo_Out_\(endpoint.uniqueID)"]
+      as! MockMIDIOutputConnection
+
+    let bodies = outputConnection.sentEvents.compactMap { event -> [UInt8]? in
+      if case .sysEx7(let sysEx) = event {
+        return sysEx.data
+      }
+      return nil
+    }
+
+    // Address 0x7F_00_01_04 with data [0x00, preset2B.rawValue (0x04), 0x00]
+    let presetWrite = bodies.first { body in
+      body.count >= 12 && Array(body[5...8]) == [0x7F, 0x00, 0x01, 0x04]
+    }
+    #expect(presetWrite != nil)
+    #expect(presetWrite?[9] == 0x00)
+    #expect(presetWrite?[10] == Preset.preset2B.rawValue)
+    #expect(presetWrite?[11] == 0x00)
   }
 
   @Test func testDataCaching() async throws {
