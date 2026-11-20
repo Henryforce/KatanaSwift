@@ -85,7 +85,7 @@ A sample SwiftUI application is included in the `Examples` directory to help you
 1.  Open your terminal and navigate to the project root.
 2.  Open the library in Xcode: `open Package.swift`.
 3.  The example project needs to be linked to your local development version of the library.
-4.  Follow the instructions in [Examples/README.md](Examples/README.md) to build and run the app.
+4.  Follow the instructions in [Examples/KatanaGoExample/README.md](Examples/KatanaGoExample/README.md) to build and run the app.
 
 ## Permissions
 
