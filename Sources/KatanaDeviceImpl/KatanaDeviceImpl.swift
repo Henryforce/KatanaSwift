@@ -216,7 +216,7 @@ public actor KatanaDeviceImpl: KatanaDevice {
     // Read preset name example (16 bytes -> 0x10)
     // let bytes = finalizeReadSysex(addressBytes: [0x20, 0x00, 0x00, 0x00], bytesToRead: 0x10)
     let prefix: [UInt8] = [0xf0, 0x41, 0x10] + deviceType.modelIDBytes + [0x11]
-    let body = addressBytes + bytesToRead.bytes
+    let body = addressBytes + RolandAddress.encode7BitBytes(UInt32(bytesToRead))
     let checksum = calculateChecksum(for: body)
     return prefix + body + [checksum, 0xf7]
   }

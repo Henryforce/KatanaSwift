@@ -17,15 +17,22 @@ extension UInt16 {
   }
 
   package func encodeToByteArray() -> [UInt8] {
-    return [UInt8(self >> 12), UInt8(self >> 8), UInt8(self >> 4), UInt8(self & 0xF)]
+    return [
+      UInt8((self >> 12) & 0xF),
+      UInt8((self >> 8) & 0xF),
+      UInt8((self >> 4) & 0xF),
+      UInt8(self & 0xF),
+    ]
   }
 
   package static func decodeFromByteArray(_ array: [UInt8], offset: Int = 0) -> UInt16? {
-    guard array.validateArrayAndOffset(offset) else {
+    guard offset >= 0, offset + 3 < array.count else {
       return nil
     }
-    return (UInt16(array[offset]) << 12) | (UInt16(array[offset + 1]) << 8)
-      | (UInt16(array[offset + 2]) << 4) | UInt16(array[offset + 3])
+    return (UInt16(array[offset] & 0xF) << 12)
+      | (UInt16(array[offset + 1] & 0xF) << 8)
+      | (UInt16(array[offset + 2] & 0xF) << 4)
+      | UInt16(array[offset + 3] & 0xF)
   }
 }
 
