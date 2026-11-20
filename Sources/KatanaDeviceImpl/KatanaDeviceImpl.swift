@@ -111,11 +111,10 @@ public actor KatanaDeviceImpl: KatanaDevice {
 
   public func write(at address: UInt32, data: [UInt8]) async throws {
     let bytes = finalizeSysex(address: address, data: data)
-
-    // Update cache with written data
-    memoryBankCache.update(address: address, data: data)
-
     try writeRawBytes(bytes)
+
+    // Update cache only after write succeeds
+    memoryBankCache.update(address: address, data: data)
   }
 
   private func readBank<T: WritableBank>(
