@@ -201,8 +201,8 @@ struct KatanaGoMIDITests {
       body.count >= 13 && Array(body[5...8]) == [0x20, 0x01, 0x11, 0x4A]
     }
     #expect(echoWrite != nil)
-    // 450 decimal is encoded as [0, 1, 28, 2] in this implementation
-    #expect(Array(echoWrite![9...12]) == [0, 1, 28, 2])
+    // 450 decimal (0x01C2) is encoded as 4-bit nibbles [0, 1, 12, 2]
+    #expect(Array(echoWrite![9...12]) == [0, 1, 12, 2])
   }
 
   @Test func testSelectPreset() async throws {
