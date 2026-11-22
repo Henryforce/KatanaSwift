@@ -58,9 +58,9 @@ final class KatanaMacrosTests: XCTestCase {
             var bank = Self()
             let decoded_volume: UInt8? = UInt8.decodeFromByteArray(
           array, offset: Int(bank.$volume.address))
-        if let decoded_volume {
-          bank.$volume.setDecodedValue(decoded_volume)
-        }
+            if let decoded_volume {
+              bank.$volume.setDecodedValue(decoded_volume)
+            }
             let decoded_enabled: Bool? = Bool.decodeFromByteArray(
               array, offset: Int(bank.$enabled.address))
             if let decoded_enabled {
@@ -113,9 +113,9 @@ final class KatanaMacrosTests: XCTestCase {
             var bank = Self()
             let decoded_volume: UInt8? = UInt8.decodeFromByteArray(
           array, offset: Int(bank.$volume.address))
-        if let decoded_volume {
-          bank.$volume.setDecodedValue(decoded_volume)
-        }
+            if let decoded_volume {
+              bank.$volume.setDecodedValue(decoded_volume)
+            }
             return bank
           }
         }
