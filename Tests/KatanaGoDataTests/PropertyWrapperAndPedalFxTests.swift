@@ -7,7 +7,7 @@ struct PropertyWrapperAndPedalFxTests {
 
   @Test func testEqualityIgnoresDirtyFlag() {
     let defaultBank = AmpBank()
-    let modifiedSameValue = AmpBank(gain: 50, type: .clean)
+    let modifiedSameValue = AmpBank(type: .clean, gain: 50)
 
     #expect(defaultBank == modifiedSameValue)
     #expect(defaultBank.hashValue == modifiedSameValue.hashValue)
