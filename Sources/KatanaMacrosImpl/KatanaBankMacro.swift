@@ -10,40 +10,14 @@ public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
     conformingTo protocols: [TypeSyntax],
     in context: some MacroExpansionContext
   ) throws -> [DeclSyntax] {
+    let propertyData = extractParameterProperties(from: declaration)
 
-    // 1. Find all properties (variables) in the struct
-    let members = declaration.memberBlock.members
-    let variables = members.compactMap { member -> VariableDeclSyntax? in
-      guard let varDecl = member.decl.as(VariableDeclSyntax.self) else { return nil }
-      // Filter out static or class properties
-      let isStatic = varDecl.modifiers.contains { modifier in
-        modifier.name.tokenKind == .keyword(.static) || modifier.name.tokenKind == .keyword(.class)
-      }
-      return isStatic ? nil : varDecl
-    }
-
-    // 2. Extract names and types
-    // We filter for stored properties that have a type annotation
-    let propertyData = variables.flatMap { v -> [(name: String, type: String)] in
-      v.bindings.compactMap { binding in
-        guard let name = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text,
-          let type = binding.typeAnnotation?.type.description.trimmingCharacters(in: .whitespaces)
-        else {
-          return nil
-        }
-        return (name, type)
-      }
-    }
-
-    // 3. Construct the initializer parameters: (name: Type? = nil)
     let parameters = propertyData.map { "\($0.name): \($0.type)? = nil" }.joined(separator: ", ")
 
-    // 4. Construct the body: if let name { self.name = name }
     let body = propertyData.map {
       "if let \($0.name) { self.\($0.name) = \($0.name) }"
     }.joined(separator: "\n")
 
-    // 5. Return the generated init
     let initDecl: DeclSyntax = """
       public init(\(raw: parameters)) {
         \(raw: body)
@@ -59,47 +33,27 @@ public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
     conformingTo protocols: [TypeSyntax],
     in context: some MacroExpansionContext
   ) throws -> [ExtensionDeclSyntax] {
-    // 1. Extract all variable names and types from the declaration
-    let memberList = declaration.memberBlock.members
-    let variables = memberList.compactMap { member -> VariableDeclSyntax? in
-      guard let varDecl = member.decl.as(VariableDeclSyntax.self) else { return nil }
-      // Filter out static or class properties
-      let isStatic = varDecl.modifiers.contains { modifier in
-        modifier.name.tokenKind == .keyword(.static) || modifier.name.tokenKind == .keyword(.class)
-      }
-      return isStatic ? nil : varDecl
-    }
+    let propertyData = extractParameterProperties(from: declaration)
 
-    let propertyData = variables.flatMap { v -> [(name: String, type: String)] in
-      v.bindings.compactMap { binding in
-        guard let name = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text,
-          let type = binding.typeAnnotation?.type.description.trimmingCharacters(in: .whitespaces)
-        else {
-          return nil
-        }
-        return (name, type)
-      }
-    }
-
-    // 2. Build the loadWriteData function body strings
     let writeLines = propertyData.map { data in
       """
       if self.$\(data.name).updated {
-        var address = baseAddress + self.$\(data.name).address
-        if (address & 0x80) != 0 { address += 0x80 }
-        if (address & 0x8000) != 0 { address += 0x8000 }
-        if (address & 0x800000) != 0 { address += 0x800000 }
+        let address = RolandAddress.adding(self.$\(data.name).address, to: baseAddress)
         writeData.append(WriteData(address: address, data: self.$\(data.name).value.bytes))
       }
       """
     }.joined(separator: "\n")
 
-    // 3. Build the buildFromByteArray function arguments
-    let buildArguments = propertyData.map { data in
-      "\(data.name): \(data.type).decodeFromByteArray(array, offset: Int(template.$\(data.name).address))"
-    }.joined(separator: ",\n")
+    let decodeLines = propertyData.map { data in
+      """
+      let decoded_\(data.name): \(data.type)? = \(data.type).decodeFromByteArray(
+        array, offset: Int(bank.$\(data.name).address))
+      if let decoded_\(data.name) {
+        bank.$\(data.name).setDecodedValue(decoded_\(data.name))
+      }
+      """
+    }.joined(separator: "\n")
 
-    // 4. Construct the final method
     let writableBankExtension: DeclSyntax = """
       extension \(type.trimmed): WritableBank {
         public func loadWriteData(baseAddress: UInt32) -> [WriteData] {
@@ -109,10 +63,9 @@ public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
         }
 
         public static func buildFromByteArray(_ array: [UInt8]) -> Self {
-          let template = Self()
-          return Self(
-            \(raw: buildArguments)
-          )
+          var bank = Self()
+          \(raw: decodeLines)
+          return bank
         }
       }
       """
@@ -122,6 +75,41 @@ public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
     }
 
     return [extensionDecl]
+  }
+
+  private static func extractParameterProperties(from declaration: some DeclGroupSyntax)
+    -> [(name: String, type: String)]
+  {
+    let members = declaration.memberBlock.members
+    let variables = members.compactMap { member -> VariableDeclSyntax? in
+      guard let varDecl = member.decl.as(VariableDeclSyntax.self) else { return nil }
+      let isStatic = varDecl.modifiers.contains { modifier in
+        modifier.name.tokenKind == .keyword(.static) || modifier.name.tokenKind == .keyword(.class)
+      }
+      guard !isStatic else { return nil }
+
+      let hasParameterAttribute = varDecl.attributes.contains { element in
+        guard let attr = element.as(AttributeSyntax.self),
+          let name = attr.attributeName.as(IdentifierTypeSyntax.self)?.name.text
+        else {
+          return false
+        }
+        return name == "Parameter" || name == "IntegerParameter"
+      }
+      return hasParameterAttribute ? varDecl : nil
+    }
+
+    return variables.flatMap { v -> [(name: String, type: String)] in
+      v.bindings.compactMap { binding in
+        guard binding.accessorBlock == nil,
+          let name = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text,
+          let type = binding.typeAnnotation?.type.description.trimmingCharacters(in: .whitespaces)
+        else {
+          return nil
+        }
+        return (name, type)
+      }
+    }
   }
 }
 
