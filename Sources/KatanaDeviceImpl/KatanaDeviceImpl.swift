@@ -5,35 +5,51 @@ import SwiftMIDIIO
 
 /// MIDI-based implementation of the KatanaDevice protocol.
 public actor KatanaDeviceImpl: KatanaDevice {
+  private struct PendingRead {
+    let continuation: CheckedContinuation<[UInt8], Error>
+    let timeoutTask: Task<Void, Never>?
+  }
+
   private let endpoint: MIDIEndpointProtocol
   private let midiManager: MIDIManagerProtocol
+  private let readTimeoutNanoseconds: UInt64
 
   private var inputTag: String { "KatanaGo_In_\(endpoint.uniqueID)" }
   private var outputTag: String { "KatanaGo_Out_\(endpoint.uniqueID)" }
 
-  private var continuation: AsyncStream<StreamData>.Continuation?
+  private var dataSubscribers: [UUID: AsyncStream<StreamData>.Continuation] = [:]
+  private var pendingReads: [UInt32: [UUID: PendingRead]] = [:]
 
-  private var pendingReads: [UInt32: CheckedContinuation<[UInt8], Error>] = [:]
+  private var status: ConnectionStatus = .disconnected
 
   private let deviceType: KatanaDeviceType
 
   private var memoryBankCache = KatanaMemoryBankCache()
 
   public init(
-    deviceType: KatanaDeviceType, endpoint: MIDIEndpointProtocol, midiManager: MIDIManagerProtocol
+    deviceType: KatanaDeviceType,
+    endpoint: MIDIEndpointProtocol,
+    midiManager: MIDIManagerProtocol,
+    readTimeoutNanoseconds: UInt64 = 5_000_000_000
   ) {
     self.deviceType = deviceType
     self.endpoint = endpoint
     self.midiManager = midiManager
+    self.readTimeoutNanoseconds = readTimeoutNanoseconds
   }
 
   public func connectionStatus() async -> ConnectionStatus {
+    if status == .connecting || status == .disconnecting {
+      return status
+    }
     let isInputConnected = midiManager.loadManagedInputConnections()[inputTag] != nil
     let isOutputConnected = midiManager.loadManagedOutputConnections()[outputTag] != nil
     return (isInputConnected && isOutputConnected) ? .connected : .disconnected
   }
 
   public func connect() async throws {
+    status = .connecting
+
     // 1. Find matching input endpoint (the device's destination port)
     // In SwiftMIDI, MIDIInputEndpoint represents a system destination (where we send TO).
     // MIDIOutputEndpoint represents a system source (where we receive FROM).
@@ -42,67 +58,104 @@ public actor KatanaDeviceImpl: KatanaDevice {
         $0.displayName == endpoint.displayName || $0.name == endpoint.name
       })
     else {
+      status = .disconnected
       let displayName = endpoint.displayName
       throw KatanaError.connectionFailed(
         "Could not find matching MIDI input endpoint (destination) for \(displayName)")
     }
 
-    // 2. Setup output connection (to send TO the device)
-    // We connect our output to the device's input endpoint.
-    try midiManager.addOutputConnection(
-      to: [destinationEndpoint],
-      tag: outputTag
-    )
+    do {
+      // 2. Setup output connection (to send TO the device)
+      // We connect our output to the device's input endpoint.
+      try midiManager.addOutputConnection(
+        to: [destinationEndpoint],
+        tag: outputTag
+      )
 
-    // 3. Setup input connection (to receive FROM the device)
-    // We connect our input to the device's output endpoint (which is the 'endpoint' property).
-    try midiManager.addInputConnection(
-      to: [endpoint],
-      tag: inputTag,
-      receiver: .events { [weak self] events, timestamp, source in
-        Task { [weak self] in
-          await self?.handleMIDIEvents(events)
+      // 3. Setup input connection (to receive FROM the device)
+      // We connect our input to the device's output endpoint (which is the 'endpoint' property).
+      try midiManager.addInputConnection(
+        to: [endpoint],
+        tag: inputTag,
+        receiver: .events { [weak self] events, timestamp, source in
+          Task { [weak self] in
+            await self?.handleMIDIEvents(events)
+          }
         }
-      }
-    )
+      )
 
-    for bytes in KatanaGoStartupData.data {
-      try writeRawBytes(bytes)
+      for bytes in KatanaGoStartupData.data {
+        try writeRawBytes(bytes)
+      }
+
+      status = .connected
+    } catch {
+      await disconnect()
+      throw error
     }
   }
 
   private func handleMIDIEvents(_ events: [MIDIEvent]) {
     for event in events {
-      guard case .sysEx7(let sysEx) = event else {
+      guard case .sysEx7(let sysEx) = event,
+        sysEx.manufacturer == .oneByte(0x41)
+      else {
         continue
       }
 
       let message = sysEx.data
-      // Check if this is a valid read response.
-      if message.count >= 10, message[4] == 18 {
-        let address = Array(message[5...8]).address
-        // Remove checksum byte, hence the < count - 1
-        let data = Array(message[9..<(message.count - 1)])
+      // Validate Roland model ID and DT1 command (0x12 = 18) with minimum length.
+      guard message.count >= 10,
+        Array(message[1...3]) == deviceType.modelIDBytes,
+        message[4] == 18
+      else {
+        continue
+      }
 
-        // Update cache with received data
-        memoryBankCache.update(address: address, data: data)
+      let address = Array(message[5...8]).address
+      // Remove checksum byte, hence the < count - 1
+      let data = Array(message[9..<(message.count - 1)])
 
-        if let continuation = pendingReads.removeValue(forKey: address) {
-          continuation.resume(returning: data)
-          // Skip further processing as there was a pending read for this address.
-          continue
+      // Update cache with received data
+      memoryBankCache.update(address: address, data: data)
+
+      if let waiters = pendingReads.removeValue(forKey: address), !waiters.isEmpty {
+        for (_, waiter) in waiters {
+          waiter.timeoutTask?.cancel()
+          waiter.continuation.resume(returning: data)
         }
+        // Skip further processing as there were pending reads for this address.
+        continue
+      }
 
-        continuation?.yield((address, data))
+      for subscriber in dataSubscribers.values {
+        subscriber.yield((address, data))
       }
     }
   }
 
   public func disconnect() async {
+    status = .disconnecting
+
     midiManager.remove(.inputConnection, .withTag(inputTag))
     midiManager.remove(.outputConnection, .withTag(outputTag))
-    continuation?.finish()
-    continuation = nil
+
+    let allPending = pendingReads
+    pendingReads.removeAll()
+    for (_, waiters) in allPending {
+      for (_, waiter) in waiters {
+        waiter.timeoutTask?.cancel()
+        waiter.continuation.resume(throwing: KatanaError.notConnected)
+      }
+    }
+
+    let subscribers = dataSubscribers
+    dataSubscribers.removeAll()
+    for subscriber in subscribers.values {
+      subscriber.finish()
+    }
+
+    status = .disconnected
   }
 
   public func readDeviceType() async -> KatanaDeviceType {
@@ -115,15 +168,6 @@ public actor KatanaDeviceImpl: KatanaDevice {
 
     // Update cache only after write succeeds
     memoryBankCache.update(address: address, data: data)
-  }
-
-  private func readBank<T: WritableBank>(
-    _ type: T.Type, addressModifiers: UInt32, options: ReadDataOptions = .deviceOnly
-  ) async throws -> T {
-    let address = addressModifiers
-    let size = T.size
-    let data = try await readData(at: address, length: UInt16(size), options: options)
-    return try T.buildFromByteArray(data)
   }
 
   public func readData(at address: UInt32, length: UInt16, options: ReadDataOptions) async throws
@@ -159,33 +203,77 @@ public actor KatanaDeviceImpl: KatanaDevice {
 
   private func readFromDevice(at address: UInt32, length: UInt16) async throws -> [UInt8] {
     let bytes = finalizeReadSysex(addressBytes: address.addressBytes, bytesToRead: length)
-    return try await withCheckedThrowingContinuation { continuation in
-      pendingReads[address] = continuation
-      do {
-        try writeRawBytes(bytes)
-      } catch {
-        pendingReads.removeValue(forKey: address)
-        continuation.resume(throwing: error)
+    let readID = UUID()
+
+    return try await withTaskCancellationHandler {
+      try await withCheckedThrowingContinuation { continuation in
+        if Task.isCancelled {
+          continuation.resume(throwing: CancellationError())
+          return
+        }
+
+        let timeoutTask: Task<Void, Never>? =
+          readTimeoutNanoseconds > 0
+          ? Task { [weak self, readTimeoutNanoseconds] in
+            try? await Task.sleep(nanoseconds: readTimeoutNanoseconds)
+            await self?.completePendingRead(
+              address: address, id: readID, result: .failure(KatanaError.timeout))
+          }
+          : nil
+
+        pendingReads[address, default: [:]][readID] = PendingRead(
+          continuation: continuation, timeoutTask: timeoutTask)
+
+        do {
+          try writeRawBytes(bytes)
+        } catch {
+          completePendingRead(address: address, id: readID, result: .failure(error))
+        }
+      }
+    } onCancel: {
+      Task { [weak self] in
+        await self?.completePendingRead(
+          address: address, id: readID, result: .failure(CancellationError()))
       }
     }
   }
 
-  public func subscribeToData() -> AsyncStream<StreamData> {
-    AsyncStream { continuation in
-      self.continuation = continuation
+  private func completePendingRead(
+    address: UInt32, id: UUID, result: Result<[UInt8], Error>
+  ) {
+    guard var waiters = pendingReads[address],
+      let waiter = waiters.removeValue(forKey: id)
+    else {
+      return
     }
+    if waiters.isEmpty {
+      pendingReads.removeValue(forKey: address)
+    } else {
+      pendingReads[address] = waiters
+    }
+    waiter.timeoutTask?.cancel()
+    waiter.continuation.resume(with: result)
+  }
+
+  public func subscribeToData() -> AsyncStream<StreamData> {
+    let id = UUID()
+    return AsyncStream { continuation in
+      dataSubscribers[id] = continuation
+      continuation.onTermination = { [weak self] _ in
+        Task { [weak self] in
+          await self?.removeSubscriber(id: id)
+        }
+      }
+    }
+  }
+
+  private func removeSubscriber(id: UUID) {
+    dataSubscribers.removeValue(forKey: id)
   }
 
   /// Returns cached data if available for the given address and length.
   func cachedData(at address: UInt32, length: Int) -> [UInt8]? {
     return memoryBankCache.get(address: address, length: length)
-  }
-
-  private func finalizeReadSysex(addressBytes: [UInt8], data: [UInt8]) -> [UInt8] {
-    let prefix: [UInt8] = [0xf0, 0x41, 0x10] + deviceType.modelIDBytes + [0x11]
-    let body = addressBytes + data
-    let checksum = calculateChecksum(for: body)
-    return prefix + body + [checksum, 0xf7]
   }
 
   private func writeRawBytes(_ rawBytes: [UInt8]) throws {
@@ -199,13 +287,6 @@ public actor KatanaDeviceImpl: KatanaDevice {
   private func finalizeSysex(address: UInt32, data: [UInt8]) -> [UInt8] {
     let prefix: [UInt8] = [0xf0, 0x41, 0x10] + deviceType.modelIDBytes + [0x12]
     let body = address.addressBytes + data
-    let checksum = calculateChecksum(for: body)
-    return prefix + body + [checksum, 0xf7]
-  }
-
-  private func finalizeSysex(addressBytes: [UInt8], data: [UInt8]) -> [UInt8] {
-    let prefix: [UInt8] = [0xf0, 0x41, 0x10] + deviceType.modelIDBytes + [0x12]
-    let body = addressBytes + data
     let checksum = calculateChecksum(for: body)
     return prefix + body + [checksum, 0xf7]
   }

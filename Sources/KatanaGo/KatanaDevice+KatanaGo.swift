@@ -120,7 +120,7 @@ extension KatanaDevice {
   public func subscribeToKatanaGoBanks() -> AsyncStream<KatanaGoDataBank> {
     return AsyncStream { continuation in
       let stream = subscribeToData()
-      Task {
+      let task = Task {
         for await streamData in stream {
           var dataToParse = streamData.data
           var addressToParse = streamData.address
@@ -146,6 +146,11 @@ extension KatanaDevice {
             continuation.yield(bank)
           }
         }
+        continuation.finish()
+      }
+
+      continuation.onTermination = { _ in
+        task.cancel()
       }
     }
   }

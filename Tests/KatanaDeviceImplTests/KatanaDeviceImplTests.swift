@@ -12,16 +12,17 @@ struct KatanaGoMIDITests {
   @Test func testConnectionStatus() async throws {
     let midiManager = MockMIDIManager()
     let endpoint = MockMIDIEndpoint(name: "Katana", displayName: "Katana")
+    let inputEndpoint = MockMIDIEndpoint(name: "Katana", displayName: "Katana", uniqueID: 54321)
+    midiManager.inputEndpoints = [inputEndpoint]
     let katana = KatanaDeviceImpl(deviceType: .go, endpoint: endpoint, midiManager: midiManager)
 
-    // Initially disconnected
-    let status = await katana.connectionStatus()
-    #expect(status == .disconnected)
+    #expect(await katana.connectionStatus() == .disconnected)
 
-    // Mock connected state
-    // In connectionStatus, it checks if tags exist in managedInputConnections and managedOutputConnections
-    // let inputTag = "KatanaGo_In_\(endpoint.uniqueID)"
-    // let outputTag = "KatanaGo_Out_\(endpoint.uniqueID)"
+    try await katana.connect()
+    #expect(await katana.connectionStatus() == .connected)
+
+    await katana.disconnect()
+    #expect(await katana.connectionStatus() == .disconnected)
   }
 
   @Test func testConnectSuccess() async throws {
