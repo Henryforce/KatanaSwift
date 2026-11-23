@@ -43,12 +43,21 @@ public struct PedalFxBanks: KatanaGoBank, Sendable, Hashable {
   public func loadWriteData(baseAddress: UInt32) -> [WriteData] {
     var writeData = [WriteData]()
     writeData.append(contentsOf: wah.loadWriteData(baseAddress: baseAddress))
-    writeData.append(contentsOf: bend.loadWriteData(baseAddress: baseAddress))
-    writeData.append(contentsOf: wah95.loadWriteData(baseAddress: baseAddress))
+    writeData.append(
+      contentsOf: bend.loadWriteData(
+        baseAddress: RolandAddress.adding(PedalFxWahBank.size, to: baseAddress)))
+    writeData.append(
+      contentsOf: wah95.loadWriteData(
+        baseAddress: RolandAddress.adding(
+          PedalFxWahBank.size + PedalFxBendBank.size, to: baseAddress)))
     return writeData
   }
 
   public static func buildFromByteArray(_ array: [UInt8]) -> Self {
+    guard array.count >= Int(Self.size) else {
+      return Self()
+    }
+
     let wahArrayOffset = Int(PedalFxWahBank.katanaGoAddress - Self.katanaGoAddress)
     let wahArray = Array(array[wahArrayOffset..<wahArrayOffset + Int(PedalFxWahBank.size)])
 
