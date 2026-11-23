@@ -194,7 +194,7 @@ struct KatanaGoSysExParserTests {
     let modMessage = finalizeSysex(address: modAddress, data: inputArray)
     let modCommands = KatanaGoSysExParser.parse(modMessage)
 
-    #expect(modCommands.count == 32)
+    #expect(modCommands.count == 34)
     if let last = modCommands.last, case .modSingleEffect(.bassSynth(let bank)) = last {
       #expect(bank.cutoff == 40)
       #expect(bank.resonance == 30)
@@ -208,7 +208,7 @@ struct KatanaGoSysExParserTests {
     let fxMessage = finalizeSysex(address: fxAddress, data: inputArray)
     let fxCommands = KatanaGoSysExParser.parse(fxMessage)
 
-    #expect(fxCommands.count == 32)
+    #expect(fxCommands.count == 34)
     if let last = fxCommands.last, case .fxSingleEffect(.bassSynth(let bank)) = last {
       #expect(bank.cutoff == 40)
       #expect(bank.resonance == 30)
@@ -242,7 +242,7 @@ struct KatanaGoSysExParserTests {
     let batteryCommands = KatanaGoSysExParser.parse(batteryMessage)
     #expect(batteryCommands == [.batteryBank(BatteryBank(level: 2))])
 
-    let limiterData: [UInt8] = [1, 60, 40, 20, 70]
+    let limiterData: [UInt8] = [1, 60, 40, 5, 20, 70]
     let limiterMessage = finalizeSysex(address: LimiterBank.katanaGoAddress, data: limiterData)
     let limiterCommands = KatanaGoSysExParser.parse(limiterMessage)
     #expect(limiterCommands.count == 1)
