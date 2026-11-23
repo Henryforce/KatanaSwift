@@ -71,8 +71,7 @@ public struct DC30Bank: Sendable, Hashable {
   public static let size: UInt32 = 11
 }
 
-@KatanaUInt8RawBytes
-public enum ChorusCrossoverFrequency: UInt8, Sendable, Hashable, CaseIterable {
+public enum ChorusCrossoverFrequency: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case freq100Hz = 0x00
   case freq125Hz = 0x01
   case freq160Hz = 0x02
@@ -92,14 +91,12 @@ public enum ChorusCrossoverFrequency: UInt8, Sendable, Hashable, CaseIterable {
   case freq4kHz = 0x10
 }
 
-@KatanaUInt8RawBytes
-public enum DC30Type: UInt8, Sendable, Hashable, CaseIterable {
+public enum DC30Type: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case chorus = 0x00
   case echo = 0x01
 }
 
-@KatanaUInt8RawBytes
-public enum DC30OutputType: UInt8, Sendable, Hashable, CaseIterable {
+public enum DC30OutputType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case dPlusE = 0x00
   case dOverE = 0x01
 }

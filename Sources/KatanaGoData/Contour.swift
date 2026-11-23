@@ -14,8 +14,7 @@ public struct ContourBank: KatanaGoBank, Sendable, Hashable {
   public static let size: UInt32 = 2
 }
 
-@KatanaUInt8RawBytes
-public enum ContourType: UInt8, Sendable, Hashable, CaseIterable {
+public enum ContourType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case off = 0x00
   case one = 0x01
   case two = 0x02

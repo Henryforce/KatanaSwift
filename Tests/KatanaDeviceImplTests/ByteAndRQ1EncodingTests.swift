@@ -8,14 +8,14 @@ import Testing
 
 struct ByteAndRQ1EncodingTests {
 
-  @Test func testUInt16RoundTripAndEdgeValues() {
+  @Test func testUInt16RoundTripAndEdgeValues() throws {
     let values: [UInt16] = [0, 1, 15, 16, 127, 128, 255, 256, 450, 1000, 2000, 4096, 65535]
 
     for value in values {
       let encoded = value.bytes
       #expect(encoded.count == 4)
       #expect(encoded.allSatisfy { $0 <= 0x0F })
-      #expect(UInt16.decodeFromByteArray(encoded) == value)
+      #expect(try UInt16.decodeFromByteArray(encoded) == value)
     }
 
     #expect(UInt16(450).bytes == [0, 1, 12, 2])
@@ -23,12 +23,16 @@ struct ByteAndRQ1EncodingTests {
     #expect(UInt16(4096).bytes == [1, 0, 0, 0])
   }
 
-  @Test func testUInt16DecodeRejectsShortBuffers() {
-    #expect(UInt16.decodeFromByteArray([]) == nil)
-    #expect(UInt16.decodeFromByteArray([0x01, 0x02, 0x03]) == nil)
-    #expect(UInt16.decodeFromByteArray([0x00, 0x01, 0x02, 0x03], offset: 1) == nil)
-    #expect(UInt16.decodeFromByteArray([0x00, 0x01, 0x02, 0x03], offset: -1) == nil)
-    #expect(UInt16.decodeFromByteArray([0x00, 0x01, 0x02, 0x03, 0x04], offset: 1) == 0x1234)
+  @Test func testUInt16DecodeRejectsShortBuffers() throws {
+    #expect(throws: KatanaError.self) { _ = try UInt16.decodeFromByteArray([]) }
+    #expect(throws: KatanaError.self) { _ = try UInt16.decodeFromByteArray([0x01, 0x02, 0x03]) }
+    #expect(throws: KatanaError.self) {
+      _ = try UInt16.decodeFromByteArray([0x00, 0x01, 0x02, 0x03], offset: 1)
+    }
+    #expect(throws: KatanaError.self) {
+      _ = try UInt16.decodeFromByteArray([0x00, 0x01, 0x02, 0x03], offset: -1)
+    }
+    #expect(try UInt16.decodeFromByteArray([0x00, 0x01, 0x02, 0x03, 0x04], offset: 1) == 0x1234)
   }
 
   @Test func testRolandAddress7BitEncodingAndArithmetic() {

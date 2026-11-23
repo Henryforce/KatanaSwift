@@ -18,8 +18,7 @@ public struct OctaverBank: Sendable, Hashable {
   public static let size: UInt32 = 3
 }
 
-@KatanaUInt8RawBytes
-public enum OctaverRange: UInt8, Sendable, Hashable, CaseIterable {
+public enum OctaverRange: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case range1 = 0x00
   case range2 = 0x01
   case range3 = 0x02

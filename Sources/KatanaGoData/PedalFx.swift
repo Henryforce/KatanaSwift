@@ -53,9 +53,9 @@ public struct PedalFxBanks: KatanaGoBank, Sendable, Hashable {
     return writeData
   }
 
-  public static func buildFromByteArray(_ array: [UInt8]) -> Self {
+  public static func buildFromByteArray(_ array: [UInt8]) throws -> Self {
     guard array.count >= Int(Self.size) else {
-      return Self()
+      throw KatanaError.decodingFailed
     }
 
     let wahArrayOffset = Int(PedalFxWahBank.katanaGoAddress - Self.katanaGoAddress)
@@ -67,7 +67,7 @@ public struct PedalFxBanks: KatanaGoBank, Sendable, Hashable {
     let wah95ArrayOffset = Int(PedalFxWah95Bank.katanaGoAddress - Self.katanaGoAddress)
     let wah95Array = Array(array[wah95ArrayOffset..<wah95ArrayOffset + Int(PedalFxWah95Bank.size)])
 
-    return Self(
+    return try Self(
       wah: PedalFxWahBank.buildFromByteArray(wahArray),
       bend: PedalFxBendBank.buildFromByteArray(bendArray),
       wah95: PedalFxWah95Bank.buildFromByteArray(wah95Array)
@@ -143,15 +143,13 @@ public struct PedalFxWah95Bank: KatanaGoBank, Sendable, Hashable {
 
 // MARK - Pedal FX Options
 
-@KatanaUInt8RawBytes
-public enum PedalFxType: UInt8, Sendable, Hashable, CaseIterable {
+public enum PedalFxType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case wah = 0x00
   case wah95 = 0x01
   case pbend = 0x02
 }
 
-@KatanaUInt8RawBytes
-public enum PedalFxWahType: UInt8, Sendable, Hashable, CaseIterable {
+public enum PedalFxWahType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case cryWah = 0x00
   case voWah = 0x01
   case fatWah = 0x02

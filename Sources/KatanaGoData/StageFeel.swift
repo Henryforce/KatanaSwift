@@ -30,16 +30,14 @@ public struct StageFeelCustomBank: KatanaGoBank, Sendable, Hashable {
   public static let size: UInt32 = 4
 }
 
-@KatanaUInt8RawBytes
-public enum StageFeelSelect: UInt8, Sendable, Hashable, CaseIterable {
+public enum StageFeelSelect: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case off = 0x00
   case studio = 0x01
   case stage = 0x02
   case custom = 0x03
 }
 
-@KatanaUInt8RawBytes
-public enum AmbienceType: UInt8, Sendable, Hashable, CaseIterable {
+public enum AmbienceType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case room = 0x00
   case smallHall = 0x01
   case largeHall = 0x02

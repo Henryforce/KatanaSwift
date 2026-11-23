@@ -3,9 +3,9 @@ extension UInt8 {
     return [self]
   }
 
-  package static func decodeFromByteArray(_ array: [UInt8], offset: Int = 0) -> UInt8? {
+  package static func decodeFromByteArray(_ array: [UInt8], offset: Int = 0) throws -> UInt8 {
     guard array.validateArrayAndOffset(offset) else {
-      return nil
+      throw KatanaError.decodingFailed
     }
     return array[offset]
   }
@@ -25,9 +25,9 @@ extension UInt16 {
     ]
   }
 
-  package static func decodeFromByteArray(_ array: [UInt8], offset: Int = 0) -> UInt16? {
+  package static func decodeFromByteArray(_ array: [UInt8], offset: Int = 0) throws -> UInt16 {
     guard offset >= 0, offset + 3 < array.count else {
-      return nil
+      throw KatanaError.decodingFailed
     }
     return (UInt16(array[offset] & 0xF) << 12)
       | (UInt16(array[offset + 1] & 0xF) << 8)
@@ -41,9 +41,9 @@ extension Bool {
     return [self ? 1 : 0]
   }
 
-  package static func decodeFromByteArray(_ array: [UInt8], offset: Int = 0) -> Bool? {
+  package static func decodeFromByteArray(_ array: [UInt8], offset: Int = 0) throws -> Bool {
     guard array.validateArrayAndOffset(offset) else {
-      return nil
+      throw KatanaError.decodingFailed
     }
     return array[offset] == 1
   }

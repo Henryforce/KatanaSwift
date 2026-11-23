@@ -27,15 +27,13 @@ public struct LimiterBank: Sendable, Hashable {
   public static let size: UInt32 = 6
 }
 
-@KatanaUInt8RawBytes
-public enum LimiterType: UInt8, Sendable, Hashable, CaseIterable {
+public enum LimiterType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case boss = 0x00
   case rack160D = 0x01
   case vtgRackU = 0x02
 }
 
-@KatanaUInt8RawBytes
-public enum LimiterRatio: UInt8, Sendable, Hashable, CaseIterable {
+public enum LimiterRatio: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case oneToOne = 0x00
   case oneDotTwoToOne = 0x01
   case oneDotFourToOne = 0x02

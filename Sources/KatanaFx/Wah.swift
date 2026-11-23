@@ -3,8 +3,7 @@ import KatanaMacros
 
 // MARK: - Wah
 
-@KatanaUInt8RawBytes
-public enum WahMode: UInt8, Sendable, Hashable, CaseIterable {
+public enum WahMode: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case lowPassFilter = 0x00
   case highPassFilter = 0x01
 }
@@ -38,8 +37,7 @@ public struct TWahBank: Sendable, Hashable {
   public static let size: UInt32 = 7
 }
 
-@KatanaUInt8RawBytes
-public enum TWahPolarity: UInt8, Sendable, Hashable, CaseIterable {
+public enum TWahPolarity: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case down = 0x00
   case up = 0x01
 }

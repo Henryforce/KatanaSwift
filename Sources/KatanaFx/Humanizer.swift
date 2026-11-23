@@ -33,14 +33,12 @@ public struct HumanizerBank: Sendable, Hashable {
   public static let size: UInt32 = 8
 }
 
-@KatanaUInt8RawBytes
-public enum HumanizerMode: UInt8, Sendable, Hashable, CaseIterable {
+public enum HumanizerMode: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case picking = 0x00
   case auto = 0x01
 }
 
-@KatanaUInt8RawBytes
-public enum HumanizerWovel: UInt8, Sendable, Hashable, CaseIterable {
+public enum HumanizerWovel: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case a = 0x00
   case e = 0x01
   case i = 0x02

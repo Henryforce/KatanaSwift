@@ -36,8 +36,7 @@ public struct BoostBank: KatanaGoBank, Sendable, Hashable {
 // MARK - Types
 
 /// Available booster types for the Katana GO.
-@KatanaUInt8RawBytes
-public enum BoostType: UInt8, Sendable, Hashable, CaseIterable {
+public enum BoostType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case cleanBoost = 0x00
   case trebleBoost = 0x01
   case midBoost = 0x02
@@ -64,7 +63,7 @@ public enum BoostType: UInt8, Sendable, Hashable, CaseIterable {
 }
 
 /// Available booster types for the Katana GO in Bass Mode.
-public enum BassBoostType: UInt8, Sendable, Hashable, CaseIterable {
+public enum BassBoostType: UInt8, KatanaByteCodable, Hashable, CaseIterable {
   case bluesOD = 0x00
   case natural = 0x01
   case guVDS = 0x02

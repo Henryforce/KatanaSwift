@@ -19,8 +19,7 @@ public struct SignalChainBank: KatanaGoBank, Sendable, Hashable {
 }
 
 // TODO: verify values
-@KatanaUInt8RawBytes
-public enum PatchKey: UInt8, Sendable, Hashable, CaseIterable {
+public enum PatchKey: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case c = 0x00
   case db = 0x01
   case d = 0x02
@@ -35,8 +34,7 @@ public enum PatchKey: UInt8, Sendable, Hashable, CaseIterable {
   case b = 0x0B
 }
 
-@KatanaUInt8RawBytes
-public enum Chain: UInt8, Sendable, Hashable, CaseIterable {
+public enum Chain: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case one = 0x00
   case twoOne = 0x01
   case threeOne = 0x02
@@ -48,8 +46,7 @@ public enum Chain: UInt8, Sendable, Hashable, CaseIterable {
   case bassTwo = 0x08
 }
 
-@KatanaUInt8RawBytes
-public enum CabinetResonance: UInt8, Sendable, Hashable, CaseIterable {
+public enum CabinetResonance: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case vintage = 0x00
   case modern = 0x01
   case deep = 0x02

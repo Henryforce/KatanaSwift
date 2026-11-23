@@ -24,15 +24,30 @@ public enum KatanaGoSysExParser {
     ) {
       if let slice = sliceData(
         bankAddress: bankAddress, bankSize: Int(T.size), incomingAddress: address,
-        incomingData: data)
+        incomingData: data),
+        let bank = try? T.buildFromByteArray(slice)
       {
-        banks.append(mapper(T.buildFromByteArray(slice)))
+        banks.append(mapper(bank))
       }
     }
 
     // System and Tone Settings
     check(SignalChainBank.self) { .signalChainBank($0) }
-    check(AmpBank.self) { .ampBank($0) }
+
+    // AmpBank (0x00...0x04) and BassAmpBank (0x05...0x07) share address 0x20_00_20_00
+    if let slice = sliceData(
+      bankAddress: AmpBank.katanaGoAddress, bankSize: Int(AmpBank.size), incomingAddress: address,
+      incomingData: data)
+    {
+      if slice.count > 0x0C, BassAmpType(rawValue: slice[0x0C]) != nil {
+        if let bassAmp = try? BassAmpBank.buildFromByteArray(slice) {
+          banks.append(.bassAmpBank(bassAmp))
+        }
+      } else if let amp = try? AmpBank.buildFromByteArray(slice) {
+        banks.append(.ampBank(amp))
+      }
+    }
+
     check(EffectStatusBank.self) { .effectStatusBank($0) }
     check(BoostBank.self) { .boostBank($0) }
     check(BassCompLimBank.self) { .bassBank($0) }
@@ -68,12 +83,14 @@ public enum KatanaGoSysExParser {
     check(StageFeelBank.self) { .stageFeelBank($0) }
     check(StageFeelCustomBank.self) { .stageFeelCustomBank($0) }
     check(USBSettingsBank.self) { .usbSettingsBank($0) }
+    check(BatteryBank.self) { .batteryBank($0) }
 
     // Preset and Mode (Roland System Range)
     if let slice = sliceData(
-      bankAddress: 0x7F01_0004, bankSize: 1, incomingAddress: address, incomingData: data)
+      bankAddress: 0x7F01_0004, bankSize: 1, incomingAddress: address, incomingData: data),
+      let modeBank = try? ModeBank.buildFromByteArray(slice)
     {
-      banks.append(.modeBank(ModeBank.buildFromByteArray(slice)))
+      banks.append(.modeBank(modeBank))
     }
     if let slice = sliceData(
       bankAddress: 0x7F00_0100, bankSize: 2, incomingAddress: address, incomingData: data),
@@ -129,9 +146,9 @@ public enum KatanaGoSysExParser {
         let bankAddress = T.katanaGoAddress + channelOffset
         if let slice = sliceData(
           bankAddress: bankAddress, bankSize: Int(T.size), incomingAddress: address,
-          incomingData: data)
+          incomingData: data),
+          let bank = try? T.buildFromByteArray(slice)
         {
-          let bank = T.buildFromByteArray(slice)
           banks.append(isFx ? .fxSingleEffect(builder(bank)) : .modSingleEffect(builder(bank)))
         }
       }
@@ -149,6 +166,7 @@ public enum KatanaGoSysExParser {
       addIfOverlap(SlowGearBank.self) { .slowGear($0) }
       addIfOverlap(SlicerBank.self) { .slicer($0) }
       addIfOverlap(CompBank.self) { .comp($0) }
+      addIfOverlap(LimiterBank.self) { .limiter($0) }
       addIfOverlap(TWahBank.self) { .tWah($0) }
       addIfOverlap(AutoWahBank.self) { .autoWah($0) }
       addIfOverlap(ModFxGraphicEQBank.self) { .modFxGraphicEQ($0) }
@@ -161,6 +179,7 @@ public enum KatanaGoSysExParser {
       addIfOverlap(HeavyOctaveBank.self) { .heavyOctave($0) }
       addIfOverlap(PitchShifterBank.self) { .pitchShifter($0) }
       addIfOverlap(HarmonistBank.self) { .harmonist($0) }
+      addIfOverlap(HumanizerBank.self) { .humanizer($0) }
       addIfOverlap(Phaser90EBank.self) { .phase90($0) }
       addIfOverlap(Flanger117EBank.self) { .flanger117E($0) }
       addIfOverlap(DC30Bank.self) { .dc30($0) }

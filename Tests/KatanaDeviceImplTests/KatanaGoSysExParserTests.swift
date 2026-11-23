@@ -218,6 +218,61 @@ struct KatanaGoSysExParserTests {
     }
   }
 
+  @Test func testParseBassModeAmpBank() throws {
+    // 0x20_00_20_00 with type 0x06 (BassAmpType.flat) must parse as .bassAmpBank without crashing
+    var data = [UInt8](repeating: 50, count: Int(BassAmpBank.size))
+    data[0x02] = 1  // shape
+    data[0x0C] = BassAmpType.flat.rawValue
+    data[0x0D] = 0  // variation
+
+    let message = finalizeSysex(address: 0x20_00_20_00, data: data)
+    let commands = KatanaGoSysExParser.parse(message)
+
+    #expect(commands.count == 1)
+    if case .bassAmpBank(let bassAmp) = commands.first {
+      #expect(bassAmp.type == .flat)
+      #expect(bassAmp.shape == true)
+    } else {
+      Issue.record("Expected .bassAmpBank, got \(commands)")
+    }
+  }
+
+  @Test func testParseBatteryHumanizerAndLimiter() throws {
+    let batteryMessage = finalizeSysex(address: BatteryBank.katanaGoAddress, data: [2])
+    let batteryCommands = KatanaGoSysExParser.parse(batteryMessage)
+    #expect(batteryCommands == [.batteryBank(BatteryBank(level: 2))])
+
+    let limiterData: [UInt8] = [1, 60, 40, 20, 70]
+    let limiterMessage = finalizeSysex(address: LimiterBank.katanaGoAddress, data: limiterData)
+    let limiterCommands = KatanaGoSysExParser.parse(limiterMessage)
+    #expect(limiterCommands.count == 1)
+    if case .modSingleEffect(.limiter(let limiter)) = limiterCommands.first {
+      #expect(limiter.attack == 60)
+    } else {
+      Issue.record("Expected .modSingleEffect(.limiter)")
+    }
+
+    let humanizerData = [UInt8](repeating: 0, count: Int(HumanizerBank.size))
+    let humanizerMessage = finalizeSysex(
+      address: HumanizerBank.katanaGoAddress + 0x1000, data: humanizerData)
+    let humanizerCommands = KatanaGoSysExParser.parse(humanizerMessage)
+    #expect(humanizerCommands.count == 1)
+    if case .fxSingleEffect(.humanizer) = humanizerCommands.first {
+      // Success
+    } else {
+      Issue.record("Expected .fxSingleEffect(.humanizer)")
+    }
+  }
+
+  @Test func testInvalidEnumByteDoesNotCrashParser() throws {
+    var data = [UInt8](repeating: 0, count: Int(AmpBank.size))
+    data[0x0C] = 0x7F  // Invalid AmpType / BassAmpType
+
+    let message = finalizeSysex(address: AmpBank.katanaGoAddress, data: data)
+    let commands = KatanaGoSysExParser.parse(message)
+    #expect(commands.isEmpty)
+  }
+
   private func finalizeSysex(address: UInt32, data: [UInt8]) -> [UInt8] {
     let addressBytes = [
       UInt8((address >> 24) & 0xFF),

@@ -84,7 +84,7 @@ extension KatanaDevice {
   {
     let baseAddress = T.katanaGoAddress
     let data = try await readData(at: baseAddress, length: UInt16(T.size), options: options)
-    return T.buildFromByteArray(data)
+    return try T.buildFromByteArray(data)
   }
 
   /// Read a MOD or FX section bank from the device.
@@ -98,7 +98,7 @@ extension KatanaDevice {
   ) async throws -> T {
     let baseAddress = T.katanaGoAddress | (channel == .fx ? 0x00_00_10_00 : 0x00)
     let data = try await readData(at: baseAddress, length: UInt16(T.size), options: options)
-    return T.buildFromByteArray(data)
+    return try T.buildFromByteArray(data)
   }
 
   /// Read a bank from a specific device-defined channel.
@@ -112,7 +112,7 @@ extension KatanaDevice {
   ) async throws -> T {
     let baseAddress: UInt32 = T.katanaGoAddress + channel.rawValue
     let data = try await readData(at: baseAddress, length: UInt16(T.size), options: options)
-    return T.buildFromByteArray(data)
+    return try T.buildFromByteArray(data)
   }
 
   /// Provides a stream of data received from the device.

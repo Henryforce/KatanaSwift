@@ -33,8 +33,7 @@ public struct WaveSynthBank: Sendable, Hashable {
   public static let size: UInt32 = 8
 }
 
-@KatanaUInt8RawBytes
-public enum WaveSynthType: UInt8, Sendable, Hashable, CaseIterable {
+public enum WaveSynthType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case saw = 0x00
   case square = 0x01
 }

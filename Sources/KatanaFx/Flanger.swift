@@ -29,8 +29,7 @@ public struct FlangerBank: Sendable, Hashable {
   public static let size: UInt32 = 7
 }
 
-@KatanaUInt8RawBytes
-public enum FlangerLowCut: UInt8, Sendable, Hashable, CaseIterable {
+public enum FlangerLowCut: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case flat = 0x00
   case freq55Hz = 0x01
   case freq110Hz = 0x02

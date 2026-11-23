@@ -3,7 +3,7 @@ import KatanaCore
 import KatanaFx
 
 /// Data received/sent from the Katana GO device.
-public enum KatanaGoDataBank: Sendable {
+public enum KatanaGoDataBank: Sendable, Hashable {
   case modeBank(ModeBank)
   case preset(Preset)
   case presetName(String)
@@ -54,6 +54,7 @@ public enum KatanaGoFxReadData: Sendable, Hashable {
   case slowGear(SlowGearBank)
   case slicer(SlicerBank)
   case comp(CompBank)
+  case limiter(LimiterBank)
   case tWah(TWahBank)
   case autoWah(AutoWahBank)
   case modFxGraphicEQ(ModFxGraphicEQBank)
@@ -66,6 +67,7 @@ public enum KatanaGoFxReadData: Sendable, Hashable {
   case heavyOctave(HeavyOctaveBank)
   case pitchShifter(PitchShifterBank)
   case harmonist(HarmonistBank)
+  case humanizer(HumanizerBank)
   case phase90(Phaser90EBank)
   case flanger117E(Flanger117EBank)
   case dc30(DC30Bank)

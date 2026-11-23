@@ -39,8 +39,7 @@ public struct ReverbBank: KatanaGoBank, Sendable, Hashable {
 }
 
 /// Available reverb types.
-@KatanaUInt8RawBytes
-public enum ReverbType: UInt8, Sendable, Hashable, CaseIterable {
+public enum ReverbType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case plate = 0x00
   case room = 0x01
   case hall = 0x02

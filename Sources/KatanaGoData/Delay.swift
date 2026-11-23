@@ -60,8 +60,7 @@ public struct DelayBank: KatanaGoChannelAddressableBank, Sendable, Hashable {
 }
 
 /// Available delay types for the Katana GO.
-@KatanaUInt8RawBytes
-public enum DelayType: UInt8, Sendable, Hashable, CaseIterable {
+public enum DelayType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case digital = 0x00
   case pan = 0x01
   case stereo = 0x02
@@ -72,8 +71,7 @@ public enum DelayType: UInt8, Sendable, Hashable, CaseIterable {
   case sde3000 = 0x07
 }
 
-@KatanaUInt8RawBytes
-public enum DelayHighCutFrequency: UInt8, Sendable, Hashable, CaseIterable {
+public enum DelayHighCutFrequency: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case freq630Hz = 0x00
   case freq800Hz = 0x01
   case freq1kHz = 0x02
@@ -91,14 +89,12 @@ public enum DelayHighCutFrequency: UInt8, Sendable, Hashable, CaseIterable {
   case flat = 0x0E
 }
 
-@KatanaUInt8RawBytes
-public enum DelayFilterRange: UInt8, Sendable, Hashable, CaseIterable {
+public enum DelayFilterRange: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case freq8kHz = 0x00
   case freq17kHz = 0x01
 }
 
-@KatanaUInt8RawBytes
-public enum DelayPhase: UInt8, Sendable, Hashable, CaseIterable {
+public enum DelayPhase: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case normal = 0x00
   case inverted = 0x01
 }

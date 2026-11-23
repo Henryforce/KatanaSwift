@@ -38,14 +38,12 @@ public struct HarmonistBank: Sendable, Hashable {
   public static let size: UInt32 = 39
 }
 
-@KatanaUInt8RawBytes
-public enum HarmonistVoice: UInt8, Sendable, Hashable, CaseIterable {
+public enum HarmonistVoice: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case oneVoice = 0x00
   case twoVoice = 0x01
 }
 
-@KatanaUInt8RawBytes
-public enum HarmonistHarmony: UInt8, Sendable, Hashable, CaseIterable {
+public enum HarmonistHarmony: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case minus2oct = 0x00
   case minus14th = 0x01
   case minus13th = 0x02

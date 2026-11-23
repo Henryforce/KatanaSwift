@@ -24,8 +24,7 @@ public struct GuitarSimBank: Sendable, Hashable {
   public static let size: UInt32 = 5
 }
 
-@KatanaUInt8RawBytes
-public enum GuitarSimType: UInt8, Sendable, Hashable, CaseIterable {
+public enum GuitarSimType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case sToH = 0x00
   case hToS = 0x01
   case hToHF = 0x02

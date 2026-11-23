@@ -18,7 +18,7 @@ public struct WriteData: Sendable, Hashable {
 }
 
 /// A bank of parameters that can be written to a Katana device.
-public protocol WritableBank {
+public protocol WritableBank: Sendable {
   /// The size of the bank in bytes.
   static var size: UInt32 { get }
 
@@ -30,5 +30,6 @@ public protocol WritableBank {
   /// Construct a new bank instance by decoding data received from the device.
   /// - Parameter array: The raw bytes received from the device's memory.
   /// - Returns: A hydrated bank instance.
-  static func buildFromByteArray(_ array: [UInt8]) -> Self
+  /// - Throws: `KatanaError.decodingFailed` if the byte array is invalid or incomplete.
+  static func buildFromByteArray(_ array: [UInt8]) throws -> Self
 }

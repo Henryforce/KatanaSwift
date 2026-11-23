@@ -42,8 +42,7 @@ public struct AmpBank: KatanaGoBank, Sendable, Hashable {
 }
 
 /// Available amplifier types.
-@KatanaUInt8RawBytes
-public enum AmpType: UInt8, Sendable, Hashable, CaseIterable {
+public enum AmpType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case acoustic = 0x00
   case clean = 0x01
   case crunch = 0x02

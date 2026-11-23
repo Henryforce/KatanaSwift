@@ -48,14 +48,12 @@ public struct PitchShifterBank: Sendable, Hashable {
   public static let size: UInt32 = 19
 }
 
-@KatanaUInt8RawBytes
-public enum PitchShifterVoice: UInt8, Sendable, Hashable, CaseIterable {
+public enum PitchShifterVoice: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case oneVoice = 0x00
   case twoVoice = 0x01
 }
 
-@KatanaUInt8RawBytes
-public enum PitchShifterMode: UInt8, Sendable, Hashable, CaseIterable {
+public enum PitchShifterMode: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case fast = 0x00
   case medium = 0x01
   case slow = 0x02
