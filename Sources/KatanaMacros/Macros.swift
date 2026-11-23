@@ -8,10 +8,3 @@ public macro KatanaBank() =
     module: "KatanaMacrosImpl",
     type: "KatanaBankMacro"
   )
-
-@attached(member, names: named(bytes), named(decodeFromByteArray))
-public macro KatanaUInt8RawBytes() =
-  #externalMacro(
-    module: "KatanaMacrosImpl",
-    type: "KatanaUInt8RawBytesMacro"
-  )

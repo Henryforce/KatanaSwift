@@ -24,8 +24,7 @@ public struct CompBank: Sendable, Hashable {
   public static let size: UInt32 = 5
 }
 
-@KatanaUInt8RawBytes
-public enum CompType: UInt8, Sendable, Hashable, CaseIterable {
+public enum CompType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case boss = 0x00
   case hiBand = 0x01
   case light = 0x02

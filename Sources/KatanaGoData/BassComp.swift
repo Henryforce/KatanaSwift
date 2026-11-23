@@ -46,14 +46,12 @@ public struct BassCompLimBank: KatanaGoBank, Sendable, Hashable {
   public static let size: UInt32 = 12
 }
 
-@KatanaUInt8RawBytes
-public enum BassCompLimMode: UInt8, Sendable, Hashable, CaseIterable {
+public enum BassCompLimMode: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case comp = 0x00
   case lim = 0x01
 }
 
-@KatanaUInt8RawBytes
-public enum BassCompType: UInt8, Sendable, Hashable, CaseIterable {
+public enum BassCompType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case bossComp = 0x00
   case hiBand = 0x01
   case light = 0x02
@@ -63,8 +61,7 @@ public enum BassCompType: UInt8, Sendable, Hashable, CaseIterable {
   case mild = 0x06
 }
 
-@KatanaUInt8RawBytes
-public enum BassLimType: UInt8, Sendable, Hashable, CaseIterable {
+public enum BassLimType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case bossLimiter = 0x00
   case rack160D = 0x01
   case vtgRackU = 0x02

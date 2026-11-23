@@ -31,8 +31,7 @@ public struct AcousticProBank: Sendable, Hashable {
   public static let size: UInt32 = 7
 }
 
-@KatanaUInt8RawBytes
-public enum AcousticProType: UInt8, Sendable, Hashable, CaseIterable {
+public enum AcousticProType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case small = 0x00
   case medium = 0x01
   case bright = 0x02

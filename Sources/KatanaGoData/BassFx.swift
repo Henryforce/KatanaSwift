@@ -161,8 +161,7 @@ public struct BassSynthBank: KatanaGoFxBank, Sendable, Hashable {
 // MARK: - MOD BASS Options
 
 /// Available MOD/FX types for the Katana GO in Bass Mode.
-@KatanaUInt8RawBytes
-public enum BassModFXType: UInt8, Sendable, Hashable, CaseIterable {
+public enum BassModFXType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case chorus = 0x00
   case flanger = 0x01
   case phaser = 0x02
@@ -213,8 +212,7 @@ public struct BassCompressorBank: KatanaGoBank, Sendable, Hashable {
   public static let size: UInt32 = 6
 }
 
-@KatanaUInt8RawBytes
-public enum BassSimType: UInt8, Sendable, Hashable, CaseIterable {
+public enum BassSimType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case pasToAct = 0x00
   case actToPas = 0x01
   case sglToHum = 0x02
@@ -224,8 +222,7 @@ public enum BassSimType: UInt8, Sendable, Hashable, CaseIterable {
   case acToSgl = 0x06
 }
 
-@KatanaUInt8RawBytes
-public enum BassLowFrequency: UInt8, Sendable, Hashable, CaseIterable {
+public enum BassLowFrequency: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case freq31Hz5 = 0x00
   case freq40Hz = 0x01
   case freq50Hz = 0x02
@@ -235,8 +232,7 @@ public enum BassLowFrequency: UInt8, Sendable, Hashable, CaseIterable {
   case freq125Hz = 0x06
 }
 
-@KatanaUInt8RawBytes
-public enum BassHighFrequency: UInt8, Sendable, Hashable, CaseIterable {
+public enum BassHighFrequency: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case freq800Hz = 0x00
   case freq1kHz = 0x01
   case freq1k250Hz = 0x02

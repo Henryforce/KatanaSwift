@@ -2,15 +2,13 @@ import KatanaCore
 import KatanaMacros
 
 /// Available equalizer types.
-@KatanaUInt8RawBytes
-public enum EQType: UInt8, Sendable, Hashable, CaseIterable {
+public enum EQType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case parametric = 0x00
   case graphic = 0x01
 }
 
 /// Available equalizer low cut frequencies.
-@KatanaUInt8RawBytes
-public enum EQLowCut: UInt8, Sendable, Hashable, CaseIterable {
+public enum EQLowCut: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case flat = 0x00
   case freq20Hz = 0x01
   case freq25Hz = 0x02
@@ -32,8 +30,7 @@ public enum EQLowCut: UInt8, Sendable, Hashable, CaseIterable {
 }
 
 /// Available equalizer high cut frequencies.
-@KatanaUInt8RawBytes
-public enum EQHighCut: UInt8, Sendable, Hashable, CaseIterable {
+public enum EQHighCut: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case freq630Hz = 0x00
   case freq800Hz = 0x01
   case freq1kHz = 0x02
@@ -52,8 +49,7 @@ public enum EQHighCut: UInt8, Sendable, Hashable, CaseIterable {
 }
 
 /// Available equalizer frequencies.
-@KatanaUInt8RawBytes
-public enum EQFrequency: UInt8, Sendable, Hashable, CaseIterable {
+public enum EQFrequency: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case freq20Hz = 0x00
   case freq25Hz = 0x01
   case freq31Hz5 = 0x02
@@ -85,8 +81,7 @@ public enum EQFrequency: UInt8, Sendable, Hashable, CaseIterable {
 }
 
 /// Available equalizer Q values.
-@KatanaUInt8RawBytes
-public enum EQQ: UInt8, Sendable, Hashable, CaseIterable {
+public enum EQQ: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case q05 = 0x00
   case q1 = 0x01
   case q2 = 0x02
@@ -96,8 +91,7 @@ public enum EQQ: UInt8, Sendable, Hashable, CaseIterable {
 }
 
 /// Available equalizer positions.
-@KatanaUInt8RawBytes
-public enum EQPosition: UInt8, Sendable, Hashable, CaseIterable {
+public enum EQPosition: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case ampIn = 0x00
   case ampOut = 0x01
 }

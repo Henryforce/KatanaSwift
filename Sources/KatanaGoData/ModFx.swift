@@ -97,8 +97,7 @@ public struct ModFxBank: Sendable, Hashable {
 
 // TODO: re-audit these values.
 /// Available MOD/FX types for the Katana GO.
-@KatanaUInt8RawBytes
-public enum ModFxType: UInt8, Sendable, Hashable, CaseIterable {
+public enum ModFxType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case chorus = 0x00
   case flanger = 0x01
   case phaser = 0x02

@@ -6,8 +6,7 @@ import XCTest
 @MainActor
 final class KatanaMacrosTests: XCTestCase {
   static let testMacros: [String: Macro.Type] = [
-    "KatanaBank": KatanaBankMacro.self,
-    "KatanaUInt8RawBytes": KatanaUInt8RawBytesMacro.self,
+    "KatanaBank": KatanaBankMacro.self
   ]
 
   func testKatanaBankMacro() {
@@ -54,18 +53,14 @@ final class KatanaMacrosTests: XCTestCase {
             return writeData
           }
 
-          public static func buildFromByteArray(_ array: [UInt8]) -> Self {
+          public static func buildFromByteArray(_ array: [UInt8]) throws -> Self {
             var bank = Self()
-            let decoded_volume: UInt8? = UInt8.decodeFromByteArray(
+            let decoded_volume = try UInt8.decodeFromByteArray(
           array, offset: Int(bank.$volume.address))
-            if let decoded_volume {
-              bank.$volume.setDecodedValue(decoded_volume)
-            }
-            let decoded_enabled: Bool? = Bool.decodeFromByteArray(
+            bank.$volume.setDecodedValue(decoded_volume)
+            let decoded_enabled = try Bool.decodeFromByteArray(
               array, offset: Int(bank.$enabled.address))
-            if let decoded_enabled {
-              bank.$enabled.setDecodedValue(decoded_enabled)
-            }
+            bank.$enabled.setDecodedValue(decoded_enabled)
             return bank
           }
         }
@@ -109,42 +104,13 @@ final class KatanaMacrosTests: XCTestCase {
             return writeData
           }
 
-          public static func buildFromByteArray(_ array: [UInt8]) -> Self {
+          public static func buildFromByteArray(_ array: [UInt8]) throws -> Self {
             var bank = Self()
-            let decoded_volume: UInt8? = UInt8.decodeFromByteArray(
+            let decoded_volume = try UInt8.decodeFromByteArray(
           array, offset: Int(bank.$volume.address))
-            if let decoded_volume {
-              bank.$volume.setDecodedValue(decoded_volume)
-            }
+            bank.$volume.setDecodedValue(decoded_volume)
             return bank
           }
-        }
-        """,
-      macros: Self.testMacros
-    )
-  }
-
-  func testKatanaUInt8RawBytesMacro() {
-    assertMacroExpansion(
-      """
-      @KatanaUInt8RawBytes
-      public enum TestEnum: UInt8 {
-        case off = 0x00
-        case on = 0x01
-      }
-      """,
-      expandedSource: """
-        public enum TestEnum: UInt8 {
-          case off = 0x00
-          case on = 0x01
-
-            public var bytes: [UInt8] {
-              return [self.rawValue]
-            }
-
-            package static func decodeFromByteArray(_ array: [UInt8], offset: Int = 0) -> Self {
-              return Self(rawValue: array[offset])!
-            }
         }
         """,
       macros: Self.testMacros

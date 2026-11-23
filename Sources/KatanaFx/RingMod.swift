@@ -21,8 +21,7 @@ public struct RingModBank: Sendable, Hashable {
   public static let size: UInt32 = 4
 }
 
-@KatanaUInt8RawBytes
-public enum RingModMode: UInt8, Sendable, Hashable, CaseIterable {
+public enum RingModMode: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case normal = 0x00
   case intelligent = 0x01
 }

@@ -14,8 +14,7 @@ public struct ModeBank: KatanaGoBank, Sendable, Hashable {
 }
 
 /// The available operating modes for the Katana GO.
-@KatanaUInt8RawBytes
-public enum KatanaGoMode: UInt8, Sendable, Hashable, CaseIterable {
+public enum KatanaGoMode: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   /// Optimized for guitar features and effects.
   case guitar = 0
   /// Optimized for bass features and effects.

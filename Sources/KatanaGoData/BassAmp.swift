@@ -62,8 +62,7 @@ public struct BassAmpBank: KatanaGoBank, Sendable, Hashable {
 }
 
 /// Available bass amplifier types.
-@KatanaUInt8RawBytes
-public enum BassAmpType: UInt8, Sendable, Hashable, CaseIterable {
+public enum BassAmpType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   /// Vintage amp type.
   case vintage = 0x05
   /// Flat amp type.

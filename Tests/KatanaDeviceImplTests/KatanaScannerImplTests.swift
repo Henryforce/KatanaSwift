@@ -25,7 +25,7 @@ final class KatanaGoScannerMIDITests: XCTestCase {
     func write(at address: UInt32, data: [UInt8]) async throws {}
     func writeBank<T: WritableBank>(_ bank: T) async throws {}
     func readBank<T: WritableBank>(_ type: T.Type) async throws -> T {
-      return T.buildFromByteArray([])
+      return try T.buildFromByteArray([])
     }
     func subscribeToData() -> AsyncStream<StreamData> { AsyncStream { $0.finish() } }
   }

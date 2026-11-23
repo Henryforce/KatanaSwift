@@ -46,11 +46,9 @@ public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
 
     let decodeLines = propertyData.map { data in
       """
-      let decoded_\(data.name): \(data.type)? = \(data.type).decodeFromByteArray(
+      let decoded_\(data.name) = try \(data.type).decodeFromByteArray(
         array, offset: Int(bank.$\(data.name).address))
-      if let decoded_\(data.name) {
-        bank.$\(data.name).setDecodedValue(decoded_\(data.name))
-      }
+      bank.$\(data.name).setDecodedValue(decoded_\(data.name))
       """
     }.joined(separator: "\n")
 
@@ -62,7 +60,7 @@ public struct KatanaBankMacro: MemberMacro, ExtensionMacro {
           return writeData
         }
 
-        public static func buildFromByteArray(_ array: [UInt8]) -> Self {
+        public static func buildFromByteArray(_ array: [UInt8]) throws -> Self {
           var bank = Self()
           \(raw: decodeLines)
           return bank

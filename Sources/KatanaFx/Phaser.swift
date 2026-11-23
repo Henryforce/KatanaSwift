@@ -33,8 +33,7 @@ public struct PhaserBank: Sendable, Hashable {
   public static let size: UInt32 = 8
 }
 
-@KatanaUInt8RawBytes
-public enum PhaserType: UInt8, Sendable, Hashable, CaseIterable {
+public enum PhaserType: UInt8, KatanaByteCodable, Sendable, Hashable, CaseIterable {
   case fourStage = 0x00
   case eightStage = 0x01
   case twelveStage = 0x02

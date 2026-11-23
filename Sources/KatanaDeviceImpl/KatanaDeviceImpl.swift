@@ -123,7 +123,7 @@ public actor KatanaDeviceImpl: KatanaDevice {
     let address = addressModifiers
     let size = T.size
     let data = try await readData(at: address, length: UInt16(size), options: options)
-    return T.buildFromByteArray(data)
+    return try T.buildFromByteArray(data)
   }
 
   public func readData(at address: UInt32, length: UInt16, options: ReadDataOptions) async throws
