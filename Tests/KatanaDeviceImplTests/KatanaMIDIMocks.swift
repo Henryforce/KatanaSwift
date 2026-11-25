@@ -23,6 +23,8 @@ final class MockMIDIOutputConnection: MIDIOutputConnectionProtocol, @unchecked S
   }
 }
 
+final class MockMIDIInputConnection: MIDIInputConnectionProtocol, @unchecked Sendable {}
+
 final class MockMIDIManager: MIDIManagerProtocol, @unchecked Sendable {
   var started = false
   var outputEndpoints: [MIDIEndpointProtocol] = []
@@ -57,6 +59,7 @@ final class MockMIDIManager: MIDIManagerProtocol, @unchecked Sendable {
     to outputs: [MIDIEndpointProtocol], tag: String, receiver: MIDIReceiver
   ) throws {
     addedInputConnections.append((outputs: outputs, tag: tag, receiver: receiver))
+    managedInputConnections[tag] = MockMIDIInputConnection()
   }
 
   func remove(_ type: MIDIManager.ManagedType, _ selection: MIDIManager.TagSelection) {
