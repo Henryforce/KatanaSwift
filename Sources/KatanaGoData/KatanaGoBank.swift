@@ -1,6 +1,8 @@
-/// A bank of parameters for the Katana Go.
+import KatanaCore
+
+/// A bank of parameters for the Katana GO.
 public protocol KatanaGoBank: WritableBank {
-  /// The base address of the Katana Go bank.
+  /// The base address of the Katana GO bank.
   static var katanaGoAddress: UInt32 { get }
 }
 

@@ -2,12 +2,11 @@ import Foundation
 import KatanaCore
 import SwiftMIDIIO
 
-/// MIDI implementation of the KatanaGoScanner protocol.
+/// MIDI implementation of the KatanaScanner protocol.
 public actor KatanaScannerImpl: KatanaScanner {
   private let midiManager: MIDIManagerProtocol
-  private let retryInterval: UInt64
-  // TODO: Add support for other Katana devices.
-  private let katanaGoFactory:
+  private let profile: KatanaDeviceProfile
+  private let deviceFactory:
     @Sendable (any MIDIEndpointProtocol, MIDIManagerProtocol) -> KatanaDevice?
 
   /// Flag to prevent starting the MIDI manager more than once.
@@ -20,12 +19,11 @@ public actor KatanaScannerImpl: KatanaScanner {
       manufacturer: "Henryforce"
     )
     self.midiManager = manager
-    self.retryInterval = 1_500_000_000
-    self.katanaGoFactory = { endpoint, midiManager in
+    self.profile = KatanaDeviceProfile.profile(for: .go)
+    self.deviceFactory = { endpoint, midiManager in
       guard let manager = midiManager as? MIDIManager,
         let realEndpoint = endpoint as? MIDIOutputEndpoint
       else { return nil }
-      // TODO: Add support for other Katana devices.
       return KatanaDeviceImpl(deviceType: .go, endpoint: realEndpoint, midiManager: manager)
     }
   }
@@ -33,16 +31,16 @@ public actor KatanaScannerImpl: KatanaScanner {
   /// Internal initializer for testing.
   init(
     midiManager: MIDIManagerProtocol,
-    retryInterval: UInt64 = 1_500_000_000,
-    katanaGoFactory:
+    profile: KatanaDeviceProfile = .profile(for: .go),
+    deviceFactory:
       @Sendable @escaping (any MIDIEndpointProtocol, MIDIManagerProtocol) -> KatanaDevice? = {
         _, _ in
         nil
       }
   ) {
     self.midiManager = midiManager
-    self.retryInterval = retryInterval
-    self.katanaGoFactory = katanaGoFactory
+    self.profile = profile
+    self.deviceFactory = deviceFactory
   }
 
   public func scan() async -> AsyncStream<KatanaDevice> {
@@ -54,19 +52,15 @@ public actor KatanaScannerImpl: KatanaScanner {
           let endpoints = midiManager.outputEndpoints
 
           for endpoint in endpoints {
-            guard
-              endpoint.displayName.localizedCaseInsensitiveContains("KATANA")
-                || endpoint.name.localizedCaseInsensitiveContains("KATANA")
-            else {
+            guard profile.matches(endpoint: endpoint) else {
               continue
             }
-            if let device = katanaGoFactory(endpoint, midiManager) {
+            if let device = deviceFactory(endpoint, midiManager) {
               continuation.yield(device)
             }
           }
 
           // For now, we finish the stream after the initial scan.
-
           // In the future, we could observe MIDI changes.
           continuation.finish()
         } catch {
