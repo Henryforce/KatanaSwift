@@ -3,7 +3,7 @@ import SwiftMIDIIO
 
 /// A protocol abstraction for MIDI endpoints (both input and output).
 /// This allows for mocking MIDI endpoints in unit tests.
-public protocol MIDIEndpointProtocol: Sendable {
+protocol MIDIEndpointProtocol: Sendable {
   /// The name of the endpoint.
   var name: String { get }
 
@@ -19,7 +19,7 @@ extension MIDIInputEndpoint: MIDIEndpointProtocol {}
 
 /// A protocol abstraction for MIDI output connections.
 /// Defines the capabilities of a connection that can send MIDI events.
-public protocol MIDIOutputConnectionProtocol {
+protocol MIDIOutputConnectionProtocol {
   /// Sends a MIDI event through the connection.
   /// - Parameter event: The `MIDIEvent` to send.
   /// - Throws: An error if the event could not be sent.
@@ -28,28 +28,24 @@ public protocol MIDIOutputConnectionProtocol {
 
 /// A protocol abstraction for MIDI input connections.
 /// Currently used as a marker protocol for type-safe connection management.
-public protocol MIDIInputConnectionProtocol {
-
-}
+protocol MIDIInputConnectionProtocol {}
 
 extension MIDIOutputConnection: MIDIOutputConnectionProtocol {
   /// Sends a MIDI event through the managed connection.
   /// This implementation explicitly casts to `MIDIManagedSendsMessages` to access the `send` method.
   /// - Parameter event: The `MIDIEvent` to send.
   /// - Throws: An error if the event could not be sent.
-  public func send(event: MIDIEvent) throws {
+  func send(event: MIDIEvent) throws {
     // Explicitly calling the method from MIDIManagedSendsMessages
     try (self as MIDIManagedSendsMessages).send(event: event)
   }
 }
 
-extension MIDIInputConnection: MIDIInputConnectionProtocol {
-
-}
+extension MIDIInputConnection: MIDIInputConnectionProtocol {}
 
 /// A protocol abstraction for the `MIDIManager`.
 /// This provides a testable interface for managing MIDI connections and endpoints.
-public protocol MIDIManagerProtocol: Sendable {
+protocol MIDIManagerProtocol: Sendable {
   /// Starts the MIDI manager.
   /// - Throws: An error if the MIDI system could not be initialized.
   func start() throws
@@ -99,28 +95,28 @@ public protocol MIDIManagerProtocol: Sendable {
 
 extension MIDIManager: MIDIManagerProtocol {
   /// All available MIDI output endpoints in the system.
-  public var outputEndpoints: [MIDIEndpointProtocol] {
+  var outputEndpoints: [MIDIEndpointProtocol] {
     endpoints.outputs
   }
 
   /// All available MIDI input endpoints in the system.
-  public var inputEndpoints: [MIDIEndpointProtocol] {
+  var inputEndpoints: [MIDIEndpointProtocol] {
     endpoints.inputs
   }
 
   /// Returns all currently managed output connections, cast to `MIDIOutputConnectionProtocol`.
-  public func loadManagedOutputConnections() -> [String: MIDIOutputConnectionProtocol] {
+  func loadManagedOutputConnections() -> [String: MIDIOutputConnectionProtocol] {
     return self.managedOutputConnections.compactMapValues { $0 as MIDIOutputConnectionProtocol }
   }
 
   /// Returns all currently managed input connections, cast to `MIDIInputConnectionProtocol`.
-  public func loadManagedInputConnections() -> [String: MIDIInputConnectionProtocol] {
+  func loadManagedInputConnections() -> [String: MIDIInputConnectionProtocol] {
     return self.managedInputConnections.compactMapValues { $0 as MIDIInputConnectionProtocol }
   }
 
   /// Conformance to `MIDIManagerProtocol`.
   /// Filters the input protocol array for real `MIDIInputEndpoint` instances.
-  public func addOutputConnection(
+  func addOutputConnection(
     to inputs: [MIDIEndpointProtocol],
     tag: String
   ) throws {
@@ -130,7 +126,7 @@ extension MIDIManager: MIDIManagerProtocol {
 
   /// Conformance to `MIDIManagerProtocol`.
   /// Filters the output protocol array for real `MIDIOutputEndpoint` instances.
-  public func addInputConnection(
+  func addInputConnection(
     to outputs: [MIDIEndpointProtocol],
     tag: String,
     receiver: MIDIReceiver

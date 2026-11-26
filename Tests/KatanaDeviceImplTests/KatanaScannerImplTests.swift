@@ -39,8 +39,7 @@ final class KatanaGoScannerMIDITests: XCTestCase {
 
     let scanner = KatanaScannerImpl(
       midiManager: mockManager,
-      retryInterval: 10_000,
-      katanaGoFactory: { _, _ in MockKatanaGo() }
+      deviceFactory: { _, _ in MockKatanaGo() }
     )
 
     let scanStream = await scanner.scan()
@@ -67,7 +66,7 @@ final class KatanaGoScannerMIDITests: XCTestCase {
       MockEndpoint(name: "Other Device", displayName: "Other Device")
     ]
 
-    let scanner = KatanaScannerImpl(midiManager: mockManager, retryInterval: 10_000)
+    let scanner = KatanaScannerImpl(midiManager: mockManager)
 
     let scanStream = await scanner.scan()
 

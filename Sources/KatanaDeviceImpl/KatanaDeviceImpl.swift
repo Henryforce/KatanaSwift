@@ -13,26 +13,25 @@ public actor KatanaDeviceImpl: KatanaDevice {
   private let endpoint: MIDIEndpointProtocol
   private let midiManager: MIDIManagerProtocol
   private let readTimeoutNanoseconds: UInt64
+  private let profile: KatanaDeviceProfile
 
-  private var inputTag: String { "KatanaGo_In_\(endpoint.uniqueID)" }
-  private var outputTag: String { "KatanaGo_Out_\(endpoint.uniqueID)" }
+  private var inputTag: String { "\(profile.connectionTagPrefix)_In_\(endpoint.uniqueID)" }
+  private var outputTag: String { "\(profile.connectionTagPrefix)_Out_\(endpoint.uniqueID)" }
 
   private var dataSubscribers: [UUID: AsyncStream<StreamData>.Continuation] = [:]
   private var pendingReads: [UInt32: [UUID: PendingRead]] = [:]
 
   private var status: ConnectionStatus = .disconnected
 
-  private let deviceType: KatanaDeviceType
-
   private var memoryBankCache = KatanaMemoryBankCache()
 
-  public init(
+  init(
     deviceType: KatanaDeviceType,
     endpoint: MIDIEndpointProtocol,
     midiManager: MIDIManagerProtocol,
     readTimeoutNanoseconds: UInt64 = 5_000_000_000
   ) {
-    self.deviceType = deviceType
+    self.profile = KatanaDeviceProfile.profile(for: deviceType)
     self.endpoint = endpoint
     self.midiManager = midiManager
     self.readTimeoutNanoseconds = readTimeoutNanoseconds
@@ -84,7 +83,7 @@ public actor KatanaDeviceImpl: KatanaDevice {
         }
       )
 
-      for bytes in KatanaGoStartupData.data {
+      for bytes in profile.startupPackets {
         try writeRawBytes(bytes)
       }
 
@@ -106,7 +105,7 @@ public actor KatanaDeviceImpl: KatanaDevice {
       let message = sysEx.data
       // Validate Roland model ID and DT1 command (0x12 = 18) with minimum length.
       guard message.count >= 10,
-        Array(message[1...3]) == deviceType.modelIDBytes,
+        Array(message[1...3]) == profile.modelIDBytes,
         message[4] == 18
       else {
         continue
@@ -159,7 +158,7 @@ public actor KatanaDeviceImpl: KatanaDevice {
   }
 
   public func readDeviceType() async -> KatanaDeviceType {
-    return deviceType
+    return profile.deviceType
   }
 
   public func write(at address: UInt32, data: [UInt8]) async throws {
@@ -285,7 +284,7 @@ public actor KatanaDeviceImpl: KatanaDevice {
   }
 
   private func finalizeSysex(address: UInt32, data: [UInt8]) -> [UInt8] {
-    let prefix: [UInt8] = [0xf0, 0x41, 0x10] + deviceType.modelIDBytes + [0x12]
+    let prefix: [UInt8] = [0xf0, 0x41, 0x10] + profile.modelIDBytes + [0x12]
     let body = address.addressBytes + data
     let checksum = calculateChecksum(for: body)
     return prefix + body + [checksum, 0xf7]
@@ -295,7 +294,7 @@ public actor KatanaDeviceImpl: KatanaDevice {
     // Use like this:
     // Read preset name example (16 bytes -> 0x10)
     // let bytes = finalizeReadSysex(addressBytes: [0x20, 0x00, 0x00, 0x00], bytesToRead: 0x10)
-    let prefix: [UInt8] = [0xf0, 0x41, 0x10] + deviceType.modelIDBytes + [0x11]
+    let prefix: [UInt8] = [0xf0, 0x41, 0x10] + profile.modelIDBytes + [0x11]
     let body = addressBytes + RolandAddress.encode7BitBytes(UInt32(bytesToRead))
     let checksum = calculateChecksum(for: body)
     return prefix + body + [checksum, 0xf7]
@@ -307,14 +306,6 @@ public actor KatanaDeviceImpl: KatanaDevice {
       sum += Int(byte)
     }
     return UInt8((128 - (sum % 128)) % 128)
-  }
-}
-
-extension KatanaDeviceType {
-  fileprivate var modelIDBytes: [UInt8] {
-    switch self {
-    case .go: return [0x01, 0x05, 0x0D]
-    }
   }
 }
 
