@@ -55,8 +55,6 @@ public struct DelayBank: KatanaGoChannelAddressableBank, Sendable, Hashable {
   public static let katanaGoAddress: UInt32 = 0x20_01_20_00
 
   public static let size: UInt32 = 17
-
-  public static let channelType = DelayBankChannel.self
 }
 
 /// Available delay types for the Katana GO.

@@ -25,8 +25,6 @@ public struct EQSelectionBank: KatanaGoChannelAddressableBank, Sendable, Hashabl
   public static let katanaGoAddress: UInt32 = 0x20_02_60_00
 
   public static let size: UInt32 = 3
-
-  public static let channelType = EQBankChannel.self
 }
 
 /// The data bank representing the parametric equalizer parameters.
@@ -73,8 +71,6 @@ public struct ParametricEQBank: KatanaGoChannelAddressableBank, Sendable, Hashab
   public static let katanaGoAddress: UInt32 = 0x20_03_00_00
 
   public static let size: UInt32 = 11
-
-  public static let channelType = EQBankChannel.self
 }
 
 /// The data bank representing the graphic equalizer parameters.
@@ -117,6 +113,4 @@ public struct GraphicEQBank: KatanaGoChannelAddressableBank, Sendable, Hashable 
   public static let katanaGoAddress: UInt32 = 0x20_03_20_00
 
   public static let size: UInt32 = 11
-
-  public static let channelType = EQBankChannel.self
 }

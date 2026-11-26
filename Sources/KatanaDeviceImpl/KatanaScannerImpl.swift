@@ -43,34 +43,38 @@ public actor KatanaScannerImpl: KatanaScanner {
     self.deviceFactory = deviceFactory
   }
 
-  public func scan() async -> AsyncStream<KatanaDevice> {
+  public nonisolated func scan() -> AsyncStream<any KatanaDevice> {
     AsyncStream { continuation in
       let taskReference = Task {
-        do {
-          try await startMIDIManagerIfNeeded()
-
-          let endpoints = midiManager.outputEndpoints
-
-          for endpoint in endpoints {
-            guard profile.matches(endpoint: endpoint) else {
-              continue
-            }
-            if let device = deviceFactory(endpoint, midiManager) {
-              continuation.yield(device)
-            }
-          }
-
-          // For now, we finish the stream after the initial scan.
-          // In the future, we could observe MIDI changes.
-          continuation.finish()
-        } catch {
-          continuation.finish()
-        }
+        await self.performScan(continuation: continuation)
       }
 
       continuation.onTermination = { _ in
         taskReference.cancel()
       }
+    }
+  }
+
+  private func performScan(continuation: AsyncStream<any KatanaDevice>.Continuation) async {
+    do {
+      try await startMIDIManagerIfNeeded()
+
+      let endpoints = midiManager.outputEndpoints
+
+      for endpoint in endpoints {
+        guard profile.matches(endpoint: endpoint) else {
+          continue
+        }
+        if let device = deviceFactory(endpoint, midiManager) {
+          continuation.yield(device)
+        }
+      }
+
+      // For now, we finish the stream after the initial scan.
+      // In the future, we could observe MIDI changes.
+      continuation.finish()
+    } catch {
+      continuation.finish()
     }
   }
 

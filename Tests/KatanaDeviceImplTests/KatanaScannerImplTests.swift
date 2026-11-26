@@ -2,11 +2,11 @@ import KatanaCore
 import KatanaGo
 import KatanaGoData
 import SwiftMIDIIO
-import XCTest
+import Testing
 
 @testable import KatanaDeviceImpl
 
-final class KatanaGoScannerMIDITests: XCTestCase {
+struct KatanaGoScannerMIDITests {
 
   struct MockEndpoint: MIDIEndpointProtocol {
     var name: String
@@ -15,22 +15,21 @@ final class KatanaGoScannerMIDITests: XCTestCase {
   }
 
   actor MockKatanaGo: KatanaDevice {
+    nonisolated var deviceType: KatanaDeviceType { .go }
     func connect() async throws {}
     func disconnect() async {}
     func connectionStatus() async -> ConnectionStatus { .disconnected }
-    func readDeviceType() async -> KatanaDeviceType { .go }
+    nonisolated func connectionStatusStream() -> AsyncStream<ConnectionStatus> {
+      AsyncStream { $0.finish() }
+    }
     func readData(at address: UInt32, length: UInt16, options: ReadDataOptions) async throws
       -> [UInt8]
     { return [] }
     func write(at address: UInt32, data: [UInt8]) async throws {}
-    func writeBank<T: WritableBank>(_ bank: T) async throws {}
-    func readBank<T: WritableBank>(_ type: T.Type) async throws -> T {
-      return try T.buildFromByteArray([])
-    }
-    func subscribeToData() -> AsyncStream<StreamData> { AsyncStream { $0.finish() } }
+    nonisolated func subscribeToData() -> AsyncStream<StreamData> { AsyncStream { $0.finish() } }
   }
 
-  func testScanFindsKatana() async throws {
+  @Test func testScanFindsKatana() async throws {
     let mockManager = MockMIDIManager()
     mockManager.outputEndpoints = [
       MockEndpoint(name: "Other Device", displayName: "Other Device"),
@@ -42,25 +41,16 @@ final class KatanaGoScannerMIDITests: XCTestCase {
       deviceFactory: { _, _ in MockKatanaGo() }
     )
 
-    let scanStream = await scanner.scan()
-
-    let collectionTask = Task {
-      var found: KatanaDevice?
-      for await device in scanStream {
-        found = device
-      }
-      return found
+    var found: KatanaDevice?
+    for await device in scanner.scan() {
+      found = device
     }
 
-    try await Task.sleep(nanoseconds: 100_000_000)
-
-    let foundDevice = await collectionTask.value
-    XCTAssertTrue(mockManager.started)
-    XCTAssertNotNil(foundDevice)
-    XCTAssertTrue(foundDevice is MockKatanaGo)
+    #expect(mockManager.started)
+    #expect(found is MockKatanaGo)
   }
 
-  func testScanNoKatana() async throws {
+  @Test func testScanNoKatana() async throws {
     let mockManager = MockMIDIManager()
     mockManager.outputEndpoints = [
       MockEndpoint(name: "Other Device", displayName: "Other Device")
@@ -68,22 +58,12 @@ final class KatanaGoScannerMIDITests: XCTestCase {
 
     let scanner = KatanaScannerImpl(midiManager: mockManager)
 
-    let scanStream = await scanner.scan()
-
-    let collectionTask = Task {
-      var count = 0
-      for await _ in scanStream {
-        count += 1
-      }
-      return count
+    var count = 0
+    for await _ in scanner.scan() {
+      count += 1
     }
 
-    // Wait for it to finish naturally (6 loops * 10k ns = 60k ns)
-    try await Task.sleep(nanoseconds: 100_000_000)
-
-    let count = await collectionTask.value
-    XCTAssertTrue(mockManager.started)
-    XCTAssertEqual(count, 0)
+    #expect(mockManager.started)
+    #expect(count == 0)
   }
-
 }
