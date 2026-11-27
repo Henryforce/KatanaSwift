@@ -66,7 +66,7 @@ try await device.write(at: 0x1F000000, data: [0x01])
 import KatanaGo
 
 // Write data banks
-try await device.writeBank(AmpBank(type: .clean))
+try await device.write(AmpBank(type: .clean))
 ```
 
 ### 4. Read Data

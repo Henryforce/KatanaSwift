@@ -36,7 +36,6 @@ Below is a list of key `@KatanaBank` objects found in this directory:
 | `StageFeelCustomBank` | [StageFeel.swift](StageFeel.swift) | Custom Stage Feel user presets. |
 | `ModSelectionBank` | [ModFx.swift](ModFx.swift) | MOD block effect selection. |
 | `FxSelectionBank` | [ModFx.swift](ModFx.swift) | FX block effect selection. |
-| `ModFxBank` | [ModFx.swift](ModFx.swift) | General MOD/FX parameters. |
 | `NoiseGateBank` | [NoiseGate.swift](NoiseGate.swift) | Noise suppression settings. |
 | `ReverbBank` | [Reverb.swift](Reverb.swift) | Reverb effect parameters. |
 | `SignalChainPedalFxBank` | [PedalFx.swift](PedalFx.swift) | Pedal FX (Wah/Pitch) in signal chain. |
@@ -93,7 +92,7 @@ Below is a list of key `@KatanaBank` objects found in this directory:
 - **Banks**: `GlobalEQSwitchBank`, `GlobalEQBank`
 
 ### [ModFx.swift](ModFx.swift)
-- **Banks**: `ModSelectionBank`, `FxSelectionBank`, `ModFxBank`
+- **Banks**: `ModSelectionBank`, `FxSelectionBank`
 - **Other**: `ModFxType` (enum)
 
 ### [Mode.swift](Mode.swift)
