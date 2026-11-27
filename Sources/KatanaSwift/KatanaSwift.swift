@@ -5,7 +5,7 @@ import KatanaDeviceImpl
 public enum KatanaSwift {
   /// Builds a scanner for discovering Katana devices.
   /// - Returns: A `KatanaScanner` instance capable of finding supported devices.
-  public static func buildScanner() async -> KatanaScanner {
+  public static func buildScanner() -> any KatanaScanner {
     return KatanaScannerImpl()
   }
 }

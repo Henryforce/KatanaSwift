@@ -57,7 +57,7 @@ struct ConcurrencyAndLifecycleTests {
   @Test func testDisconnectFailsPendingReadsAndFinishesSubscribers() async throws {
     let (katana, _, _) = try await setupConnectedKatana(readTimeoutNanoseconds: 5_000_000_000)
 
-    let bankStream = await katana.subscribeToKatanaGoBanks()
+    let bankStream = katana.subscribeToKatanaGoBanks()
     let readTask = Task {
       try await katana.readData(at: 0x20_00_20_00, length: 2, options: .deviceOnly)
     }
@@ -80,8 +80,8 @@ struct ConcurrencyAndLifecycleTests {
   @Test func testMultipleSubscribersReceiveEvents() async throws {
     let (katana, midiManager, _) = try await setupConnectedKatana()
 
-    let stream1 = await katana.subscribeToData()
-    let stream2 = await katana.subscribeToData()
+    let stream1 = katana.subscribeToData()
+    let stream2 = katana.subscribeToData()
 
     let task1 = Task {
       var iterator = stream1.makeAsyncIterator()
@@ -106,6 +106,33 @@ struct ConcurrencyAndLifecycleTests {
     #expect(item1?.data == [0x11, 0x22])
     #expect(item2?.address == 0x20_00_20_00)
     #expect(item2?.data == [0x11, 0x22])
+  }
+
+  @Test func testConnectionStatusStreamEmitsTransitionsAndDeviceTypeIsSynchronous() async throws {
+    let midiManager = MockMIDIManager()
+    let endpoint = MockMIDIEndpoint(name: "Katana", displayName: "Katana")
+    let inputEndpoint = MockMIDIEndpoint(name: "Katana", displayName: "Katana", uniqueID: 54321)
+    midiManager.inputEndpoints = [inputEndpoint]
+
+    let katana = KatanaDeviceImpl(deviceType: .go, endpoint: endpoint, midiManager: midiManager)
+    #expect(katana.deviceType == .go)
+
+    let stream = katana.connectionStatusStream()
+    let collectTask = Task {
+      var statuses: [ConnectionStatus] = []
+      for await status in stream {
+        statuses.append(status)
+        if statuses.count >= 5 { break }
+      }
+      return statuses
+    }
+
+    try await Task.sleep(nanoseconds: 50_000_000)
+    try await katana.connect()
+    await katana.disconnect()
+
+    let statuses = await collectTask.value
+    #expect(statuses == [.disconnected, .connecting, .connected, .disconnecting, .disconnected])
   }
 
   @Test func testIgnoresNonKatanaGoSysEx() async throws {

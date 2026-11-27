@@ -96,7 +96,7 @@ struct KatanaGoMIDITests {
 
     // Start reading in a separate Task
     let readTask = Task {
-      try await katana.readBank(CompBank.self)
+      try await katana.read(CompBank.self)
     }
 
     // Give it a moment to send the request and register the continuation
@@ -143,7 +143,7 @@ struct KatanaGoMIDITests {
 
     // Read CompBank on FX channel
     let readTask = Task {
-      try await katana.readFxBank(CompBank.self, channel: .fx)
+      try await katana.read(CompBank.self, channel: .fx)
     }
 
     try await Task.sleep(nanoseconds: 100_000_000)
@@ -167,7 +167,7 @@ struct KatanaGoMIDITests {
     dc30.inputVolume = 75
     dc30.echoRepeatTime = 450
 
-    try await katana.writeFxBank(dc30, channel: .fx)
+    try await katana.write(dc30, channel: .fx)
 
     let outputConnection =
       midiManager.managedOutputConnections["KatanaGo_Out_\(endpoint.uniqueID)"]

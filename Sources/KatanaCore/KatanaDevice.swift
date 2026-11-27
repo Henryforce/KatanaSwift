@@ -15,14 +15,21 @@ public enum ReadDataOptions: Hashable, Sendable {
   case cacheFirstDeviceSecond
 }
 
-/// Represents a connected Katana GO device.
-public protocol KatanaDevice: Actor {
+/// Represents a connected Katana device.
+public protocol KatanaDevice: Sendable {
   /// Represents the streamed data received from the device.
   typealias StreamData = (address: UInt32, data: [UInt8])
+
+  /// The hardware device type (e.g., `.go`).
+  var deviceType: KatanaDeviceType { get }
 
   /// Checks the current connection status.
   /// - Returns: The current connection status.
   func connectionStatus() async -> ConnectionStatus
+
+  /// Observes connection status transitions over time.
+  /// - Returns: An `AsyncStream` yielding `ConnectionStatus` updates.
+  func connectionStatusStream() -> AsyncStream<ConnectionStatus>
 
   /// Establishes a connection to the physical device.
   /// - Throws: `KatanaError.connectionFailed` if the device cannot be reached.
@@ -30,10 +37,6 @@ public protocol KatanaDevice: Actor {
 
   /// Closes the connection to the device.
   func disconnect() async
-
-  /// Read the hardware device type.
-  /// - Returns: The `KatanaDeviceType` (e.g., `.go`).
-  func readDeviceType() async -> KatanaDeviceType
 
   /// Write raw bytes to the device's memory at a specific address.
   /// - Parameters:

@@ -7,4 +7,4 @@ public protocol KatanaGoBank: WritableBank {
 }
 
 /// A bank representing the MOD or FX section of the device, which also includes EQ settings.
-public protocol KatanaGoFxBank: KatanaGoBank {}
+public protocol KatanaGoFxBank: KatanaGoChannelAddressableBank where BankChannel == KatanaGoFxChannel {}

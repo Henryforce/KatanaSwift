@@ -12,7 +12,7 @@ struct KatanaGoSubscriptionTests {
   @Test func testSubscribeNormalBanks() async throws {
     let (katana, midiManager, _) = try await setupConnectedKatana()
 
-    let bankStream = await katana.subscribeToKatanaGoBanks()
+    let bankStream = katana.subscribeToKatanaGoBanks()
 
     // Simulate AmpBank update (address 0x20002000, size 14)
     let responseBody: [UInt8] = [
@@ -51,7 +51,7 @@ struct KatanaGoSubscriptionTests {
   @Test func testSubscribeModFxPartialRead() async throws {
     let (katana, midiManager, _) = try await setupConnectedKatana()
 
-    let bankStream = await katana.subscribeToKatanaGoBanks()
+    let bankStream = katana.subscribeToKatanaGoBanks()
 
     // 1. Send partial MOD data Part 1 (address 0x20010000, size 128)
     // In Roland/Boss, 128 bytes fills up 0x20010000 to 0x2001007F.
@@ -104,7 +104,7 @@ struct KatanaGoSubscriptionTests {
   @Test func testSubscribeModFxFullRead() async throws {
     let (katana, midiManager, endpoint) = try await setupConnectedKatana()
 
-    let bankStream = await katana.subscribeToKatanaGoBanks()
+    let bankStream = katana.subscribeToKatanaGoBanks()
 
     // Send full MOD data (245 bytes)
     var fullData = [UInt8](repeating: 0, count: 245)

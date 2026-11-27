@@ -10,6 +10,8 @@ public enum DelayBankChannel: UInt32, Sendable, Hashable {
 /// The data bank representing the delay parameters.
 @KatanaBank
 public struct DelayBank: KatanaGoChannelAddressableBank, Sendable, Hashable {
+  public typealias BankChannel = DelayBankChannel
+
   @Parameter(at: 0x00)
   public var type: DelayType = .digital
 
@@ -55,8 +57,6 @@ public struct DelayBank: KatanaGoChannelAddressableBank, Sendable, Hashable {
   public static let katanaGoAddress: UInt32 = 0x20_01_20_00
 
   public static let size: UInt32 = 17
-
-  public static let channelType = DelayBankChannel.self
 }
 
 /// Available delay types for the Katana GO.

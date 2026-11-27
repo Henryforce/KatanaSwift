@@ -13,6 +13,8 @@ public enum EQBankChannel: UInt32, Sendable, Hashable {
 /// The data bank representing the equalizer parameters.
 @KatanaBank
 public struct EQSelectionBank: KatanaGoChannelAddressableBank, Sendable, Hashable {
+  public typealias BankChannel = EQBankChannel
+
   @Parameter(at: 0x01)
   public var status: Bool = false
 
@@ -25,13 +27,13 @@ public struct EQSelectionBank: KatanaGoChannelAddressableBank, Sendable, Hashabl
   public static let katanaGoAddress: UInt32 = 0x20_02_60_00
 
   public static let size: UInt32 = 3
-
-  public static let channelType = EQBankChannel.self
 }
 
 /// The data bank representing the parametric equalizer parameters.
 @KatanaBank
 public struct ParametricEQBank: KatanaGoChannelAddressableBank, Sendable, Hashable {
+  public typealias BankChannel = EQBankChannel
+
   @Parameter(at: 0x00)
   public var lowCut: EQLowCut = .flat
 
@@ -73,13 +75,13 @@ public struct ParametricEQBank: KatanaGoChannelAddressableBank, Sendable, Hashab
   public static let katanaGoAddress: UInt32 = 0x20_03_00_00
 
   public static let size: UInt32 = 11
-
-  public static let channelType = EQBankChannel.self
 }
 
 /// The data bank representing the graphic equalizer parameters.
 @KatanaBank
 public struct GraphicEQBank: KatanaGoChannelAddressableBank, Sendable, Hashable {
+  public typealias BankChannel = EQBankChannel
+
   /// Range is from -12dB to 12dB mapped to 0..24..48 with steps of 0.5dB.
   @IntegerParameter(at: 0x00, range: 0...48)
   public var band31Hz: UInt8 = 24
@@ -117,6 +119,4 @@ public struct GraphicEQBank: KatanaGoChannelAddressableBank, Sendable, Hashable 
   public static let katanaGoAddress: UInt32 = 0x20_03_20_00
 
   public static let size: UInt32 = 11
-
-  public static let channelType = EQBankChannel.self
 }

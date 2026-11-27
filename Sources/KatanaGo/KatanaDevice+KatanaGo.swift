@@ -5,40 +5,23 @@ import KatanaGoData
 extension KatanaDevice {
   /// Write a bank of parameters to the device.
   /// - Parameter bank: The bank of parameters to send to the device.
-  public func writeBank<T: KatanaGoBank>(_ bank: T) async throws {
+  public func write<T: KatanaGoBank>(_ bank: T) async throws {
     let baseAddress = T.katanaGoAddress
     for writeData in bank.loadWriteData(baseAddress: baseAddress) {
-      let data = writeData.data
-      let address = writeData.address
-      try await write(at: address, data: data)
+      try await write(at: writeData.address, data: writeData.data)
     }
   }
 
-  /// Write a bank of parameters to the device's MOD or FX channel.
+  /// Write a channel-addressable bank (including MOD/FX, Delay, and EQ banks) to the device.
   /// - Parameters:
   ///   - bank: The bank of parameters to send.
-  ///   - channel: The target section (MOD or FX).
-  public func writeFxBank<T: KatanaGoFxBank>(_ bank: T, channel: KatanaGoFxChannel) async throws {
-    let baseAddress = T.katanaGoAddress | (channel == .fx ? 0x00_00_10_00 : 0x00)
-    for writeData in bank.loadWriteData(baseAddress: baseAddress) {
-      let data = writeData.data
-      let address = writeData.address
-      try await write(at: address, data: data)
-    }
-  }
-
-  /// Write a bank that can be directed to a specific device-defined channel.
-  /// - Parameters:
-  ///   - bank: The bank of parameters to send.
-  ///   - channel: The target channel.
-  public func writeChannelAddressableBank<T: KatanaGoChannelAddressableBank>(
-    _ bank: T, channel: T.BankChannel
-  ) async throws {
+  ///   - channel: The target channel (e.g., `.mod`/`.fx`, `.one`/`.two`).
+  public func write<T: KatanaGoChannelAddressableBank>(_ bank: T, channel: T.BankChannel)
+    async throws
+  {
     let baseAddress: UInt32 = T.katanaGoAddress + channel.rawValue
     for writeData in bank.loadWriteData(baseAddress: baseAddress) {
-      let data = writeData.data
-      let address = writeData.address
-      try await write(at: address, data: data)
+      try await write(at: writeData.address, data: writeData.data)
     }
   }
 
@@ -79,7 +62,7 @@ extension KatanaDevice {
   ///   - type: The bank model to read into.
   ///   - options: Cache vs. Device read priority.
   /// - Returns: A hydrated bank instance.
-  public func readBank<T: KatanaGoBank>(_ type: T.Type, options: ReadDataOptions = .deviceOnly)
+  public func read<T: KatanaGoBank>(_ type: T.Type, options: ReadDataOptions = .deviceOnly)
     async throws -> T
   {
     let baseAddress = T.katanaGoAddress
@@ -87,27 +70,13 @@ extension KatanaDevice {
     return try T.buildFromByteArray(data)
   }
 
-  /// Read a MOD or FX section bank from the device.
+  /// Read a channel-addressable bank (including MOD/FX, Delay, and EQ banks) from the device.
   /// - Parameters:
   ///   - type: The bank model to read into.
-  ///   - channel: The target section (MOD or FX).
+  ///   - channel: The target channel (e.g., `.mod`/`.fx`, `.one`/`.two`).
   ///   - options: Cache vs. Device read priority.
   /// - Returns: A hydrated bank instance.
-  public func readFxBank<T: KatanaGoFxBank>(
-    _ type: T.Type, channel: KatanaGoFxChannel, options: ReadDataOptions = .deviceOnly
-  ) async throws -> T {
-    let baseAddress = T.katanaGoAddress | (channel == .fx ? 0x00_00_10_00 : 0x00)
-    let data = try await readData(at: baseAddress, length: UInt16(T.size), options: options)
-    return try T.buildFromByteArray(data)
-  }
-
-  /// Read a bank from a specific device-defined channel.
-  /// - Parameters:
-  ///   - type: The bank model to read into.
-  ///   - channel: The target channel.
-  ///   - options: Cache vs. Device read priority.
-  /// - Returns: A hydrated bank instance.
-  public func readChannelAddressableBank<T: KatanaGoChannelAddressableBank>(
+  public func read<T: KatanaGoChannelAddressableBank>(
     _ type: T.Type, channel: T.BankChannel, options: ReadDataOptions = .deviceOnly
   ) async throws -> T {
     let baseAddress: UInt32 = T.katanaGoAddress + channel.rawValue
@@ -116,7 +85,7 @@ extension KatanaDevice {
   }
 
   /// Provides a stream of data received from the device.
-  /// - Returns: An AsyncStream of KatanaGoDataBank.
+  /// - Returns: An `AsyncStream` of `KatanaGoDataBank`.
   public func subscribeToKatanaGoBanks() -> AsyncStream<KatanaGoDataBank> {
     return AsyncStream { continuation in
       let stream = subscribeToData()

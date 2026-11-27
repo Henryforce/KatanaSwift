@@ -19,11 +19,16 @@ public actor KatanaDeviceImpl: KatanaDevice {
   private var outputTag: String { "\(profile.connectionTagPrefix)_Out_\(endpoint.uniqueID)" }
 
   private var dataSubscribers: [UUID: AsyncStream<StreamData>.Continuation] = [:]
+  private var statusSubscribers: [UUID: AsyncStream<ConnectionStatus>.Continuation] = [:]
   private var pendingReads: [UInt32: [UUID: PendingRead]] = [:]
 
   private var status: ConnectionStatus = .disconnected
 
   private var memoryBankCache = KatanaMemoryBankCache()
+
+  public nonisolated var deviceType: KatanaDeviceType {
+    profile.deviceType
+  }
 
   init(
     deviceType: KatanaDeviceType,
@@ -46,8 +51,41 @@ public actor KatanaDeviceImpl: KatanaDevice {
     return (isInputConnected && isOutputConnected) ? .connected : .disconnected
   }
 
+  public nonisolated func connectionStatusStream() -> AsyncStream<ConnectionStatus> {
+    let id = UUID()
+    return AsyncStream { continuation in
+      let task = Task {
+        await self.registerStatusSubscriber(id: id, continuation: continuation)
+      }
+      continuation.onTermination = { [weak self] _ in
+        task.cancel()
+        Task { [weak self] in
+          await self?.removeStatusSubscriber(id: id)
+        }
+      }
+    }
+  }
+
+  private func registerStatusSubscriber(
+    id: UUID, continuation: AsyncStream<ConnectionStatus>.Continuation
+  ) async {
+    statusSubscribers[id] = continuation
+    continuation.yield(await connectionStatus())
+  }
+
+  private func removeStatusSubscriber(id: UUID) {
+    statusSubscribers.removeValue(forKey: id)
+  }
+
+  private func updateStatus(_ newStatus: ConnectionStatus) {
+    status = newStatus
+    for subscriber in statusSubscribers.values {
+      subscriber.yield(newStatus)
+    }
+  }
+
   public func connect() async throws {
-    status = .connecting
+    updateStatus(.connecting)
 
     // 1. Find matching input endpoint (the device's destination port)
     // In SwiftMIDI, MIDIInputEndpoint represents a system destination (where we send TO).
@@ -57,7 +95,7 @@ public actor KatanaDeviceImpl: KatanaDevice {
         $0.displayName == endpoint.displayName || $0.name == endpoint.name
       })
     else {
-      status = .disconnected
+      updateStatus(.disconnected)
       let displayName = endpoint.displayName
       throw KatanaError.connectionFailed(
         "Could not find matching MIDI input endpoint (destination) for \(displayName)")
@@ -87,7 +125,7 @@ public actor KatanaDeviceImpl: KatanaDevice {
         try writeRawBytes(bytes)
       }
 
-      status = .connected
+      updateStatus(.connected)
     } catch {
       await disconnect()
       throw error
@@ -134,7 +172,7 @@ public actor KatanaDeviceImpl: KatanaDevice {
   }
 
   public func disconnect() async {
-    status = .disconnecting
+    updateStatus(.disconnecting)
 
     midiManager.remove(.inputConnection, .withTag(inputTag))
     midiManager.remove(.outputConnection, .withTag(outputTag))
@@ -154,11 +192,7 @@ public actor KatanaDeviceImpl: KatanaDevice {
       subscriber.finish()
     }
 
-    status = .disconnected
-  }
-
-  public func readDeviceType() async -> KatanaDeviceType {
-    return profile.deviceType
+    updateStatus(.disconnected)
   }
 
   public func write(at address: UInt32, data: [UInt8]) async throws {
@@ -254,16 +288,25 @@ public actor KatanaDeviceImpl: KatanaDevice {
     waiter.continuation.resume(with: result)
   }
 
-  public func subscribeToData() -> AsyncStream<StreamData> {
+  public nonisolated func subscribeToData() -> AsyncStream<StreamData> {
     let id = UUID()
     return AsyncStream { continuation in
-      dataSubscribers[id] = continuation
+      let task = Task {
+        await self.registerSubscriber(id: id, continuation: continuation)
+      }
       continuation.onTermination = { [weak self] _ in
+        task.cancel()
         Task { [weak self] in
           await self?.removeSubscriber(id: id)
         }
       }
     }
+  }
+
+  private func registerSubscriber(
+    id: UUID, continuation: AsyncStream<StreamData>.Continuation
+  ) {
+    dataSubscribers[id] = continuation
   }
 
   private func removeSubscriber(id: UUID) {
