@@ -13,7 +13,7 @@ final class ContentViewModel {
 
   func connect() {
     Task {
-      let scanner = await KatanaSwift.buildScanner()
+      let scanner = KatanaSwift.buildScanner()
       self.scanner = scanner
 
       print("Waiting for powered state")
@@ -22,7 +22,7 @@ final class ContentViewModel {
 
       var count = 0
 
-      for await device in await scanner.scan() {
+      for await device in scanner.scan() {
         guard count == 0 else { break }
         count += 1
         print("✅ Found Katana GO!")
@@ -31,7 +31,7 @@ final class ContentViewModel {
         do {
           try await device.connect()
 
-          let stream = await device.subscribeToKatanaGoBanks()
+          let stream = device.subscribeToKatanaGoBanks()
           for await bank in stream {
             print("Bank \(bank)")
           }
@@ -72,7 +72,7 @@ final class ContentViewModel {
     Task {
       do {
         print("🎸 Updating AmpBank \(bank)...")
-        try await device.writeBank(bank)
+        try await device.write(bank)
       } catch {
         print("❌ Error: \(error)")
       }
@@ -108,7 +108,7 @@ final class ContentViewModel {
     Task {
       do {
         print("🎸 Updating bank \(bank)...")
-        try await device.writeBank(bank)
+        try await device.write(bank)
       } catch {
         print("❌ Error: \(error)")
       }
@@ -120,41 +120,17 @@ final class ContentViewModel {
     Task {
       do {
         print("🎸 Updating bank \(bank)...")
-        try await device.writeFxBank(bank, channel: channel)
+        try await device.write(bank, channel: channel)
       } catch {
         print("❌ Error: \(error)")
       }
     }
   }
 
-  //  func updateMod(_ parameter: ModFxParameter) {
-  //    guard let device else { return }
-  //    Task {
-  //      do {
-  //        print("🎸 Updating MOD \(parameter)...")
-  //        try await device.write(.mod(parameter))
-  //      } catch {
-  //        print("❌ Error: \(error)")
-  //      }
-  //    }
-  //  }
-
-  //  func updateFx(_ parameter: ModFxParameter) {
-  //    guard let device else { return }
-  //    Task {
-  //      do {
-  //        print("🎸 Updating FX \(parameter)...")
-  //        try await device.write(.fx(parameter))
-  //      } catch {
-  //        print("❌ Error: \(error)")
-  //      }
-  //    }
-  //  }
-
   func readBank<T: KatanaGoBank>(type: T.Type) async -> T? {
     guard let device else { return nil }
     do {
-      return try await device.readBank(type)
+      return try await device.read(type)
     } catch {
       print("❌ Error: \(error)")
       return nil
@@ -164,7 +140,7 @@ final class ContentViewModel {
   func readFxBank<T: KatanaGoFxBank>(type: T.Type, channel: KatanaGoFxChannel) async -> T? {
     guard let device else { return nil }
     do {
-      return try await device.readFxBank(type, channel: channel)
+      return try await device.read(type, channel: channel)
     } catch {
       print("❌ Error: \(error)")
       return nil
@@ -178,7 +154,7 @@ final class ContentViewModel {
     Task {
       do {
         print("🎸 Updating bank \(bank)...")
-        try await device.writeChannelAddressableBank(bank, channel: channel)
+        try await device.write(bank, channel: channel)
       } catch {
         print("❌ Error: \(error)")
       }
@@ -190,7 +166,7 @@ final class ContentViewModel {
   ) async -> T? {
     guard let device else { return nil }
     do {
-      return try await device.readChannelAddressableBank(type, channel: channel)
+      return try await device.read(type, channel: channel)
     } catch {
       print("❌ Error: \(error)")
       return nil
